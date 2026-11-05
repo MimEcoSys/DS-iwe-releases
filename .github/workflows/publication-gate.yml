@@ -15,4 +15,4 @@ jobs:
       - name: Secrets scan (gitleaks)
         run: docker run --rm -v "$PWD:/repo" ghcr.io/gitleaks/gitleaks:v8.30.1 git /repo --no-banner --redact
       - name: No e-mail addresses or phone numbers
-        run: python3 tools/pii_scan.py
+        run: python3 ops/pii_scan.py
