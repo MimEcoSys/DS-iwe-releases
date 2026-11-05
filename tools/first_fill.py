@@ -24,7 +24,10 @@ from pathlib import Path
 import yaml
 
 TEMPLATE_PLACEMENTS = ("шаблон IWE", "Staging")
+OPEN_PLACEMENT = "Open"  # matches Open, Open Aisystant, Open МИМ
 OWN_IWE_BLOCK = "И"
+LIBRARY_FUNCTION = "Библиотека методов"
+CONTOURS = ("шаблон IWE", "Open", "Библиотека методов")
 STAGE_TO_STATUS = {
     "план": "план",
     "в работе": "в работе",
@@ -52,9 +55,10 @@ def short(text: str, limit: int = 160) -> str:
     return cut.rstrip(",;:—-") + "…"
 
 
-def selected_goals(map005: str) -> dict[int, str]:
-    """Goal number -> block letter, by the board's selection rule."""
-    goals, block = {}, ""
+def selected_goals(map005: str) -> dict[int, list[str]]:
+    """Goal number -> release contours it belongs to, by the board's selection rule."""
+    goals: dict[int, list[str]] = {}
+    block = ""
     for line in map005.splitlines():
         head = re.match(r"^## (\w)\. ", line)
         if head:
@@ -62,13 +66,22 @@ def selected_goals(map005: str) -> dict[int, str]:
             continue
         if line.startswith("## "):
             block = ""
+        if line.startswith(f"| {LIBRARY_FUNCTION}"):
+            for number in re.findall(r"\d+", table_cells(line)[-1]):
+                goals.setdefault(int(number), []).append(LIBRARY_FUNCTION)
+            continue
         if not re.match(r"^\| *\d+ *\|", line) or not block:
             continue
         cells = table_cells(line)
         placement = cells[-1]
+        number = int(cells[0])
         if block == OWN_IWE_BLOCK or any(p in placement for p in TEMPLATE_PLACEMENTS):
-            goals[int(cells[0])] = block
-    return goals
+            goals.setdefault(number, []).append("шаблон IWE")
+        if OPEN_PLACEMENT in placement:
+            goals.setdefault(number, []).append("Open")
+    if not any(LIBRARY_FUNCTION in c for c in goals.values()):
+        raise SystemExit(f"row «{LIBRARY_FUNCTION}» not found in the missing-functions table")
+    return {n: sorted(set(c), key=CONTOURS.index) for n, c in goals.items()}
 
 
 def results_for(sbg: str, goals: dict[int, str]) -> list[dict]:
@@ -85,6 +98,7 @@ def results_for(sbg: str, goals: dict[int, str]) -> list[dict]:
             {
                 "code": code,
                 "goal": int(goal),
+                "contours": goals[int(goal)],
                 "who": who,
                 "what": short(what),
                 "where": where,
@@ -203,27 +217,34 @@ RESULT_LADDER = (
 
 def summary_lines(results, staging, unreleased_links) -> list[str]:
     """Board summary: one unit (promised result) along the ladder, other units listed separately."""
-    counts = {status: 0 for status in RESULT_LADDER}
+    columns = ("всего", *CONTOURS)
+    counts = {status: dict.fromkeys(columns, 0) for status in RESULT_LADDER}
     for r in results:
-        counts[r["status"]] += 1
+        counts[r["status"]]["всего"] += 1
+        for contour in r["contours"]:
+            counts[r["status"]][contour] += 1
     lines = [
-        f"## Сводка: {len(results)} обещанных результатов целей шаблона",
+        f"## Сводка: {len(results)} обещанных результатов, которые идут через выпуск",
         "",
-        "Единица счёта — обещанный результат (код «Ц<цель>-<номер>»). Сумма по статусам равна общему числу.",
+        (
+            "Единица счёта — обещанный результат (код «Ц<цель>-<номер>»). Колонка «всего» в сумме даёт общее число; "
+            "результат может относиться сразу к нескольким частям выпуска, поэтому сумма по частям бывает больше."
+        ),
         "",
-        "| Статус | Результатов |",
-        "|---|---|",
+        "| Статус | " + " | ".join(columns) + " |",
+        "|---|" + "---|" * len(columns),
     ]
-    lines += [f"| {status} | {n} |" for status, n in counts.items()]
+    lines += [f"| {status} | " + " | ".join(str(v) for v in row.values()) + " |" for status, row in counts.items()]
+    lines += ["| **итого** | " + " | ".join(f"**{sum(row[c] for row in counts.values())}**" for c in columns) + " |"]
     testing = sum(1 for s in staging if s["staging_status"] == "testing")
-    unlinked = sum(1 for s in staging if s["staging_status"] == "testing" and not s["result"])
+    linked = sum(1 for s in staging if s["staging_status"] == "testing" and s["result"])
     lines += [
         "",
         "**Другие единицы — к сумме выше не прибавляются**, пока не связаны с кодом результата:",
         "",
         "| Что | Сколько | Связано с результатом |",
         "|---|---|---|",
-        f"| записи обкатки на обкатке (`STAGING.md`) | {testing} | {testing - unlinked} |",
+        f"| записи обкатки на обкатке (`STAGING.md`) | {testing} | {linked} |",
         (
             f"| записи списка изменений «Ещё не выпущено» | {len(unreleased_links)} | "
             f"{sum(1 for u in unreleased_links if u['result'])} |"
@@ -272,11 +293,11 @@ def write_views(repo: Path, stamp: str, results, staging, unreleased, unreleased
         "|---|---|---|---|",
     ]
     out += [f"| {u['key']} | {u['tag']} | {cell(short(u['text'], 200))} | не привязано |" for u in unreleased]
-    out += ["", "## 3. Результаты целей шаблона по статусам", ""]
+    out += ["", "## 3. Результаты по статусам", ""]
     for status in ("в работе", "план", "сделано, не сверено", "отложено"):
         rows = by_status.get(status, [])
-        out += [f"### {status}: {len(rows)}", "", "| Код | Кто | Что получает |", "|---|---|---|"]
-        out += [f"| {r['code']} | {r['who']} | {cell(r['what'])} |" for r in rows]
+        out += [f"### {status}: {len(rows)}", "", "| Код | Часть выпуска | Кто | Что получает |", "|---|---|---|---|"]
+        out += [f"| {r['code']} | {', '.join(r['contours'])} | {r['who']} | {cell(r['what'])} |" for r in rows]
         out += [""]
     moved = [s for s in staging if s["staging_status"] == "promoted"]
     kept = [s for s in staging if s["staging_status"] == "rejected"]
@@ -345,7 +366,8 @@ def main() -> int:
         "snapshot": {
             "collected_at": today,
             "template_commit": fmt_sha,
-            "rule": "результаты целей с размещением «шаблон IWE» или «Staging» и все цели блока «И. Своя IWE»",
+            "rule": "результаты целей с размещением «шаблон IWE», «Staging» или Open, все цели блока «И. Своя IWE» "
+            "и цели функции «Библиотека методов»",
             "goals": sorted(goals),
         },
         "results": results,
