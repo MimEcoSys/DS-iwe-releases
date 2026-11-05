@@ -285,7 +285,125 @@ def apply_links(results: list[dict], unreleased_links: list[dict], staging: list
         raise SystemExit(f"done results without placement: {left}")
 
 
-def summary_lines(results, staging, unreleased_links, released) -> list[str]:
+RELEASED_KINDS = (
+    "result_by_ref",
+    "no_rp",
+    "rp_no_board_results",
+    "result_by_reading",
+    "contested",
+    "service",
+    "none",
+)
+WP_NUMBER = re.compile(r"(?:WP|РП)-?\s?(\d{1,3})(?!\d)")
+REF_FORMAT = re.compile(r"[0-9a-f]{7,40}|#\d+")
+RELEASED_FIELDS = {
+    "result_by_ref": {"code", "ref"},
+    "result_by_reading": {"code"},
+    "contested": {"readings"},
+}
+READING_WORDS = ("none", "service")
+
+
+def check_released_fields(key: str, link: dict) -> None:
+    required = RELEASED_FIELDS.get(link["kind"], set())
+    present = set(link) - {"kind", "commit_wp"}
+    if present != required:
+        raise SystemExit(f"{key}: kind {link['kind']} needs fields {sorted(required)}, got {sorted(present)}")
+
+
+def contains_ref(text: str, ref: str) -> bool:
+    """The reference stands in the text as a whole token, not as a prefix of a longer number or hash."""
+    return re.search(re.escape(ref) + r"(?![\w])", text) is not None
+
+
+def released_kind_expected(entry: dict, link: dict, candidates: set) -> str | None:
+    """The kind the mechanical rules force for this record, or None when it is the readers' call."""
+    if link["kind"] == "result_by_ref":
+        return None
+    if not entry["wp"]:
+        return "no_rp"
+    if not candidates:
+        return "rp_no_board_results"
+    return None
+
+
+def apply_released_links(results: list[dict], released_041: dict, unreleased_keys: set, declared: dict, placement: dict) -> dict:
+    """Check the links of records released in 0.37-0.41.11 and mark the results they serve (WP-529 F255).
+
+    The universe is the set of distinct record keys; repeated records (same text in two versions)
+    share one key and are counted once. Returns the count of each kind.
+    """
+    entries: dict[str, dict] = {}
+    for ver, items in released_041.items():
+        for e in items:
+            entries.setdefault(e["key"], {"text": e["text"], "versions": []})["versions"].append(ver)
+    check_keys("released_0_41_11", declared, set(entries))
+    overlap = set(entries) & unreleased_keys
+    if overlap:
+        raise SystemExit(f"released_0_41_11: keys also in Unreleased: {sorted(overlap)}")
+
+    by_code = {r["code"]: r for r in results}
+    counts = dict.fromkeys(RELEASED_KINDS, 0)
+    for key, link in declared.items():
+        kind = link.get("kind")
+        if kind not in RELEASED_KINDS:
+            raise SystemExit(f"{key}: unknown kind {kind!r}")
+        check_released_fields(key, link)
+        entry = entries[key]
+        wps = {int(n) for n in WP_NUMBER.findall(entry["text"])} | set(link.get("commit_wp", []))
+        entry["wp"] = wps
+        candidates = {r["code"] for r in results if wps & {int(w[3:]) for w in r["works"]}}
+        expected = released_kind_expected(entry, link, candidates)
+        if expected and kind != expected:
+            raise SystemExit(f"{key}: kind {kind} contradicts the record, expected {expected}")
+        if not expected and kind in ("no_rp", "rp_no_board_results"):
+            raise SystemExit(f"{key}: kind {kind} but the record has a work number with results on the board")
+        if kind == "result_by_ref":
+            place = placement.get(link["code"], {})
+            if place.get("place") != "released-0.37-0.41.11":
+                raise SystemExit(f"{key}: {link['code']} is not placed in released-0.37-0.41.11")
+            if not REF_FORMAT.fullmatch(link["ref"]):
+                raise SystemExit(f"{key}: ref {link['ref']!r} must be a commit hash of 7+ characters or #number")
+            if not (contains_ref(entry["text"], link["ref"]) and contains_ref(place["evidence"], link["ref"])):
+                raise SystemExit(f"{key}: ref {link['ref']} must appear in the record and in the placement evidence")
+        if kind == "result_by_reading" and link["code"] not in candidates:
+            raise SystemExit(f"{key}: {link['code']} is not a result of the record's work {sorted(wps)}")
+        if kind == "contested":
+            readings = link["readings"]
+            if len(set(readings.values())) < 2:
+                raise SystemExit(f"{key}: contested but the readings agree")
+            wrong = [v for v in readings.values() if v not in READING_WORDS and v not in candidates]
+            if wrong:
+                raise SystemExit(f"{key}: readings {wrong} are not results of the record's work {sorted(wps)}")
+        if kind in ("result_by_ref", "result_by_reading"):
+            by_code[link["code"]].setdefault("released_041_records", []).append(key)
+        counts[kind] += 1
+    if sum(counts.values()) != len(entries):
+        raise SystemExit("released_0_41_11: kinds do not add up to the number of records")
+    # Links are preliminary until the Developer accepts them, so only a "plan" result is flagged;
+    # results already placed (for example in 0.36) are not touched.
+    for r in results:
+        if r.get("released_041_records") and r["status"] == "план" and not r.get("mismatch"):
+            r["mismatch"] = "расходится: в карточке «план», но часть уже вышла в 0.37–0.41.11"
+    counts["records"] = len(entries)
+    counts["repeated"] = sum(len(e["versions"]) - 1 for e in entries.values())
+    return counts
+
+
+def released_041_note(c: dict, rec_041: int, results: list[dict]) -> str:
+    linked = {r["code"] for r in results if r.get("released_041_records")}
+    return (
+        f"вышло в выпусках 0.37–0.41.11: {rec_041} строк, {c['records']} разных записей ({c['repeated']} повторяются "
+        f"в двух версиях); из этого Выпускающий определяет, что взять в работу. Связь записей с результатами "
+        f"(предварительная, до приёмки Разработчиком): по номеру коммита или PR из доказательства — "
+        f"{c['result_by_ref']}, по совпавшему чтению двух разметчиков — {c['result_by_reading']}; они служат "
+        f"{len(linked)} результатам. Разметчики разошлись — {c['contested']}; у РП нет единственного подходящего "
+        f"результата — {c['none']}; служебные — {c['service']}; у РП записи нет результатов на табло — "
+        f"{c['rp_no_board_results']}; без номера РП — {c['no_rp']}"
+    )
+
+
+def summary_lines(results, staging, unreleased_links, released, released_counts) -> list[str]:
     """Board summary: four stages; results counted, records shown in brackets for reference."""
 
     def count(*statuses: str) -> int:
@@ -324,8 +442,9 @@ def summary_lines(results, staging, unreleased_links, released) -> list[str]:
             count("план"),
             "результаты активных РП, работа не начата"
             + (
-                f"; у {sum(1 for r in results if r.get('mismatch'))} — расходится: часть уже на обкатке или влита"
-                if any(r.get("mismatch") for r in results)
+                f"; у {sum(1 for r in results if r['status'] == 'план' and r.get('mismatch'))} — расходится: "
+                "часть уже на обкатке, влита или вышла"
+                if any(r["status"] == "план" and r.get("mismatch") for r in results)
                 else ""
             ),
         ),
@@ -336,8 +455,9 @@ def summary_lines(results, staging, unreleased_links, released) -> list[str]:
             (
                 f"в том числе в плане недели — {sum(1 for r in in_work if r['in_week_plan'])}. "
                 f"У {sum(1 for r in in_work if r.get('merged_after_0_41_11'))} результатов часть правок уже влита "
-                f"после 0.41.11, у {sum(1 for r in in_work if r.get('on_staging'))} часть на обкатке, но целиком "
-                "они не готовы — поэтому остаются здесь, а не в 2.2 или 2.3"
+                f"после 0.41.11, у {sum(1 for r in in_work if r.get('on_staging'))} часть на обкатке, "
+                f"у {sum(1 for r in in_work if r.get('released_041_records'))} часть уже вышла в 0.37–0.41.11, "
+                "но целиком они не готовы — поэтому остаются здесь, а не в 2.2 или 2.3"
             ),
         ),
         (
@@ -356,10 +476,7 @@ def summary_lines(results, staging, unreleased_links, released) -> list[str]:
         (
             "2.3.1 разница 0.36 и 0.41.11 у Выпускающего (временный пункт до выпуска 0.42)",
             count("в разнице 0.36–0.41.11"),
-            (
-                f"вышло в выпусках 0.37–0.41.11 ({rec_041} записей); из этого Выпускающий определяет, что взять в "
-                "работу. Пока связаны с результатами только сделанные результаты открытых РП (фаза Ф255)"
-            ),
+            released_041_note(released_counts, rec_041, results),
         ),
         (
             "2.3.2 вливается Разработчиком после 0.41.11",
@@ -442,6 +559,23 @@ def summary_lines(results, staging, unreleased_links, released) -> list[str]:
     return lines + [""]
 
 
+RELEASED_LABELS = {
+    "no_rp": "без номера РП",
+    "rp_no_board_results": "у РП нет результатов на табло",
+    "contested": "разметчики разошлись",
+    "service": "служебное",
+    "none": "нет единственного результата",
+}
+
+
+def released_label(link: dict) -> str:
+    if link["kind"] == "result_by_ref":
+        return f"{link['code']} (по {link['ref']})"
+    if link["kind"] == "result_by_reading":
+        return f"{link['code']} (по чтению)"
+    return RELEASED_LABELS[link["kind"]]
+
+
 def link_label(link: dict) -> str:
     if link.get("result"):
         return ", ".join(link["result"])
@@ -452,7 +586,9 @@ def link_label(link: dict) -> str:
     return "не привязано"
 
 
-def write_views(repo: Path, stamp: str, results, staging, unreleased, unreleased_links, released, author_ahead) -> None:
+def write_views(
+    repo: Path, stamp: str, results, staging, unreleased, unreleased_links, released, author_ahead, released_links, released_counts
+) -> None:
     view = repo / "view"
     view.mkdir(exist_ok=True)
     by_status: dict[str, list] = {}
@@ -467,7 +603,7 @@ def write_views(repo: Path, stamp: str, results, staging, unreleased, unreleased
         "Собрано программой из файлов ролей и источников; вручную не править.",
         "",
     ]
-    out += summary_lines(results, staging, unreleased_links, released)
+    out += summary_lines(results, staging, unreleased_links, released, released_counts)
     testing = [s for s in staging if s["staging_status"] == "testing"]
     out += [
         "## 1. Работает в моей IWE, в шаблон не доставлено",
@@ -546,7 +682,12 @@ def write_views(repo: Path, stamp: str, results, staging, unreleased, unreleased
         ]
         for ver, entries in versions.items():
             lines += [f"## {ver} — записей: {len(entries)}", ""]
-            lines += [f"- [{e['tag'] or '—'}] {short(e['text'], 200)}" for e in entries]
+            labels = released_links if name == "0.41.11" else {}
+            lines += [
+                f"- [{e['tag'] or '—'}] {short(e['text'], 200)}"
+                + (f" — **{released_label(labels[e['key']])}**" if e["key"] in labels else "")
+                for e in entries
+            ]
             lines += [""]
         (view / f"release-{name}.md").write_text("\n".join(lines))
 
@@ -594,7 +735,16 @@ def main() -> int:
             {"key": u["key"], "tag": u["tag"], "first_words": short(u["text"], 80)} for u in unreleased
         ],
     }
-    apply_links(results, developer["unreleased_links"], staging, args.repo / "board" / "developer-links.yaml")
+    links_file = args.repo / "board" / "developer-links.yaml"
+    apply_links(results, developer["unreleased_links"], staging, links_file)
+    declared = yaml.safe_load(links_file.read_text())
+    released_counts = apply_released_links(
+        results,
+        released["0.41.11"],
+        {u["key"] for u in unreleased},
+        declared["released_0_41_11"],
+        declared["placement"],
+    )
     board = args.repo / "board"
     board.mkdir(exist_ok=True)
     header = (
@@ -604,7 +754,18 @@ def main() -> int:
     (board / "developer.yaml").write_text(
         header + yaml.safe_dump(developer, allow_unicode=True, sort_keys=False, width=1000)
     )
-    write_views(args.repo, stamp, results, staging, unreleased, developer["unreleased_links"], released, author_ahead)
+    write_views(
+        args.repo,
+        stamp,
+        results,
+        staging,
+        unreleased,
+        developer["unreleased_links"],
+        released,
+        author_ahead,
+        declared["released_0_41_11"],
+        released_counts,
+    )
 
     # Completeness: every source item is on the board, linked or explicitly not linked.
     # Each board count is compared with an independent raw count of the source text.
