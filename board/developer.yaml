@@ -502,10 +502,11 @@ results:
   who: пользователь IWE
   what: часы из пула недели, пометка «вне плана недели», снятие ложной аварийной метки
   where: по расписанию
-  status: сделано, не сверено
+  status: готово для передачи
   works:
   - РП-484
   in_week_plan: true
+  merged_after_0_41_11: true
 - code: Ц34-04
   goal: 34
   contours: *id005
@@ -576,6 +577,7 @@ results:
   works:
   - РП-561
   in_week_plan: true
+  merged_after_0_41_11: true
 - code: Ц34-11
   goal: 34
   contours: *id005
@@ -799,6 +801,7 @@ results:
   works:
   - РП-484
   in_week_plan: true
+  merged_after_0_41_11: true
 - code: Ц38-05
   goal: 38
   contours: *id008
@@ -865,10 +868,11 @@ results:
   who: пользователь IWE
   what: чтение свежей карточки и автоархивация
   where: любой клиент
-  status: сделано, не сверено
+  status: готово для передачи
   works:
   - РП-561
   in_week_plan: true
+  merged_after_0_41_11: true
 - code: Ц38-12
   goal: 38
   contours: *id008
@@ -1850,6 +1854,7 @@ results:
   works:
   - РП-529
   in_week_plan: true
+  merged_after_0_41_11: true
 - code: Ц77-09
   goal: 77
   contours: *id018
@@ -1917,10 +1922,11 @@ results:
   who: пользователь IWE
   what: check-dirty-repos.sh доставлен в корень и шаблон, дедупликация по toplevel
   where: по расписанию
-  status: сделано, не сверено
+  status: готово для передачи
   works:
   - РП-485
   in_week_plan: true
+  merged_after_0_41_11: true
 - code: Ц78-02
   goal: 78
   contours: *id019
@@ -2044,6 +2050,7 @@ results:
   works:
   - РП-544
   in_week_plan: true
+  merged_after_0_41_11: true
 - code: Ц81-06
   goal: 81
   contours: *id021
@@ -2085,6 +2092,7 @@ results:
   works:
   - РП-524
   in_week_plan: false
+  merged_after_0_41_11: true
 - code: Ц82-03
   goal: 82
   contours: *id022
@@ -2350,6 +2358,7 @@ results:
   works:
   - РП-530
   in_week_plan: true
+  merged_after_0_41_11: true
 - code: Ц96-02
   goal: 96
   contours: *id027
@@ -2390,6 +2399,7 @@ results:
   works:
   - РП-530
   in_week_plan: true
+  merged_after_0_41_11: true
 - code: Ц96-06
   goal: 96
   contours: *id027
@@ -2440,6 +2450,7 @@ results:
   works:
   - РП-5
   in_week_plan: true
+  merged_after_0_41_11: true
 - code: Ц84-01
   goal: 84
   contours: &id028
@@ -2481,6 +2492,7 @@ results:
   works:
   - РП-519
   in_week_plan: false
+  merged_after_0_41_11: true
 - code: Ц84-05
   goal: 84
   contours: *id028
@@ -2521,6 +2533,7 @@ results:
   works:
   - РП-529
   in_week_plan: true
+  merged_after_0_41_11: true
 - code: Ц84-09
   goal: 84
   contours: *id028
@@ -3162,148 +3175,198 @@ unreleased_links:
 - key: U-444921
   tag: optional
   first_words: '`roles/synchronizer/scripts/notify.sh`: рабочее место может подключить…'
-  result: null
+  proposed:
+    goal: 34
+    what: рутинные уведомления среды идут в свою сводку, а не в чат
 - key: U-9476ea
   tag: behavior
   first_words: '`.claude/rules/wp-scope.md`: правило «читать только открытые фазы» теперь…'
-  result: null
+  service: правило чтения карточек агентом
 - key: U-d3a985
   tag: optional
   first_words: '`scripts/kimi-peer-adapter.sh` экспортирует `IWE_STYLE_CONTEXT=peer`, как уже…'
-  result: null
+  result:
+  - Ц82-02
 - key: U-68b71f
   tag: behavior
   first_words: 'Экстрактор без гейта публикации больше не делает прямой `git push`: коммит…'
-  result: null
+  proposed:
+    goal: 70
+    what: разборщик публикует результат только через проверку публикации и не теряет его
 - key: U-a9b16e
   tag: optional
   first_words: '`roles/extractor/scripts/extractor-branches-prune.sh` — отчёт о брошенных…'
-  result: null
+  proposed:
+    goal: 70
+    what: разборщик публикует результат только через проверку публикации и не теряет его
 - key: U-c1eb8a
   tag: behavior
   first_words: Тесты репетиции (`test_dry_run_gate.py`, `test_issue_549_dryrun_redesign.sh`)…
-  result: null
+  service: тесты репетиции
 - key: U-cc42d0
   tag: optional
   first_words: 'CI: проверка «Author Source Gate» — PR, меняющий файл с авторским источником…'
-  result: null
+  result:
+  - Ц84-08
 - key: U-c90794
   tag: behavior
   first_words: 'Языковые каталоги для кода (WP-610 Ф9, шаг 2): `.claude/lib/i18n.sh` и…'
-  result: null
+  proposed:
+    goal: 93
+    what: тексты для агента в коде шаблона на русском и английском
 - key: U-58c3fa
   tag: behavior
   first_words: 'Автоматическая доставка из авторского источника (template-sync.sh): обновлены…'
-  result: null
+  result:
+  - Ц96-10
 - key: U-10d5af
   tag: behavior
   first_words: '`setup/validate-template.sh --mode=staged` больше не тратит десятки минут на…'
-  result: null
+  result:
+  - Ц84-04
 - key: U-365d06
   tag: behavior
   first_words: '`update.sh` на Git Bash (Windows) больше не останавливается после первой записи…'
-  result: null
+  result:
+  - Ц77-08
 - key: U-54f3b7
   tag: behavior
   first_words: '`/day-close`, шаг 4 (подсчёт HOT-лимита памяти) теперь проходит под репетицией…'
-  result: null
+  result:
+  - Ц34-10
 - key: U-e0a41e
   tag: security
   first_words: Гейт репетиции (`dry-run-gate.sh`) блокирует запись через MCP и при именах…
-  result: null
+  proposed:
+    goal: 78
+    what: репетиция проверки установки ничего не записывает, в том числе на Windows и в Kimi
 - key: U-d5528d
   tag: security
   first_words: Репетиция (`dry-run-begin.sh`, `dry-run-gate.sh`, `dry-run-complete.sh`)…
-  result: null
+  proposed:
+    goal: 78
+    what: репетиция проверки установки ничего не записывает, в том числе на Windows и в Kimi
 - key: U-cabda4
   tag: behavior
   first_words: '`scripts/session-guard.sh`: уборка осиротевших семафоров (`__quarantine-dead`)…'
-  result: null
+  result:
+  - Ц38-04
 - key: U-ee97f4
   tag: behavior
   first_words: 'Разборщик (`roles/extractor/scripts/extractor.sh`): два изолированных прогона…'
-  result: null
+  result:
+  - Ц96-01
 - key: U-ba3ac8
   tag: behavior
   first_words: '`scripts/wakatime-day-total.py`: WakaTime перестал принимать ключ плагина на…'
-  result: null
+  result:
+  - Ц34-03
 - key: U-c2fd78
   tag: behavior
   first_words: '`scripts/lib/governance-repo-path.sh`: если рабочий каталог (`IWE_ROOT`)…'
-  result: null
+  result:
+  - Ц96-05
 - key: U-d03d54
   tag: optional
   first_words: '`roles/synchronizer/scripts/dt-collect.sh` спрашивает путь журнала открытий…'
-  result: null
+  result:
+  - Ц78-01
 - key: U-58be5f
   tag: optional
   first_words: '`scripts/session-guard.sh open-log-path` печатает путь журнала открытий сессий…'
-  result: null
+  result:
+  - Ц78-01
 - key: U-9dd45c
   tag: behavior
   first_words: '`memory-bleed.sh` снова укладывается в предел времени шага закрытия месяца на…'
-  result: null
+  proposed:
+    goal: 36
+    what: память пересчитывается в пределах времени шага закрытия месяца
 - key: U-5579db
   tag: security
   first_words: '`.claude/hooks/rule-engine.sh`: если реестр правил не найден, не читается или…'
-  result: null
+  result:
+  - Ц81-05
 - key: U-e2d67b
   tag: docs
   first_words: '`memory/agent-architecture-framework.md` и `memory/navigation.md`: агент описан…'
-  result: null
+  proposed:
+    goal: 83
+    what: описания агента, ролей и видов практики в шаблоне сведены с паком
 - key: U-10348e
   tag: optional
   first_words: '`.github/scripts/author-source-gate.sh`: проверка источника правок больше не…'
-  result: null
+  result:
+  - Ц84-08
 - key: U-511ae4
   tag: behavior
   first_words: '`memory/protocol-open.md` и `scripts/wp-inbox.sh`: подготовка контекста РП при…'
-  result: null
+  result:
+  - Ц38-11
 - key: U-ae9e5a
   tag: docs
   first_words: '`memory/roles.md`: в таблицах ролей появилась колонка «Код пака» — единственный…'
-  result: null
+  proposed:
+    goal: 83
+    what: описания агента, ролей и видов практики в шаблоне сведены с паком
 - key: U-cda13f
   tag: docs
   first_words: '`memory/repo-type-rules.md`: виды практики названы по FPF — «LPF нашей IWE…'
-  result: null
+  proposed:
+    goal: 83
+    what: описания агента, ролей и видов практики в шаблоне сведены с паком
 - key: U-9a23a5
   tag: docs
   first_words: '`memory/hard-distinctions.md`: в разделе 32 строка «Подробно:» снова обычный…'
-  result: null
+  service: форматирование файла памяти
 - key: U-c3f860
   tag: behavior
   first_words: '`setup.sh` на Linux (в том числе WSL2) снова ставит роли с `auto: true` на шаге…'
-  result: null
+  proposed:
+    goal: 23
+    what: установка на Linux и WSL2 ставит фоновые роли сама
 - key: U-efce06
   tag: behavior
   first_words: '`/audit-installation`, шаг 2.5: команды начала и завершения репетиции сами…'
-  result: null
+  proposed:
+    goal: 78
+    what: репетиция проверки установки ничего не записывает, в том числе на Windows и в Kimi
 - key: U-763c08
   tag: docs
   first_words: '`/audit-installation`, шаг 2: `github_status` отмечен подписочным (отказ…'
-  result: null
+  proposed:
+    goal: 78
+    what: проверка установки отличает подписочные инструменты от сломанных
 - key: U-61220f
   tag: behavior
   first_words: Изолированный `inbox-check` extractor снова публикует результат, если у…
-  result: null
+  proposed:
+    goal: 70
+    what: разборщик публикует результат только через проверку публикации и не теряет его
 - key: U-5aae39
   tag: security
   first_words: Пробный прогон (`dry-run-gate.sh`) блокирует скрипт, запущенный по пути или…
-  result: null
+  proposed:
+    goal: 78
+    what: репетиция проверки установки ничего не записывает, в том числе на Windows и в Kimi
 - key: U-47c314
   tag: behavior
   first_words: 'Репетицию можно начать с удержанием: `dry-run-begin.sh <initiator> <session_id>…'
-  result: null
+  proposed:
+    goal: 78
+    what: репетиция проверки установки ничего не записывает, в том числе на Windows и в Kimi
 - key: U-d100fb
   tag: behavior
   first_words: Служебная отметка с той же причиной (`open --housekeeping day-open` и т.п.)…
-  result: null
+  result:
+  - Ц38-04
 - key: U-75f0ca
   tag: behavior
   first_words: '`memory-bleed.sh` больше не пропускает молча файлы автопамяти без `valid_from`…'
-  result: null
+  proposed:
+    goal: 36
+    what: память пересчитывается в пределах времени шага закрытия месяца
 - key: U-780f77
   tag: behavior
   first_words: '`iwe_resolve_root` (`scripts/lib/common.sh`) из копии библиотеки в `<рабочий…'
-  result: null
+  service: поиск корня рабочего каталога из копии библиотеки
