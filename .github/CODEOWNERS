@@ -3,9 +3,12 @@
 *                              @TserenTserenov
 /roles/developer.yaml          @MimEcoSys/iwe-developers
 /roles/developer-links.yaml    @MimEcoSys/iwe-developers
+/roles/developer-handoff.yaml  @MimEcoSys/iwe-developers
 /roles/release-lead.yaml       @MimEcoSys/iwe-release-lead
 /releases/                     @MimEcoSys/iwe-release-lead
 /releases/*/tests/             @MimEcoSys/iwe-testers
 /releases/*/shipped.md         @MimEcoSys/iwe-developers
+/releases/*/candidates.md      @MimEcoSys/iwe-developers
+/releases/*/README.md          @MimEcoSys/iwe-developers
 /now/                          @MimEcoSys/iwe-developers
 /tools/                        @MimEcoSys/iwe-developers
