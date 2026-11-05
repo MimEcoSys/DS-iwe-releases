@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build the release board from its sources (WP-529).
 
-Reads source snapshots from --src and writes roles/developer.yaml, BOARD.md, board/*.md
+Reads source snapshots from --src and writes ops/snapshot.yaml, BOARD.md, board/*.md
 (current state, rewritten on every run) and releases/<N>/shipped.md into --repo. Every item of every source must land on the board or in an
 explicit "not linked" list; the completeness check fails the run otherwise.
 
@@ -784,7 +784,7 @@ def write_candidates(repo: Path, stamp: str, handoff: dict, unreleased: list[dic
         "",
         f"# Выпуск {release}: что можно взять",
         "",
-        "Собрано программой из файла Разработчика (`roles/developer-handoff.yaml`); руками не править. "
+        "Собрано программой из файла Разработчика (`ops/developer-handoff.yaml`); руками не править. "
         "Решения Выпускающего — в [decisions.md](decisions.md), порядок чтения и словарь — в [README](README.md).",
         "",
         f"**Кандидатов — {len(unreleased)}** правок, влитых в шаблон после 0.41.11: "
@@ -889,7 +889,7 @@ def main() -> int:
             {"key": u["key"], "tag": u["tag"], "first_words": short(u["text"], 80)} for u in unreleased
         ],
     }
-    links_file = args.repo / "roles" / "developer-links.yaml"
+    links_file = args.repo / "ops" / "developer-links.yaml"
     apply_links(results, developer["unreleased_links"], staging, links_file)
     declared = yaml.safe_load(links_file.read_text())
     released_counts = apply_released_links(
@@ -899,16 +899,16 @@ def main() -> int:
         declared["released_0_41_11"],
         declared["placement"],
     )
-    board = args.repo / "roles"
-    board.mkdir(exist_ok=True)
+    ops = args.repo / "ops"
+    ops.mkdir(exist_ok=True)
     header = (
-        "# Файл Разработчика. Правит только команда iwe-developers через запрос на слияние.\n"
-        "# Собрано tools/build_board.py; статусы — заявленные, из карточек работ.\n"
+        "# Снимок источников: результаты и их заявленные статусы из карточек работ.\n"
+        "# Собирает ops/build_board.py при каждом запуске; руками не править.\n"
     )
-    (board / "developer.yaml").write_text(
+    (ops / "snapshot.yaml").write_text(
         header + yaml.safe_dump(developer, allow_unicode=True, sort_keys=False, width=1000)
     )
-    handoff = load_handoff(args.repo / "roles" / "developer-handoff.yaml", unreleased)
+    handoff = load_handoff(args.repo / "ops" / "developer-handoff.yaml", unreleased)
     if handoff:
         write_candidates(args.repo, stamp, handoff, unreleased, developer["unreleased_links"])
     write_views(
