@@ -42,3 +42,168 @@ links:
   U-d100fb: {result: [Ц38-04]}
   U-75f0ca: {proposed: {goal: 36, what: "память пересчитывается в пределах времени шага закрытия месяца"}}
   U-780f77: {service: "поиск корня рабочего каталога из копии библиотеки"}
+
+# Запись обкатки (STAGING.md, testing) -> результат; те же три вида: result / proposed / service; why — почему так.
+staging:
+  S-16:
+    result: [Ц34-10]
+    why: проверки перед коммитом делают шаги открытия дня проверяемыми
+  S-18: {service: порядок загрузки контекста при открытии сессии, why: 'человек не видит отдельного результата, меняется только расход контекста'}
+  S-19:
+    proposed: {goal: 70, what: 'знание с рубежа работы записывается в нужное место: правило, пак, документацию или память'}
+    why: синтезы — ещё один тип знания для захвата на рубеже
+  S-20: {service: 'запрет агентам править входящие, обработка создаёт новый файл', why: 'внутренняя гигиена хранилища, видимого результата нет'}
+  S-21:
+    proposed: {goal: 70, what: 'знание с рубежа работы записывается в нужное место: правило, пак, документацию или память'}
+    why: карта маршрутизации знаний решает, куда класть захваченное
+  S-22:
+    proposed: {goal: 40, what: 'решения пользователя фиксируются на рубежах работы, при перегрузке решениями приходит подсказка'}
+    why: реестр решений с подсказкой при 70 процентах нагрузки
+  S-23:
+    proposed: {goal: 38, what: 'память агента остаётся актуальной и в бюджете: устаревшее уходит в архив, параллельные сессии её не портят'}
+    why: закрытие явно спрашивает, что обновить в памяти, закрытие дня ловит отставание
+  S-24:
+    proposed: {goal: 38, what: 'идеи «не сейчас» не теряются: записываются в отложенный список и пересматриваются на закрытии недели'}
+    why: список пост-MVP с порогами роста и пересмотром
+  S-25:
+    result: [Ц35-03]
+    why: баланс часов по проектам в плане недели — сигнал перекоса на закрытии недели
+  S-28: {service: синхронизация зависимых документов при смене старшей версии, why: 'дисциплина автора описаний, человек результата не видит'}
+  S-29:
+    proposed: {goal: 44, what: 'агент не спрашивает разрешения на обычные действия: выполняет и отчитывается'}
+    why: напоминание об автономности подаётся в следующий ход агента
+  S-30:
+    result: [Ц84-04]
+    why: коммит шаблона не проходит, если версия в журнале изменений и в манифесте расходится
+  S-33:
+    proposed: {goal: 81, what: 'агент не меняет защитные хуки и скрипты и не обходит их без разрешения, при блокировке сообщает'}
+    why: запрет обхода хуков и правки защитных скриптов
+  S-35:
+    proposed: {goal: 38, what: 'память агента остаётся актуальной и в бюджете: устаревшее уходит в архив, параллельные сессии её не портят'}
+    why: жизненный цикл памяти HOT/WARM/COLD с лимитом и архивацией
+  S-36:
+    proposed: {goal: 61, what: 'характеристики развития отделены от рычагов воздействия: измеряется то, что наблюдается у самого человека'}
+    why: различение характеристики выпускника и рычага
+  S-37:
+    proposed: {goal: 26, what: на открытии дня — три лучших черновика к публикации и сигнал запустить цикл публикации}
+    why: редактор контента выдаёт топ-3 черновика в открытии дня
+  S-38:
+    proposed: {goal: 61, what: 'глубина видения и калибр действия измеряются отдельно, разрыв между ними показывает зону роста'}
+    why: измеримые определения двух граней и разрыва
+  S-39:
+    proposed: {goal: 70, what: в плане дня видны находки ИИ и ожидающие разбора отчёты с напоминанием разобрать}
+    why: раздел «Наработки ИИ» замыкает цикл извлечения знаний
+  S-45:
+    proposed: {goal: 42, what: 'фоновые задачи агентов идут через единую очередь, результаты складываются в одно место'}
+    why: единая очередь агентных задач с диспетчером
+  S-49:
+    proposed: {goal: 38, what: 'при архивации РП ничего не теряется: непереданные результаты видны со сроком переноса'}
+    why: проверка полноты переноса перед архивацией карточки
+  S-52:
+    proposed: {goal: 78, what: 'проверка находит забытые остатки в рабочих копиях, которых не видят другие проверки'}
+    why: сторож остатка закрывает слепую зону проверок копий
+  S-53:
+    proposed: {goal: 38, what: 'память агента остаётся актуальной и в бюджете: устаревшее уходит в архив, параллельные сессии её не портят'}
+    why: контракт записи индекса памяти с замком и бюджетом
+  S-56: {service: таблица «инструмент запуска — кто ты» в общем ядре агентов, why: 'агент верно называет себя и подписывает коммиты, отдельного результата для человека нет'}
+  S-57:
+    result: [Ц37-03]
+    why: контракт событий и пакета решений питает ночную подготовку черновика недели (РП-518)
+  S-58:
+    result: [Ц72-01, Ц72-04]
+    why: скилл подписки на паки и каталог, очередь на перенос в шаблон (РП-532)
+  S-59:
+    proposed: {goal: 38, what: карточка РП показывает одно актуальное «Осталось» и короткий журнал вместо разросшейся истории}
+    why: 'гигиена карточек: единственная секция «Осталось» и журнал'
+  S-61:
+    proposed: {goal: 40, what: 'в разборе решения есть вариант, придуманный чтобы найти изъян в уже выбранном'}
+    why: самопротиворечивый шаг АрхГейта перед показом альтернатив
+  S-62:
+    result: [Ц72-02]
+    why: поиск по своим и подключённым пакам по умолчанию одинаковый, различаются вес цитаты и допуск
+  S-63: {service: 'срок хранения сессионных транскриптов 180 дней, ручное удаление', why: 'внутренняя гигиена хранилища, удаление по расписанию не включено'}
+  S-64:
+    result: [Ц82-02]
+    why: шаг публикации пир-сессии не публикует чужой коммит при сбое
+  S-65:
+    result: [Ц96-04]
+    why: закрытие принимает доставку cherry-pick'ом как опубликованную работу (РП-530)
+  S-66:
+    result: [Ц38-11]
+    why: открытие читает свежую карточку с origin, закрытие архивирует выполненные фазы (РП-561)
+  S-69:
+    proposed: {goal: 44, what: ответ агента сначала даёт результат понятными словами и заканчивается одним ясным следующим шагом}
+    why: строка «Дальше» опирается на сделанное, без пустых обещаний
+  S-70:
+    proposed: {goal: 38, what: при возвращении к РП после паузы — сводка изменений и открытых фаз вместо согласования с нуля}
+    why: пороговая шкала Ритуала при переоткрытии
+  S-71:
+    result: [Ц37-02, Ц37-06]
+    why: направления недели выводятся из пула недели и проверяются на шаге утверждения
+  S-72:
+    result: [Ц54-01]
+    why: 'скилл анализа проекта: уровни по пунктам и направление «роль и метод»'
+  S-73:
+    result: [Ц96-04]
+    why: сессия дописывает квитанцию своего опубликованного коммита
+  S-74:
+    result: [Ц38-04]
+    why: снятие дубля сессии и путь закрытия без изменений кода (РП-484)
+  S-75:
+    proposed: {goal: 44, what: ответ агента сначала даёт результат понятными словами и заканчивается одним ясным следующим шагом}
+    why: 'главное правило стиля: сначала результат и его смысл для пилота'
+  S-76:
+    proposed: {goal: 44, what: ответ агента сначала даёт результат понятными словами и заканчивается одним ясным следующим шагом}
+    why: строка «Дальше» не дублируется после замечания стража стиля
+
+# Где сделанный по карточке результат на самом деле, с доказательством (05.11.2026, проверка по шаблону и карточкам):
+#   released-0.36 | released-0.37-0.41.11 | merged-after-0.41.11 | author-only | not-template
+placement:
+  Ц1-09: {place: not-template, evidence: 'РП-589: Aisystant Open опубликован в каталоге ChatGPT (карточка, стр.105) — плагин/MCP вендора, в CHANGELOG шаблона РП-589 не встречается'}
+  Ц1-15: {place: not-template, evidence: 'РП-596 Ф5 закрыта 15.10: английские страницы сайта как источник, языковой фильтр сервера mcp.tserenov.com — сервер Open/MCP; в CHANGELOG нет'}
+  Ц4-01: {place: not-template, evidence: 'РП-442: форма поиска на сайте через open.tserenov.com/mcp + адаптер OpenRouter (14.10) — сайт; в CHANGELOG нет'}
+  Ц23-06: {place: released-0.37-0.41.11, version: 0.39.2, evidence: 'шаблонная часть — хук .claude/hooks/session-start-hooks-bootstrap.sh (be4a486, PR #578, merge bea5f51 после v0.39.1), git tag --contains → v0.39.2; создание форка — платформенный fork_platform_template (github-integration-service), вне шаблона'}
+  Ц23-07: {place: not-template, evidence: 'РП-559 стр.208: страница «Сначала установите приложение», state-тип space-install — github-integration-service/gateway (DS-MCP)'}
+  Ц23-08: {place: not-template, evidence: 'РП-559: страница результата space-флоу в github-integration-service (DS-MCP); в CHANGELOG шаблона нет'}
+  Ц34-02: {place: author-only, evidence: 'РП-484 Ф259: шаг 4.45 scripts/day-open-week-sync-patch.py в DS-my-strategy (8dd4ea67ff, a807cc5fc3); файла нет в шаблоне, в CHANGELOG нет'}
+  Ц34-15: {place: author-only, evidence: 'РП-577 Ф4: правки в iwe-local-config/scripts/day-open-scaffold.sh (launchctl на systemd) и week-open-orchestrator.sh (DAY_OPEN_FORCE_STRATEGY_DAY); оркестратора в шаблоне нет'}
+  Ц35-03: {place: author-only, evidence: 'РП-561 Ф14: day-close-weekstate-fill.py / day-open-weekstate-render.py — нет в шаблоне; карточка: «Ф7 (промоция в шаблон) — WeekState войдёт туда вместе с остальным» (не сделано); STAGING S-25 связан с Ц35-03'}
+  Ц35-04: {place: author-only, evidence: 'РП-561 Ф15: цитирование ⚠️/🗓️ в day-close шаг 5g и cells_with_dates() в day-close-weekstate-fill.py — в шаблоне WeekState нет (только упоминание в protocol-open.md)'}
+  Ц35-05: {place: author-only, evidence: 'РП-577 Ф3: фикс strategist.sh/scheduler.sh в DS-ai-systems (5cbb0d7); карточка: у шаблона свой механизм, «переносить нечего»'}
+  Ц37-01: {place: author-only, evidence: 'РП-484 §23 Lifework-мост: раздел 6 «Кандидаты в Lifework» в weekly-digest.sh, DS-my-strategy 0cf3f274af; weekly-digest.sh в шаблоне отсутствует'}
+  Ц37-02: {place: released-0.37-0.41.11, version: 0.41.10, evidence: 'CHANGELOG 0.41.10: «этапы описаны одной таблицей «Этапы сессии» в strategy-session-monthly.md (10 этапов…)», рядом записи про пул недели и шаги 04/06a'}
+  Ц38-01: {place: author-only, evidence: 'РП-482 Ф6: close-runner-gate.sh + sentinel в close-gate-reminder.sh, проверка запуска process-runner.py start quick-close --close-ticket e4f3a43c0d1bf4a16d1aa400bab0f080 — ни close-runner-gate.sh, ни process-runner.py в шаблоне нет; 0.41.11 протокол лишь допускает установку «с раннером и без»'}
+  Ц38-02: {place: author-only, evidence: 'РП-482: карточки RUN-*.md и борд генерирует process-runner.py — в шаблоне не поставляется (WP-561 стр.198: раннер закрытия author-only)'}
+  Ц38-07: {place: author-only, evidence: 'РП-503 Ф23 (06.09): четвёртый фильтр hypothesis_falsified_review_needed в scripts/wp-pool-cascade.sh; шаблонный wp-pool-cascade.sh (с 0.38.6) этого фильтра не содержит (git grep пусто)'}
+  Ц38-10: {place: released-0.37-0.41.11, version: 0.41.10, evidence: 'CHANGELOG 0.41.10: «session-guard.sh, canon-reconcile-published.sh: дефолт IWE_SESSION_LEASE_SEC поднят с 4ч до 24ч» (РП-561 Ф47, 21.10)'}
+  Ц40-01: {place: released-0.36, version: 0.36.1, evidence: note-review.md b381a6e3 (8-е правило «Гипотеза» → черновик 4 полей в current/hypotheses-log.md) первым в v0.36.1; полный регламент memory/lpf-hypothesis-log.md («4 обязательных поля») — CHANGELOG 0.38.3}
+  Ц40-02: {place: released-0.36, version: 0.36.1, evidence: '.claude/skills/verify-hypotheses/SKILL.md добавлен 859304a1 (19.07), git tag --contains → v0.36.1'}
+  Ц40-03: {place: author-only, evidence: 'РП-496 Ф10 (15.10): § «Скрытая выборка (holdout)» (H-NNN mod 5, без черновика агента) есть в ~/IWE/memory/lpf-hypothesis-log.md, нет в шаблонном memory/lpf-hypothesis-log.md и в CHANGELOG'}
+  Ц40-04: {place: released-0.36, version: 0.36.1, evidence: 'note-review.md b381a6e3 (v0.36.1): «Есть ответ на «что могло бы это опровергнуть?» — иначе это Задача»; захват через бота — платформенная часть, вне шаблона'}
+  Ц40-05: {place: released-0.36, version: 0.36.1, evidence: 'verify-hypotheses SKILL.md с первого коммита 859304a1 (v0.36.1): «Не оставлять вердикт без выбранного действия — «повисший» вердикт не закрывает цикл»; выбор действий развит в lpf-hypothesis-log.md (0.38.3)'}
+  Ц40-06: {place: released-0.36, version: 0.36.1, evidence: 'b381a6e3 «feat(strategist): Note-Review распознаёт категорию «Гипотеза» (8-е правило)», git tag --contains → v0.36.1'}
+  Ц49-03: {place: not-template, evidence: 'РП-600: каталог методов — DS-my-strategy/docs/catalog-methods-style-ai-era.md (содержательный каталог для участников, не код шаблона); в шаблоне кодов LMS.M нет. Если считать репозиторий автора «author-only» — переклассифицировать'}
+  Ц49-04: {place: not-template, evidence: 'РП-600 Ф24 (20.10): раздел «Реализация в IWE» в том же каталоге DS-my-strategy/docs; в шаблоне и CHANGELOG нет'}
+  Ц49-05: {place: not-template, evidence: 'РП-600 (25.10): LMS.M.052 «Составление заметок» внесён в каталог и ядро (DS-my-strategy docs); в шаблоне нет'}
+  Ц52-01: {place: not-template, evidence: 'РП-151 repo: PACK-personal, DS-MCP/digital-twin-mcp, aist_bot — расчёт в цифровом двойнике платформы'}
+  Ц52-03: {place: not-template, evidence: 'РП-522: схемы событий project_selected.v1 / weekly_work_product_set.v1 в платформенном чек-листе участника; в CHANGELOG нет'}
+  Ц52-06: {place: not-template, evidence: 'РП-576 приёмка: stage_evaluator.evaluate_one, cp_gate_blocked — платформенный стейдж-эвалюатор'}
+  Ц52-11: {place: not-template, evidence: 'РП-602: стейдж-эвалюатор stage_v6, переключение чтения продакшна v5→v6 — платформенный сервис'}
+  Ц53-07: {place: released-0.36, version: 0.36.0, evidence: 'CHANGELOG 0.36.0: «017235c feat(wp483-f4): deliver guide-kit v0.1.0 to the template»; guide-kit/generator/planner.py first tag v0.36.0'}
+  Ц53-08: {place: released-0.36, version: 0.36.0, evidence: 'CHANGELOG 0.36.0: «078f66c feat(wp483-f4): guide-kit → template sync tooling (vendored-by-tag model)» + 017235c; РП-483 Ф4 закрыта 17.07'}
+  Ц53-09: {place: released-0.36, version: 0.36.0, evidence: 'guide-kit/generator/personal_export.py и test_zero_upload.py добавлены 5aabac27 «sync guide-kit v0.1.1 into template», git tag --contains → v0.36.0'}
+  Ц53-10: {place: released-0.37-0.41.11, version: 0.38.2, evidence: 'CHANGELOG 0.38.2: «guide-kit обновлён до v0.1.3: прикладная дорожка (вход domain_traits…)»; test_applied_track.py first tag v0.38.2; мост health.db → swimming.yaml — личные данные автора'}
+  Ц54-02: {place: not-template, evidence: 'РП-427 Ф6.1: поллер bridge-2-lms-homework, consent-gate, таблица learning.homework_content — платформа'}
+  Ц70-01: {place: released-0.37-0.41.11, version: 0.41.11, evidence: 'CHANGELOG 0.41.11: «Скилл /apply-captures (1.3.1): кандидаты… карточкой из пяти строк» (PR #1389, 29.10); версия 1.4.0 (проверка соседей по смыслу) — только в iwe-local-config / ~/IWE, в шаблоне 1.3.1'}
+  Ц70-03: {place: released-0.37-0.41.11, version: 0.40.1, evidence: 'РП-560 Ф13: PR #822 d24cb72 «fix(extractor): inbox-check pipeline never saw browser-source captures», git tag --contains → v0.40.1'}
+  Ц71-03: {place: not-template, evidence: 'РП-611: ECO.M.032-034 записаны в PACK-ecosystem 0.9.0 (26.10) — Pack, не шаблон'}
+  Ц77-02: {place: released-0.37-0.41.11, version: 0.41.11, evidence: 'CHANGELOG 0.41.11: ext-railway убран из .mcp.json, changelog-append.sh без пустых строк, «(WP-7, #1409)»; c73d19bb в v0.41.11'}
+  Ц77-04: {place: released-0.37-0.41.11, version: 0.41.10, evidence: 'CHANGELOG 0.41.10: «update.sh --check / --dry-run теперь показывает сводку «Главное в этом обновлении» до установки… пункты без метки [optional]» (PR #1365); доработка первого предложения — 0.41.11'}
+  Ц77-05: {place: released-0.37-0.41.11, version: 0.41.11, evidence: 'CHANGELOG 0.41.11: «update.sh --check заканчивается одной строкой вердикта: ВЕРДИКТ: можно ставить…» и «Скилл iwe-update не применяет обновление, если положительный вердикт --check идёт с оговоркой»'}
+  Ц77-06: {place: released-0.37-0.41.11, version: 0.41.10, evidence: 'CHANGELOG 0.41.10 (2026-10-27): «Канал кандидата в выпуск IWE_UPDATE_CHANNEL=rc: … тег vX.Y.Z-rc.N»; выпуск v0.41.10 от 27.10'}
+  Ц79-01: {place: released-0.37-0.41.11, version: 0.41.9, evidence: 'scripts/iwe-backup-run.sh (51f63448, Ф237в регулярный зашифрованный бэкап) и iwe-backup-protect.sh (be7807cc, Ф237б) первыми в v0.41.9; единый договор и тревога по регрессу — CHANGELOG 0.41.10 (iwe-backup.sh, PR #1368)'}
+  Ц81-02: {place: released-0.37-0.41.11, version: 0.40.0, evidence: 'CHANGELOG 0.40.0: «c40d2db feat(hooks): universal security hooks package — Д28 (WP-544)»; secret-leak-block.sh в этом коммите блокирует env/printenv/railway variables; анализатор доработан в 0.40.1 (ffceb51b)'}
+  Ц82-05: {place: not-template, evidence: 'РП-530 Ф3: стадии в панели DS-iwe-wp-panel (VS Code-расширение, .vsix 0.1.15) — отдельный репозиторий, в шаблоне файлов панели нет'}
+  Ц82-07: {place: author-only, evidence: 'РП-533: скрипты peer-fanout.sh, peer-pipeline.sh, peer-supervisor.sh, peer-swarm.sh лежат в DS-my-strategy/scripts; в шаблоне их нет, в CHANGELOG нет'}
+  Ц83-02: {place: released-0.37-0.41.11, version: 0.41.9, evidence: 'CHANGELOG 0.41.9: «CLAUDE.md (Pre-action Gates): … указать область их уникальности и ответственного за схему» (PR #1270, РП-606)'}
+  Ц84-01: {place: released-0.36, version: 0.36.0, evidence: 'РП-415: шаг «Cyrillic gate» в translate-sync.yml (63c2ec5) и публикация без следов происхождения (8c9c305), оба 16.07, git tag --contains → v0.36.0; сам iwesys/IWE — внешнее зеркало'}
