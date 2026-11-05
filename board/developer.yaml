@@ -768,6 +768,7 @@ results:
   - РП-518
   in_week_plan: true
   on_staging: true
+  mismatch: 'расходится: в карточке «план», но часть уже на обкатке или влита в шаблон'
 - code: Ц37-07
   goal: 37
   contours: *id007
@@ -1709,6 +1710,7 @@ results:
   - РП-532
   in_week_plan: true
   on_staging: true
+  mismatch: 'расходится: в карточке «план», но часть уже на обкатке или влита в шаблон'
 - code: Ц72-03
   goal: 72
   contours: *id016
@@ -1730,6 +1732,7 @@ results:
   - РП-532
   in_week_plan: true
   on_staging: true
+  mismatch: 'расходится: в карточке «план», но часть уже на обкатке или влита в шаблон'
 - code: Ц72-05
   goal: 72
   contours: *id016
@@ -2644,7 +2647,6 @@ staging:
   date: '2026-04-20'
   files_in_template:
   - CLAUDE.md
-  result: null
 - id: S-14
   title: Синхронизация REGISTRY→производные при переименовании
   staging_status: promoted
@@ -2652,7 +2654,6 @@ staging:
   date: '2026-04-20'
   files_in_template:
   - CLAUDE.md
-  result: null
 - id: S-15
   title: Префиксы ролей (Навигатор, Диагност) в экзокортексе
   staging_status: promoted
@@ -2660,7 +2661,6 @@ staging:
   date: '2026-05-29'
   files_in_template:
   - .claude/rules/role-prefixes.md
-  result: null
 - id: S-67
   title: Session Open Gate — блокирует прямой `git commit`/`push`, если у сессии нет открытого семафора с номером РП; находка 16.10 — заявленная в session-guard.sh…
   staging_status: promoted
@@ -2670,7 +2670,6 @@ staging:
   - .claude/hooks/session-open-gate.sh
   - .claude/hooks/tests/test-session-open-gate.sh
   - .claude/settings.json
-  result: null
 - id: S-68
   title: Хозяйственная правка без номера РП запрещена — `--housekeeping "<причина>"` не засчитывается (housekeeping-семафор не несёт `wp:`), каждый коммит обязан нести…
   staging_status: promoted
@@ -2679,7 +2678,6 @@ staging:
   files_in_template:
   - .claude/hooks/session-open-gate.sh
   - seed/strategy/.githooks/pre-commit
-  result: null
 - id: S-69
   title: 'A12: финальное «Дальше» опирается на результат именно целевого действия; доступное действие выполняется до ответа, а для действий с инструментами…'
   staging_status: testing
@@ -2688,7 +2686,6 @@ staging:
   files_in_template:
   - CLAUDE.md
   - memory/feedback_response_clarity_for_pilot.md
-  result: null
   mismatch: 'сверить: файл уже есть в шаблоне, доставлено ли само изменение — не проверено'
   link:
     proposed:
@@ -2702,7 +2699,6 @@ staging:
   date: '2026-04-05'
   files_in_template:
   - extensions/day-open.checks.md
-  result: null
   mismatch: 'сверить: файл уже есть в шаблоне, доставлено ли само изменение — не проверено'
   link:
     result:
@@ -2716,7 +2712,6 @@ staging:
   files_in_template:
   - .claude/skills/day-close/SKILL.md
   - .claude/skills/week-close/SKILL.md
-  result: null
 - id: S-18
   title: 'Recall Cascade: Session Open грузит контекст адаптивно (нашёл в первом слое → не грузи остальные). Day Open не трогать'
   staging_status: testing
@@ -2724,7 +2719,6 @@ staging:
   date: '2026-04-06'
   files_in_template:
   - memory/protocol-open.md
-  result: null
   mismatch: 'сверить: файл уже есть в шаблоне, доставлено ли само изменение — не проверено'
   link:
     service: порядок загрузки контекста при открытии сессии
@@ -2736,7 +2730,6 @@ staging:
   date: '2026-04-06'
   files_in_template:
   - memory/protocol-work.md
-  result: null
   mismatch: 'сверить: файл уже есть в шаблоне, доставлено ли само изменение — не проверено'
   link:
     proposed:
@@ -2751,7 +2744,6 @@ staging:
   files_in_template:
   - CLAUDE.md
   - memory/protocol-work.md
-  result: null
   mismatch: 'сверить: файл уже есть в шаблоне, доставлено ли само изменение — не проверено'
   link:
     service: запрет агентам править входящие, обработка создаёт новый файл
@@ -2764,7 +2756,6 @@ staging:
   files_in_template:
   - CLAUDE.md
   - memory/repo-type-rules.md
-  result: null
   mismatch: 'сверить: файл уже есть в шаблоне, доставлено ли само изменение — не проверено'
   link:
     proposed:
@@ -2779,7 +2770,6 @@ staging:
   files_in_template:
   - memory/day-rhythm-config.yaml
   - memory/protocol-work.md
-  result: null
   mismatch: 'сверить: файл уже есть в шаблоне, доставлено ли само изменение — не проверено'
   link:
     proposed:
@@ -2794,7 +2784,6 @@ staging:
   files_in_template:
   - .claude/skills/day-close/SKILL.md
   - memory/protocol-close.md
-  result: null
   mismatch: 'сверить: файл уже есть в шаблоне, доставлено ли само изменение — не проверено'
   link:
     proposed:
@@ -2807,7 +2796,6 @@ staging:
   status: в обкатке
   date: '2026-04-19'
   files_in_template: []
-  result: null
   link:
     proposed:
       goal: 38
@@ -2820,7 +2808,6 @@ staging:
   date: '2026-04-20'
   files_in_template:
   - memory/templates-dayplan.md
-  result: null
   mismatch: 'сверить: файл уже есть в шаблоне, доставлено ли само изменение — не проверено'
   link:
     result:
@@ -2834,7 +2821,6 @@ staging:
   files_in_template:
   - memory/templates-dayplan.md
   - seed/strategy/docs/Strategy.md
-  result: null
 - id: S-27
   title: 'Переименование секции `Здоровье бота (QA)` → `Здоровье платформы` в DayPlan: агрегированная секция по всем сервисам платформы (бот + digital-twin + gateway +…'
   staging_status: promoted
@@ -2844,14 +2830,12 @@ staging:
   - .claude/hooks/protocol-artifact-validate.sh
   - .claude/skills/day-open/SKILL.md
   - memory/templates-dayplan.md
-  result: null
 - id: S-28
   title: 'Правило 23 feedback_behaviour.md: при bump версии L2-артефакта (ARCH/METHOD/KR/SOTA) автор bump''а обязан выполнить sync downstream по чеклисту `DP.METHOD.041…'
   staging_status: testing
   status: в обкатке
   date: '2026-04-24'
   files_in_template: []
-  result: null
   link:
     service: синхронизация зависимых документов при смене старшей версии
     why: дисциплина автора описаний, человек результата не видит
@@ -2862,7 +2846,6 @@ staging:
   date: '2026-04-25'
   files_in_template:
   - .claude/settings.json
-  result: null
   mismatch: 'сверить: файл уже есть в шаблоне, доставлено ли само изменение — не проверено'
   link:
     proposed:
@@ -2877,7 +2860,6 @@ staging:
   files_in_template:
   - .githooks/pre-commit
   - .github/workflows/validate-template.yml
-  result: null
   mismatch: 'сверить: файл уже есть в шаблоне, доставлено ли само изменение — не проверено'
   link:
     result:
@@ -2893,7 +2875,6 @@ staging:
   - memory/r-questionnaire.md
   - memory/t-checklist.md
   - scripts/iwe-drift.sh
-  result: null
 - id: S-32
   title: 'WP-217 Ф9a+Ф9: capture-bus стек — диспетчер `capture-bus.sh` + 5 lib-скриптов (`capture_writer.sh` параметризован, `log_formatter`, `resolve_target_repo`…'
   staging_status: promoted
@@ -2905,7 +2886,6 @@ staging:
   - .claude/hooks/capture-bus.sh
   - .claude/lib/behaviour-report.sh
   - .claude/settings.json
-  result: null
 - id: S-33
   title: 'Hooks/Scripts Bypass Gate: ИИ-агент без явного разрешения пользователя НЕ изменяет скрипты шаблона (`.claude/hooks/`, `.claude/scripts/`, `.iwe-runtime/`…'
   staging_status: testing
@@ -2913,7 +2893,6 @@ staging:
   date: '2026-04-28'
   files_in_template:
   - CLAUDE.md
-  result: null
   mismatch: 'сверить: файл уже есть в шаблоне, доставлено ли само изменение — не проверено'
   link:
     proposed:
@@ -2928,7 +2907,6 @@ staging:
   files_in_template:
   - CLAUDE.md
   - memory/memory-lifecycle-spec.md
-  result: null
   mismatch: 'сверить: файл уже есть в шаблоне, доставлено ли само изменение — не проверено'
   link:
     proposed:
@@ -2942,7 +2920,6 @@ staging:
   date: '2026-05-04'
   files_in_template:
   - .claude/rules/distinctions.md
-  result: null
   mismatch: 'сверить: файл уже есть в шаблоне, доставлено ли само изменение — не проверено'
   link:
     proposed:
@@ -2956,7 +2933,6 @@ staging:
   date: '2026-05-05'
   files_in_template:
   - .claude/skills/day-open/SKILL.md
-  result: null
   mismatch: 'сверить: файл уже есть в шаблоне, доставлено ли само изменение — не проверено'
   link:
     proposed:
@@ -2970,7 +2946,6 @@ staging:
   date: '2026-04-28'
   files_in_template:
   - .claude/skills/apply-captures/SKILL.md
-  result: null
 - id: S-38
   title: 'HD «Глубина видения C_vis ≠ Калибр действия C_act» (WP-196 Ф14, PD.FORM.091 §6.1): измеримые определения C_vis (max системный уровень НЭП с фильтром ≥2 НЭП на…'
   staging_status: testing
@@ -2978,7 +2953,6 @@ staging:
   date: '2026-05-06'
   files_in_template:
   - .claude/rules/distinctions.md
-  result: null
   mismatch: 'сверить: файл уже есть в шаблоне, доставлено ли само изменение — не проверено'
   link:
     proposed:
@@ -2994,7 +2968,6 @@ staging:
   - .claude/hooks/protocol-artifact-validate.sh
   - .claude/skills/apply-captures/SKILL.md
   - memory/templates-dayplan.md
-  result: null
   mismatch: 'сверить: файл уже есть в шаблоне, доставлено ли само изменение — не проверено'
   link:
     proposed:
@@ -3007,7 +2980,6 @@ staging:
   status: перенесено в шаблон
   date: '2026-05-11'
   files_in_template: []
-  result: null
   mismatch: 'расходится: записано «перенесено», но файла по пути из записи в шаблоне нет'
 - id: S-41
   title: 'Роль R29 Декомпозитор + скилл `/decompose`: декомпозиция деятельности на ≤4 этапа с физическими I/O и чеклистами приёмки; детектор разрывов («Не хватает: X →…'
@@ -3017,7 +2989,6 @@ staging:
   files_in_template:
   - .claude/skills/decompose/SKILL.md
   - memory/roles.md
-  result: null
 - id: S-42
   title: 'Скилл `/bottleneck-pick`: выбор самого важного ограничения системы по TOC Thinking Processes. Алгоритм 9 шагов: PROBE → PARSE → SIGNAL-SCAN (6 сигналов) →…'
   staging_status: promoted
@@ -3025,7 +2996,6 @@ staging:
   date: '2026-05-29'
   files_in_template:
   - .claude/skills/bottleneck-pick/SKILL.md
-  result: null
 - id: S-44
   title: 'Напоминания через Telegram: при запросе «напомни через X» → использовать `send_telegram_message` с `schedule_at`, не только отвечать в чате. При срабатывании…'
   staging_status: promoted
@@ -3033,7 +3003,6 @@ staging:
   date: '2026-05-16'
   files_in_template:
   - CLAUDE.md
-  result: null
 - id: S-45
   title: 'Agent Inbox — единая очередь агентных задач в governance-репо: структура `inbox/agent/{tasks,results,scout,templates,archive}/` + спецификация SPEC.md +…'
   staging_status: testing
@@ -3043,7 +3012,6 @@ staging:
   - extensions/agent-inbox/README.md
   - pack-templates/digital-platform/02-domain-entities/DP.ROLE.NNN-constraint-analyst.md
   - scripts/iwe-agent-dispatcher.py
-  result: null
   mismatch: 'сверить: файл уже есть в шаблоне, доставлено ли само изменение — не проверено'
   link:
     proposed:
@@ -3058,7 +3026,6 @@ staging:
   files_in_template:
   - .claude/skills/vdv/SKILL.md
   - .claude/skills/vdv/test_cases.md
-  result: null
 - id: S-46
   title: 'Расширение `/bottleneck-pick` (S-42) до intra+platform: параметр `--layer intra/platform`, расширенный `--target` (WP-NNN / weekplan / pilot:NAME /…'
   staging_status: promoted
@@ -3066,7 +3033,6 @@ staging:
   date: '2026-05-29'
   files_in_template:
   - .claude/skills/bottleneck-pick/SKILL.md
-  result: null
 - id: S-49
   title: 'Проверка полноты переноса перед архивацией `inbox/WP-N/` (DP.SC.033): новый `scripts/check-wp-transfer-completeness.sh` (режимы `WP-N` и `--all`) проверяет…'
   staging_status: testing
@@ -3076,7 +3042,6 @@ staging:
   - .claude/skills/week-close/SKILL.md
   - scripts/archive-done-wp.sh
   - scripts/check-wp-transfer-completeness.sh
-  result: null
   mismatch: 'сверить: файл уже есть в шаблоне, доставлено ли само изменение — не проверено'
   link:
     proposed:
@@ -3092,7 +3057,6 @@ staging:
   - scripts/active-wp-sweep.sh
   - scripts/generate-hot-files-list.sh
   - scripts/verify-context-budget.sh
-  result: null
 - id: S-51
   title: 'Скилл `/peer-conversation` v1.5.1 — диалог писателя с N напарниками (WP-509): флаг `--peer <v1,v2,...>`, round-loop §3р для 2+ напарников, role-discovery N>2…'
   staging_status: promoted
@@ -3103,7 +3067,6 @@ staging:
   - scripts/hermes-peer-adapter.sh
   - scripts/peer-session-finalize.sh
   - scripts/skill-promote.sh
-  result: null
 - id: S-52
   title: 'Сторож остатка в рабочих копиях `check-repo-residue.sh` (WP-7, Ф-AistBot-Clone-Topology): закрывает слепую зону между двумя существующими проверками …'
   staging_status: testing
@@ -3111,7 +3074,6 @@ staging:
   date: '2026-08-02'
   files_in_template:
   - .claude/skills/week-close/SKILL.md
-  result: null
   mismatch: 'сверить: файл уже есть в шаблоне, доставлено ли само изменение — не проверено'
   link:
     proposed:
@@ -3128,7 +3090,6 @@ staging:
   - memory/memory-lifecycle-spec.md
   - memory/protocol-close.md
   - memory/protocol-work.md
-  result: null
   mismatch: 'сверить: файл уже есть в шаблоне, доставлено ли само изменение — не проверено'
   link:
     proposed:
@@ -3141,7 +3102,6 @@ staging:
   status: остаётся только у автора
   date: '2026-08-06'
   files_in_template: []
-  result: null
 - id: S-55
   title: 'Скрипт `add-secret.sh`: единая команда сохранения любого API-ключа/токена в `~/.secrets/` — скрытый ввод (`read -s`, не в истории терминала, не на экране)…'
   staging_status: promoted
@@ -3149,7 +3109,6 @@ staging:
   date: '2026-08-06'
   files_in_template:
   - scripts/add-secret.sh
-  result: null
 - id: S-56
   title: 'Идентичность конструктивной реализации в AGENTS.md (WP-510 Ф23): таблица «инструмент запуска → кто ты» (Kimi/Codex/Claude/Hermes) + запрет опираться на…'
   staging_status: testing
@@ -3158,7 +3117,6 @@ staging:
   files_in_template:
   - AGENTS-agent-blocks.md
   - CLAUDE.md
-  result: null
   mismatch: 'сверить: файл уже есть в шаблоне, доставлено ли само изменение — не проверено'
   link:
     service: таблица «инструмент запуска — кто ты» в общем ядре агентов
@@ -3174,7 +3132,6 @@ staging:
   - extensions/strategy-cycle/README.md
   - memory/lpf-hypothesis-log.md
   - roles/strategist/prompts/strategy-session-weekly/steps/00-open.md
-  result: null
   mismatch: 'сверить: файл уже есть в шаблоне, доставлено ли само изменение — не проверено'
   link:
     result:
@@ -3186,7 +3143,6 @@ staging:
   status: в обкатке
   date: '2026-08-15'
   files_in_template: []
-  result: null
   link:
     result:
     - Ц72-01
@@ -3202,7 +3158,6 @@ staging:
   - CLAUDE.md
   - memory/protocol-close.md
   - memory/protocol-open.md
-  result: null
   mismatch: 'сверить: файл уже есть в шаблоне, доставлено ли само изменение — не проверено'
   link:
     proposed:
@@ -3218,7 +3173,6 @@ staging:
   - .claude/skills/repo-new/SKILL.md
   - CLAUDE.md
   - README.md
-  result: null
 - id: S-61
   title: 'АрхГейт Шаг 1 вопрос 2 (Lawful Comparison), самопротиворечивый микро-шаг (WP-548 Ф4): перед тем как показать пилоту список рассмотренных альтернатив, агент…'
   staging_status: testing
@@ -3226,7 +3180,6 @@ staging:
   date: '2026-09-04'
   files_in_template:
   - .claude/skills/archgate/SKILL.md
-  result: null
   mismatch: 'сверить: файл уже есть в шаблоне, доставлено ли само изменение — не проверено'
   link:
     proposed:
@@ -3239,7 +3192,6 @@ staging:
   status: в обкатке
   date: '2026-07-21'
   files_in_template: []
-  result: null
   link:
     service: срок хранения сессионных транскриптов 180 дней, ручное удаление
     why: внутренняя гигиена хранилища, удаление по расписанию не включено
@@ -3251,7 +3203,6 @@ staging:
   files_in_template:
   - .claude/rules/distinctions.md
   - memory/fpf-reference.md
-  result: null
   mismatch: 'сверить: файл уже есть в шаблоне, доставлено ли само изменение — не проверено'
   link:
     result:
@@ -3264,7 +3215,6 @@ staging:
   date: '2026-09-11'
   files_in_template:
   - .claude/skills/peer-conversation/SKILL.md
-  result: null
   mismatch: 'сверить: файл уже есть в шаблоне, доставлено ли само изменение — не проверено'
   link:
     result:
@@ -3279,7 +3229,6 @@ staging:
   - .claude/skills/day-close/SKILL.md
   - .claude/skills/peer-conversation/SKILL.md
   - scripts/session-guard.sh
-  result: null
   mismatch: 'сверить: файл уже есть в шаблоне, доставлено ли само изменение — не проверено'
   link:
     result:
@@ -3296,7 +3245,6 @@ staging:
   - CLAUDE.md
   - memory/protocol-open.md
   - scripts/sync-agent-instructions.sh
-  result: null
   mismatch: 'сверить: файл уже есть в шаблоне, доставлено ли само изменение — не проверено'
   link:
     proposed:
@@ -3314,7 +3262,6 @@ staging:
   - memory/protocol-open.md
   - scripts/canon-reconcile-published.sh
   - scripts/tests/wp-sync-bundle-origin-pinned-smoke.sh
-  result: null
   mismatch: 'сверить: файл уже есть в шаблоне, доставлено ли само изменение — не проверено'
   link:
     result:
@@ -3329,7 +3276,6 @@ staging:
   - .claude/skills/strategy-session/SKILL.md
   - roles/strategist/prompts/strategy-session-weekly/steps/08-confirm.md
   - scripts/day-open-scaffold.sh
-  result: null
   mismatch: 'сверить: файл уже есть в шаблоне, доставлено ли само изменение — не проверено'
   link:
     result:
@@ -3342,7 +3288,6 @@ staging:
   status: в обкатке
   date: '2026-10-29'
   files_in_template: []
-  result: null
   link:
     result:
     - Ц54-01
@@ -3354,7 +3299,6 @@ staging:
   date: '2026-10-30'
   files_in_template:
   - scripts/session-guard.sh
-  result: null
   mismatch: 'сверить: файл уже есть в шаблоне, доставлено ли само изменение — не проверено'
   link:
     result:
@@ -3367,7 +3311,6 @@ staging:
   date: '2026-10-30'
   files_in_template:
   - scripts/session-guard.sh
-  result: null
   mismatch: 'сверить: файл уже есть в шаблоне, доставлено ли само изменение — не проверено'
   link:
     result:
@@ -3384,7 +3327,6 @@ staging:
   - AGENTS.md
   - CLAUDE.md
   - memory/communication-style-base.md
-  result: null
   mismatch: 'сверить: файл уже есть в шаблоне, доставлено ли само изменение — не проверено'
   link:
     proposed:
@@ -3401,7 +3343,6 @@ staging:
   - AGENTS.md
   - CLAUDE.md
   - memory/communication-style-base.md
-  result: null
   mismatch: 'сверить: файл уже есть в шаблоне, доставлено ли само изменение — не проверено'
   link:
     proposed:
