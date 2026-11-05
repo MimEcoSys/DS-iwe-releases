@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build the release board from its sources (WP-529).
 
-Reads source snapshots from --src and writes roles/developer.yaml, now/*.md
+Reads source snapshots from --src and writes roles/developer.yaml, BOARD.md, board/*.md
 (current state, rewritten on every run) and releases/<N>/shipped.md into --repo. Every item of every source must land on the board or in an
 explicit "not linked" list; the completeness check fails the run otherwise.
 
@@ -463,7 +463,7 @@ def stage_notes(results, staging, unreleased_links, released, released_counts) -
         "2.3 Готово для передачи Выпускающему": ("сумма 2.3.1 и 2.3.2; отсюда Выпускающий берёт в выпуск", ""),
         "2.3.1 Вышло в 0.37–0.41.11": (
             "вышло пользователям после 0.36; Выпускающий решает, что принять в 0.42",
-            f"Вышло в выпусках 0.37–0.41.11 ([состав](../../releases/0.41.11/shipped.md)): {rec_041} строк, "
+            f"Вышло в выпусках 0.37–0.41.11 ([состав](../releases/0.41.11/shipped.md)): {rec_041} строк, "
             f"{c['records']} разных записей ({c['repeated']} повторяются в двух версиях). Связь записей с "
             f"результатами предварительная, до приёмки Разработчиком: по номеру коммита или запроса на слияние — "
             f"{c['result_by_ref']}, по совпавшему чтению двух разметчиков — {c['result_by_reading']}; они служат "
@@ -479,7 +479,7 @@ def stage_notes(results, staging, unreleased_links, released, released_counts) -
         "2.4 Взято Выпускающим": ("отобрано Выпускающим в 0.42", "Отобрано Выпускающим в выпуск 0.42."),
         "**3. Сделано**": (
             "вышло в стабильном 0.36; пока только результаты открытых РП",
-            f"Вышло в выпусках до 0.36 включительно ([состав](../../releases/0.36/shipped.md), {rec_036} записей). "
+            f"Вышло в выпусках до 0.36 включительно ([состав](../releases/0.36/shipped.md), {rec_036} записей). "
             "С результатами пока связаны только сделанные результаты открытых РП; результаты закрытых работ — "
             "следующая очередь.",
         ),
@@ -507,7 +507,7 @@ def board_lines(stamp, results, notes, proposed_count) -> list[str]:
         "",
         "# Табло выпуска шаблона IWE",
         "",
-        "Единица счёта — обещанный результат. Стадии и статусы описаны в [README](../README.md#стадии-и-статусы); "
+        "Единица счёта — обещанный результат. Стадии и статусы описаны в [README](README.md#стадии-и-статусы); "
         "число ведёт к списку результатов.",
         "",
         "| Стадия | Результатов | Пояснения |",
@@ -515,16 +515,16 @@ def board_lines(stamp, results, notes, proposed_count) -> list[str]:
     ]
     for name, page, statuses in STAGES:
         n = count_statuses(results, statuses)
-        num = f"[{n}](lists/{page})" if page else str(n)
+        num = f"[{n}](board/{page})" if page else str(n)
         out += [f"| {name} | {f'**{num}**' if name.startswith('**') else num} | {notes[name][0]} |"]
     outside_n = count_statuses(results, OUTSIDE[2])
     out += [
         f"| **Итого по IWE** | **{on_board}** | сумма стадий 1–4 |",
-        f"| {OUTSIDE[0]} | [{outside_n}](lists/{OUTSIDE[1]}) | {notes[OUTSIDE[0]][0]} |",
-        f"| Предложено новых результатов | [{proposed_count}](lists/proposed.md) | ждут кода в «Состоянии по целям»; в итог не входят |",
+        f"| {OUTSIDE[0]} | [{outside_n}](board/{OUTSIDE[1]}) | {notes[OUTSIDE[0]][0]} |",
+        f"| Предложено новых результатов | [{proposed_count}](board/proposed.md) | ждут кода в «Состоянии по целям»; в итог не входят |",
         "",
-        "Что вошло в выпуски: [до 0.36](../releases/0.36/shipped.md), [0.37–0.41.11](../releases/0.41.11/shipped.md). "
-        "[Сверка полноты](completeness.md).",
+        "Что вошло в выпуски: [до 0.36](releases/0.36/shipped.md), [0.37–0.41.11](releases/0.41.11/shipped.md). "
+        "[Сверка полноты](board/completeness.md).",
         "",
     ]
     return out
@@ -608,8 +608,7 @@ def stage_extra(page, staging, unreleased, unreleased_links, author_ahead) -> li
 def write_views(
     repo: Path, stamp: str, results, staging, unreleased, unreleased_links, released, author_ahead, released_links, released_counts
 ) -> None:
-    now = repo / "now"
-    lists = now / "lists"
+    lists = repo / "board"
     lists.mkdir(parents=True, exist_ok=True)
     testing = [s for s in staging if s["staging_status"] == "testing"]
     notes = stage_notes(results, staging, unreleased_links, released, released_counts)
@@ -620,14 +619,14 @@ def write_views(
             if link.get("proposed")
         }
     )
-    (now / "board.md").write_text("\n".join(board_lines(stamp, results, notes, len(proposed))))
+    (repo / "BOARD.md").write_text("\n".join(board_lines(stamp, results, notes, len(proposed))))
 
     for name, page, statuses in (*STAGES, OUTSIDE):
         if not page:
             continue
         rows = [r for r in results if r["status"] in statuses]
         title = name.strip("*")
-        out = [stamp, "", f"# {title}: {len(rows)}", "", "[← табло](../board.md)", "", notes[name][1], ""]
+        out = [stamp, "", f"# {title}: {len(rows)}", "", "[← табло](../BOARD.md)", "", notes[name][1], ""]
         out += RESULT_HEADER + result_rows(rows) + [""]
         out += stage_extra(page, staging, unreleased, unreleased_links, author_ahead)
         (lists / page).write_text("\n".join(out))
@@ -636,7 +635,7 @@ def write_views(
         "",
         f"# Предложено новых результатов: {len(proposed)}",
         "",
-        "[← табло](../board.md)",
+        "[← табло](../BOARD.md)",
         "",
         "Записи после 0.41.11 и записи обкатки, для которых результата в «Состоянии по целям» нет. Войдут в итог, "
         "когда документ присвоит им коды.",
@@ -966,7 +965,7 @@ def main() -> int:
         ),
         "",
     ]
-    (args.repo / "now" / "completeness.md").write_text("\n".join(lines))
+    (args.repo / "board" / "completeness.md").write_text("\n".join(lines))
     lost = [name for name, a, b in checks if a != b]
     if lost:
         print("completeness check failed: " + ", ".join(lost), file=sys.stderr)
