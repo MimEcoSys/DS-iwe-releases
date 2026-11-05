@@ -10,5 +10,6 @@
 /releases/*/shipped.md         @MimEcoSys/iwe-developers
 /releases/*/candidates.md      @MimEcoSys/iwe-developers
 /releases/*/README.md          @MimEcoSys/iwe-developers
-/now/                          @MimEcoSys/iwe-developers
+/BOARD.md                       @MimEcoSys/iwe-developers
+/board/                        @MimEcoSys/iwe-developers
 /tools/                        @MimEcoSys/iwe-developers
