@@ -86,7 +86,7 @@ def selected_goals(map005: str) -> dict[int, list[str]]:
     return {n: sorted(set(c), key=CONTOURS.index) for n, c in goals.items()}
 
 
-def results_for(sbg: str, goals: dict[int, str]) -> list[dict]:
+def results_for(sbg: str, goals: dict[int, list[str]]) -> list[dict]:
     rows = []
     for line in sbg.splitlines():
         if not re.match(r"^\| Ц\d+-\d+ \|", line):
@@ -146,7 +146,6 @@ def staging_entries(staging: str, fmt_files: list[str]) -> list[dict]:
             "status": STAGING_TO_STATUS[cells[idx]],
             "date": cells[idx + 2] if idx + 2 < len(cells) else "",
             "files_in_template": in_template,
-            "result": None,
         }
         if cells[idx] == "testing" and in_template:
             entry["mismatch"] = "сверить: файл уже есть в шаблоне, доставлено ли само изменение — не проверено"
@@ -232,6 +231,17 @@ def check_keys(name: str, declared: dict, expected: set) -> None:
         )
 
 
+LINK_KINDS = ("result", "proposed", "service")
+
+
+def check_link(name: str, link: dict, by_code: dict) -> None:
+    """A link has exactly one kind, and its result codes are on the board."""
+    kinds = [k for k in LINK_KINDS if link.get(k)]
+    if len(kinds) != 1:
+        raise SystemExit(f"{name}: expected exactly one of {LINK_KINDS}, got {kinds or 'none'}")
+    check_codes(name, link, by_code)
+
+
 def check_codes(name: str, link: dict, by_code: dict) -> None:
     for code in link.get("result", []):
         if code not in by_code:
@@ -248,7 +258,7 @@ def apply_links(results: list[dict], unreleased_links: list[dict], staging: list
 
     for u in unreleased_links:
         u.update(declared["links"][u["key"]])
-        check_codes(u["key"], u, by_code)
+        check_link(u["key"], u, by_code)
         for code in u.get("result", []):
             by_code[code]["merged_after_0_41_11"] = True
     done_unmerged = {
@@ -257,7 +267,7 @@ def apply_links(results: list[dict], unreleased_links: list[dict], staging: list
     check_keys("placement", declared["placement"], done_unmerged)
     for s in testing:
         s["link"] = declared["staging"][s["id"]]
-        check_codes(s["id"], s["link"], by_code)
+        check_link(s["id"], s["link"], by_code)
         for code in s["link"].get("result", []):
             by_code[code]["on_staging"] = True
     for code, place in declared["placement"].items():
@@ -267,6 +277,9 @@ def apply_links(results: list[dict], unreleased_links: list[dict], staging: list
         # A done result whose records were merged after 0.41.11 and that no release holds yet.
         if r["status"] == "сделано, не сверено" and r.get("merged_after_0_41_11"):
             r["status"] = "готово для передачи"
+    for r in results:
+        if r["status"] == "план" and (r.get("on_staging") or r.get("merged_after_0_41_11")):
+            r["mismatch"] = "расходится: в карточке «план», но часть уже на обкатке или влита в шаблон"
     left = [r["code"] for r in results if r["status"] == "сделано, не сверено"]
     if left:
         raise SystemExit(f"done results without placement: {left}")
@@ -298,7 +311,6 @@ def summary_lines(results, staging, unreleased_links, released) -> list[str]:
         "в работе",
         "возвращено из 0.42",
         "у автора",
-        "в обкатке",
         "в разнице 0.36–0.41.11",
         "готово для передачи",
         "взято в 0.42",
@@ -307,7 +319,16 @@ def summary_lines(results, staging, unreleased_links, released) -> list[str]:
     outside = "работает вне выпуска шаблона"
     on_board = len(results) - count(outside)
     rows = [
-        ("**1. План**", count("план"), "результаты активных РП, работа не начата"),
+        (
+            "**1. План**",
+            count("план"),
+            "результаты активных РП, работа не начата"
+            + (
+                f"; у {sum(1 for r in results if r.get('mismatch'))} — расходится: часть уже на обкатке или влита"
+                if any(r.get("mismatch") for r in results)
+                else ""
+            ),
+        ),
         ("**2. В работе**", count(*stage2), ""),
         (
             "2.1 разрабатывается",
@@ -321,7 +342,7 @@ def summary_lines(results, staging, unreleased_links, released) -> list[str]:
         ),
         (
             "2.2 тестируется Разработчиком",
-            count("у автора", "в обкатке"),
+            count("у автора"),
             (
                 f"сделаны и работают только в IWE Разработчика. На обкатке {len(testing)} записей: "
                 f"{record_split([s['link'] for s in testing])}"
@@ -486,11 +507,11 @@ def write_views(repo: Path, stamp: str, results, staging, unreleased, unreleased
         out += [
             f"### {status}: {len(rows)}",
             "",
-            "| Код | Часть выпуска | РП | Кто | Что получает |",
-            "|---|---|---|---|---|",
+            "| Код | Часть выпуска | РП | Кто | Что получает | Расхождение |",
+            "|---|---|---|---|---|---|",
         ]
         out += [
-            f"| {r['code']} | {', '.join(r['contours'])} | {', '.join(r['works'])} | {r['who']} | {cell(r['what'])} |"
+            f"| {r['code']} | {', '.join(r['contours'])} | {', '.join(r['works'])} | {r['who']} | {cell(r['what'])} | {r.get('mismatch', '')} |"
             for r in rows
         ]
         out += [""]
@@ -627,7 +648,8 @@ def main() -> int:
         "",
         (
             f"Не привязано к коду результата: записей «Ещё не выпущено» — {unlinked}, "
-            f"записей обкатки — {sum(1 for s in staging if not s['result'])}."
+            f"записей обкатки на обкатке — {sum(1 for s in staging if s['staging_status'] == 'testing' and 'link' not in s)} "
+            "(у завершённых записей обкатки связь не ведётся)."
         ),
         f"Повторяющиеся номера записей обкатки: {', '.join(duplicates) or 'нет'}.",
         "",
