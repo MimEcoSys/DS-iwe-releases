@@ -1158,8 +1158,8 @@
 - [—] update.sh v2.0.0 — полностью переписан: curl + манифест вместо git merge. Работает с template repos (created via "Use this template"), которые не имеют общей git-истории с upstream. Self-update…
 - [—] Превью перед обновлением — показывает новые файлы, обновлённые, не затрагиваемые. Пользователь решает: применить или отменить
 - [—] setup-calendar.sh — уточнён текст предупреждения Google (название «IWE MIM», пояснение про unverified app)
-- [—] [update-manifest.json](update-manifest.json) — манифест всех платформенных файлов (100+ записей) с описаниями. Используется update.sh для доставки обновлений
-- [—] [DP.SC.019](../PACK-digital-platform/pack/digital-platform/08-service-clauses/DP.SC.043-template-update.md) — сценарий «Обновление экзокортекса» + сервис S50 Template Update в MAP.002
+- [—] [update-manifest.json](https://github.com/TserenTserenov/FMT-exocortex-template/blob/main/update-manifest.json) — манифест всех платформенных файлов (100+ записей) с описаниями. Используется…
+- [—] [DP.SC.019](https://github.com/MimEcoSys/PACK-digital-platform/blob/main/pack/digital-platform/08-service-clauses/DP.SC.043-template-update.md) — сценарий «Обновление экзокортекса» + сервис S50…
 - [—] Инструкция «настрой календарь» в CLAUDE.md — при запросе пользователя Claude запускает `setup-calendar.sh`
 
 ## 0.10.0 — записей: 7
@@ -1168,7 +1168,7 @@
 - [—] Haiku R23 — верификация только при Day Close (≥10 пунктов), не Quick Close (6 пунктов). Экономия N-1 вызовов sub-agent в день
 - [—] MEMORY.md ≤100 строк — done-РП удаляются при Day Close (были ≤200, копились). Экономия ~30% токенов на авто-загрузку
 - [—] CHANGELOG FMT перенесён из Day Close в Quick Close (шаг 1b) — пока контекст свежий, не теряется к вечеру
-- [—] [scripts/day-close.sh](scripts/day-close.sh) — автоматизация 3 механических шагов Day Close одной командой: backup memory/ → exocortex/, knowledge-mcp reindex (автодетекция изменённых Pack/DS)…
+- [—] [scripts/day-close.sh](https://github.com/TserenTserenov/FMT-exocortex-template/blob/main/scripts/day-close.sh) — автоматизация 3 механических шагов Day Close одной командой: backup memory/ →…
 - [—] Мультипликатор IWE — шаг 5 Day Close: расчёт усиления от агента-экзоскелета (Бюджет закрыт / WakaTime). Таблица в итогах дня
 - [—] Week Close — ротация уроков (≤15 актуальных), свежая таблица РП, аудит memory-файлов
 
@@ -1186,37 +1186,37 @@
 ## 0.8.8 — записей: 2
 
 - [—] Google Calendar одной командой — `bash setup/optional/setup-calendar.sh`: скачивает OAuth credentials с Gist, настраивает MCP, запускает авторизацию в браузере. Пользователю не нужен GCP Console…
-- [—] [SETUP-GUIDE](docs/SETUP-GUIDE.md) Этап 5 обновлён: `setup-calendar.sh` вместо ручной настройки GCP
+- [—] [SETUP-GUIDE](https://github.com/TserenTserenov/FMT-exocortex-template/blob/main/docs/SETUP-GUIDE.md) Этап 5 обновлён: `setup-calendar.sh` вместо ручной настройки GCP
 
 ## 0.8.7 — записей: 1
 
-- [—] Чеклист-верификация (Haiku R23) — блокирующее правило в [CLAUDE.md](CLAUDE.md) §2: после любого протокола с чеклистом запускается sub-agent Haiku в роли R23 Верификатор для независимой проверки…
+- [—] Чеклист-верификация (Haiku R23) — блокирующее правило в [CLAUDE.md](https://github.com/TserenTserenov/FMT-exocortex-template/blob/main/CLAUDE.md) §2: после любого протокола с чеклистом запускается…
 
 ## 0.8.6 — записей: 4
 
-- [—] Роли верификации (R23-R24) — skill /verify + [hard-distinctions](memory/hard-distinctions.md) #38-40 (WP-122)
-- [—] Governance-синхронизация в [Day Close](memory/protocol-close.md) — проверка REPOSITORY-REGISTRY, navigation.md, MAP.002↔PROCESSES.md (WP-124)
-- [—] Collapsible sections в [LEARNING-PATH](docs/LEARNING-PATH.md) и [SETUP-GUIDE](docs/SETUP-GUIDE.md) (details/summary)
+- [—] Роли верификации (R23-R24) — skill /verify + [hard-distinctions](https://github.com/TserenTserenov/FMT-exocortex-template/blob/main/memory/hard-distinctions.md) #38-40 (WP-122)
+- [—] Governance-синхронизация в [Day Close](https://github.com/TserenTserenov/FMT-exocortex-template/blob/main/memory/protocol-close.md) — проверка REPOSITORY-REGISTRY, navigation.md, MAP.002↔PROCESSES.md…
+- [—] Collapsible sections в [LEARNING-PATH](https://github.com/TserenTserenov/FMT-exocortex-template/blob/main/docs/LEARNING-PATH.md) и…
 - [—] Онбординг переработан: пользователь в центре, принципы двусторонние
 
 ## 0.8.5 — записей: 1
 
-- [—] [USE-CASES.md](docs/use-cases/USE-CASES.md) — каталог всех 15 сценариев использования IWE (WP-116):
+- [—] [USE-CASES.md](https://github.com/TserenTserenov/FMT-exocortex-template/blob/main/docs/use-cases/USE-CASES.md) — каталог всех 15 сценариев использования IWE (WP-116):
 
 ## 0.8.4 — записей: 1
 
-- [—] [docs/onboarding/](docs/onboarding/) — руководство-онбординг IWE для новичков (WP-120):
+- [—] [docs/onboarding/](https://github.com/TserenTserenov/FMT-exocortex-template/blob/main/docs/onboarding/) — руководство-онбординг IWE для новичков (WP-120):
 
 ## 0.8.3 — записей: 1
 
-- [—] [LEARNING-PATH.md](docs/LEARNING-PATH.md) §11 — FAQ: cross-device workflow (ноут + десктоп, кросс-ОС)
+- [—] [LEARNING-PATH.md](https://github.com/TserenTserenov/FMT-exocortex-template/blob/main/docs/LEARNING-PATH.md) §11 — FAQ: cross-device workflow (ноут + десктоп, кросс-ОС)
 
 ## 0.8.2 — записей: 4
 
-- [—] [protocol-open.md](memory/protocol-open.md) — 4-й класс верификации `trivial` (Haiku): результат очевиден, проверка не нужна
-- [—] [protocol-open.md](memory/protocol-open.md) — два сценария переключения модели:
-- [—] [SETUP-GUIDE.md](docs/SETUP-GUIDE.md) §0.5b — класс верификации в таблице моделей + описание двух сценариев
-- [—] [LEARNING-PATH.md](docs/LEARNING-PATH.md) §5.1b — trivial в таблице классов + два сценария переключения
+- [—] [protocol-open.md](https://github.com/TserenTserenov/FMT-exocortex-template/blob/main/memory/protocol-open.md) — 4-й класс верификации `trivial` (Haiku): результат очевиден, проверка не нужна
+- [—] [protocol-open.md](https://github.com/TserenTserenov/FMT-exocortex-template/blob/main/memory/protocol-open.md) — два сценария переключения модели:
+- [—] [SETUP-GUIDE.md](https://github.com/TserenTserenov/FMT-exocortex-template/blob/main/docs/SETUP-GUIDE.md) §0.5b — класс верификации в таблице моделей + описание двух сценариев
+- [—] [LEARNING-PATH.md](https://github.com/TserenTserenov/FMT-exocortex-template/blob/main/docs/LEARNING-PATH.md) §5.1b — trivial в таблице классов + два сценария переключения
 
 ## 0.8.1 — записей: 3
 

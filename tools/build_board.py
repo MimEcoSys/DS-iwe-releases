@@ -43,14 +43,27 @@ STAGING_TO_STATUS = {
 }
 PATH_TOKEN = re.compile(r"[\w.\-/]+\.(?:md|sh|py|json|yaml|yml|plist)\b|[\w.\-]+/[\w.\-/]*")
 VERSION_HEAD = re.compile(r"^## \[(?P<ver>[^\]]+)\]")
+TEMPLATE_BLOB = "https://github.com/TserenTserenov/FMT-exocortex-template/blob/main/"
+ORG_BLOB = "https://github.com/MimEcoSys/{repo}/blob/main/{path}"
+LOCAL_LINK = re.compile(r"\]\((?!https?:|#)([^)\s]+)\)")
 
 
 def table_cells(line: str) -> list[str]:
     return [c.strip() for c in line.strip().strip("|").split("|")]
 
 
+def template_link(match: re.Match) -> str:
+    """Changelog links are relative to the template root; ../<repo>/ points to a sibling MimEcoSys repo."""
+    target = match.group(1)
+    if target.startswith("../"):
+        repo, path = target[3:].split("/", 1)
+        return f"]({ORG_BLOB.format(repo=repo, path=path)})"
+    return f"]({TEMPLATE_BLOB}{target})"
+
+
 def short(text: str, limit: int = 160) -> str:
     text = re.sub(r"\s+", " ", text.replace("**", "")).strip()
+    text = LOCAL_LINK.sub(template_link, text)
     if len(text) <= limit:
         return text
     cut = text[:limit].rsplit(" ", 1)[0]
