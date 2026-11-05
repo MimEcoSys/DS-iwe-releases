@@ -185,7 +185,55 @@ def cell(text: str) -> str:
     return text.replace("|", "\\|")
 
 
-def write_views(repo: Path, stamp: str, results, staging, unreleased, released, author_ahead) -> None:
+RESULT_LADDER = (
+    "план",
+    "в работе",
+    "в обкатке",
+    "у автора",
+    "сделано, не сверено",
+    "в шаблоне",
+    "передано",
+    "взято в 0.42",
+    "в rc 0.42",
+    "выпущено в 0.42",
+    "отложено",
+    "возвращено из 0.42",
+)
+
+
+def summary_lines(results, staging, unreleased_links) -> list[str]:
+    """Board summary: one unit (promised result) along the ladder, other units listed separately."""
+    counts = {status: 0 for status in RESULT_LADDER}
+    for r in results:
+        counts[r["status"]] += 1
+    lines = [
+        f"## Сводка: {len(results)} обещанных результатов целей шаблона",
+        "",
+        "Единица счёта — обещанный результат (код «Ц<цель>-<номер>»). Сумма по статусам равна общему числу.",
+        "",
+        "| Статус | Результатов |",
+        "|---|---|",
+    ]
+    lines += [f"| {status} | {n} |" for status, n in counts.items()]
+    testing = sum(1 for s in staging if s["staging_status"] == "testing")
+    unlinked = sum(1 for s in staging if s["staging_status"] == "testing" and not s["result"])
+    lines += [
+        "",
+        "**Другие единицы — к сумме выше не прибавляются**, пока не связаны с кодом результата:",
+        "",
+        "| Что | Сколько | Связано с результатом |",
+        "|---|---|---|",
+        f"| записи обкатки на обкатке (`STAGING.md`) | {testing} | {testing - unlinked} |",
+        (
+            f"| записи списка изменений «Ещё не выпущено» | {len(unreleased_links)} | "
+            f"{sum(1 for u in unreleased_links if u['result'])} |"
+        ),
+        "",
+    ]
+    return lines
+
+
+def write_views(repo: Path, stamp: str, results, staging, unreleased, unreleased_links, released, author_ahead) -> None:
     view = repo / "view"
     view.mkdir(exist_ok=True)
     by_status: dict[str, list] = {}
@@ -200,6 +248,7 @@ def write_views(repo: Path, stamp: str, results, staging, unreleased, released, 
         "Собрано программой из файлов ролей и источников; вручную не править.",
         "",
     ]
+    out += summary_lines(results, staging, unreleased_links)
     testing = [s for s in staging if s["staging_status"] == "testing"]
     out += [
         "## 1. Работает в моей IWE, в шаблон не доставлено",
@@ -315,7 +364,7 @@ def main() -> int:
     (board / "developer.yaml").write_text(
         header + yaml.safe_dump(developer, allow_unicode=True, sort_keys=False, width=1000)
     )
-    write_views(args.repo, stamp, results, staging, unreleased, released, author_ahead)
+    write_views(args.repo, stamp, results, staging, unreleased, developer["unreleased_links"], released, author_ahead)
 
     # Completeness: every source item is on the board, linked or explicitly not linked.
     # Each board count is compared with an independent raw count of the source text.
