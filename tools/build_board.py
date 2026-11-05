@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""First fill of the release board from its sources (WP-529 F250).
+"""Build the release board from its sources (WP-529).
 
-Reads source snapshots from --src and writes board/developer.yaml and view/*.md
-into --repo. Every item of every source must land on the board or in an
+Reads source snapshots from --src and writes roles/developer.yaml, now/*.md
+(current state, rewritten on every run) and releases/<N>/shipped.md into --repo. Every item of every source must land on the board or in an
 explicit "not linked" list; the completeness check fails the run otherwise.
 
 Sources expected in --src:
@@ -390,173 +390,154 @@ def apply_released_links(results: list[dict], released_041: dict, unreleased_key
     return counts
 
 
-def released_041_note(c: dict, rec_041: int, results: list[dict]) -> str:
-    linked = {r["code"] for r in results if r.get("released_041_records")}
+# Board rows: (row name, list file or None for a sum row, statuses). Bold rows are the four stages.
+STAGES = (
+    ("**1. План**", "1-plan.md", ("план",)),
+    (
+        "**2. В работе**",
+        None,
+        ("в работе", "возвращено из 0.42", "у автора", "в разнице 0.36–0.41.11", "готово для передачи", "взято в 0.42"),
+    ),
+    ("2.1 Разрабатывается", "2.1-in-work.md", ("в работе", "возвращено из 0.42")),
+    ("2.2 Проверяется Разработчиком", "2.2-at-developer.md", ("у автора",)),
+    ("2.3 Готово для передачи Выпускающему", None, ("в разнице 0.36–0.41.11", "готово для передачи")),
+    ("2.3.1 Вышло в 0.37–0.41.11", "2.3.1-released-0.37-0.41.11.md", ("в разнице 0.36–0.41.11",)),
+    ("2.3.2 Влито после 0.41.11", "2.3.2-merged-after-0.41.11.md", ("готово для передачи",)),
+    ("2.4 Взято Выпускающим", "2.4-taken.md", ("взято в 0.42",)),
+    ("**3. Сделано**", "3-done.md", ("выпущено в 0.36",)),
+    ("**4. Отложено**", "4-deferred.md", ("отложено",)),
+)
+OUTSIDE = ("Вне выпуска шаблона", "outside-template.md", ("работает вне выпуска шаблона",))
+
+
+def record_split(links: list[dict]) -> str:
+    existing = {code for link in links for code in link.get("result", [])}
+    proposed = {link["proposed"]["what"] for link in links if link.get("proposed")}
+    service = sum(1 for link in links if link.get("service"))
+    with_existing = sum(1 for link in links if link.get("result"))
     return (
-        f"вышло в выпусках 0.37–0.41.11: {rec_041} строк, {c['records']} разных записей ({c['repeated']} повторяются "
-        f"в двух версиях); из этого Выпускающий определяет, что взять в работу. Связь записей с результатами "
-        f"(предварительная, до приёмки Разработчиком): по номеру коммита или PR из доказательства — "
-        f"{c['result_by_ref']}, по совпавшему чтению двух разметчиков — {c['result_by_reading']}; они служат "
-        f"{len(linked)} результатам. Разметчики разошлись — {c['contested']}; у РП нет единственного подходящего "
-        f"результата — {c['none']}; служебные — {c['service']}; у РП записи нет результатов на табло — "
-        f"{c['rp_no_board_results']}; без номера РП — {c['no_rp']}"
+        f"{with_existing} из них служат {len(existing)} уже записанным результатам, "
+        f"{len(links) - with_existing - service} — {len(proposed)} новым предложенным результатам "
+        f"([список](proposed.md)), {service} — служебные правки без видимого результата"
     )
 
 
-def summary_lines(results, staging, unreleased_links, released, released_counts) -> list[str]:
-    """Board summary: four stages; results counted, records shown in brackets for reference."""
-
-    def count(*statuses: str) -> int:
-        return sum(1 for r in results if r["status"] in statuses)
-
+def stage_notes(results, staging, unreleased_links, released, released_counts) -> dict[str, tuple[str, str]]:
+    """Per board row: a one-line note for the board and a fuller explanation for the list page."""
     in_work = [r for r in results if r["status"] == "в работе"]
     testing = [s for s in staging if s["staging_status"] == "testing"]
+    plan_mismatch = sum(1 for r in results if r["status"] == "план" and r.get("mismatch"))
+    released_part = sum(1 for r in in_work if r.get("released_041_records"))
+    merged_part = sum(1 for r in in_work if r.get("merged_after_0_41_11"))
+    staging_part = sum(1 for r in in_work if r.get("on_staging"))
     rec_036 = sum(len(e) for e in released["0.36"].values())
     rec_041 = sum(len(e) for e in released["0.41.11"].values())
-
-    def record_split(links: list[dict]) -> str:
-        existing = {code for link in links for code in link.get("result", [])}
-        proposed = {link["proposed"]["what"] for link in links if link.get("proposed")}
-        service = sum(1 for link in links if link.get("service"))
-        with_existing = sum(1 for link in links if link.get("result"))
-        return (
-            f"{with_existing} из них служат {len(existing)} уже записанным результатам, "
-            f"{len(links) - with_existing - service} — {len(proposed)} новым предложенным результатам (список ниже), "
-            f"{service} — служебные правки без видимого результата"
-        )
-
-    stage2 = (
-        "в работе",
-        "возвращено из 0.42",
-        "у автора",
-        "в разнице 0.36–0.41.11",
-        "готово для передачи",
-        "взято в 0.42",
+    c = released_counts
+    linked_041 = {r["code"] for r in results if r.get("released_041_records")}
+    plan = "работа не начата" + (f"; у {plan_mismatch} — расходится" if plan_mismatch else "")
+    in_work_note = (
+        f"у {released_part} часть правок уже вышла в 0.37–0.41.11, у {merged_part} — влита после 0.41.11, "
+        f"у {staging_part} — на обкатке; остальное ещё в разработке"
     )
-    stage3 = ("выпущено в 0.36",)
-    outside = "работает вне выпуска шаблона"
-    on_board = len(results) - count(outside)
-    rows = [
-        (
-            "**1. План**",
-            count("план"),
-            "результаты активных РП, работа не начата"
+    return {
+        "**1. План**": (
+            plan,
+            "Результаты активных РП, работа по которым не начата."
             + (
-                f"; у {sum(1 for r in results if r['status'] == 'план' and r.get('mismatch'))} — расходится: "
-                "часть уже на обкатке, влита или вышла"
-                if any(r["status"] == "план" and r.get("mismatch") for r in results)
+                f" У {plan_mismatch} — расходится: часть их правок уже на обкатке, влита или вышла."
+                if plan_mismatch
                 else ""
             ),
         ),
-        ("**2. В работе**", count(*stage2), ""),
-        (
-            "2.1 разрабатывается",
-            count("в работе", "возвращено из 0.42"),
-            (
-                f"в том числе в плане недели — {sum(1 for r in in_work if r['in_week_plan'])}. "
-                f"У {sum(1 for r in in_work if r.get('merged_after_0_41_11'))} результатов часть правок уже влита "
-                f"после 0.41.11, у {sum(1 for r in in_work if r.get('on_staging'))} часть на обкатке, "
-                f"у {sum(1 for r in in_work if r.get('released_041_records'))} часть уже вышла в 0.37–0.41.11, "
-                "но целиком они не готовы — поэтому остаются здесь, а не в 2.2 или 2.3"
-            ),
+        "**2. В работе**": ("сумма 2.1–2.4", ""),
+        "2.1 Разрабатывается": (
+            in_work_note,
+            f"В плане недели — {sum(1 for r in in_work if r['in_week_plan'])}. Результат складывается из нескольких "
+            f"правок: {in_work_note}. Поэтому результат целиком остаётся здесь, а не в 2.2 или 2.3.",
         ),
-        (
-            "2.2 тестируется Разработчиком",
-            count("у автора"),
-            (
-                f"сделаны и работают только в IWE Разработчика. На обкатке {len(testing)} записей: "
-                f"{record_split([s['link'] for s in testing])}"
-            ),
+        "2.2 Проверяется Разработчиком": (
+            "работают только в IWE Разработчика",
+            f"Сделаны и работают только в IWE Разработчика. На обкатке {len(testing)} записей: "
+            f"{record_split([s['link'] for s in testing])}.",
         ),
-        (
-            "2.3 готово для передачи Выпускающему",
-            count("в разнице 0.36–0.41.11", "готово для передачи"),
-            "сумма 2.3.1 и 2.3.2",
+        "2.3 Готово для передачи Выпускающему": ("сумма 2.3.1 и 2.3.2; отсюда Выпускающий берёт в выпуск", ""),
+        "2.3.1 Вышло в 0.37–0.41.11": (
+            "вышло пользователям после 0.36; Выпускающий решает, что принять в 0.42",
+            f"Вышло в выпусках 0.37–0.41.11 ([состав](../../releases/0.41.11/shipped.md)): {rec_041} строк, "
+            f"{c['records']} разных записей ({c['repeated']} повторяются в двух версиях). Связь записей с "
+            f"результатами предварительная, до приёмки Разработчиком: по номеру коммита или запроса на слияние — "
+            f"{c['result_by_ref']}, по совпавшему чтению двух разметчиков — {c['result_by_reading']}; они служат "
+            f"{len(linked_041)} результатам. Разметчики разошлись — {c['contested']}; у РП нет "
+            f"единственного подходящего результата — {c['none']}; служебные — {c['service']}; у РП записи нет "
+            f"результатов на табло — {c['rp_no_board_results']}; без номера РП — {c['no_rp']}.",
         ),
-        (
-            "2.3.1 разница 0.36 и 0.41.11 у Выпускающего (временный пункт до выпуска 0.42)",
-            count("в разнице 0.36–0.41.11"),
-            released_041_note(released_counts, rec_041, results),
+        "2.3.2 Влито после 0.41.11": (
+            "влито в шаблон после 0.41.11, ещё не выпущено",
+            f"Сделано целиком и влито в шаблон после 0.41.11, но ещё не выпущено. Всего {len(unreleased_links)} "
+            f"записей: {record_split(unreleased_links)}.",
         ),
-        (
-            "2.3.2 вливается Разработчиком после 0.41.11",
-            count("готово для передачи"),
-            (
-                f"сделано целиком и влито в шаблон после 0.41.11, но нет в выпуске. Всего {len(unreleased_links)} записей: "
-                f"{record_split(unreleased_links)}"
-            ),
+        "2.4 Взято Выпускающим": ("отобрано Выпускающим в 0.42", "Отобрано Выпускающим в выпуск 0.42."),
+        "**3. Сделано**": (
+            "вышло в стабильном 0.36; пока только результаты открытых РП",
+            f"Вышло в выпусках до 0.36 включительно ([состав](../../releases/0.36/shipped.md), {rec_036} записей). "
+            "С результатами пока связаны только сделанные результаты открытых РП; результаты закрытых работ — "
+            "следующая очередь.",
         ),
-        ("2.4 взято Выпускающим в работу", count("взято в 0.42"), "берётся из 2.3"),
-        ("**3. Сделано**", count(*stage3), ""),
-        (
-            "по итогам стабильного выпуска 0.36",
-            count("выпущено в 0.36"),
-            (
-                f"вышло в выпусках до 0.36 включительно ({rec_036} записей); пока связаны с результатами только "
-                "сделанные результаты открытых РП (фаза Ф256)"
-            ),
+        "**4. Отложено**": ("отложил Разработчик", "Разработчик отложил работу: в карточке РП фаза перенесена на потом."),
+        OUTSIDE[0]: (
+            "сделано в сервисах платформы; в итог не входит",
+            "Результат той же цели сделан не в шаблоне, а в сервисе платформы (сайт, бот, MCP-сервер). Через выпуск "
+            "шаблона он не проходит, поэтому в «Итого по IWE» не входит.",
         ),
-        (
-            "**4. Отложено**",
-            count("отложено"),
-            "отложил Разработчик: в карточке РП фаза перенесена на потом",
-        ),
-        ("**Итого по IWE**", on_board, ""),
-    ]
-    stages = [res for name, res, _ in rows if name.startswith("**") and name[2].isdigit()]
-    if sum(stages) != on_board or on_board + count(outside) != len(results):
+    }
+
+
+def count_statuses(results, statuses) -> int:
+    return sum(1 for r in results if r["status"] in statuses)
+
+
+def board_lines(stamp, results, notes, proposed_count) -> list[str]:
+    """The board page: numbers only, each linked to its list."""
+    on_board = len(results) - count_statuses(results, OUTSIDE[2])
+    stages = [count_statuses(results, st) for name, _, st in STAGES if name.startswith("**")]
+    if sum(stages) != on_board:
         raise SystemExit("stages do not add up to the total")
-    lines = [
-        "## Сводка",
+    out = [
+        stamp,
         "",
-        (
-            "Единица счёта — обещанный результат (код «Ц<цель>-<номер>»). Где результат сейчас, определяют его записи "
-            "в списке изменений шаблона: в какой выпуск или ветку они вошли. Число записей указано в пояснениях для "
-            "справки; к результатам оно не прибавляется."
-        ),
+        "# Табло выпуска шаблона IWE",
+        "",
+        "Единица счёта — обещанный результат. Стадии и статусы описаны в [README](../README.md#стадии-и-статусы); "
+        "число ведёт к списку результатов.",
         "",
         "| Стадия | Результатов | Пояснения |",
         "|---|---|---|",
     ]
-    lines += [f"| {name} | {f'**{res}**' if name.startswith('**') else res} | {note} |" for name, res, note in rows]
-    proposed = sorted(
-        {
-            (link["proposed"]["goal"], link["proposed"]["what"])
-            for link in [*unreleased_links, *(s["link"] for s in testing)]
-            if link.get("proposed")
-        }
-    )
-    lines += [
+    for name, page, statuses in STAGES:
+        n = count_statuses(results, statuses)
+        num = f"[{n}](lists/{page})" if page else str(n)
+        out += [f"| {name} | {f'**{num}**' if name.startswith('**') else num} | {notes[name][0]} |"]
+    outside_n = count_statuses(results, OUTSIDE[2])
+    out += [
+        f"| **Итого по IWE** | **{on_board}** | сумма стадий 1–4 |",
+        f"| {OUTSIDE[0]} | [{outside_n}](lists/{OUTSIDE[1]}) | {notes[OUTSIDE[0]][0]} |",
+        f"| Предложено новых результатов | [{proposed_count}](lists/proposed.md) | ждут кода в «Состоянии по целям»; в итог не входят |",
         "",
-        (
-            f"**Предложено записать в «Состояние по целям» новых результатов: {len(proposed)}** — записи после 0.41.11 "
-            "и записи обкатки, для которых результата в документе нет. Войдут в итог, когда документ присвоит им коды:"
-        ),
+        "Что вошло в выпуски: [до 0.36](../releases/0.36/shipped.md), [0.37–0.41.11](../releases/0.41.11/shipped.md). "
+        "[Сверка полноты](completeness.md).",
         "",
     ]
-    lines += [f"- цель {goal}: {what}" for goal, what in proposed]
-    lines += [
-        "",
-        (
-            "**Версия IWE Разработчика (Церен)** — что работает в IWE Разработчика: 2.2 + 2.3 + 2.4 + 3 + личное "
-            "(то, что в шаблон не идёт). Выпуск 0.41.11 — это 3 и 2.3.1; у результатов из 2.1 в этой версии "
-            "работает только уже влитая или обкатываемая часть."
-        ),
-        "",
-        "**По частям выпуска** (результат может относиться сразу к двум частям):",
-        "",
-        "| Стадия | " + " | ".join(CONTOURS) + " |",
-        "|---|" + "---|" * len(CONTOURS),
+    return out
+
+
+RESULT_HEADER = ["| Код | Часть выпуска | РП | Кто | Что получает | Расхождение |", "|---|---|---|---|---|---|"]
+
+
+def result_rows(rows: list[dict]) -> list[str]:
+    return [
+        f"| {r['code']} | {', '.join(r['contours'])} | {', '.join(r['works'])} | {r['who']} | {cell(r['what'])} | {r.get('mismatch', '')} |"
+        for r in rows
     ]
-    for name, statuses in (
-        ("1. План", ("план",)),
-        ("2. В работе", stage2),
-        ("3. Сделано", stage3),
-        ("4. Отложено", ("отложено",)),
-    ):
-        counts = [sum(1 for r in results if r["status"] in statuses and c in r["contours"]) for c in CONTOURS]
-        lines += [f"| {name} | " + " | ".join(map(str, counts)) + " |"]
-    return lines + [""]
 
 
 RELEASED_LABELS = {
@@ -586,89 +567,82 @@ def link_label(link: dict) -> str:
     return "не привязано"
 
 
+def stage_extra(page, staging, unreleased, unreleased_links, author_ahead) -> list[str]:
+    """Record-level tables that belong to one list page."""
+    if page == "2.2-at-developer.md":
+        testing = [s for s in staging if s["staging_status"] == "testing"]
+        moved = [s for s in staging if s["staging_status"] == "promoted"]
+        kept = [s for s in staging if s["staging_status"] == "rejected"]
+        out = [
+            f"## На обкатке — записи `STAGING.md` Разработчика: {len(testing)}",
+            "",
+            "| Запись | Что | С | Расхождение |",
+            "|---|---|---|---|",
+        ]
+        out += [f"| {s['id']} | {cell(s['title'])} | {s['date']} | {s.get('mismatch', '')} |" for s in testing]
+        out += ["", "## Версия файла у Разработчика опережает шаблон", ""]
+        if author_ahead["files"]:
+            out += [f"- `{f['path']}`" for f in author_ahead["files"]]
+        else:
+            out += [f"- {author_ahead.get('note', 'расхождений нет')}"]
+        out += [
+            "",
+            f"## Обкатка завершена: перенесено в шаблон {len(moved)}, остаётся только у Разработчика {len(kept)}",
+            "",
+            "| Запись | Что | Статус | Расхождение |",
+            "|---|---|---|---|",
+        ]
+        return out + [f"| {s['id']} | {cell(s['title'])} | {s['status']} | {s.get('mismatch', '')} |" for s in moved + kept] + [""]
+    if page == "2.3.2-merged-after-0.41.11.md":
+        link_of = {u["key"]: link_label(u) for u in unreleased_links}
+        out = [
+            f"## Записи раздела «Ещё не выпущено»: {len(unreleased)}",
+            "",
+            "| Ключ | Вид | Что | Код результата |",
+            "|---|---|---|---|",
+        ]
+        return out + [f"| {u['key']} | {u['tag']} | {cell(short(u['text'], 200))} | {link_of[u['key']]} |" for u in unreleased] + [""]
+    return []
+
+
 def write_views(
     repo: Path, stamp: str, results, staging, unreleased, unreleased_links, released, author_ahead, released_links, released_counts
 ) -> None:
-    view = repo / "view"
-    view.mkdir(exist_ok=True)
-    by_status: dict[str, list] = {}
-    for r in results:
-        by_status.setdefault(r["status"], []).append(r)
+    now = repo / "now"
+    lists = now / "lists"
+    lists.mkdir(parents=True, exist_ok=True)
+    testing = [s for s in staging if s["staging_status"] == "testing"]
+    notes = stage_notes(results, staging, unreleased_links, released, released_counts)
+    proposed = sorted(
+        {
+            (link["proposed"]["goal"], link["proposed"]["what"])
+            for link in [*unreleased_links, *(s["link"] for s in testing)]
+            if link.get("proposed")
+        }
+    )
+    (now / "board.md").write_text("\n".join(board_lines(stamp, results, notes, len(proposed))))
 
+    for name, page, statuses in (*STAGES, OUTSIDE):
+        if not page:
+            continue
+        rows = [r for r in results if r["status"] in statuses]
+        title = name.strip("*")
+        out = [stamp, "", f"# {title}: {len(rows)}", "", "[← табло](../board.md)", "", notes[name][1], ""]
+        out += RESULT_HEADER + result_rows(rows) + [""]
+        out += stage_extra(page, staging, unreleased, unreleased_links, author_ahead)
+        (lists / page).write_text("\n".join(out))
     out = [
         stamp,
         "",
-        "# Табло релиза шаблона IWE",
+        f"# Предложено новых результатов: {len(proposed)}",
         "",
-        "Собрано программой из файлов ролей и источников; вручную не править.",
+        "[← табло](../board.md)",
         "",
-    ]
-    out += summary_lines(results, staging, unreleased_links, released, released_counts)
-    testing = [s for s in staging if s["staging_status"] == "testing"]
-    out += [
-        "## 1. Работает в моей IWE, в шаблон не доставлено",
-        "",
-        f"### 1а. На обкатке — записи `STAGING.md` со статусом testing: {len(testing)}",
-        "",
-        "| Запись | Что | С | Расхождение |",
-        "|---|---|---|---|",
-    ]
-    out += [f"| {s['id']} | {cell(s['title'])} | {s['date']} | {s.get('mismatch', '')} |" for s in testing]
-    out += ["", "### 1б. Моя версия файла впереди шаблона (замер расхождений автор↔шаблон)", ""]
-    if author_ahead["files"]:
-        out += [f"- `{f['path']}`" for f in author_ahead["files"]]
-    else:
-        out += [f"- {author_ahead.get('note', 'расхождений нет')}"]
-    out += [
-        "",
-        f"## 2. В шаблоне, ждёт выпуска — раздел «Ещё не выпущено»: {len(unreleased)}",
-        "",
-        "| Ключ | Вид | Что | Код результата |",
-        "|---|---|---|---|",
-    ]
-    link_of = {u["key"]: link_label(u) for u in unreleased_links}
-    out += [f"| {u['key']} | {u['tag']} | {cell(short(u['text'], 200))} | {link_of[u['key']]} |" for u in unreleased]
-    out += ["", "## 3. Результаты по статусам", ""]
-    for status in (
-        "план",
-        "в работе",
-        "у автора",
-        "готово для передачи",
-        "в разнице 0.36–0.41.11",
-        "выпущено в 0.36",
-        "работает вне выпуска шаблона",
-        "отложено",
-    ):
-        rows = by_status.get(status, [])
-        out += [
-            f"### {status}: {len(rows)}",
-            "",
-            "| Код | Часть выпуска | РП | Кто | Что получает | Расхождение |",
-            "|---|---|---|---|---|---|",
-        ]
-        out += [
-            f"| {r['code']} | {', '.join(r['contours'])} | {', '.join(r['works'])} | {r['who']} | {cell(r['what'])} | {r.get('mismatch', '')} |"
-            for r in rows
-        ]
-        out += [""]
-    moved = [s for s in staging if s["staging_status"] == "promoted"]
-    kept = [s for s in staging if s["staging_status"] == "rejected"]
-    out += [
-        f"## 4. Обкатка завершена: перенесено в шаблон {len(moved)}, остаётся только у автора {len(kept)}",
-        "",
-        "| Запись | Что | Статус | Расхождение |",
-        "|---|---|---|---|",
-    ]
-    out += [f"| {s['id']} | {cell(s['title'])} | {s['status']} | {s.get('mismatch', '')} |" for s in moved + kept]
-    out += [
-        "",
-        "## 5. Выпущено",
-        "",
-        f"- до 0.36 включительно — [release-0.36.md](release-0.36.md), записей: {sum(len(v) for v in released['0.36'].values())}",
-        f"- 0.37–0.41.11 — [release-0.41.11.md](release-0.41.11.md), записей: {sum(len(v) for v in released['0.41.11'].values())}",
+        "Записи после 0.41.11 и записи обкатки, для которых результата в «Состоянии по целям» нет. Войдут в итог, "
+        "когда документ присвоит им коды.",
         "",
     ]
-    (view / "board.md").write_text("\n".join(out))
+    (lists / "proposed.md").write_text("\n".join(out + [f"- цель {goal}: {what}" for goal, what in proposed] + [""]))
 
     titles = {"0.36": "Выпуски до 0.36 включительно", "0.41.11": "Выпуски 0.37–0.41.11: что добавилось к 0.36"}
     for name, versions in released.items():
@@ -680,16 +654,16 @@ def write_views(
             "Короткая выжимка записей списка изменений шаблона; полный текст — в CHANGELOG.md шаблона.",
             "",
         ]
+        labels = released_links if name == "0.41.11" else {}
         for ver, entries in versions.items():
             lines += [f"## {ver} — записей: {len(entries)}", ""]
-            labels = released_links if name == "0.41.11" else {}
             lines += [
                 f"- [{e['tag'] or '—'}] {short(e['text'], 200)}"
                 + (f" — **{released_label(labels[e['key']])}**" if e["key"] in labels else "")
                 for e in entries
             ]
             lines += [""]
-        (view / f"release-{name}.md").write_text("\n".join(lines))
+        (repo / "releases" / name / "shipped.md").write_text("\n".join(lines))
 
 
 def main() -> int:
@@ -735,7 +709,7 @@ def main() -> int:
             {"key": u["key"], "tag": u["tag"], "first_words": short(u["text"], 80)} for u in unreleased
         ],
     }
-    links_file = args.repo / "board" / "developer-links.yaml"
+    links_file = args.repo / "roles" / "developer-links.yaml"
     apply_links(results, developer["unreleased_links"], staging, links_file)
     declared = yaml.safe_load(links_file.read_text())
     released_counts = apply_released_links(
@@ -745,11 +719,11 @@ def main() -> int:
         declared["released_0_41_11"],
         declared["placement"],
     )
-    board = args.repo / "board"
+    board = args.repo / "roles"
     board.mkdir(exist_ok=True)
     header = (
         "# Файл Разработчика. Правит только команда iwe-developers через запрос на слияние.\n"
-        "# Первое заполнение собрано tools/first_fill.py; статусы — заявленные, из карточек работ.\n"
+        "# Собрано tools/build_board.py; статусы — заявленные, из карточек работ.\n"
     )
     (board / "developer.yaml").write_text(
         header + yaml.safe_dump(developer, allow_unicode=True, sort_keys=False, width=1000)
@@ -821,7 +795,7 @@ def main() -> int:
         ),
         "",
     ]
-    (args.repo / "view" / "completeness.md").write_text("\n".join(lines))
+    (args.repo / "now" / "completeness.md").write_text("\n".join(lines))
     lost = [name for name, a, b in checks if a != b]
     if lost:
         print("completeness check failed: " + ", ".join(lost), file=sys.stderr)

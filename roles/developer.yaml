@@ -1,5 +1,5 @@
 # Файл Разработчика. Правит только команда iwe-developers через запрос на слияние.
-# Первое заполнение собрано tools/first_fill.py; статусы — заявленные, из карточек работ.
+# Собрано tools/build_board.py; статусы — заявленные, из карточек работ.
 snapshot:
   collected_at: '2026-11-05'
   template_commit: 1a4b9afc47d5a186a875fe3c9ac1a45aace059cb
