@@ -666,6 +666,174 @@ def write_views(
         (repo / "releases" / name / "shipped.md").write_text("\n".join(lines))
 
 
+HANDOFF_FIELDS = ("rollback_unit", "commits", "user_gets", "how_to_check", "risk", "recommendation", "depends_on")
+RISKS = ("высокий", "средний", "низкий")
+RECOMMENDATIONS = ("взять", "отложить", "решить Выпускающему")
+SEPARABLE = ("да", "нет")
+TAG_LABELS = {"behavior": "поведение", "optional": "по желанию", "security": "безопасность", "docs": "документация"}
+ROLLBACK_RULES = [
+    "## Как откатывать",
+    "",
+    "- Откатывают на ветке выпуска **до метки сборки-кандидата**: если ветка изменится после метки, программа выпуска "
+    "увидит, что выпускаемое не совпадает с проверенным кандидатом, и остановит выпуск.",
+    "- Коммиты одной правки откатывают **от нового к старому** — в том порядке, в каком они указаны ниже; "
+    "обратный порядок даёт лишние конфликты.",
+    "- Почти каждый откат конфликтует в списке изменений (`CHANGELOG.md`) и в манифесте обновления "
+    "(`update-manifest.json`): после отката сведите `CHANGELOG.md` вручную и пересоберите манифест "
+    "командой `bash generate-manifest.sh`, иначе проверка шаблона упадёт.",
+    "- Ветка выпуска потом вливается в основную ветку, поэтому отложенное исчезнет и оттуда. Чтобы вернуть его "
+    "в следующий выпуск, нужно откатить сам откат.",
+    "",
+]
+
+
+def first_word(text: str, choices: tuple) -> str:
+    """The leading choice of a field like «средний — трогает хуки»; fails on anything outside the closed list."""
+    for choice in choices:
+        if text.startswith(choice):
+            return choice
+    raise SystemExit(f"field must start with one of {choices}: {text[:60]!r}")
+
+
+def handoff_groups(records: dict) -> dict[str, list[str]]:
+    """Rollback units shared by several records, in record order."""
+    units: dict[str, list[str]] = {}
+    for key, rec in records.items():
+        units.setdefault(rec["rollback_unit"], []).append(key)
+    return {unit: keys for unit, keys in units.items() if len(keys) > 1}
+
+
+def load_handoff(path: Path, unreleased: list[dict]) -> dict | None:
+    """Developer's draft fields for every pending record; None when the file is not there yet."""
+    if not path.exists():
+        return None
+    declared = yaml.safe_load(path.read_text())
+    records = declared["records"]
+    check_keys("handoff", records, {u["key"] for u in unreleased})
+    for key, rec in records.items():
+        missing = [f for f in HANDOFF_FIELDS if f not in rec]
+        if missing:
+            raise SystemExit(f"handoff {key}: missing fields {missing}")
+        if not rec["commits"]:
+            raise SystemExit(f"handoff {key}: no commits, rollback cannot be built")
+        first_word(rec["risk"], RISKS)
+        first_word(rec["recommendation"], RECOMMENDATIONS)
+        unknown = (set(rec["depends_on"]) | set(rec.get("revert_first", []))) - set(records)
+        if unknown:
+            raise SystemExit(f"handoff {key}: unknown keys in depends_on or revert_first {sorted(unknown)}")
+        one_way = [k for k in rec["depends_on"] if key not in records[k]["depends_on"]]
+        if one_way:
+            raise SystemExit(f"handoff {key}: depends_on must be mutual, missing back-links from {one_way}")
+    groups = handoff_groups(records)
+    check_keys("handoff groups", declared["groups"], set(groups))
+    for unit, keys in groups.items():
+        separable = declared["groups"][unit]["separable"]
+        if separable not in SEPARABLE:
+            raise SystemExit(f"handoff group {unit}: separable must be one of {SEPARABLE}")
+        choices = {first_word(records[k]["recommendation"], RECOMMENDATIONS) for k in keys}
+        if separable == "нет" and len(choices) > 1:
+            raise SystemExit(f"handoff group {unit} is not separable but has different recommendations {sorted(choices)}")
+    return declared
+
+
+def rollback_text(key: str, rec: dict, groups: dict, group_info: dict) -> str:
+    """How to undo one record, built from its rollback unit and commits."""
+    unit = rec["rollback_unit"]
+    sha = unit.split()[0]
+    others = [k for k in groups.get(unit, []) if k != key]
+    if others and group_info[unit]["separable"] == "да":
+        text = f"`git revert --no-edit {' '.join(rec['commits'])}` — только коммиты этой правки"
+    elif "(прямой коммит)" in unit:
+        text = f"`git revert --no-edit {sha}`"
+    else:
+        text = f"`git revert --no-edit -m 1 {sha}` — всё слияние {unit}"
+        if others:
+            text += f"; вместе с ним снимаются {', '.join(f'[{k}](#{k.lower()})' for k in others)}"
+    if rec.get("revert_first"):
+        text = f"сначала откатить {', '.join(f'[{k}](#{k.lower()})' for k in rec['revert_first'])}, затем " + text
+    if rec.get("off_switch"):
+        text += f". Без отката: {rec['off_switch']}"
+    return text
+
+
+def write_candidates(repo: Path, stamp: str, handoff: dict, unreleased: list[dict], unreleased_links: list[dict]) -> None:
+    """Release-lead brief: every pending record with its four fields and the Developer's recommendation."""
+    release = handoff["release"]
+    records = handoff["records"]
+    group_info = handoff["groups"]
+    link_of = {u["key"]: link_label(u) for u in unreleased_links}
+    risk = {k: first_word(r["risk"], RISKS) for k, r in records.items()}
+    rec = {k: first_word(r["recommendation"], RECOMMENDATIONS) for k, r in records.items()}
+    order = sorted(unreleased, key=lambda u: (RECOMMENDATIONS.index(rec[u["key"]]), RISKS.index(risk[u["key"]])))
+    groups = handoff_groups({u["key"]: records[u["key"]] for u in order})
+    by_tag = {t: sum(1 for u in unreleased if u["tag"] == t) for t in TAG_LABELS}
+    out = [
+        stamp,
+        "",
+        f"# Выпуск {release}: что можно взять",
+        "",
+        "Собрано программой из файла Разработчика (`roles/developer-handoff.yaml`); руками не править. "
+        "Решения Выпускающего — в [decisions.md](decisions.md), порядок чтения и словарь — в [README](README.md).",
+        "",
+        f"**Кандидатов — {len(unreleased)}** правок, влитых в шаблон после 0.41.11: "
+        + ", ".join(f"{TAG_LABELS[t]} — {n}" for t, n in by_tag.items() if n)
+        + ".",
+        "",
+        "| Рекомендация Разработчика | высокий риск | средний | низкий | всего |",
+        "|---|---|---|---|---|",
+    ]
+    for choice in RECOMMENDATIONS:
+        row = [sum(1 for k in records if rec[k] == choice and risk[k] == r) for r in RISKS]
+        out += [f"| {choice} | " + " | ".join(map(str, row)) + f" | {sum(row)} |"]
+    out += [
+        "",
+        "## Все кандидаты",
+        "",
+        "Сначала «взять», потом «отложить», потом «решить Выпускающему»; внутри — от высокого риска к низкому.",
+        "",
+        "| Ключ | Вид | Что получит пользователь | Результат | Риск | Рекомендация |",
+        "|---|---|---|---|---|---|",
+    ]
+    out += [
+        f"| [{u['key']}](#{u['key'].lower()}) | {TAG_LABELS[u['tag']]} | {cell(records[u['key']]['user_gets'])} "
+        f"| {link_of[u['key']]} | {risk[u['key']]} | {rec[u['key']]} |"
+        for u in order
+    ]
+    out += [
+        "",
+        "## Группы: несколько правок в одном слиянии",
+        "",
+        "Неразделимую группу берут или откладывают целиком: решение одно на все её записи.",
+        "",
+        "| Слияние | Записи | Можно снять одну | Почему |",
+        "|---|---|---|---|",
+    ]
+    out += [
+        f"| {unit} | {', '.join(f'[{k}](#{k.lower()})' for k in keys)} | {group_info[unit]['separable']} "
+        f"| {group_info[unit]['note']} |"
+        for unit, keys in groups.items()
+    ]
+    out += [""] + ROLLBACK_RULES + ["## По каждому кандидату", ""]
+    for u in order:
+        r = records[u["key"]]
+        out += [
+            f"### {u['key']}",
+            "",
+            f"**{TAG_LABELS[u['tag']]}** · результат: {link_of[u['key']]} · слияние: {r['rollback_unit']}",
+            "",
+            f"> {short(u['text'], 400)}",
+            "",
+            f"- **Что получит пользователь:** {r['user_gets']}",
+            f"- **Как проверить:** {r['how_to_check']}",
+            f"- **Как откатить:** {rollback_text(u['key'], r, groups, group_info)}",
+            f"- **Риск:** {r['risk']}",
+            f"- **Рекомендация Разработчика:** {r['recommendation']}",
+            f"- **Делит файлы или зависит от:** {', '.join(f'[{k}](#{k.lower()})' for k in r['depends_on']) or 'ни от чего'}",
+            "",
+        ]
+    (repo / "releases" / release / "candidates.md").write_text("\n".join(out))
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--src", type=Path, required=True)
@@ -728,6 +896,9 @@ def main() -> int:
     (board / "developer.yaml").write_text(
         header + yaml.safe_dump(developer, allow_unicode=True, sort_keys=False, width=1000)
     )
+    handoff = load_handoff(args.repo / "roles" / "developer-handoff.yaml", unreleased)
+    if handoff:
+        write_candidates(args.repo, stamp, handoff, unreleased, developer["unreleased_links"])
     write_views(
         args.repo,
         stamp,
