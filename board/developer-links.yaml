@@ -207,3 +207,741 @@ placement:
   Ц82-07: {place: author-only, evidence: 'РП-533: скрипты peer-fanout.sh, peer-pipeline.sh, peer-supervisor.sh, peer-swarm.sh лежат в DS-my-strategy/scripts; в шаблоне их нет, в CHANGELOG нет'}
   Ц83-02: {place: released-0.37-0.41.11, version: 0.41.9, evidence: 'CHANGELOG 0.41.9: «CLAUDE.md (Pre-action Gates): … указать область их уникальности и ответственного за схему» (PR #1270, РП-606)'}
   Ц84-01: {place: released-0.36, version: 0.36.0, evidence: 'РП-415: шаг «Cyrillic gate» в translate-sync.yml (63c2ec5) и публикация без следов происхождения (8c9c305), оба 16.07, git tag --contains → v0.36.0; сам iwesys/IWE — внешнее зеркало'}
+
+# Записи выпусков 0.37–0.41.11 -> результат (РП-529 Ф255, 05.11.2026, разметка предварительная, до приёмки Разработчиком).
+# Вид — по первому сработавшему правилу:
+#   result_by_ref        SHA или номер PR из доказательства размещения результата (placement) стоит в тексте записи
+#   no_rp                номера РП нет ни в тексте записи, ни в сообщении её коммита (commit_wp)
+#   rp_no_board_results  номер РП есть, результатов этого РП на табло нет
+#   result_by_reading    два слепых разметчика (участники пир-сессии claude-code и kimi-headless) независимо назвали один код из результатов РП записи
+#   contested            разметчики разошлись; readings — их ответы (код, none или service)
+#   service / none       оба разметчика: служебная правка / у РП нет единственного результата, который влечёт запись
+# commit_wp — номер РП из сообщения коммита записи, когда в тексте записи его нет (записал агент по git log шаблона; программа его не перепроверяет).
+# Повтор — запись с тем же началом текста (первые 200 символов) в двух версиях: один ключ, считается один раз.
+released_0_41_11:
+  U-d9c17e: {code: Ц96-10, kind: result_by_reading}
+  U-78ebd2: {kind: none}
+  U-6605e1: {kind: none}
+  U-2b84b7: {kind: contested, readings: {claude-code: none, kimi-headless: service}}
+  U-0a8c86: {kind: no_rp}
+  U-bbcbb9: {kind: no_rp}
+  U-1d20b2: {code: Ц93-02, kind: result_by_reading}
+  U-72908a: {code: Ц77-02, kind: result_by_ref, ref: '#1409'}
+  U-309baf: {kind: none}
+  U-e85b1a: {kind: none}
+  U-f6e485: {kind: none}
+  U-573805: {kind: rp_no_board_results}
+  U-eb8cac: {kind: no_rp}
+  U-cb18a2: {kind: no_rp}
+  U-0433c3: {kind: no_rp}
+  U-64ce64: {kind: no_rp}
+  U-d83854: {kind: no_rp}
+  U-f40b50: {kind: no_rp}
+  U-ba67cb: {kind: rp_no_board_results}
+  U-a49951: {kind: rp_no_board_results}
+  U-c2063a: {kind: rp_no_board_results}
+  U-cd8d15: {kind: contested, readings: {claude-code: none, kimi-headless: service}}
+  U-7931dd: {kind: none}
+  U-c2c5a6: {kind: rp_no_board_results}
+  U-b1e0e7: {kind: rp_no_board_results}
+  U-30dc50: {kind: rp_no_board_results}
+  U-3aebb5: {kind: rp_no_board_results}
+  U-19a3b8: {kind: no_rp}
+  U-ec5144: {kind: no_rp}
+  U-5d448c: {kind: none}
+  U-106301: {kind: none}
+  U-893ada: {kind: contested, readings: {claude-code: Ц77-10, kimi-headless: service}}
+  U-f1e871: {kind: contested, readings: {claude-code: Ц77-10, kimi-headless: none}}
+  U-8f73b3: {kind: contested, readings: {claude-code: Ц77-10, kimi-headless: none}}
+  U-9cd0bf: {kind: none}
+  U-c07e91: {kind: service}
+  U-40ba5b: {kind: no_rp}
+  U-d6ae55: {kind: no_rp}
+  U-8f7464: {kind: no_rp}
+  U-8ff750: {code: Ц70-01, kind: result_by_ref, ref: '#1389'}
+  U-b693df: {kind: no_rp}
+  U-08d9e9: {kind: none}
+  U-0d69e4: {kind: no_rp}
+  U-02fec6: {kind: rp_no_board_results}
+  U-625322: {code: Ц77-04, kind: result_by_reading}
+  U-7ee265: {kind: no_rp}
+  U-2768a2: {kind: no_rp}
+  U-331d0a: {kind: no_rp}
+  U-418bac: {kind: no_rp}
+  U-bdef1e: {kind: no_rp}
+  U-1b9947: {kind: none}
+  U-4e3028: {kind: service}
+  U-a86f15: {code: Ц77-02, kind: result_by_ref, ref: '#1409'}
+  U-420be9: {code: Ц77-02, kind: result_by_ref, ref: '#1409'}
+  U-f4eda5: {code: Ц77-02, kind: result_by_ref, ref: '#1409'}
+  U-9f2eff: {kind: rp_no_board_results}
+  U-f1dc3c: {code: Ц77-07, kind: result_by_reading}
+  U-6ce3e7: {kind: no_rp}
+  U-4f9ab4: {code: Ц77-05, kind: result_by_reading}
+  U-9bf422: {code: Ц77-05, kind: result_by_reading}
+  U-0793aa: {code: Ц77-09, kind: result_by_reading}
+  U-4593cb: {code: Ц77-09, kind: result_by_reading}
+  U-2d5a07: {kind: no_rp}
+  U-7b27c9: {kind: none}
+  U-0d37f5: {code: Ц79-01, kind: result_by_reading}
+  U-bfed5a: {kind: no_rp}
+  U-fa8a2b: {kind: no_rp}
+  U-270d4f: {kind: none}
+  U-7be162: {kind: no_rp}
+  U-4de2b0: {kind: no_rp}
+  U-bce9c6: {kind: none}
+  U-78cc00: {code: Ц79-01, kind: result_by_ref, ref: '#1368'}
+  U-0dc519: {kind: none}
+  U-662aa4: {code: Ц77-04, kind: result_by_ref, ref: '#1365'}
+  U-c069ee: {kind: contested, readings: {claude-code: none, kimi-headless: Ц77-06}}
+  U-99a906: {kind: service}
+  U-431a41: {kind: none}
+  U-6763c8: {code: Ц77-02, kind: result_by_reading}
+  U-6d71c7: {code: Ц77-02, kind: result_by_reading}
+  U-cb3a30: {kind: none}
+  U-e1f6a5: {kind: none}
+  U-06af63: {code: Ц37-02, kind: result_by_reading}
+  U-9593dc: {kind: rp_no_board_results}
+  U-cde7fb: {kind: no_rp}
+  U-5f5831: {kind: no_rp}
+  U-36651a: {kind: no_rp}
+  U-7bfa67: {kind: no_rp}
+  U-031fbc: {kind: no_rp}
+  U-4ca1b3: {kind: no_rp}
+  U-162073: {kind: none}
+  U-b60d0b: {kind: no_rp}
+  U-6ff651: {kind: rp_no_board_results}
+  U-2ff4a2: {kind: no_rp}
+  U-bb5ec3: {kind: no_rp}
+  U-7c55e5: {kind: no_rp}
+  U-80c3c5: {kind: no_rp}
+  U-fd6611: {kind: none}
+  U-ff095e: {kind: rp_no_board_results}
+  U-2a064d: {kind: none}
+  U-395b82: {kind: none}
+  U-57ae71: {kind: no_rp}
+  U-212618: {kind: no_rp}
+  U-6dde1f: {kind: no_rp}
+  U-24b91a: {kind: no_rp}
+  U-cc060e: {kind: no_rp}
+  U-a90b4a: {kind: no_rp}
+  U-18e0fe: {kind: service}
+  U-058a0f: {kind: no_rp}
+  U-57bb7c: {kind: none}
+  U-c2a220: {kind: service}
+  U-3d7c46: {kind: no_rp}
+  U-370b26: {kind: no_rp}
+  U-22a87a: {kind: no_rp}
+  U-b48291: {kind: no_rp}
+  U-b01e5d: {kind: none}
+  U-ec8471: {kind: no_rp}
+  U-745d44: {kind: no_rp}
+  U-171dad: {kind: no_rp}
+  U-a48a11: {kind: none}
+  U-393636: {kind: no_rp}
+  U-a95a3a: {kind: contested, readings: {claude-code: Ц82-02, kimi-headless: none}}
+  U-d03d98: {kind: none}
+  U-ffa6e4: {kind: contested, readings: {claude-code: service, kimi-headless: none}}
+  U-c8eb10: {kind: none}
+  U-43ded5: {kind: no_rp}
+  U-dd7a2b: {kind: no_rp}
+  U-cf322d: {kind: no_rp}
+  U-4d866a: {kind: no_rp}
+  U-b6e959: {kind: no_rp}
+  U-11e707: {code: Ц82-01, kind: result_by_reading}
+  U-71c1a7: {kind: contested, readings: {claude-code: Ц82-01, kimi-headless: none}}
+  U-75d755: {kind: contested, readings: {claude-code: Ц82-01, kimi-headless: none}}
+  U-ac1dbb: {kind: none}
+  U-7cb0ba: {code: Ц83-02, kind: result_by_ref, ref: '#1270'}
+  U-be8ad5: {kind: no_rp}
+  U-37d5e0: {kind: contested, readings: {claude-code: Ц77-07, kimi-headless: service}}
+  U-694f36: {code: Ц79-01, kind: result_by_reading}
+  U-de742a: {code: Ц79-01, kind: result_by_reading}
+  U-925a38: {code: Ц79-01, kind: result_by_reading}
+  U-c3fff2: {kind: rp_no_board_results}
+  U-df7578: {kind: rp_no_board_results}
+  U-0acbb9: {kind: no_rp}
+  U-f7306e: {kind: no_rp}
+  U-6d48b0: {kind: no_rp}
+  U-0d1dfa: {kind: rp_no_board_results}
+  U-504274: {kind: no_rp}
+  U-809c93: {kind: no_rp}
+  U-0e8635: {kind: no_rp}
+  U-8e33f1: {kind: no_rp}
+  U-5dffd6: {kind: no_rp}
+  U-ed40e7: {kind: no_rp}
+  U-226fa1: {kind: no_rp}
+  U-b38ec9: {kind: no_rp}
+  U-14b804: {kind: no_rp}
+  U-1a4253: {kind: no_rp}
+  U-af7ea8: {kind: no_rp}
+  U-ecd339: {kind: service}
+  U-f0eb9c: {kind: no_rp}
+  U-c38d44: {kind: rp_no_board_results}
+  U-4d9035: {kind: no_rp}
+  U-9bfdea: {kind: no_rp}
+  U-199c2e: {kind: no_rp}
+  U-2e4a5a: {kind: no_rp}
+  U-816339: {kind: no_rp}
+  U-097bb9: {kind: no_rp}
+  U-e5a469: {kind: no_rp}
+  U-c71d78: {kind: rp_no_board_results}
+  U-087300: {code: Ц84-01, kind: result_by_reading}
+  U-183aa4: {kind: no_rp}
+  U-730bf4: {kind: no_rp}
+  U-630b50: {kind: no_rp}
+  U-b23184: {kind: no_rp}
+  U-3fa69c: {kind: no_rp}
+  U-e402f2: {kind: no_rp}
+  U-194490: {kind: no_rp}
+  U-3f00cc: {kind: no_rp}
+  U-9da66c: {kind: no_rp}
+  U-4105cd: {kind: no_rp}
+  U-f10cbc: {kind: no_rp}
+  U-9cae00: {kind: no_rp}
+  U-fa8df1: {kind: no_rp}
+  U-95c99f: {kind: no_rp}
+  U-a69389: {kind: no_rp}
+  U-652344: {kind: no_rp}
+  U-e41f5f: {kind: no_rp}
+  U-584318: {kind: no_rp}
+  U-c2722c: {kind: no_rp}
+  U-db4b77: {kind: no_rp}
+  U-768cef: {kind: no_rp}
+  U-0790f8: {kind: no_rp}
+  U-77ef10: {kind: no_rp}
+  U-cdd4a6: {kind: no_rp}
+  U-dca3b5: {kind: no_rp}
+  U-82fb23: {kind: no_rp}
+  U-e7b285: {kind: no_rp}
+  U-445b18: {kind: no_rp}
+  U-9a36a8: {kind: no_rp}
+  U-768da3: {kind: rp_no_board_results}
+  U-63707d: {kind: no_rp}
+  U-107990: {kind: no_rp}
+  U-a5df31: {kind: no_rp}
+  U-1e74a4: {kind: no_rp}
+  U-d43100: {kind: no_rp}
+  U-a8704d: {kind: no_rp}
+  U-d48b31: {kind: no_rp}
+  U-bdd8fd: {kind: no_rp}
+  U-06c03f: {kind: no_rp}
+  U-15d282: {kind: no_rp}
+  U-50232c: {kind: no_rp}
+  U-8bd168: {kind: no_rp}
+  U-b9d2e6: {kind: no_rp}
+  U-99ad9b: {kind: no_rp}
+  U-12c80e: {kind: rp_no_board_results}
+  U-8ade5e: {kind: none}
+  U-aad0dc: {kind: no_rp}
+  U-89d124: {kind: no_rp}
+  U-d8d5bb: {kind: no_rp}
+  U-9c7538: {kind: no_rp}
+  U-1425c5: {kind: no_rp}
+  U-79b76a: {kind: no_rp}
+  U-6a01d0: {kind: no_rp}
+  U-42c076: {kind: no_rp}
+  U-894c87: {kind: no_rp}
+  U-a8f089: {kind: no_rp}
+  U-bbb16a: {kind: rp_no_board_results}
+  U-ab4a41: {kind: no_rp}
+  U-612c3c: {kind: no_rp}
+  U-49e5e5: {kind: no_rp}
+  U-bcc195: {kind: no_rp}
+  U-070713: {kind: no_rp}
+  U-d7b279: {kind: no_rp}
+  U-19188f: {kind: none}
+  U-09dabc: {kind: no_rp}
+  U-445087: {kind: no_rp}
+  U-47df0c: {kind: no_rp}
+  U-8e068a: {kind: no_rp}
+  U-d03303: {kind: none}
+  U-6c6446: {kind: no_rp}
+  U-193a9a: {kind: no_rp}
+  U-b005be: {kind: no_rp}
+  U-f88ead: {kind: no_rp}
+  U-848292: {kind: rp_no_board_results}
+  U-0f2eb0: {kind: none}
+  U-5b959e: {kind: no_rp}
+  U-0116f2: {kind: no_rp}
+  U-db83b9: {kind: no_rp}
+  U-e46564: {kind: no_rp}
+  U-0dee7c: {kind: no_rp}
+  U-4a0ad5: {kind: no_rp}
+  U-5682c7: {kind: no_rp}
+  U-ed8697: {kind: no_rp}
+  U-281c4b: {kind: none}
+  U-a5e1a2: {kind: none}
+  U-ba515d: {kind: no_rp}
+  U-4b4402: {kind: no_rp}
+  U-9bbb83: {kind: none}
+  U-ecca1d: {kind: contested, readings: {claude-code: service, kimi-headless: none}}
+  U-521ccc: {kind: none}
+  U-3198d3: {kind: service}
+  U-82ec73: {kind: service}
+  U-47e171: {kind: contested, readings: {claude-code: service, kimi-headless: none}}
+  U-25bd52: {kind: contested, readings: {claude-code: service, kimi-headless: none}}
+  U-8fa445: {kind: none}
+  U-4135d2: {kind: none}
+  U-35a414: {kind: no_rp}
+  U-549723: {kind: no_rp}
+  U-7bb384: {kind: none}
+  U-dfd6c7: {kind: none}
+  U-7ed1cd: {kind: no_rp}
+  U-d15f76: {kind: no_rp}
+  U-0996ca: {kind: none}
+  U-19c2a8: {kind: no_rp}
+  U-20ff11: {kind: no_rp}
+  U-a901c3: {kind: no_rp}
+  U-a21a4b: {kind: no_rp}
+  U-30d93a: {kind: no_rp}
+  U-d297a2: {kind: no_rp}
+  U-1db9a4: {kind: no_rp}
+  U-17b9a2: {kind: none}
+  U-270b93: {kind: no_rp}
+  U-9e5ae0: {kind: no_rp}
+  U-6a8c55: {kind: contested, readings: {claude-code: Ц77-07, kimi-headless: none}}
+  U-d00fee: {kind: no_rp}
+  U-9ae1c8: {kind: none}
+  U-1a6688: {kind: no_rp}
+  U-cabeb4: {kind: no_rp}
+  U-c93e6f: {kind: none}
+  U-73bc76: {kind: none}
+  U-c51b3a: {kind: none}
+  U-e070af: {kind: none}
+  U-60e073: {kind: no_rp}
+  U-664813: {kind: no_rp}
+  U-4dabb9: {kind: no_rp}
+  U-deb8f2: {kind: no_rp}
+  U-7a4f27: {kind: no_rp}
+  U-d8911a: {kind: no_rp}
+  U-ca2bb5: {kind: no_rp}
+  U-3f28e7: {kind: no_rp}
+  U-0298e8: {kind: no_rp}
+  U-801040: {kind: no_rp}
+  U-54effb: {kind: no_rp}
+  U-f02b63: {kind: no_rp}
+  U-bcdfd1: {kind: no_rp}
+  U-0cdeda: {kind: no_rp}
+  U-6e1b3e: {kind: no_rp}
+  U-f1f45c: {kind: no_rp}
+  U-218003: {kind: no_rp}
+  U-cf48a7: {kind: rp_no_board_results}
+  U-6bbb67: {kind: no_rp}
+  U-80219b: {kind: no_rp}
+  U-5d27b1: {kind: no_rp}
+  U-2c6c53: {kind: no_rp}
+  U-70a94d: {kind: no_rp}
+  U-ea91fe: {kind: no_rp}
+  U-addffa: {kind: no_rp}
+  U-054cec: {kind: no_rp}
+  U-e3cd7d: {kind: rp_no_board_results}
+  U-de97b6: {kind: no_rp}
+  U-6766af: {kind: no_rp}
+  U-5cb360: {kind: no_rp}
+  U-0bd372: {kind: no_rp}
+  U-1fbb7f: {kind: no_rp}
+  U-36a454: {kind: no_rp}
+  U-e6b260: {kind: no_rp}
+  U-e80c1a: {kind: no_rp}
+  U-2c1b3b: {kind: no_rp}
+  U-cc8439: {kind: no_rp}
+  U-c6464a: {kind: no_rp}
+  U-8e12ad: {kind: no_rp}
+  U-db0835: {kind: no_rp}
+  U-a89a8b: {kind: no_rp}
+  U-260242: {kind: none}
+  U-affdb9: {kind: no_rp}
+  U-b49741: {kind: no_rp}
+  U-4122d7: {kind: no_rp}
+  U-714a0e: {kind: no_rp}
+  U-f1f117: {kind: no_rp}
+  U-3cadb3: {kind: no_rp}
+  U-1f141f: {kind: no_rp}
+  U-85a35e: {kind: no_rp}
+  U-43e377: {kind: no_rp}
+  U-e28277: {kind: no_rp}
+  U-793555: {kind: no_rp}
+  U-5d0474: {kind: service}
+  U-b2c74e: {kind: contested, readings: {claude-code: Ц38-11, kimi-headless: Ц78-04}}
+  U-bcaaf6: {kind: no_rp}
+  U-75bc1c: {kind: no_rp}
+  U-b17807: {kind: no_rp}
+  U-41eb59: {kind: no_rp}
+  U-5b7442: {kind: no_rp}
+  U-098b46: {kind: no_rp}
+  U-970d98: {kind: no_rp}
+  U-da7547: {kind: no_rp}
+  U-5e9760: {kind: no_rp}
+  U-4596b1: {kind: no_rp}
+  U-fe3e97: {kind: no_rp}
+  U-1d080e: {kind: no_rp}
+  U-179244: {kind: no_rp}
+  U-347fe3: {kind: no_rp}
+  U-f90252: {kind: no_rp}
+  U-0c8597: {kind: no_rp}
+  U-b4c8fd: {kind: none}
+  U-aabfc6: {kind: rp_no_board_results}
+  U-a62df1: {kind: none}
+  U-9c43d0: {kind: none}
+  U-83c11e: {kind: none}
+  U-eba398: {commit_wp: [575], kind: rp_no_board_results}
+  U-fdf191: {kind: none}
+  U-7955d1: {kind: no_rp}
+  U-cd6754: {kind: no_rp}
+  U-ec069d: {kind: rp_no_board_results}
+  U-f48714: {commit_wp: [526], kind: contested, readings: {claude-code: Ц23-03, kimi-headless: none}}
+  U-0307c3: {commit_wp: [7], kind: service}
+  U-776acc: {kind: no_rp}
+  U-d8cfe7: {code: Ц77-02, kind: result_by_reading}
+  U-9c8eb1: {commit_wp: [529], kind: none}
+  U-d442c2: {kind: contested, readings: {claude-code: Ц38-04, kimi-headless: none}}
+  U-f8bbbc: {code: Ц77-02, commit_wp: [7], kind: result_by_reading}
+  U-1b30ba: {kind: no_rp}
+  U-180b20: {code: Ц70-03, commit_wp: [560], kind: result_by_ref, ref: d24cb72}
+  U-799268: {kind: no_rp}
+  U-6fd877: {kind: no_rp}
+  U-51b1ec: {kind: no_rp}
+  U-79ec20: {kind: no_rp}
+  U-67593c: {kind: no_rp}
+  U-d964a0: {kind: no_rp}
+  U-1e3bfb: {kind: no_rp}
+  U-2aacf7: {kind: rp_no_board_results}
+  U-1fb392: {kind: no_rp}
+  U-ecfa34: {kind: no_rp}
+  U-141aa0: {commit_wp: [7], kind: none}
+  U-0282b3: {kind: no_rp}
+  U-867650: {kind: no_rp}
+  U-82a754: {kind: no_rp}
+  U-bfa83a: {commit_wp: [574], kind: rp_no_board_results}
+  U-33cf0f: {commit_wp: [560], kind: none}
+  U-f8461f: {commit_wp: [7], kind: none}
+  U-70a9c3: {kind: no_rp}
+  U-16a153: {commit_wp: [526], kind: none}
+  U-309f30: {commit_wp: [544, 570], kind: none}
+  U-384291: {commit_wp: [570], kind: rp_no_board_results}
+  U-9087db: {commit_wp: [7], kind: none}
+  U-aadaab: {kind: no_rp}
+  U-0f17a5: {commit_wp: [7], kind: none}
+  U-f0d987: {commit_wp: [7], kind: none}
+  U-6c42f8: {kind: rp_no_board_results}
+  U-c8fafe: {kind: no_rp}
+  U-e0411b: {commit_wp: [7], kind: contested, readings: {claude-code: service, kimi-headless: none}}
+  U-ee0905: {kind: no_rp}
+  U-57764a: {kind: no_rp}
+  U-5cbf78: {code: Ц81-02, kind: result_by_ref, ref: c40d2db}
+  U-03d108: {kind: none}
+  U-613508: {kind: no_rp}
+  U-549004: {commit_wp: [7], kind: none}
+  U-c5ad31: {kind: no_rp}
+  U-7833e5: {commit_wp: [7, 530], kind: none}
+  U-46cb80: {commit_wp: [7], kind: none}
+  U-edab17: {commit_wp: [7, 561], kind: none}
+  U-23a247: {commit_wp: [7, 299, 544], kind: contested, readings: {claude-code: Ц77-02, kimi-headless: none}}
+  U-90e715: {commit_wp: [7], kind: none}
+  U-540bf6: {commit_wp: [529], kind: contested, readings: {claude-code: Ц78-03, kimi-headless: none}}
+  U-9ecf6c: {commit_wp: [544], kind: service}
+  U-70c074: {commit_wp: [518], kind: none}
+  U-e925c9: {kind: no_rp}
+  U-829684: {commit_wp: [538], kind: rp_no_board_results}
+  U-ce77dd: {kind: no_rp}
+  U-08c50e: {commit_wp: [7], kind: none}
+  U-26e91f: {commit_wp: [7], kind: none}
+  U-507ad0: {commit_wp: [7, 38], kind: none}
+  U-c80919: {commit_wp: [563], kind: rp_no_board_results}
+  U-db63f0: {kind: no_rp}
+  U-bedfd1: {kind: no_rp}
+  U-2688a2: {commit_wp: [7], kind: none}
+  U-137298: {kind: no_rp}
+  U-cb6b23: {kind: no_rp}
+  U-c9c842: {commit_wp: [529], kind: none}
+  U-89dd88: {kind: no_rp}
+  U-b8d13e: {kind: no_rp}
+  U-29ef76: {kind: no_rp}
+  U-115b8e: {commit_wp: [417, 529], kind: none}
+  U-633897: {commit_wp: [484], kind: contested, readings: {claude-code: Ц38-04, kimi-headless: none}}
+  U-37b93b: {commit_wp: [548], kind: rp_no_board_results}
+  U-02fd2a: {commit_wp: [527], kind: rp_no_board_results}
+  U-124762: {kind: no_rp}
+  U-659028: {kind: rp_no_board_results}
+  U-d0c610: {commit_wp: [484], kind: none}
+  U-bf40f5: {kind: none}
+  U-0087b7: {kind: no_rp}
+  U-d547a9: {commit_wp: [559], kind: none}
+  U-8e3280: {kind: no_rp}
+  U-663bc3: {kind: no_rp}
+  U-0f095b: {commit_wp: [484], kind: none}
+  U-0a41a9: {commit_wp: [527], kind: rp_no_board_results}
+  U-c4ea25: {commit_wp: [484, 485, 520, 546], kind: contested, readings: {claude-code: none, kimi-headless: service}}
+  U-2941e7: {commit_wp: [527], kind: rp_no_board_results}
+  U-580827: {kind: no_rp}
+  U-ed1b27: {kind: no_rp}
+  U-e8dbbc: {kind: no_rp}
+  U-a56e3d: {kind: no_rp}
+  U-e79b05: {kind: no_rp}
+  U-07047b: {kind: no_rp}
+  U-844208: {kind: no_rp}
+  U-b5582a: {kind: none}
+  U-622994: {kind: none}
+  U-978529: {kind: contested, readings: {claude-code: Ц84-12, kimi-headless: service}}
+  U-ed015c: {commit_wp: [529], kind: none}
+  U-d25411: {kind: no_rp}
+  U-4411a2: {kind: no_rp}
+  U-bcf961: {kind: no_rp}
+  U-147bf5: {kind: no_rp}
+  U-6213d7: {kind: no_rp}
+  U-141ebf: {kind: no_rp}
+  U-758ad5: {code: Ц23-03, kind: result_by_reading}
+  U-04e381: {commit_wp: [529], kind: service}
+  U-24bc3e: {kind: no_rp}
+  U-44c42a: {kind: no_rp}
+  U-0b2404: {kind: no_rp}
+  U-581d71: {kind: rp_no_board_results}
+  U-178efe: {kind: no_rp}
+  U-505ec2: {commit_wp: [7], kind: service}
+  U-ef247c: {kind: no_rp}
+  U-e18dfe: {kind: no_rp}
+  U-aee4e2: {kind: no_rp}
+  U-1e16c4: {kind: contested, readings: {claude-code: Ц38-04, kimi-headless: none}}
+  U-aaefcc: {commit_wp: [526], kind: none}
+  U-d351e5: {kind: no_rp}
+  U-1b03e8: {kind: no_rp}
+  U-d8c945: {kind: no_rp}
+  U-beb884: {kind: no_rp}
+  U-931ee7: {kind: no_rp}
+  U-cf306b: {kind: no_rp}
+  U-f35efb: {kind: no_rp}
+  U-5a9c51: {kind: no_rp}
+  U-ab80c0: {kind: no_rp}
+  U-4ad07d: {kind: no_rp}
+  U-0f715d: {kind: no_rp}
+  U-7daca2: {kind: no_rp}
+  U-216c16: {kind: no_rp}
+  U-85a6b1: {kind: no_rp}
+  U-363734: {commit_wp: [170], kind: none}
+  U-e55935: {kind: none}
+  U-b33e33: {kind: no_rp}
+  U-5ce9ed: {kind: none}
+  U-a2043f: {commit_wp: [526], kind: none}
+  U-c3d6a2: {kind: no_rp}
+  U-26deef: {kind: no_rp}
+  U-04607c: {kind: no_rp}
+  U-5a3428: {kind: no_rp}
+  U-d44007: {kind: no_rp}
+  U-eb1135: {kind: contested, readings: {claude-code: Ц84-12, kimi-headless: service}}
+  U-8a58d6: {commit_wp: [529], kind: contested, readings: {claude-code: service, kimi-headless: none}}
+  U-69d5f5: {commit_wp: [529], kind: service}
+  U-430dea: {commit_wp: [7], kind: none}
+  U-b264e6: {commit_wp: [7], kind: contested, readings: {claude-code: service, kimi-headless: none}}
+  U-0558eb: {kind: service}
+  U-372e6e: {kind: no_rp}
+  U-f8d187: {kind: no_rp}
+  U-8481de: {commit_wp: [7], kind: none}
+  U-163281: {commit_wp: [546], kind: rp_no_board_results}
+  U-cba4ad: {kind: no_rp}
+  U-fcc354: {kind: no_rp}
+  U-2553df: {kind: no_rp}
+  U-e119a2: {kind: no_rp}
+  U-2618cb: {kind: no_rp}
+  U-f2757c: {kind: no_rp}
+  U-da60d8: {kind: none}
+  U-4a7591: {kind: none}
+  U-1f2b59: {commit_wp: [529], kind: contested, readings: {claude-code: none, kimi-headless: service}}
+  U-6c3773: {kind: no_rp}
+  U-a3ca9b: {kind: none}
+  U-c23e9e: {kind: none}
+  U-6ce60b: {kind: none}
+  U-3e3c1f: {kind: no_rp}
+  U-f0e40d: {kind: none}
+  U-12476c: {kind: none}
+  U-df6b09: {commit_wp: [546], kind: rp_no_board_results}
+  U-0a5a90: {kind: no_rp}
+  U-7fe84a: {kind: service}
+  U-7cc4df: {commit_wp: [217], kind: rp_no_board_results}
+  U-eb30a4: {commit_wp: [546], kind: rp_no_board_results}
+  U-2e856a: {kind: rp_no_board_results}
+  U-d5774a: {kind: rp_no_board_results}
+  U-96c933: {commit_wp: [484], kind: contested, readings: {claude-code: Ц38-04, kimi-headless: none}}
+  U-f4360f: {commit_wp: [529], kind: contested, readings: {claude-code: service, kimi-headless: none}}
+  U-0525a0: {commit_wp: [529, 546], kind: contested, readings: {claude-code: none, kimi-headless: service}}
+  U-e90ef5: {commit_wp: [529, 546], kind: contested, readings: {claude-code: none, kimi-headless: service}}
+  U-1aa228: {commit_wp: [529], kind: service}
+  U-d8cf92: {kind: no_rp}
+  U-412994: {kind: no_rp}
+  U-6d1e2f: {kind: no_rp}
+  U-2a240e: {commit_wp: [503], kind: none}
+  U-da62ae: {kind: service}
+  U-ce4723: {kind: no_rp}
+  U-e70e84: {kind: contested, readings: {claude-code: Ц84-11, kimi-headless: service}}
+  U-9ddc8a: {kind: contested, readings: {claude-code: Ц84-11, kimi-headless: service}}
+  U-9b114f: {kind: no_rp}
+  U-608384: {kind: no_rp}
+  U-bfa94e: {kind: no_rp}
+  U-6fbd5b: {kind: no_rp}
+  U-9e5639: {kind: no_rp}
+  U-085cc8: {commit_wp: [452], kind: rp_no_board_results}
+  U-13b38e: {kind: no_rp}
+  U-4fb6e3: {kind: no_rp}
+  U-df9297: {commit_wp: [452], kind: rp_no_board_results}
+  U-6d6573: {kind: no_rp}
+  U-a4a238: {kind: no_rp}
+  U-13113b: {kind: no_rp}
+  U-bcf114: {kind: no_rp}
+  U-74bdcf: {kind: no_rp}
+  U-60fad6: {kind: service}
+  U-49bbd1: {kind: no_rp}
+  U-b17948: {commit_wp: [529], kind: service}
+  U-e8ae9a: {kind: no_rp}
+  U-41fd4a: {kind: no_rp}
+  U-89135a: {kind: no_rp}
+  U-557834: {kind: no_rp}
+  U-28f9d3: {kind: no_rp}
+  U-82dc08: {kind: service}
+  U-320785: {kind: service}
+  U-6c9cb4: {kind: contested, readings: {claude-code: service, kimi-headless: none}}
+  U-4a3ce4: {kind: no_rp}
+  U-42dbd8: {kind: none}
+  U-1ee0f0: {kind: none}
+  U-3d3af1: {kind: no_rp}
+  U-230e5b: {kind: no_rp}
+  U-92fa79: {kind: no_rp}
+  U-f710bc: {commit_wp: [47], kind: rp_no_board_results}
+  U-3f5de3: {commit_wp: [47, 49], kind: rp_no_board_results}
+  U-f7583f: {kind: no_rp}
+  U-34e931: {kind: no_rp}
+  U-ae5be5: {kind: no_rp}
+  U-93409f: {kind: no_rp}
+  U-bf141e: {commit_wp: [503], kind: service}
+  U-425621: {kind: no_rp}
+  U-608302: {kind: no_rp}
+  U-ce4179: {kind: no_rp}
+  U-d4fd17: {commit_wp: [503], kind: service}
+  U-c4afb1: {kind: no_rp}
+  U-f3ca02: {commit_wp: [503], kind: none}
+  U-48802e: {kind: no_rp}
+  U-f331eb: {kind: none}
+  U-db695f: {kind: no_rp}
+  U-7abc17: {kind: no_rp}
+  U-925e04: {commit_wp: [484], kind: none}
+  U-618a56: {kind: no_rp}
+  U-e09c86: {commit_wp: [529], kind: service}
+  U-af1656: {commit_wp: [529], kind: none}
+  U-0a289e: {kind: no_rp}
+  U-8984b7: {kind: no_rp}
+  U-057eb9: {commit_wp: [537], kind: none}
+  U-54b018: {kind: no_rp}
+  U-b31a3f: {kind: no_rp}
+  U-7e6ce0: {kind: no_rp}
+  U-576bae: {kind: no_rp}
+  U-ac2e00: {kind: no_rp}
+  U-cb50fd: {commit_wp: [401], kind: rp_no_board_results}
+  U-f2276e: {kind: no_rp}
+  U-268805: {kind: no_rp}
+  U-3c72f9: {kind: no_rp}
+  U-246c83: {commit_wp: [7], kind: none}
+  U-6fc35e: {commit_wp: [7], kind: none}
+  U-239df8: {commit_wp: [7], kind: contested, readings: {claude-code: none, kimi-headless: service}}
+  U-11a1bd: {commit_wp: [484], kind: contested, readings: {claude-code: Ц34-02, kimi-headless: none}}
+  U-2b0ec4: {kind: no_rp}
+  U-0a0496: {kind: none}
+  U-cffd5d: {commit_wp: [484, 518], kind: none}
+  U-a030cf: {kind: no_rp}
+  U-ec9979: {kind: no_rp}
+  U-19acc4: {kind: no_rp}
+  U-706058: {kind: no_rp}
+  U-bd6b59: {kind: no_rp}
+  U-f3f2eb: {kind: no_rp}
+  U-822c0e: {kind: no_rp}
+  U-fd30d8: {kind: none}
+  U-591b21: {kind: no_rp}
+  U-a5249f: {kind: no_rp}
+  U-a6841b: {commit_wp: [517], kind: rp_no_board_results}
+  U-13356c: {commit_wp: [7], kind: service}
+  U-d80642: {commit_wp: [7], kind: service}
+  U-5714dd: {commit_wp: [7], kind: service}
+  U-2121aa: {kind: no_rp}
+  U-fe87d1: {kind: no_rp}
+  U-5f26be: {kind: no_rp}
+  U-723c49: {kind: rp_no_board_results}
+  U-6b1bea: {kind: no_rp}
+  U-ea46d8: {kind: no_rp}
+  U-d891ca: {kind: no_rp}
+  U-85ad2b: {kind: no_rp}
+  U-bd6ac2: {kind: no_rp}
+  U-2054ce: {kind: no_rp}
+  U-b9b4cb: {kind: contested, readings: {claude-code: Ц34-02, kimi-headless: none}}
+  U-37ef7c: {kind: no_rp}
+  U-f322f9: {commit_wp: [7], kind: none}
+  U-0ca8cc: {kind: no_rp}
+  U-f54c61: {kind: contested, readings: {claude-code: Ц34-02, kimi-headless: none}}
+  U-a8a711: {kind: no_rp}
+  U-2a64a4: {kind: no_rp}
+  U-94b5d3: {kind: no_rp}
+  U-6f451b: {commit_wp: [7], kind: none}
+  U-6a15aa: {commit_wp: [7], kind: contested, readings: {claude-code: Ц77-02, kimi-headless: none}}
+  U-e95b52: {commit_wp: [406], kind: none}
+  U-26709b: {kind: no_rp}
+  U-5d5325: {kind: no_rp}
+  U-205f20: {kind: no_rp}
+  U-43cf9d: {kind: no_rp}
+  U-dc049b: {code: Ц53-10, kind: result_by_reading}
+  U-0d4d73: {kind: no_rp}
+  U-084a6e: {kind: no_rp}
+  U-2bfc63: {kind: no_rp}
+  U-290b92: {kind: no_rp}
+  U-f18418: {kind: no_rp}
+  U-cc7b10: {kind: no_rp}
+  U-9dffc1: {kind: no_rp}
+  U-05581b: {kind: no_rp}
+  U-1c7f65: {kind: no_rp}
+  U-04f88f: {kind: no_rp}
+  U-b0f233: {kind: no_rp}
+  U-c394ed: {kind: no_rp}
+  U-39f368: {kind: no_rp}
+  U-06678d: {kind: no_rp}
+  U-d5082a: {kind: no_rp}
+  U-1317d7: {kind: no_rp}
+  U-05ec37: {kind: no_rp}
+  U-790646: {kind: no_rp}
+  U-b5f893: {kind: no_rp}
+  U-33f572: {kind: no_rp}
+  U-0b0b28: {kind: no_rp}
+  U-25034b: {kind: no_rp}
+  U-24b7c7: {kind: no_rp}
+  U-86681f: {kind: no_rp}
+  U-c1c2af: {kind: no_rp}
+  U-819bb2: {kind: contested, readings: {claude-code: Ц34-02, kimi-headless: none}}
+  U-c87aea: {kind: no_rp}
+  U-798e42: {kind: no_rp}
+  U-3b9ad9: {kind: none}
+  U-036fb8: {kind: none}
+  U-dbfc05: {kind: service}
+  U-d21be0: {kind: service}
+  U-0f60e6: {kind: no_rp}
+  U-f6b46c: {kind: no_rp}
+  U-e41334: {commit_wp: [453, 502], kind: rp_no_board_results}
+  U-73ad55: {kind: no_rp}
+  U-30a25d: {kind: no_rp}
+  U-c822d9: {kind: no_rp}
+  U-541d7b: {kind: no_rp}
+  U-5204cf: {kind: no_rp}
+  U-21ee25: {kind: no_rp}
+  U-3e14d0: {kind: no_rp}
+  U-130232: {kind: no_rp}
+  U-07ecde: {kind: no_rp}
+  U-39cfb9: {kind: no_rp}
+  U-3ef4db: {commit_wp: [7], kind: none}
+  U-57df55: {commit_wp: [7], kind: none}
+  U-847e03: {kind: no_rp}
+  U-ebd413: {kind: no_rp}
+  U-85de66: {kind: none}
+  U-7bfc36: {kind: no_rp}
+  U-00fe23: {kind: service}
+  U-9d0e40: {kind: no_rp}
+  U-d66d9b: {commit_wp: [7], kind: none}
+  U-d0fdfd: {commit_wp: [7], kind: none}
+  U-ccb475: {commit_wp: [7], kind: contested, readings: {claude-code: none, kimi-headless: service}}
+  U-b4c1d8: {kind: service}
+  U-e40a37: {kind: no_rp}
+  U-d010b9: {commit_wp: [7], kind: none}
+  U-3427d9: {kind: no_rp}

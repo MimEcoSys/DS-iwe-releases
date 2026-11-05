@@ -388,6 +388,8 @@ results:
   works:
   - РП-526
   in_week_plan: true
+  released_041_records:
+  - U-758ad5
 - code: Ц23-04
   goal: 23
   contours: *id004
@@ -726,6 +728,8 @@ results:
   in_week_plan: true
   on_staging: true
   evidence: 'CHANGELOG 0.41.10: «этапы описаны одной таблицей «Этапы сессии» в strategy-session-monthly.md (10 этапов…)», рядом записи про пул недели и шаги 04/06a'
+  released_041_records:
+  - U-06af63
 - code: Ц37-03
   goal: 37
   contours: *id007
@@ -1389,6 +1393,8 @@ results:
   - РП-483
   in_week_plan: false
   evidence: 'CHANGELOG 0.38.2: «guide-kit обновлён до v0.1.3: прикладная дорожка (вход domain_traits…)»; test_applied_track.py first tag v0.38.2; мост health.db → swimming.yaml — личные данные автора'
+  released_041_records:
+  - U-dc049b
 - code: Ц53-11
   goal: 53
   contours: *id012
@@ -1634,6 +1640,8 @@ results:
   - РП-170
   in_week_plan: true
   evidence: 'CHANGELOG 0.41.11: «Скилл /apply-captures (1.3.1): кандидаты… карточкой из пяти строк» (PR #1389, 29.10); версия 1.4.0 (проверка соседей по смыслу) — только в iwe-local-config / ~/IWE, в шаблоне 1.3.1'
+  released_041_records:
+  - U-8ff750
 - code: Ц70-02
   goal: 70
   contours: *id014
@@ -1655,6 +1663,8 @@ results:
   - РП-560
   in_week_plan: true
   evidence: 'РП-560 Ф13: PR #822 d24cb72 «fix(extractor): inbox-check pipeline never saw browser-source captures», git tag --contains → v0.40.1'
+  released_041_records:
+  - U-180b20
 - code: Ц71-01
   goal: 71
   contours: &id015
@@ -1847,6 +1857,15 @@ results:
   - РП-7
   in_week_plan: true
   evidence: 'CHANGELOG 0.41.11: ext-railway убран из .mcp.json, changelog-append.sh без пустых строк, «(WP-7, #1409)»; c73d19bb в v0.41.11'
+  released_041_records:
+  - U-72908a
+  - U-a86f15
+  - U-420be9
+  - U-f4eda5
+  - U-6763c8
+  - U-6d71c7
+  - U-d8cfe7
+  - U-f8bbbc
 - code: Ц77-03
   goal: 77
   contours: *id018
@@ -1868,6 +1887,9 @@ results:
   - РП-529
   in_week_plan: true
   evidence: 'CHANGELOG 0.41.10: «update.sh --check / --dry-run теперь показывает сводку «Главное в этом обновлении» до установки… пункты без метки [optional]» (PR #1365); доработка первого предложения — 0.41.11'
+  released_041_records:
+  - U-625322
+  - U-662aa4
 - code: Ц77-05
   goal: 77
   contours: *id018
@@ -1879,6 +1901,9 @@ results:
   - РП-529
   in_week_plan: true
   evidence: 'CHANGELOG 0.41.11: «update.sh --check заканчивается одной строкой вердикта: ВЕРДИКТ: можно ставить…» и «Скилл iwe-update не применяет обновление, если положительный вердикт --check идёт с оговоркой»'
+  released_041_records:
+  - U-4f9ab4
+  - U-9bf422
 - code: Ц77-06
   goal: 77
   contours: *id018
@@ -1900,6 +1925,8 @@ results:
   works:
   - РП-529
   in_week_plan: true
+  released_041_records:
+  - U-f1dc3c
 - code: Ц77-08
   goal: 77
   contours: *id018
@@ -1921,6 +1948,9 @@ results:
   works:
   - РП-529
   in_week_plan: true
+  released_041_records:
+  - U-0793aa
+  - U-4593cb
 - code: Ц77-10
   goal: 77
   contours: *id018
@@ -2025,6 +2055,12 @@ results:
   - РП-7
   in_week_plan: true
   evidence: 'scripts/iwe-backup-run.sh (51f63448, Ф237в регулярный зашифрованный бэкап) и iwe-backup-protect.sh (be7807cc, Ф237б) первыми в v0.41.9; единый договор и тревога по регрессу — CHANGELOG 0.41.10 (iwe-backup.sh, PR #1368)'
+  released_041_records:
+  - U-0d37f5
+  - U-78cc00
+  - U-694f36
+  - U-de742a
+  - U-925a38
 - code: Ц79-02
   goal: 79
   contours: *id020
@@ -2078,6 +2114,8 @@ results:
   - РП-482
   in_week_plan: false
   evidence: 'CHANGELOG 0.40.0: «c40d2db feat(hooks): universal security hooks package — Д28 (WP-544)»; secret-leak-block.sh в этом коммите блокирует env/printenv/railway variables; анализатор доработан в 0.40.1 (ffceb51b)'
+  released_041_records:
+  - U-5cbf78
 - code: Ц81-03
   goal: 81
   contours: *id021
@@ -2140,6 +2178,8 @@ results:
   works:
   - РП-518
   in_week_plan: true
+  released_041_records:
+  - U-11e707
 - code: Ц82-02
   goal: 82
   contours: *id022
@@ -2236,6 +2276,8 @@ results:
   - РП-606
   in_week_plan: false
   evidence: 'CHANGELOG 0.41.9: «CLAUDE.md (Pre-action Gates): … указать область их уникальности и ответственного за схему» (PR #1270, РП-606)'
+  released_041_records:
+  - U-7cb0ba
 - code: Ц83-03
   goal: 83
   contours: *id023
@@ -2287,6 +2329,8 @@ results:
   works:
   - РП-617
   in_week_plan: true
+  released_041_records:
+  - U-1d20b2
 - code: Ц93-03
   goal: 93
   contours: *id024
@@ -2514,6 +2558,8 @@ results:
   - РП-5
   in_week_plan: true
   merged_after_0_41_11: true
+  released_041_records:
+  - U-d9c17e
 - code: Ц84-01
   goal: 84
   contours: &id028
@@ -2526,6 +2572,8 @@ results:
   - РП-415
   in_week_plan: false
   evidence: 'РП-415: шаг «Cyrillic gate» в translate-sync.yml (63c2ec5) и публикация без следов происхождения (8c9c305), оба 16.07, git tag --contains → v0.36.0; сам iwesys/IWE — внешнее зеркало'
+  released_041_records:
+  - U-087300
 - code: Ц84-02
   goal: 84
   contours: *id028
