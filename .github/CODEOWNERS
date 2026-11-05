@@ -1,6 +1,7 @@
 # Who approves changes to which file (README.md, section "Кто куда пишет").
 *                        @TserenTserenov
 /board/developer.yaml    @MimEcoSys/iwe-developers
+/board/developer-links.yaml @MimEcoSys/iwe-developers
 /board/release-lead.yaml @MimEcoSys/iwe-release-lead
 /releases/               @MimEcoSys/iwe-release-lead
 /board/testers/          @MimEcoSys/iwe-testers
