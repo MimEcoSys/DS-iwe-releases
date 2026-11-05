@@ -344,7 +344,7 @@ def summary_lines(results, staging, unreleased_links, released) -> list[str]:
             "2.3.2 вливается Разработчиком после 0.41.11",
             count("готово для передачи"),
             (
-                f"результат сделан целиком и влит в шаблон после 0.41.11. Всего {len(unreleased_links)} записей: "
+                f"сделано целиком и влито в шаблон после 0.41.11, но нет в выпуске. Всего {len(unreleased_links)} записей: "
                 f"{record_split(unreleased_links)}"
             ),
         ),
@@ -358,17 +358,12 @@ def summary_lines(results, staging, unreleased_links, released) -> list[str]:
                 "сделанные результаты открытых РП (фаза Ф256)"
             ),
         ),
-        ("**4. Отложено**", count("отложено"), ""),
-        ("**Итого по IWE**", on_board, ""),
         (
-            "не входят: сделаны в сервисах платформы",
-            count(outside),
-            (
-                "результаты тех же целей, сделанные на сайте, в боте, на MCP-сервере, в каталоге ChatGPT; "
-                "учитываются в результатах платформы"
-            ),
+            "**4. Отложено**",
+            count("отложено"),
+            "отложил Разработчик: в карточке РП фаза перенесена на потом",
         ),
-        ("**Всего по этим целям** (= «Состояние по целям»)", len(results), ""),
+        ("**Итого по IWE**", on_board, ""),
     ]
     stages = [res for name, res, _ in rows if name.startswith("**") and name[2].isdigit()]
     if sum(stages) != on_board or on_board + count(outside) != len(results):
@@ -405,8 +400,9 @@ def summary_lines(results, staging, unreleased_links, released) -> list[str]:
     lines += [
         "",
         (
-            "**Версия IWE Разработчика (Церен)** = 2.3.2 готовое + выпуск 0.41.11 + 2.2 тестируемое + личное "
-            "(то, что в шаблон не идёт)."
+            "**Версия IWE Разработчика (Церен)** — что работает в IWE Разработчика: 2.2 + 2.3 + 2.4 + 3 + личное "
+            "(то, что в шаблон не идёт). Выпуск 0.41.11 — это 3 и 2.3.1; у результатов из 2.1 в этой версии "
+            "работает только уже влитая или обкатываемая часть."
         ),
         "",
         "**По частям выпуска** (результат может относиться сразу к двум частям):",
@@ -591,6 +587,9 @@ def main() -> int:
 
     # Completeness: every source item is on the board, linked or explicitly not linked.
     # Each board count is compared with an independent raw count of the source text.
+    sbg_total = sum(1 for line in (src / "sbg.md").read_text().splitlines() if re.match(r"^\| Ц\d+-\d+ \|", line))
+    platform_built = sum(1 for r in results if r["status"] == "работает вне выпуска шаблона")
+    iwe_total = len(results) - platform_built
     sbg_raw = sum(
         1
         for line in (src / "sbg.md").read_text().splitlines()
@@ -631,6 +630,12 @@ def main() -> int:
             f"записей обкатки — {sum(1 for s in staging if not s['result'])}."
         ),
         f"Повторяющиеся номера записей обкатки: {', '.join(duplicates) or 'нет'}.",
+        "",
+        (
+            f"Сверка с «Состоянием по целям»: всего результатов {sbg_total} = на табло IWE {iwe_total} "
+            f"+ результаты платформы {sbg_total - iwe_total} (из них {platform_built} — результаты целей табло, "
+            "сделанные в сервисах платформы)."
+        ),
         "",
     ]
     (args.repo / "view" / "completeness.md").write_text("\n".join(lines))
