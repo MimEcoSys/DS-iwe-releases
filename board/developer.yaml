@@ -48,7 +48,9 @@ results:
   what: прохождение S0-S1 через открытый MCP и плагины, настроенные роли наставника и тьютора
   where: браузерный чат
   status: в работе
-  works: []
+  works:
+  - РП-250
+  in_week_plan: false
 - code: Ц1-02
   goal: 1
   contours: *id001
@@ -56,7 +58,9 @@ results:
   what: 10 установок открытого MCP к 31.12 как мера ветви В1; прежняя цель ≥100 регистраций заменена
   where: любой клиент
   status: план
-  works: []
+  works:
+  - РП-250
+  in_week_plan: false
 - code: Ц1-03
   goal: 1
   contours: *id001
@@ -64,7 +68,9 @@ results:
   what: страница подключения собрана из содержимого (клиент × способ × сервер), один источник текста
   where: сайт и кабинет
   status: план
-  works: []
+  works:
+  - РП-304
+  in_week_plan: true
 - code: Ц1-04
   goal: 1
   contours: *id001
@@ -72,7 +78,9 @@ results:
   what: явный признак закрытого источника, default-deny; исполнение в
   where: любой клиент
   status: план
-  works: []
+  works:
+  - РП-544
+  in_week_plan: true
 - code: Ц1-05
   goal: 1
   contours: *id001
@@ -80,7 +88,9 @@ results:
   what: бесплатный вход через публичный MCP, личный контекст создаёт сам помощник
   where: браузерный чат
   status: план
-  works: []
+  works:
+  - РП-552
+  in_week_plan: false
 - code: Ц1-06
   goal: 1
   contours: *id001
@@ -88,7 +98,9 @@ results:
   what: плагин Claude на open.aisystant.com/mcp в каталоге Anthropic
   where: браузерный чат
   status: план
-  works: []
+  works:
+  - РП-581
+  in_week_plan: true
 - code: Ц1-07
   goal: 1
   contours: *id001
@@ -96,7 +108,9 @@ results:
   what: Open МИМ с онбордингом в МИМ (одна кодовая база, два развёртывания)
   where: сайт и кабинет
   status: план
-  works: []
+  works:
+  - РП-581
+  in_week_plan: true
 - code: Ц1-08
   goal: 1
   contours: *id001
@@ -104,7 +118,9 @@ results:
   what: '16 разговоров в Claude и ChatGPT пройдены: онбординг, поиск по русским и бытовым запросам, нет неподтверждённых обещаний про данные'
   where: браузерный чат
   status: план
-  works: []
+  works:
+  - РП-581
+  in_week_plan: true
 - code: Ц1-09
   goal: 1
   contours: *id001
@@ -112,7 +128,9 @@ results:
   what: официальная карточка плагина Aisystant Open в каталоге ChatGPT, без аккаунта МИМ
   where: браузерный чат
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-589
+  in_week_plan: true
 - code: Ц1-10
   goal: 1
   contours: *id001
@@ -120,7 +138,9 @@ results:
   what: российский гостевой MCP open.system-school.ru и лёгкий онбординг для двух рынков
   where: любой клиент
   status: план
-  works: []
+  works:
+  - РП-589
+  in_week_plan: true
 - code: Ц1-11
   goal: 1
   contours: *id001
@@ -128,7 +148,9 @@ results:
   what: проверенный адрес, пробный вопрос, границы доступа, блоки подключения
   where: любой клиент
   status: в работе
-  works: []
+  works:
+  - РП-590
+  in_week_plan: false
 - code: Ц1-12
   goal: 1
   contours: *id001
@@ -136,7 +158,9 @@ results:
   what: контрольный закрытый документ не выдаётся ни поиском, ни списком, ни по идентификатору
   where: любой клиент
   status: в работе
-  works: []
+  works:
+  - РП-590
+  in_week_plan: false
 - code: Ц1-13
   goal: 1
   contours: *id001
@@ -144,7 +168,9 @@ results:
   what: 'разные причины не выглядят одной ошибкой: нет токена, пусто, нет доступа, закрытое'
   where: любой клиент
   status: план
-  works: []
+  works:
+  - РП-590
+  in_week_plan: false
 - code: Ц1-14
   goal: 1
   contours: *id001
@@ -152,7 +178,9 @@ results:
   what: маршрутизация по паре сервер-инструмент, разные имена инструментов
   where: любой клиент
   status: план
-  works: []
+  works:
+  - РП-590
+  in_week_plan: false
 - code: Ц1-15
   goal: 1
   contours: *id001
@@ -160,7 +188,9 @@ results:
   what: англоязычные ответы mcp.tserenov.com
   where: любой клиент
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-596
+  in_week_plan: true
 - code: Ц1-16
   goal: 1
   contours: *id001
@@ -168,7 +198,9 @@ results:
   what: метаданные для MCP Registry и каталогов
   where: сайт и кабинет
   status: план
-  works: []
+  works:
+  - РП-599
+  in_week_plan: false
 - code: Ц1-17
   goal: 1
   contours: *id001
@@ -176,7 +208,9 @@ results:
   what: Open Aisystant переходит с прокси на Библиотеку после 76 запросов на английском и русском
   where: любой клиент
   status: план
-  works: []
+  works:
+  - РП-608
+  in_week_plan: true
 - code: Ц1-18
   goal: 1
   contours: *id001
@@ -184,7 +218,9 @@ results:
   what: развёртывание в облаке VK, читает Библиотеку
   where: сайт и кабинет
   status: план
-  works: []
+  works:
+  - РП-608
+  in_week_plan: true
 - code: Ц4-01
   goal: 4
   contours: &id002
@@ -194,7 +230,9 @@ results:
   what: поиск по MCP и ответы ИИ на сайте через OpenRouter
   where: сайт и кабинет
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-442
+  in_week_plan: false
 - code: Ц4-02
   goal: 4
   contours: *id002
@@ -202,7 +240,9 @@ results:
   what: 'гостевой доступ к FPF: поиск, чтение, навигация через открытый MCP'
   where: браузерный чат
   status: в работе
-  works: []
+  works:
+  - РП-581
+  in_week_plan: true
 - code: Ц4-03
   goal: 4
   contours: *id002
@@ -210,7 +250,9 @@ results:
   what: выдача методов с поимённым допуском материалов, поиск по русским запросам
   where: браузерный чат
   status: в работе
-  works: []
+  works:
+  - РП-581
+  in_week_plan: true
 - code: Ц4-04
   goal: 4
   contours: *id002
@@ -218,7 +260,9 @@ results:
   what: кандидат контента сценария для чата на сайте МИМ
   where: браузерный чат
   status: в работе
-  works: []
+  works:
+  - РП-586
+  in_week_plan: false
 - code: Ц4-05
   goal: 4
   contours: *id002
@@ -226,7 +270,9 @@ results:
   what: 'chat.system-school.ru: анонимный доступ, лимит сообщений, серверы iwe и FPF Library; ждёт живого прогона'
   where: сайт и кабинет
   status: в работе
-  works: []
+  works:
+  - РП-586
+  in_week_plan: false
 - code: Ц4-06
   goal: 4
   contours: *id002
@@ -234,7 +280,9 @@ results:
   what: 'строка вопросов на сайте: ответ ИИ по публичным знаниям с источниками или режим «только поиск»'
   where: сайт и кабинет
   status: план
-  works: []
+  works:
+  - РП-586
+  in_week_plan: false
 - code: Ц4-07
   goal: 4
   contours: *id002
@@ -242,7 +290,9 @@ results:
   what: 'ответ сайта с остатком квоты и временем; состояния: готов, нет материалов, квота исчерпана, недоступно'
   where: сайт и кабинет
   status: в работе
-  works: []
+  works:
+  - РП-590
+  in_week_plan: false
 - code: Ц14-01
   goal: 14
   contours: &id003
@@ -251,7 +301,9 @@ results:
   what: основание согласия на показ производных характеристик наставнику
   where: бот
   status: в работе
-  works: []
+  works:
+  - РП-151
+  in_week_plan: false
 - code: Ц14-02
   goal: 14
   contours: *id003
@@ -259,7 +311,9 @@ results:
   what: закрыть разрыв согласия в тестовом пути; Прогон А (A1-A3) на тестовом аккаунте как обязательный гейт
   where: бот
   status: в работе
-  works: []
+  works:
+  - РП-406
+  in_week_plan: true
 - code: Ц14-03
   goal: 14
   contours: *id003
@@ -267,7 +321,9 @@ results:
   what: уведомление о том, какие данные собираются и зачем
   where: мессенджер
   status: план
-  works: []
+  works:
+  - РП-406
+  in_week_plan: true
 - code: Ц14-04
   goal: 14
   contours: *id003
@@ -275,7 +331,9 @@ results:
   what: потребители получают статус «отозвано», данные и производные помечены недействительными
   where: любой клиент
   status: план
-  works: []
+  works:
+  - РП-469
+  in_week_plan: false
 - code: Ц14-05
   goal: 14
   contours: *id003
@@ -283,7 +341,9 @@ results:
   what: отдельное согласие, согласие на учёт активности его не заменяет
   where: сайт и кабинет
   status: план
-  works: []
+  works:
+  - РП-493
+  in_week_plan: false
 - code: Ц14-06
   goal: 14
   contours: *id003
@@ -291,7 +351,9 @@ results:
   what: срок результата 12 месяцев, отдельные разрешения на хранение и наставническое чтение
   where: мессенджер
   status: в работе
-  works: []
+  works:
+  - РП-598
+  in_week_plan: false
 - code: Ц23-01
   goal: 23
   contours: &id004
@@ -300,7 +362,9 @@ results:
   what: шаблон IWE 2.0 у 10 внешних пользователей
   where: среда на компьютере
   status: план
-  works: []
+  works:
+  - РП-250
+  in_week_plan: false
 - code: Ц23-02
   goal: 23
   contours: *id004
@@ -308,7 +372,9 @@ results:
   what: 'путь новичка: отрезок «Первая неделя в IWE», альбом «Старт для новичка», три состояния входа'
   where: любой клиент
   status: план
-  works: []
+  works:
+  - РП-385
+  in_week_plan: true
 - code: Ц23-03
   goal: 23
   contours: *id004
@@ -316,7 +382,9 @@ results:
   what: стартовый скелет шаблона и карта доменов данных (ADR-004, DATA-DOMAINS-REGISTRY), типовые семьи репозиториев
   where: среда на компьютере
   status: в работе
-  works: []
+  works:
+  - РП-526
+  in_week_plan: true
 - code: Ц23-04
   goal: 23
   contours: *id004
@@ -324,7 +392,9 @@ results:
   what: много-репозиторное создание и каталог планов пространства по пяти семьям
   where: любой клиент
   status: отложено
-  works: []
+  works:
+  - РП-526
+  in_week_plan: true
 - code: Ц23-05
   goal: 23
   contours: *id004
@@ -332,7 +402,9 @@ results:
   what: 'матрица состава среды и общий прогон: создание, результат, сохранение, продолжение'
   where: среда на компьютере
   status: план
-  works: []
+  works:
+  - РП-552
+  in_week_plan: false
 - code: Ц23-06
   goal: 23
   contours: *id004
@@ -340,7 +412,9 @@ results:
   what: приватный форк шаблона с включёнными git-хуками после первого запуска
   where: среда на компьютере
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-559
+  in_week_plan: true
 - code: Ц23-07
   goal: 23
   contours: *id004
@@ -348,7 +422,9 @@ results:
   what: вместо мёртвого 403 — страница «Сначала установите приложение» с кнопкой; создание продолжается само
   where: сайт и кабинет
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-559
+  in_week_plan: true
 - code: Ц23-08
   goal: 23
   contours: *id004
@@ -356,7 +432,9 @@ results:
   what: при полном провале страница пишет «Не удалось настроить пространство», строки помечены по статусу
   where: сайт и кабинет
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-559
+  in_week_plan: true
 - code: Ц23-09
   goal: 23
   contours: *id004
@@ -364,7 +442,9 @@ results:
   what: репозитории по плану пяти семей, созданные на выбранном аккаунте без дублей
   where: браузерный чат
   status: в работе
-  works: []
+  works:
+  - РП-559
+  in_week_plan: true
 - code: Ц23-10
   goal: 23
   contours: *id004
@@ -372,7 +452,9 @@ results:
   what: 'чистая приёмка: новый аккаунт без установки проходит установку, вход и создание пространства'
   where: сайт и кабинет
   status: в работе
-  works: []
+  works:
+  - РП-559
+  in_week_plan: true
 - code: Ц23-11
   goal: 23
   contours: *id004
@@ -380,7 +462,9 @@ results:
   what: пространство создаётся только на выбранном аккаунте, чужой аккаунт отклоняется
   where: браузерный чат
   status: в работе
-  works: []
+  works:
+  - РП-560
+  in_week_plan: true
 - code: Ц23-12
   goal: 23
   contours: *id004
@@ -388,7 +472,9 @@ results:
   what: 'Шаблон IWE с двумя подключёнными MCP: открытым и MCP своей подписки'
   where: среда на компьютере
   status: план
-  works: []
+  works:
+  - РП-610
+  in_week_plan: true
 - code: Ц34-01
   goal: 34
   contours: &id005
@@ -397,7 +483,9 @@ results:
   what: типизированные процессы дня, недели и месяца в том же конвейере
   where: по расписанию
   status: в работе
-  works: []
+  works:
+  - РП-482
+  in_week_plan: false
 - code: Ц34-02
   goal: 34
   contours: *id005
@@ -405,7 +493,9 @@ results:
   what: DayPlan наполняется ночным конвейером; таблицу дня собирает программа, а не модель
   where: по расписанию
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-484
+  in_week_plan: true
 - code: Ц34-03
   goal: 34
   contours: *id005
@@ -413,7 +503,9 @@ results:
   what: часы из пула недели, пометка «вне плана недели», снятие ложной аварийной метки
   where: по расписанию
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-484
+  in_week_plan: true
 - code: Ц34-04
   goal: 34
   contours: *id005
@@ -421,7 +513,9 @@ results:
   what: три новых класса расхождений; запись проверенных и не прошедших сценариев
   where: по расписанию
   status: план
-  works: []
+  works:
+  - РП-484
+  in_week_plan: true
 - code: Ц34-05
   goal: 34
   contours: *id005
@@ -429,7 +523,9 @@ results:
   what: 'проект «Мой день» в claude.ai: сообщение раскладывается в дом, подтверждается строкой и оставляет след первички'
   where: браузерный чат
   status: в работе
-  works: []
+  works:
+  - РП-526
+  in_week_plan: true
 - code: Ц34-06
   goal: 34
   contours: *id005
@@ -437,7 +533,9 @@ results:
   what: 'теневая классификация маршрута; критерий: 95 процентов совпадений на 30 сообщениях'
   where: мессенджер
   status: план
-  works: []
+  works:
+  - РП-526
+  in_week_plan: true
 - code: Ц34-07
   goal: 34
   contours: *id005
@@ -445,7 +543,9 @@ results:
   what: установленные правки на Маке совпадают с опубликованными
   where: среда на компьютере
   status: план
-  works: []
+  works:
+  - РП-530
+  in_week_plan: true
 - code: Ц34-08
   goal: 34
   contours: *id005
@@ -453,7 +553,9 @@ results:
   what: сводка советчика по состоянию в плане дня и одно предложение пилоту (три правила реализованы)
   where: по расписанию
   status: в работе
-  works: []
+  works:
+  - РП-545
+  in_week_plan: true
 - code: Ц34-09
   goal: 34
   contours: *id005
@@ -461,7 +563,9 @@ results:
   what: урезанный ритуал открытия дня без ночного конвейера
   where: браузерный чат
   status: в работе
-  works: []
+  works:
+  - РП-560
+  in_week_plan: true
 - code: Ц34-10
   goal: 34
   contours: *id005
@@ -469,7 +573,9 @@ results:
   what: надёжные ритуалы закрытия и открытия с проверяемыми шагами и явными маркерами пробелов
   where: среда на компьютере
   status: в работе
-  works: []
+  works:
+  - РП-561
+  in_week_plan: true
 - code: Ц34-11
   goal: 34
   contours: *id005
@@ -477,7 +583,9 @@ results:
   what: план дня и недели обновляется событиями и выписками, статус сценария меняет событие проверки
   where: среда на компьютере
   status: план
-  works: []
+  works:
+  - РП-561
+  in_week_plan: true
 - code: Ц34-12
   goal: 34
   contours: *id005
@@ -485,7 +593,9 @@ results:
   what: часы по направлениям против пула и 1-2 предложенных дела
   where: по расписанию
   status: план
-  works: []
+  works:
+  - РП-561
+  in_week_plan: true
 - code: Ц34-13
   goal: 34
   contours: *id005
@@ -493,7 +603,9 @@ results:
   what: доставка конвейера ОРЗ пользователям шаблона
   where: любой клиент
   status: план
-  works: []
+  works:
+  - РП-561
+  in_week_plan: true
 - code: Ц34-14
   goal: 34
   contours: *id005
@@ -501,7 +613,9 @@ results:
   what: автопредложение документа или правила по итогам сессии
   where: любой клиент
   status: отложено
-  works: []
+  works:
+  - РП-561
+  in_week_plan: true
 - code: Ц34-15
   goal: 34
   contours: *id005
@@ -509,7 +623,9 @@ results:
   what: без дублей плана дня и без ложных критических инцидентов планировщика
   where: по расписанию
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-577
+  in_week_plan: false
 - code: Ц34-16
   goal: 34
   contours: *id005
@@ -517,7 +633,9 @@ results:
   what: разговорные версии навыков для чата вендора
   where: браузерный чат
   status: план
-  works: []
+  works:
+  - РП-581
+  in_week_plan: true
 - code: Ц35-01
   goal: 35
   contours: &id006
@@ -526,7 +644,9 @@ results:
   what: недельный автотриггер (вс 23:00) готовит факты, месячный preclose; ритуал с решениями остаётся интерактивным
   where: по расписанию
   status: в работе
-  works: []
+  works:
+  - РП-484
+  in_week_plan: true
 - code: Ц35-02
   goal: 35
   contours: *id006
@@ -534,7 +654,9 @@ results:
   what: утренний обзор недели (Пн 00:00) собирает факты и пост клуба
   where: по расписанию
   status: в работе
-  works: []
+  works:
+  - РП-518
+  in_week_plan: true
 - code: Ц35-03
   goal: 35
   contours: *id006
@@ -542,7 +664,9 @@ results:
   what: 'WeekState: связь «РП - направление», набранные часы против плана'
   where: по расписанию
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-561
+  in_week_plan: true
 - code: Ц35-04
   goal: 35
   contours: *id006
@@ -550,7 +674,9 @@ results:
   what: цитирование и напоминалка о датах
   where: по расписанию
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-561
+  in_week_plan: true
 - code: Ц35-05
   goal: 35
   contours: *id006
@@ -558,7 +684,9 @@ results:
   what: починенная автоматика недельного поста и догоняющий пост
   where: по расписанию
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-577
+  in_week_plan: false
 - code: Ц37-01
   goal: 37
   contours: &id007
@@ -567,7 +695,9 @@ results:
   what: раздел 6 недельной сводки
   where: по расписанию
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-484
+  in_week_plan: true
 - code: Ц37-02
   goal: 37
   contours: *id007
@@ -575,7 +705,9 @@ results:
   what: Таблица из 10 этапов, вход и остановка на каждом, пул недели из карточек
   where: среда на компьютере
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-518
+  in_week_plan: true
 - code: Ц37-03
   goal: 37
   contours: *id007
@@ -583,7 +715,9 @@ results:
   what: Ночная подготовка черновика недели из карточек и отчёта
   where: по расписанию
   status: в работе
-  works: []
+  works:
+  - РП-518
+  in_week_plan: true
 - code: Ц37-04
   goal: 37
   contours: *id007
@@ -591,7 +725,9 @@ results:
   what: Раздел 8.08 и 9.07 руководства Методы саморазвития, памятка ведущего практикума
   where: сайт и кабинет
   status: в работе
-  works: []
+  works:
+  - РП-518
+  in_week_plan: true
 - code: Ц37-05
   goal: 37
   contours: *id007
@@ -599,7 +735,9 @@ results:
   what: Сценарии как единица приоритета и список назначенных РП на входе пула
   where: среда на компьютере
   status: план
-  works: []
+  works:
+  - РП-518
+  in_week_plan: true
 - code: Ц37-06
   goal: 37
   contours: *id007
@@ -607,7 +745,9 @@ results:
   what: Девять направлений и метод выделения
   where: среда на компьютере
   status: план
-  works: []
+  works:
+  - РП-518
+  in_week_plan: true
 - code: Ц37-07
   goal: 37
   contours: *id007
@@ -615,7 +755,9 @@ results:
   what: ручной путь шага 6a без личных скриптов
   where: любой клиент
   status: план
-  works: []
+  works:
+  - РП-518
+  in_week_plan: true
 - code: Ц38-01
   goal: 38
   contours: &id008
@@ -624,7 +766,9 @@ results:
   what: хуки принуждают запустить раннер после слов о закрытии
   where: среда на компьютере
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-482
+  in_week_plan: false
 - code: Ц38-02
   goal: 38
   contours: *id008
@@ -632,7 +776,9 @@ results:
   what: карточка каждого запуска процесса и борд, собираемый из карточек
   where: среда на компьютере
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-482
+  in_week_plan: false
 - code: Ц38-03
   goal: 38
   contours: *id008
@@ -640,7 +786,9 @@ results:
   what: Quick Close ведёт детерминированный раннер, ИИ и пилот вызываются в размеченных точках
   where: среда на компьютере
   status: в работе
-  works: []
+  works:
+  - РП-482
+  in_week_plan: false
 - code: Ц38-04
   goal: 38
   contours: *id008
@@ -648,7 +796,9 @@ results:
   what: 'исправные закрытия: ремонт , охрана RUN-карточки, снятие дублей семафоров, предикат REMAINDER-HELD, идемпотентный open'
   where: среда на компьютере
   status: в работе
-  works: []
+  works:
+  - РП-484
+  in_week_plan: true
 - code: Ц38-05
   goal: 38
   contours: *id008
@@ -656,7 +806,9 @@ results:
   what: «следующий шаг» из карточки проверяется на закрытии и показывается на открытии
   where: любой клиент
   status: в работе
-  works: []
+  works:
+  - РП-484
+  in_week_plan: true
 - code: Ц38-06
   goal: 38
   contours: *id008
@@ -664,7 +816,9 @@ results:
   what: исход «закрыто локально, публикация в ожидании» с освобождением меток сессии
   where: любой клиент
   status: в работе
-  works: []
+  works:
+  - РП-484
+  in_week_plan: true
 - code: Ц38-07
   goal: 38
   contours: *id008
@@ -672,7 +826,9 @@ results:
   what: триггер пересмотра карточки
   where: по расписанию
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-503
+  in_week_plan: false
 - code: Ц38-08
   goal: 38
   contours: *id008
@@ -680,7 +836,9 @@ results:
   what: мост из просроченного календарного события в предложенную карточку с подтверждением пилота
   where: мессенджер
   status: план
-  works: []
+  works:
+  - РП-503
+  in_week_plan: false
 - code: Ц38-09
   goal: 38
   contours: *id008
@@ -688,7 +846,9 @@ results:
   what: раннер закрытия доходит до completed из свежей изолированной копии
   where: среда на компьютере
   status: в работе
-  works: []
+  works:
+  - РП-537
+  in_week_plan: false
 - code: Ц38-10
   goal: 38
   contours: *id008
@@ -696,7 +856,9 @@ results:
   what: срок аренды 24 часа для пользователей сообщества
   where: любой клиент
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-561
+  in_week_plan: true
 - code: Ц38-11
   goal: 38
   contours: *id008
@@ -704,7 +866,9 @@ results:
   what: чтение свежей карточки и автоархивация
   where: любой клиент
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-561
+  in_week_plan: true
 - code: Ц38-12
   goal: 38
   contours: *id008
@@ -712,7 +876,9 @@ results:
   what: 'шаг 2c протокола открытия: открыть карточки кандидатов до объявления'
   where: любой клиент
   status: в работе
-  works: []
+  works:
+  - РП-561
+  in_week_plan: true
 - code: Ц40-01
   goal: 40
   contours: &id009
@@ -721,7 +887,9 @@ results:
   what: Журнал гипотез с 4 обязательными полями, не теряется в инбоксе
   where: среда на компьютере
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-496
+  in_week_plan: false
 - code: Ц40-02
   goal: 40
   contours: *id009
@@ -729,7 +897,9 @@ results:
   what: 'Скилл verify-hypotheses: список расхождений в чат'
   where: среда на компьютере
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-496
+  in_week_plan: false
 - code: Ц40-03
   goal: 40
   contours: *id009
@@ -737,7 +907,9 @@ results:
   what: Каждая 5-я гипотеза с уверенностью от 80 процентов сверяется пилотом без черновика агента
   where: среда на компьютере
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-496
+  in_week_plan: false
 - code: Ц40-04
   goal: 40
   contours: *id009
@@ -745,7 +917,9 @@ results:
   what: захват гипотезы в боте или чате; без ответа на «что опровергнет» заметка идёт в обычный инбокс
   where: мессенджер
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-496
+  in_week_plan: false
 - code: Ц40-05
   goal: 40
   contours: *id009
@@ -753,7 +927,9 @@ results:
   what: 'после вердикта агент спрашивает: уверенность, чек-лист, РП или паттерн; без выбора запись «повисла»'
   where: любой клиент
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-496
+  in_week_plan: false
 - code: Ц40-06
   goal: 40
   contours: *id009
@@ -761,7 +937,9 @@ results:
   what: Note-Review классифицирует формулировку-предсказание
   where: по расписанию
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-496
+  in_week_plan: false
 - code: Ц40-07
   goal: 40
   contours: *id009
@@ -769,7 +947,9 @@ results:
   what: Шаг сверки на закрытии недели и метрика калибровки уверенности
   where: среда на компьютере
   status: в работе
-  works: []
+  works:
+  - РП-496
+  in_week_plan: false
 - code: Ц40-08
   goal: 40
   contours: *id009
@@ -777,7 +957,9 @@ results:
   what: экстракция паттерна из расхождений
   where: любой клиент
   status: план
-  works: []
+  works:
+  - РП-496
+  in_week_plan: false
 - code: Ц40-09
   goal: 40
   contours: *id009
@@ -785,7 +967,9 @@ results:
   what: 'гибридный гейт закрытия недели: ошибка контракта или нарушение целостности блокирует, разовое исключение с четырьмя полями'
   where: по расписанию
   status: план
-  works: []
+  works:
+  - РП-496
+  in_week_plan: false
 - code: Ц40-10
   goal: 40
   contours: *id009
@@ -793,7 +977,9 @@ results:
   what: 'разговорные навыки: гипотезы, оценка решения, поиск ограничения, проверка результата'
   where: браузерный чат
   status: план
-  works: []
+  works:
+  - РП-581
+  in_week_plan: true
 - code: Ц49-01
   goal: 49
   contours: &id010
@@ -802,7 +988,9 @@ results:
   what: Подсказки по освоению методов каталога
   where: любой клиент
   status: план
-  works: []
+  works:
+  - РП-522
+  in_week_plan: true
 - code: Ц49-02
   goal: 49
   contours: *id010
@@ -810,7 +998,9 @@ results:
   what: различение продукта, изменения человека и изменения среды
   where: любой клиент
   status: план
-  works: []
+  works:
+  - РП-595
+  in_week_plan: true
 - code: Ц49-03
   goal: 49
   contours: *id010
@@ -818,7 +1008,9 @@ results:
   what: каталог из 49 методов без пересечений с тактом, необходимостью и ядром самоподдерживающегося развития
   where: сайт и кабинет
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-600
+  in_week_plan: true
 - code: Ц49-04
   goal: 49
   contours: *id010
@@ -826,7 +1018,9 @@ results:
   what: 'таблица «Реализация в IWE»: да / частично / нет по каждому из 49 методов'
   where: среда на компьютере
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-600
+  in_week_plan: true
 - code: Ц49-05
   goal: 49
   contours: *id010
@@ -834,7 +1028,9 @@ results:
   what: LMS.M.052 «Составление заметок», последовательность M.026 по встрече 6 S1
   where: мессенджер
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-600
+  in_week_plan: true
 - code: Ц49-06
   goal: 49
   contours: *id010
@@ -842,7 +1038,9 @@ results:
   what: карточка на каждый метод в Pack с кратким и полным описанием
   where: сайт и кабинет
   status: в работе
-  works: []
+  works:
+  - РП-600
+  in_week_plan: true
 - code: Ц49-07
   goal: 49
   contours: *id010
@@ -850,7 +1048,9 @@ results:
   what: 'правило: минимальный набор методов и порядок их постановки, выдаваемое в рекомендации'
   where: любой клиент
   status: план
-  works: []
+  works:
+  - РП-600
+  in_week_plan: true
 - code: Ц49-08
   goal: 49
   contours: *id010
@@ -858,7 +1058,9 @@ results:
   what: контракт выдачи правила в (код читает набор и порядок)
   where: мессенджер
   status: план
-  works: []
+  works:
+  - РП-600
+  in_week_plan: true
 - code: Ц49-09
   goal: 49
   contours: *id010
@@ -866,7 +1068,9 @@ results:
   what: поля вход/промежуточное/выход в карточках методов
   where: любой клиент
   status: план
-  works: []
+  works:
+  - РП-600
+  in_week_plan: true
 - code: Ц49-10
   goal: 49
   contours: *id010
@@ -874,7 +1078,9 @@ results:
   what: 'Библиотека методов: поиск и выбор метода через MCP, карточки с границами и свидетельствами'
   where: любой клиент
   status: план
-  works: []
+  works:
+  - РП-608
+  in_week_plan: true
 - code: Ц49-11
   goal: 49
   contours: *id010
@@ -882,7 +1088,9 @@ results:
   what: подбор и учёт применения методов платформой (грани -)
   where: любой клиент
   status: план
-  works: []
+  works:
+  - РП-608
+  in_week_plan: true
 - code: Ц52-01
   goal: 52
   contours: &id011
@@ -891,7 +1099,9 @@ results:
   what: расчёт ступени, квалификации и 5 осей MVP с историей в цифровом двойнике
   where: любой клиент
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-151
+  in_week_plan: false
 - code: Ц52-02
   goal: 52
   contours: *id011
@@ -899,7 +1109,9 @@ results:
   what: проверка оснащения по 5 характеристикам, отражаемая на табло
   where: мессенджер
   status: в работе
-  works: []
+  works:
+  - РП-406
+  in_week_plan: true
 - code: Ц52-03
   goal: 52
   contours: *id011
@@ -907,7 +1119,9 @@ results:
   what: Факты пути project_selected и weekly_work_product_set в чек-листе
   where: любой клиент
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-522
+  in_week_plan: true
 - code: Ц52-04
   goal: 52
   contours: *id011
@@ -915,7 +1129,9 @@ results:
   what: 'Статус чек-листа по 6 разделам: что выполнено, что дальше'
   where: любой клиент
   status: в работе
-  works: []
+  works:
+  - РП-522
+  in_week_plan: true
 - code: Ц52-05
   goal: 52
   contours: *id011
@@ -923,7 +1139,9 @@ results:
   what: диагностика простым языком по одному вопросу, объяснение расхождения ступени и чек-листа
   where: браузерный чат
   status: в работе
-  works: []
+  works:
+  - РП-560
+  in_week_plan: true
 - code: Ц52-06
   goal: 52
   contours: *id011
@@ -931,7 +1149,9 @@ results:
   what: переход блокируется, если диагностика подтверждает ступень ниже расчётной; без валидной диагностики ступень не присваивается
   where: любой клиент
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-576
+  in_week_plan: false
 - code: Ц52-07
   goal: 52
   contours: *id011
@@ -939,7 +1159,9 @@ results:
   what: 'модель v6: девять комплексных характеристик (пять личностных в составе профиля), правило «согласованный профиль», мост ступени из журнала переходов в двойник'
   where: любой клиент
   status: в работе
-  works: []
+  works:
+  - РП-576
+  in_week_plan: false
 - code: Ц52-08
   goal: 52
   contours: *id011
@@ -947,7 +1169,9 @@ results:
   what: правило двух независимых путей присвоения ступени и скачок на несколько ступеней, решено 31.10, не включено
   where: любой клиент
   status: отложено
-  works: []
+  works:
+  - РП-576
+  in_week_plan: false
 - code: Ц52-09
   goal: 52
   contours: *id011
@@ -955,7 +1179,9 @@ results:
   what: рубрика ступеней, разбор текста, чек-лист оснащённости по самоотчёту, без записи
   where: браузерный чат
   status: план
-  works: []
+  works:
+  - РП-581
+  in_week_plan: true
 - code: Ц52-10
   goal: 52
   contours: *id011
@@ -963,7 +1189,9 @@ results:
   what: владение методами каталога как условие ступени
   where: мессенджер
   status: отложено
-  works: []
+  works:
+  - РП-600
+  in_week_plan: true
 - code: Ц52-11
   goal: 52
   contours: *id011
@@ -971,7 +1199,9 @@ results:
   what: ступень 1-5, вычисленная по согласованному профилю характеристик, а не по минимуму счётчиков
   where: мессенджер
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-602
+  in_week_plan: false
 - code: Ц52-12
   goal: 52
   contours: *id011
@@ -979,7 +1209,9 @@ results:
   what: ступень растёт по активности и по диагностике независимо, не понижается; откат даёт сообщение
   where: мессенджер
   status: в работе
-  works: []
+  works:
+  - РП-602
+  in_week_plan: false
 - code: Ц52-13
   goal: 52
   contours: *id011
@@ -987,7 +1219,9 @@ results:
   what: сообщение «пройдите повторную диагностику» от бота
   where: мессенджер
   status: план
-  works: []
+  works:
+  - РП-602
+  in_week_plan: false
 - code: Ц52-14
   goal: 52
   contours: *id011
@@ -995,7 +1229,9 @@ results:
   what: опрос оснащённости из трёх вопросов и рекомендация по времени на новое
   where: мессенджер
   status: план
-  works: []
+  works:
+  - РП-602
+  in_week_plan: false
 - code: Ц52-15
   goal: 52
   contours: *id011
@@ -1003,7 +1239,9 @@ results:
   what: оснащённость 1–5 входит в обязательные характеристики ступени после теневого прогона
   where: любой клиент
   status: план
-  works: []
+  works:
+  - РП-602
+  in_week_plan: false
 - code: Ц53-01
   goal: 53
   contours: &id012
@@ -1012,7 +1250,9 @@ results:
   what: первое засчитанное задание с подтверждением человеком и переносимой записью; признанные баллы
   where: любой клиент
   status: план
-  works: []
+  works:
+  - РП-250
+  in_week_plan: false
 - code: Ц53-02
   goal: 53
   contours: *id012
@@ -1020,7 +1260,9 @@ results:
   what: 'комплект guide-kit: Разметчик и Генератор с открытым кодом, бесплатно'
   where: среда на компьютере
   status: в работе
-  works: []
+  works:
+  - РП-289
+  in_week_plan: false
 - code: Ц53-03
   goal: 53
   contours: *id012
@@ -1028,7 +1270,9 @@ results:
   what: каталоги заданий rr и ir (6 заготовок на каждый) для подбора задания Портным
   where: по расписанию
   status: в работе
-  works: []
+  works:
+  - РП-364
+  in_week_plan: false
 - code: Ц53-04
   goal: 53
   contours: *id012
@@ -1036,7 +1280,9 @@ results:
   what: MVP конвейера персонального гида
   where: любой клиент
   status: план
-  works: []
+  works:
+  - РП-364
+  in_week_plan: false
 - code: Ц53-05
   goal: 53
   contours: *id012
@@ -1044,7 +1290,9 @@ results:
   what: weekly-analyzer, канал обратной связи, стабильное определение ступени
   where: по расписанию
   status: отложено
-  works: []
+  works:
+  - РП-364
+  in_week_plan: false
 - code: Ц53-06
   goal: 53
   contours: *id012
@@ -1052,7 +1300,9 @@ results:
   what: сборщик руководств читает данные здоровья через локальный рендер, на платформу ничего не уходит
   where: среда на компьютере
   status: план
-  works: []
+  works:
+  - РП-469
+  in_week_plan: false
 - code: Ц53-07
   goal: 53
   contours: *id012
@@ -1060,7 +1310,9 @@ results:
   what: руководство, собранное локально из файловой базы и своим ИИ-помощником
   where: среда на компьютере
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-483
+  in_week_plan: false
 - code: Ц53-08
   goal: 53
   contours: *id012
@@ -1068,7 +1320,9 @@ results:
   what: доставка комплекта в шаблон штатной манифест-механикой
   where: среда на компьютере
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-483
+  in_week_plan: false
 - code: Ц53-09
   goal: 53
   contours: *id012
@@ -1076,7 +1330,9 @@ results:
   what: персональный экспорт профиля с платформы по MCP, проверка что ничего не уходит наружу
   where: среда на компьютере
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-483
+  in_week_plan: false
 - code: Ц53-10
   goal: 53
   contours: *id012
@@ -1084,7 +1340,9 @@ results:
   what: расширенный Портной с двумя треками и мостом данных Здоровья к характеристикам плавания
   where: среда на компьютере
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-483
+  in_week_plan: false
 - code: Ц53-11
   goal: 53
   contours: *id012
@@ -1092,7 +1350,9 @@ results:
   what: 'режим Б: руководство по теме из назначенного пользователем источника'
   where: среда на компьютере
   status: в работе
-  works: []
+  works:
+  - РП-483
+  in_week_plan: false
 - code: Ц53-12
   goal: 53
   contours: *id012
@@ -1100,7 +1360,9 @@ results:
   what: серверная сборка читает те же поля двойника, что видит человек; автопроверка сверки
   where: по расписанию
   status: в работе
-  works: []
+  works:
+  - РП-483
+  in_week_plan: false
 - code: Ц53-13
   goal: 53
   contours: *id012
@@ -1108,7 +1370,9 @@ results:
   what: 'режим В: подбор источников и руководство по теме'
   where: среда на компьютере
   status: план
-  works: []
+  works:
+  - РП-483
+  in_week_plan: false
 - code: Ц53-14
   goal: 53
   contours: *id012
@@ -1116,7 +1380,9 @@ results:
   what: персональные руководства с сном, плаванием и пульсом из Здоровья
   where: среда на компьютере
   status: план
-  works: []
+  works:
+  - РП-483
+  in_week_plan: false
 - code: Ц53-15
   goal: 53
   contours: *id012
@@ -1124,7 +1390,9 @@ results:
   what: Собранное под ступень и узкое место руководство, выданное в диалоге
   where: любой клиент
   status: в работе
-  works: []
+  works:
+  - РП-521
+  in_week_plan: false
 - code: Ц53-16
   goal: 53
   contours: *id012
@@ -1132,7 +1400,9 @@ results:
   what: Рекомендация по узкому месту из программ, с записью принятия или отказа
   where: среда на компьютере
   status: в работе
-  works: []
+  works:
+  - РП-521
+  in_week_plan: false
 - code: Ц53-17
   goal: 53
   contours: *id012
@@ -1140,7 +1410,9 @@ results:
   what: 'временное ограничение: рендер руководств разрешён только для аккаунта пилота (25.10)'
   where: по расписанию
   status: в работе
-  works: []
+  works:
+  - РП-521
+  in_week_plan: false
 - code: Ц53-18
   goal: 53
   contours: *id012
@@ -1148,7 +1420,9 @@ results:
   what: сборщик рекомендаций в шаблоне IWE, два канала по готовности
   where: среда на компьютере
   status: в работе
-  works: []
+  works:
+  - РП-521
+  in_week_plan: false
 - code: Ц53-19
   goal: 53
   contours: *id012
@@ -1156,7 +1430,9 @@ results:
   what: Сборка из ответов на платформе, постов клуба и заметок
   where: любой клиент
   status: план
-  works: []
+  works:
+  - РП-521
+  in_week_plan: false
 - code: Ц53-20
   goal: 53
   contours: *id012
@@ -1164,7 +1440,9 @@ results:
   what: Пауза генерации на третий день и напоминание в Telegram
   where: мессенджер
   status: план
-  works: []
+  works:
+  - РП-521
+  in_week_plan: false
 - code: Ц53-21
   goal: 53
   contours: *id012
@@ -1172,7 +1450,9 @@ results:
   what: План занятия, методический материал, проверка двумя слоями, баллы за результат
   where: мессенджер
   status: отложено
-  works: []
+  works:
+  - РП-521
+  in_week_plan: false
 - code: Ц53-22
   goal: 53
   contours: *id012
@@ -1180,7 +1460,9 @@ results:
   what: руководство собирается по запросу в интерфейсе, где спросили, с записью происхождения и факта выдачи
   where: любой клиент
   status: отложено
-  works: []
+  works:
+  - РП-521
+  in_week_plan: false
 - code: Ц53-23
   goal: 53
   contours: *id012
@@ -1188,7 +1470,9 @@ results:
   what: 'точка входа занятия: /lesson как обёртка, наставник ведёт диалог, методичка выдаётся по контракту выдачи'
   where: любой клиент
   status: отложено
-  works: []
+  works:
+  - РП-521
+  in_week_plan: false
 - code: Ц53-24
   goal: 53
   contours: *id012
@@ -1196,7 +1480,9 @@ results:
   what: писатель факта С3 «первое занятие проведено» по закрытию занятия
   where: мессенджер
   status: в работе
-  works: []
+  works:
+  - РП-522
+  in_week_plan: true
 - code: Ц53-25
   goal: 53
   contours: *id012
@@ -1204,7 +1490,9 @@ results:
   what: агент отдаёт актуальное задание и планы из руководства
   where: браузерный чат
   status: в работе
-  works: []
+  works:
+  - РП-560
+  in_week_plan: true
 - code: Ц53-26
   goal: 53
   contours: *id012
@@ -1212,7 +1500,9 @@ results:
   what: закрытие дня отдаёт факты руководству, открытие подхватывает занятие без ручного шага
   where: среда на компьютере
   status: в работе
-  works: []
+  works:
+  - РП-561
+  in_week_plan: true
 - code: Ц53-27
   goal: 53
   contours: *id012
@@ -1220,7 +1510,9 @@ results:
   what: метод составления руководства и рекомендаций, проведение занятий агентом
   where: браузерный чат
   status: план
-  works: []
+  works:
+  - РП-581
+  in_week_plan: true
 - code: Ц54-01
   goal: 54
   contours: &id013
@@ -1229,7 +1521,9 @@ results:
   what: 'скилл скрининга проекта: уровни по пунктам и направление «роль и метод»'
   where: любой клиент
   status: в работе
-  works: []
+  works:
+  - РП-385
+  in_week_plan: true
 - code: Ц54-02
   goal: 54
   contours: *id013
@@ -1237,7 +1531,9 @@ results:
   what: тексты ответов ДЗ хранятся (с согласием, без ПДн) для цифрового двойника и Портного
   where: сайт и кабинет
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-427
+  in_week_plan: true
 - code: Ц54-03
   goal: 54
   contours: *id013
@@ -1245,7 +1541,9 @@ results:
   what: переносимая запись о зачёте с рубрикой и свидетельством
   where: сайт и кабинет
   status: план
-  works: []
+  works:
+  - РП-427
+  in_week_plan: true
 - code: Ц54-04
   goal: 54
   contours: *id013
@@ -1253,7 +1551,9 @@ results:
   what: 'факты С8-С19: эссе, чек-лист и защита по этапам S0-S3, по три события на этап; исключены из критерия подтверждения этапа'
   where: мессенджер
   status: план
-  works: []
+  works:
+  - РП-522
+  in_week_plan: true
 - code: Ц54-05
   goal: 54
   contours: *id013
@@ -1261,7 +1561,9 @@ results:
   what: наставник подтверждает проверку ДЗ-чекера
   where: сайт и кабинет
   status: план
-  works: []
+  works:
+  - РП-578
+  in_week_plan: true
 - code: Ц54-06
   goal: 54
   contours: *id013
@@ -1269,7 +1571,9 @@ results:
   what: открытая рубрика, проверка агентом
   where: браузерный чат
   status: план
-  works: []
+  works:
+  - РП-581
+  in_week_plan: true
 - code: Ц70-01
   goal: 70
   contours: &id014
@@ -1278,7 +1582,9 @@ results:
   what: формат карточки-пятёрки в шаблоне, навык apply-captures 1.4.0
   where: среда на компьютере
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-170
+  in_week_plan: true
 - code: Ц70-02
   goal: 70
   contours: *id014
@@ -1286,7 +1592,9 @@ results:
   what: генератор карты фронтира и помощник формализации
   where: среда на компьютере
   status: план
-  works: []
+  works:
+  - РП-483
+  in_week_plan: false
 - code: Ц70-03
   goal: 70
   contours: *id014
@@ -1294,7 +1602,9 @@ results:
   what: устройство экстрактора для браузера, исправление доставлено
   where: браузерный чат
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-560
+  in_week_plan: true
 - code: Ц71-01
   goal: 71
   contours: &id015
@@ -1303,7 +1613,9 @@ results:
   what: захват знаний, создание и подключение паков, путь к публикации в Библиотеке
   where: браузерный чат
   status: план
-  works: []
+  works:
+  - РП-581
+  in_week_plan: true
 - code: Ц71-02
   goal: 71
   contours: *id015
@@ -1311,7 +1623,9 @@ results:
   what: публикационная копия, права, обновление и отзыв будущей выдачи
   where: любой клиент
   status: план
-  works: []
+  works:
+  - РП-590
+  in_week_plan: false
 - code: Ц71-03
   goal: 71
   contours: *id015
@@ -1319,7 +1633,9 @@ results:
   what: 'Методы ECO.M.032-034: проектирование экосистемы, путь автора, создание пака'
   where: не применимо
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-611
+  in_week_plan: true
 - code: Ц72-01
   goal: 72
   contours: &id016
@@ -1328,7 +1644,9 @@ results:
   what: витрина паков, клон только для чтения, отметка в CLAUDE.md и области поиска
   where: среда на компьютере
   status: в работе
-  works: []
+  works:
+  - РП-532
+  in_week_plan: true
 - code: Ц72-02
   goal: 72
   contours: *id016
@@ -1336,7 +1654,9 @@ results:
   what: каталог, подключение, отключение паков и фильтр поиска с проверкой доступа
   where: браузерный чат
   status: план
-  works: []
+  works:
+  - РП-532
+  in_week_plan: true
 - code: Ц72-03
   goal: 72
   contours: *id016
@@ -1344,7 +1664,9 @@ results:
   what: 'тест на реальной участнице: подключение пака за 1 минуту, понятное сообщение без права доступа, 5 задач на материале паков'
   where: среда на компьютере
   status: план
-  works: []
+  works:
+  - РП-532
+  in_week_plan: true
 - code: Ц72-04
   goal: 72
   contours: *id016
@@ -1352,7 +1674,9 @@ results:
   what: владелец размещает пак в каталоге за 5 минут; каталог и скилл переносятся в шаблон
   where: среда на компьютере
   status: план
-  works: []
+  works:
+  - РП-532
+  in_week_plan: true
 - code: Ц72-05
   goal: 72
   contours: *id016
@@ -1360,7 +1684,9 @@ results:
   what: каталог, подключение и отключение паков доступны в боте и браузере через те же серверные инструменты
   where: мессенджер
   status: план
-  works: []
+  works:
+  - РП-532
+  in_week_plan: true
 - code: Ц73-01
   goal: 73
   contours: &id017
@@ -1369,7 +1695,9 @@ results:
   what: генератор учебных программ с минимальным контрактом результата (версия, цели, граф единиц, рубрики, происхождение)
   where: любой клиент
   status: план
-  works: []
+  works:
+  - РП-364
+  in_week_plan: false
 - code: Ц73-02
   goal: 73
   contours: *id017
@@ -1377,7 +1705,9 @@ results:
   what: в Библиотеке сохраняются цель, контекст, наблюдаемый результат и основание сравнения; спрос на описание не равен успеху
   where: любой клиент
   status: план
-  works: []
+  works:
+  - РП-588
+  in_week_plan: false
 - code: Ц73-03
   goal: 73
   contours: *id017
@@ -1385,7 +1715,9 @@ results:
   what: Правообладатель разрешает индексацию и круг получателей; учёт выдач для
   where: любой клиент
   status: отложено
-  works: []
+  works:
+  - РП-604
+  in_week_plan: false
 - code: Ц73-04
   goal: 73
   contours: *id017
@@ -1393,7 +1725,9 @@ results:
   what: Карточка метода по общей схеме со свидетельствами применения
   where: не применимо
   status: план
-  works: []
+  works:
+  - РП-608
+  in_week_plan: true
 - code: Ц73-05
   goal: 73
   contours: *id017
@@ -1401,7 +1735,9 @@ results:
   what: Очередь запросов на новый метод с проверкой, нет ли готового
   where: не применимо
   status: план
-  works: []
+  works:
+  - РП-608
+  in_week_plan: true
 - code: Ц73-06
   goal: 73
   contours: *id017
@@ -1409,7 +1745,9 @@ results:
   what: ручная проверка первых публикаций до конца 2026
   where: любой клиент
   status: план
-  works: []
+  works:
+  - РП-608
+  in_week_plan: true
 - code: Ц73-07
   goal: 73
   contours: *id017
@@ -1417,7 +1755,9 @@ results:
   what: загрузка методов внешних авторов
   where: любой клиент
   status: отложено
-  works: []
+  works:
+  - РП-608
+  in_week_plan: true
 - code: Ц75-01
   goal: 75
   contours:
@@ -1426,7 +1766,9 @@ results:
   what: скилл сообщения об ошибке готовит запрос на правку в шаблон
   where: среда на компьютере
   status: план
-  works: []
+  works:
+  - РП-5
+  in_week_plan: true
 - code: Ц77-01
   goal: 77
   contours: &id018
@@ -1435,7 +1777,9 @@ results:
   what: обновление убирает устаревшие файлы платформы, в шаблоне есть заготовка исключений синхронизации
   where: среда на компьютере
   status: план
-  works: []
+  works:
+  - РП-5
+  in_week_plan: true
 - code: Ц77-02
   goal: 77
   contours: *id018
@@ -1443,7 +1787,9 @@ results:
   what: 'разбор и фиксы открытых issue шаблона, чистка шаблона (сервер railway вынесен в образец, журнал изменений без пустых строк) — PR #1409'
   where: среда на компьютере
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-7
+  in_week_plan: true
 - code: Ц77-03
   goal: 77
   contours: *id018
@@ -1451,7 +1797,9 @@ results:
   what: живой прогон на установленной копии, не на голом клоне
   where: среда на компьютере
   status: план
-  works: []
+  works:
+  - РП-485
+  in_week_plan: true
 - code: Ц77-04
   goal: 77
   contours: *id018
@@ -1459,7 +1807,9 @@ results:
   what: сводка Главное в update.sh --check по группам Changelog-Tag
   where: среда на компьютере
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-529
+  in_week_plan: true
 - code: Ц77-05
   goal: 77
   contours: *id018
@@ -1467,7 +1817,9 @@ results:
   what: вердикт готовности в update.sh --check, скилл iwe-update читает его
   where: среда на компьютере
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-529
+  in_week_plan: true
 - code: Ц77-06
   goal: 77
   contours: *id018
@@ -1475,7 +1827,9 @@ results:
   what: канал rc, живой кандидат v0.41.10-rc и выпуск v0.41.10 27.10
   where: сайт и кабинет
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-529
+  in_week_plan: true
 - code: Ц77-07
   goal: 77
   contours: *id018
@@ -1483,7 +1837,9 @@ results:
   what: обновлённая установка без потери персонализаций
   where: терминал
   status: в работе
-  works: []
+  works:
+  - РП-529
+  in_week_plan: true
 - code: Ц77-08
   goal: 77
   contours: *id018
@@ -1491,7 +1847,9 @@ results:
   what: обновлённая установка
   where: терминал Windows
   status: в работе
-  works: []
+  works:
+  - РП-529
+  in_week_plan: true
 - code: Ц77-09
   goal: 77
   contours: *id018
@@ -1499,7 +1857,9 @@ results:
   what: анонс с разделом «Главное»
   where: Telegram, сайт GitHub
   status: в работе
-  works: []
+  works:
+  - РП-529
+  in_week_plan: true
 - code: Ц77-10
   goal: 77
   contours: *id018
@@ -1507,7 +1867,9 @@ results:
   what: установка в состоянии до обновления, побайтно
   where: терминал
   status: план
-  works: []
+  works:
+  - РП-529
+  in_week_plan: true
 - code: Ц77-11
   goal: 77
   contours: *id018
@@ -1515,7 +1877,9 @@ results:
   what: рабочая установка нужной версии
   where: терминал
   status: план
-  works: []
+  works:
+  - РП-529
+  in_week_plan: true
 - code: Ц77-12
   goal: 77
   contours: *id018
@@ -1523,7 +1887,9 @@ results:
   what: список новых функций с выбором; без выбора — прежнее «взять всё»
   where: терминал
   status: план
-  works: []
+  works:
+  - РП-529
+  in_week_plan: true
 - code: Ц77-13
   goal: 77
   contours: *id018
@@ -1531,7 +1897,9 @@ results:
   what: стабильный набор раз в 1–2 недели
   where: терминал
   status: план
-  works: []
+  works:
+  - РП-529
+  in_week_plan: true
 - code: Ц77-14
   goal: 77
   contours: *id018
@@ -1539,7 +1907,9 @@ results:
   what: обновление опубликованного выпуска сохраняет личное, конфликт виден
   where: компьютер
   status: план
-  works: []
+  works:
+  - РП-552
+  in_week_plan: false
 - code: Ц78-01
   goal: 78
   contours: &id019
@@ -1548,7 +1918,9 @@ results:
   what: check-dirty-repos.sh доставлен в корень и шаблон, дедупликация по toplevel
   where: по расписанию
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-485
+  in_week_plan: true
 - code: Ц78-02
   goal: 78
   contours: *id019
@@ -1556,7 +1928,9 @@ results:
   what: отчёт что отличается и что решено, сверенный инвентарь двух хостов
   where: среда на компьютере
   status: в работе
-  works: []
+  works:
+  - РП-529
+  in_week_plan: true
 - code: Ц78-03
   goal: 78
   contours: *id019
@@ -1564,7 +1938,9 @@ results:
   what: DayPlan по расписанию
   where: фоновый запуск по расписанию
   status: в работе
-  works: []
+  works:
+  - РП-529
+  in_week_plan: true
 - code: Ц78-04
   goal: 78
   contours: *id019
@@ -1572,7 +1948,9 @@ results:
   what: градация ответа на отставание копии, очередь долга, строка готовности в ритуале открытия
   where: среда на компьютере
   status: в работе
-  works: []
+  works:
+  - РП-561
+  in_week_plan: true
 - code: Ц79-01
   goal: 79
   contours: &id020
@@ -1581,7 +1959,9 @@ results:
   what: зашифрованный бэкап по расписанию (tier0-tier2, 7/4/6 снимков), защитный снимок перед разрушительной операцией, единый договор бэкапа, тревога при регрессе
   where: среда на компьютере
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-7
+  in_week_plan: true
 - code: Ц79-02
   goal: 79
   contours: *id020
@@ -1589,7 +1969,9 @@ results:
   what: Наладчик (R11) чинит по каталогу починок и растёт на нештатных случаях; нужен первый живой закрытый случай
   where: любой клиент
   status: в работе
-  works: []
+  works:
+  - РП-516
+  in_week_plan: false
 - code: Ц79-03
   goal: 79
   contours: *id020
@@ -1597,7 +1979,9 @@ results:
   what: источник памяти и переносимый состав определены, восстановление без старых путей
   where: компьютер
   status: план
-  works: []
+  works:
+  - РП-552
+  in_week_plan: false
 - code: Ц80-01
   goal: 80
   contours:
@@ -1606,7 +1990,9 @@ results:
   what: минимальный обязательный состав и выбираемые процедуры, минимальная модульная поставка
   where: компьютер
   status: план
-  works: []
+  works:
+  - РП-552
+  in_week_plan: false
 - code: Ц81-01
   goal: 81
   contours: &id021
@@ -1615,7 +2001,9 @@ results:
   what: репозитории с пометкой nda не копируются в личную память, аудит куратора
   where: среда на компьютере
   status: план
-  works: []
+  works:
+  - РП-286
+  in_week_plan: true
 - code: Ц81-02
   goal: 81
   contours: *id021
@@ -1623,7 +2011,9 @@ results:
   what: расширенный гейт блокирует env, printenv и railway variables, включая перенаправления
   where: среда на компьютере
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-482
+  in_week_plan: false
 - code: Ц81-03
   goal: 81
   contours: *id021
@@ -1631,7 +2021,9 @@ results:
   what: единый контракт видимости сделан; сторож дрейфа не доказан
   where: среда на компьютере
   status: в работе
-  works: []
+  works:
+  - РП-544
+  in_week_plan: true
 - code: Ц81-04
   goal: 81
   contours: *id021
@@ -1639,7 +2031,9 @@ results:
   what: единая точка выдачи секретов; брокер чтения готов, миграция потребителей не доказана
   where: среда на компьютере
   status: в работе
-  works: []
+  works:
+  - РП-544
+  in_week_plan: true
 - code: Ц81-05
   goal: 81
   contours: *id021
@@ -1647,7 +2041,9 @@ results:
   what: защита общей библиотеки секретных хуков, АрхГейт на падение анализатора
   where: среда на компьютере
   status: в работе
-  works: []
+  works:
+  - РП-544
+  in_week_plan: true
 - code: Ц81-06
   goal: 81
   contours: *id021
@@ -1655,7 +2051,9 @@ results:
   what: инструмента без экспозиции нет; диагноз сделан
   where: среда на компьютере
   status: план
-  works: []
+  works:
+  - РП-544
+  in_week_plan: true
 - code: Ц81-07
   goal: 81
   contours: *id021
@@ -1663,7 +2061,9 @@ results:
   what: шаг сканирования секретов в программах публикации
   where: среда на компьютере
   status: план
-  works: []
+  works:
+  - РП-616
+  in_week_plan: true
 - code: Ц82-01
   goal: 82
   contours: &id022
@@ -1672,7 +2072,9 @@ results:
   what: обзор шагов, объявление входа на каждом шаге, раздел проверки; живой прогон гейта содержимого пир-сессии
   where: любой клиент
   status: в работе
-  works: []
+  works:
+  - РП-518
+  in_week_plan: true
 - code: Ц82-02
   goal: 82
   contours: *id022
@@ -1680,7 +2082,9 @@ results:
   what: предсказуемая работа скилла peer-conversation, роли определяет сессия, участников можно звать по ходу
   where: любой клиент
   status: в работе
-  works: []
+  works:
+  - РП-524
+  in_week_plan: false
 - code: Ц82-03
   goal: 82
   contours: *id022
@@ -1688,7 +2092,9 @@ results:
   what: браузерный транспорт пир-сессий (тест B, решение по MCP-транспорту)
   where: браузерный чат
   status: план
-  works: []
+  works:
+  - РП-524
+  in_week_plan: false
 - code: Ц82-04
   goal: 82
   contours: *id022
@@ -1696,7 +2102,9 @@ results:
   what: проверка квоты вендора и переход на другого напарника при отказе
   where: любой клиент
   status: план
-  works: []
+  works:
+  - РП-524
+  in_week_plan: false
 - code: Ц82-05
   goal: 82
   contours: *id022
@@ -1704,7 +2112,9 @@ results:
   what: 'колонки стадий в панели рабочих продуктов: активные, в работе, закрываются, закрыты'
   where: среда на компьютере
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-530
+  in_week_plan: true
 - code: Ц82-06
   goal: 82
   contours: *id022
@@ -1712,7 +2122,9 @@ results:
   what: рой не стартует без явного слова
   where: среда на компьютере
   status: план
-  works: []
+  works:
+  - РП-530
+  in_week_plan: true
 - code: Ц82-07
   goal: 82
   contours: *id022
@@ -1720,7 +2132,9 @@ results:
   what: 'четыре новых паттерна: раздача параллельно, конвейер, супервизор, рой, плюс спор'
   where: среда на компьютере
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-533
+  in_week_plan: true
 - code: Ц82-08
   goal: 82
   contours: *id022
@@ -1728,7 +2142,9 @@ results:
   what: реплики по ходу работы или копление наблюдений о пользователе в очередь знаний
   where: среда на компьютере
   status: план
-  works: []
+  works:
+  - РП-533
+  in_week_plan: true
 - code: Ц83-01
   goal: 83
   contours: &id023
@@ -1737,7 +2153,9 @@ results:
   what: страница онбординга про слои платформы, пилота и своих правил
   where: сайт и кабинет
   status: план
-  works: []
+  works:
+  - РП-5
+  in_week_plan: true
 - code: Ц83-02
   goal: 83
   contours: *id023
@@ -1745,7 +2163,9 @@ results:
   what: 'Правило в шаблоне: указать область уникальности и ответственного за схему'
   where: среда на компьютере
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-606
+  in_week_plan: false
 - code: Ц83-03
   goal: 83
   contours: *id023
@@ -1753,7 +2173,9 @@ results:
   what: Автоматически собираемый обзор реестров по паспортам, охват по максимуму
   where: среда на компьютере
   status: план
-  works: []
+  works:
+  - РП-606
+  in_week_plan: false
 - code: Ц83-04
   goal: 83
   contours: *id023
@@ -1761,7 +2183,9 @@ results:
   what: Таблица сценариев по целям человека с отметкой, на каком выпуске проверено
   where: любой клиент
   status: в работе
-  works: []
+  works:
+  - РП-611
+  in_week_plan: true
 - code: Ц83-05
   goal: 83
   contours: *id023
@@ -1769,7 +2193,9 @@ results:
   what: 'Описание IWE DP.IWE.013: функциональные подсистемы, модули, размещение, системы окружения'
   where: сайт и кабинет
   status: в работе
-  works: []
+  works:
+  - РП-616
+  in_week_plan: true
 - code: Ц93-01
   goal: 93
   contours: &id024
@@ -1778,7 +2204,9 @@ results:
   what: 'конвейер перевода: дельта-перевод, глоссарий (96 строк), проверки, живой прогон 06.07'
   where: любой клиент
   status: в работе
-  works: []
+  works:
+  - РП-415
+  in_week_plan: false
 - code: Ц93-02
   goal: 93
   contours: *id024
@@ -1786,7 +2214,9 @@ results:
   what: переводы шаблона по словарю из графа понятий (снимок 495 терминов вместо ручного файла на 126)
   where: любой клиент
   status: в работе
-  works: []
+  works:
+  - РП-617
+  in_week_plan: true
 - code: Ц93-03
   goal: 93
   contours: *id024
@@ -1794,7 +2224,9 @@ results:
   what: правка слова попадает в граф и в следующий запрос на слияние
   where: любой клиент
   status: план
-  works: []
+  works:
+  - РП-617
+  in_week_plan: true
 - code: Ц93-04
   goal: 93
   contours: *id024
@@ -1802,7 +2234,9 @@ results:
   what: скилл «перевод по графу» с кодом понятия и мягким гейтом
   where: любой клиент
   status: план
-  works: []
+  works:
+  - РП-617
+  in_week_plan: true
 - code: Ц94-01
   goal: 94
   contours: &id025
@@ -1811,7 +2245,9 @@ results:
   what: 'индексатор и MCP у владельца: свои источники, закрытый вход, резервная копия, поиск по словам без модели'
   where: любой клиент
   status: план
-  works: []
+  works:
+  - РП-483
+  in_week_plan: false
 - code: Ц94-02
   goal: 94
   contours: *id025
@@ -1819,7 +2255,9 @@ results:
   what: экспорт в открытом формате и удаление данных о себе с каскадом производных (обещание О5)
   where: любой клиент
   status: отложено
-  works: []
+  works:
+  - РП-510
+  in_week_plan: false
 - code: Ц94-03
   goal: 94
   contours: *id025
@@ -1827,7 +2265,9 @@ results:
   what: нога «личный корпус» с проверкой хвостов и подтверждением человеку
   where: сайт и кабинет
   status: план
-  works: []
+  works:
+  - РП-554
+  in_week_plan: false
 - code: Ц94-04
   goal: 94
   contours: *id025
@@ -1835,7 +2275,9 @@ results:
   what: карта пути по вариантам среды DP.ARCH.013 и описание для человека и наставника
   where: любой клиент
   status: в работе
-  works: []
+  works:
+  - РП-610
+  in_week_plan: true
 - code: Ц94-05
   goal: 94
   contours: *id025
@@ -1843,7 +2285,9 @@ results:
   what: 'порядок ухода: отключение, удаление копии, выгрузка'
   where: любой клиент
   status: план
-  works: []
+  works:
+  - РП-610
+  in_week_plan: true
 - code: Ц94-06
   goal: 94
   contours: *id025
@@ -1851,7 +2295,9 @@ results:
   what: приёмка комплекта и удаления копии на тестовом аккаунте
   where: среда на компьютере
   status: план
-  works: []
+  works:
+  - РП-610
+  in_week_plan: true
 - code: Ц95-01
   goal: 95
   contours: &id026
@@ -1860,7 +2306,9 @@ results:
   what: заготовка поиска переезжает из шлюза в комплект; обещание о личных серверах убрано из описания шлюза
   where: любой клиент
   status: план
-  works: []
+  works:
+  - РП-7
+  in_week_plan: true
 - code: Ц95-02
   goal: 95
   contours: *id026
@@ -1868,7 +2316,9 @@ results:
   what: 'маршрут «Опытный»: подключить открытый MCP и MCP подписки, свой поиск остаётся у него; проверка вручную на одном владельце'
   where: любой клиент
   status: план
-  works: []
+  works:
+  - РП-406
+  in_week_plan: true
 - code: Ц95-03
   goal: 95
   contours: *id026
@@ -1876,7 +2326,9 @@ results:
   what: страница подключения для владельца настроенной среды, третий сервер в матрице
   where: сайт и кабинет
   status: план
-  works: []
+  works:
+  - РП-599
+  in_week_plan: false
 - code: Ц95-04
   goal: 95
   contours: *id026
@@ -1884,7 +2336,9 @@ results:
   what: 'шаблон работает в трёх положениях: только платформа, только свой поиск, оба'
   where: среда на компьютере
   status: план
-  works: []
+  works:
+  - РП-610
+  in_week_plan: true
 - code: Ц96-01
   goal: 96
   contours: &id027
@@ -1893,7 +2347,9 @@ results:
   what: работы идут параллельно, ни одна не теряет и не перетирает чужое
   where: среда на компьютере, сервер
   status: в работе
-  works: []
+  works:
+  - РП-530
+  in_week_plan: true
 - code: Ц96-02
   goal: 96
   contours: *id027
@@ -1901,7 +2357,9 @@ results:
   what: свежие правила, скрипты и карточки в каждой новой сессии
   where: среда на компьютере, по расписанию
   status: в работе
-  works: []
+  works:
+  - РП-530
+  in_week_plan: true
 - code: Ц96-03
   goal: 96
   contours: *id027
@@ -1909,7 +2367,9 @@ results:
   what: одна история дня на Маке и Цехе
   where: по расписанию
   status: в работе
-  works: []
+  works:
+  - РП-530
+  in_week_plan: true
 - code: Ц96-04
   goal: 96
   contours: *id027
@@ -1917,7 +2377,9 @@ results:
   what: работа опубликована и подтверждена квитанцией
   where: среда на компьютере
   status: в работе
-  works: []
+  works:
+  - РП-530
+  in_week_plan: true
 - code: Ц96-05
   goal: 96
   contours: *id027
@@ -1925,7 +2387,9 @@ results:
   what: нет тихих перезаписей общей копии
   where: среда на компьютере, сервер
   status: в работе
-  works: []
+  works:
+  - РП-530
+  in_week_plan: true
 - code: Ц96-06
   goal: 96
   contours: *id027
@@ -1933,7 +2397,9 @@ results:
   what: одно согласованное решение плана на обоих хостах
   where: среда на компьютере, сервер
   status: в работе
-  works: []
+  works:
+  - РП-530
+  in_week_plan: true
 - code: Ц96-07
   goal: 96
   contours: *id027
@@ -1941,7 +2407,9 @@ results:
   what: буфер не растёт бесконечно, ничего не теряется
   where: по расписанию
   status: план
-  works: []
+  works:
+  - РП-530
+  in_week_plan: true
 - code: Ц96-08
   goal: 96
   contours: *id027
@@ -1949,7 +2417,9 @@ results:
   what: честный статус каждой сессии
   where: панель редактора, среда на компьютере
   status: план
-  works: []
+  works:
+  - РП-530
+  in_week_plan: true
 - code: Ц96-09
   goal: 96
   contours: *id027
@@ -1957,7 +2427,9 @@ results:
   what: сигнал и восстановление до потери работы
   where: по расписанию
   status: план
-  works: []
+  works:
+  - РП-530
+  in_week_plan: true
 - code: Ц96-10
   goal: 96
   contours: *id027
@@ -1965,7 +2437,9 @@ results:
   what: другая сессия передаёт контекст в РП через его ящик входящих, не правя чужую карточку; владелец видит новые записи при открытии сессии и учитывает их в фазах
   where: среда на компьютере
   status: в работе
-  works: []
+  works:
+  - РП-5
+  in_week_plan: true
 - code: Ц84-01
   goal: 84
   contours: &id028
@@ -1974,7 +2448,9 @@ results:
   what: публичный репозиторий iwesys/IWE с блокирующей проверкой на кириллицу и нейтральной историей
   where: сайт и кабинет
   status: сделано, не сверено
-  works: []
+  works:
+  - РП-415
+  in_week_plan: false
 - code: Ц84-02
   goal: 84
   contours: *id028
@@ -1982,7 +2458,9 @@ results:
   what: Nix flake с devenv и direnv, DevContainer из репозитория
   where: среда на компьютере
   status: в работе
-  works: []
+  works:
+  - РП-468
+  in_week_plan: false
 - code: Ц84-03
   goal: 84
   contours: *id028
@@ -1990,7 +2468,9 @@ results:
   what: автонастройка среды и подключение нужных паков после решения пилота
   where: среда на компьютере
   status: план
-  works: []
+  works:
+  - РП-468
+  in_week_plan: false
 - code: Ц84-04
   goal: 84
   contours: *id028
@@ -1998,7 +2478,9 @@ results:
   what: 'Обещание: любое изменение проходит одинаковые проверки; виден след проверок'
   where: не применимо
   status: в работе
-  works: []
+  works:
+  - РП-519
+  in_week_plan: false
 - code: Ц84-05
   goal: 84
   contours: *id028
@@ -2006,7 +2488,9 @@ results:
   what: обязательные проверки на слиянии (включены в iwe-server и боте), ночной скан основной ветки
   where: любой клиент
   status: в работе
-  works: []
+  works:
+  - РП-519
+  in_week_plan: false
 - code: Ц84-06
   goal: 84
   contours: *id028
@@ -2014,7 +2498,9 @@ results:
   what: что найдено, принято, отклонено, привязано к SHA; только advisory
   where: любой клиент
   status: план
-  works: []
+  works:
+  - РП-519
+  in_week_plan: false
 - code: Ц84-07
   goal: 84
   contours: *id028
@@ -2022,7 +2508,9 @@ results:
   what: установка из тега `vX.Y.Z-rc.N`
   where: терминал
   status: в работе
-  works: []
+  works:
+  - РП-529
+  in_week_plan: true
 - code: Ц84-08
   goal: 84
   contours: *id028
@@ -2030,7 +2518,9 @@ results:
   what: правка в шаблоне через PR, принятая база записана
   where: терминал, Claude Code
   status: в работе
-  works: []
+  works:
+  - РП-529
+  in_week_plan: true
 - code: Ц84-09
   goal: 84
   contours: *id028
@@ -2038,7 +2528,9 @@ results:
   what: кандидат трёхстороннего слияния и запись принятой базы
   where: терминал
   status: в работе
-  works: []
+  works:
+  - РП-529
+  in_week_plan: true
 - code: Ц84-10
   goal: 84
   contours: *id028
@@ -2046,7 +2538,9 @@ results:
   what: запись в `STAGING.md` переходит в «перенесено» вместе с файлом
   where: Claude Code
   status: в работе
-  works: []
+  works:
+  - РП-529
+  in_week_plan: true
 - code: Ц84-11
   goal: 84
   contours: *id028
@@ -2054,7 +2548,9 @@ results:
   what: классификация файла и чек-лист перед слиянием
   where: терминал, GitHub
   status: в работе
-  works: []
+  works:
+  - РП-529
+  in_week_plan: true
 - code: Ц84-12
   goal: 84
   contours: *id028
@@ -2062,7 +2558,9 @@ results:
   what: выпуск с одобрением или с пометкой «без внешней проверки»
   where: сайт GitHub, терминал
   status: план
-  works: []
+  works:
+  - РП-529
+  in_week_plan: true
 staging:
 - id: S-13
   title: Именование РП = существительное-артефакт

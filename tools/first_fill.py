@@ -10,6 +10,8 @@ Sources expected in --src:
   sbg.md         state by goals, results with codes (document 4)
   changelog.md   CHANGELOG.md of FMT-exocortex-template
   staging.md     STAGING.md of the author's IWE
+  result-codes.md  result code -> work card (RP), working records of document 4
+  weekplan.md    the Developer's current week plan
   fmt-sha        commit of FMT main the snapshot was taken at
   fmt-files.txt  file list of FMT main at that commit
 """
@@ -199,59 +201,93 @@ def cell(text: str) -> str:
     return text.replace("|", "\\|")
 
 
-RESULT_LADDER = (
-    "план",
-    "в работе",
+NOT_DONE = ("план", "в работе")
+DEVELOPER_VERSION = (
     "в обкатке",
     "у автора",
-    "сделано, не сверено",
     "в шаблоне",
     "передано",
     "взято в 0.42",
     "в rc 0.42",
-    "выпущено в 0.42",
-    "отложено",
     "возвращено из 0.42",
 )
 
 
-def summary_lines(results, staging, unreleased_links) -> list[str]:
-    """Board summary: one unit (promised result) along the ladder, other units listed separately."""
-    columns = ("всего", *CONTOURS)
-    counts = {status: dict.fromkeys(columns, 0) for status in RESULT_LADDER}
+def attach_works(results: list[dict], result_codes: str, week_plan: str) -> None:
+    """Add the work cards (RP) of each result and whether one of them is in the week plan."""
+    works = {}
+    for line in result_codes.splitlines():
+        m = re.match(r"^\| (Ц\d+-\d+) \|.*\| (РП-\d+[^|]*)\|\s*$", line)
+        if m:
+            works[m.group(1)] = sorted(set(re.findall(r"РП-(\d+)", m.group(2))), key=int)
+    in_week = set(re.findall(r"(?:РП-?|WP-)(\d+)", week_plan))
     for r in results:
-        counts[r["status"]]["всего"] += 1
-        for contour in r["contours"]:
-            counts[r["status"]][contour] += 1
-    lines = [
-        f"## Сводка: {len(results)} обещанных результатов, которые идут через выпуск",
-        "",
-        (
-            "Единица счёта — обещанный результат (код «Ц<цель>-<номер>»). Колонка «всего» в сумме даёт общее число; "
-            "результат может относиться сразу к нескольким частям выпуска, поэтому сумма по частям бывает больше."
-        ),
-        "",
-        "| Статус | " + " | ".join(columns) + " |",
-        "|---|" + "---|" * len(columns),
-    ]
-    lines += [f"| {status} | " + " | ".join(str(v) for v in row.values()) + " |" for status, row in counts.items()]
-    lines += ["| **итого** | " + " | ".join(f"**{sum(row[c] for row in counts.values())}**" for c in columns) + " |"]
+        if r["code"] not in works:
+            raise SystemExit(f"result {r['code']} has no work card in result-codes.md")
+        r["works"] = [f"РП-{n}" for n in works[r["code"]]]
+        r["in_week_plan"] = bool(set(works[r["code"]]) & in_week)
+
+
+def board_stage(r: dict) -> str:
+    """Board stage of a result: the four stages of «Состояние по целям» refined by the week plan."""
+    if r["status"] in NOT_DONE:
+        return "2.1" if r["in_week_plan"] else "1"
+    if r["status"] in DEVELOPER_VERSION:
+        return "2.2"
+    if r["status"] == "сделано, не сверено":
+        return "3?"
+    if r["status"] == "выпущено в 0.42":
+        return "3"
+    return "4"
+
+
+def summary_lines(results, staging, unreleased_links, released) -> list[str]:
+    """Board summary in the four stages; results and change records counted in separate columns."""
+    n = {key: 0 for key in ("1", "2.1", "2.2", "3?", "3", "4")}
+    for r in results:
+        n[board_stage(r)] += 1
     testing = sum(1 for s in staging if s["staging_status"] == "testing")
-    linked = sum(1 for s in staging if s["staging_status"] == "testing" and s["result"])
-    lines += [
+    rec_036 = sum(len(e) for e in released["0.36"].values())
+    rec_041 = sum(len(e) for e in released["0.41.11"].values())
+    rows = [
+        ("**1. План** — результаты активных РП, не сделанные и не в плане недели", n["1"], "—"),
+        ("**2. В работе**", n["2.1"] + n["2.2"], "—"),
+        ("2.1. в плане недели Разработчика — не сделанные результаты РП из плана недели", n["2.1"], "—"),
+        ("2.2. версия Разработчика", n["2.2"], "—"),
+        ("а) тестируется Разработчиком — на обкатке (`STAGING.md`)", "—", testing),
+        ("б) передано Выпускающему — выпуски 0.37–0.41.11", "—", rec_041),
+        ("б) передано Выпускающему — влито в шаблон после 0.41.11, ещё не выпущено", "—", len(unreleased_links)),
+        ("в том числе тестируется Выпускающим / готово к выпуску", "0 / 0", "0 / 0"),
+        ("**Сделано по карточкам, выпуск не сверен** — разойдётся в 2.2 б) или 3", n["3?"], "—"),
+        ("**3. Сделано — в стабильном выпуске** (сейчас 0.36: выпуски до 0.36 включительно)", n["3"], rec_036),
+        ("**4. Отложено**", n["4"], "—"),
+        ("**Итого результатов**", len(results), "—"),
+    ]
+    lines = [
+        "## Сводка",
         "",
-        "**Другие единицы — к сумме выше не прибавляются**, пока не связаны с кодом результата:",
-        "",
-        "| Что | Сколько | Связано с результатом |",
-        "|---|---|---|",
-        f"| записи обкатки на обкатке (`STAGING.md`) | {testing} | {linked} |",
         (
-            f"| записи списка изменений «Ещё не выпущено» | {len(unreleased_links)} | "
-            f"{sum(1 for u in unreleased_links if u['result'])} |"
+            "Единица счёта — обещанный результат (код «Ц<цель>-<номер>»). Записи списка изменений и записи обкатки — "
+            "другая единица: они показаны в своей колонке и станут результатами, когда каждую свяжут с кодом "
+            "результата. «—» — в этой единице не считается или ещё не связано."
         ),
         "",
+        "| Стадия | Результатов | Записей |",
+        "|---|---|---|",
     ]
-    return lines
+    lines += [f"| {name} | {res} | {rec} |" for name, res, rec in rows]
+    lines += ["", "**По частям выпуска** (результат может относиться сразу к двум частям):", ""]
+    lines += ["| Стадия | " + " | ".join(CONTOURS) + " |", "|---|" + "---|" * len(CONTOURS)]
+    for key, name in (
+        ("1", "1. План"),
+        ("2.1", "2. В работе"),
+        ("3?", "Сделано, выпуск не сверен"),
+        ("4", "4. Отложено"),
+    ):
+        keys = ("2.1", "2.2") if key == "2.1" else (key,)
+        counts = [sum(1 for r in results if board_stage(r) in keys and c in r["contours"]) for c in CONTOURS]
+        lines += [f"| {name} | " + " | ".join(map(str, counts)) + " |"]
+    return lines + [""]
 
 
 def write_views(repo: Path, stamp: str, results, staging, unreleased, unreleased_links, released, author_ahead) -> None:
@@ -269,7 +305,7 @@ def write_views(repo: Path, stamp: str, results, staging, unreleased, unreleased
         "Собрано программой из файлов ролей и источников; вручную не править.",
         "",
     ]
-    out += summary_lines(results, staging, unreleased_links)
+    out += summary_lines(results, staging, unreleased_links, released)
     testing = [s for s in staging if s["staging_status"] == "testing"]
     out += [
         "## 1. Работает в моей IWE, в шаблон не доставлено",
@@ -296,8 +332,16 @@ def write_views(repo: Path, stamp: str, results, staging, unreleased, unreleased
     out += ["", "## 3. Результаты по статусам", ""]
     for status in ("в работе", "план", "сделано, не сверено", "отложено"):
         rows = by_status.get(status, [])
-        out += [f"### {status}: {len(rows)}", "", "| Код | Часть выпуска | Кто | Что получает |", "|---|---|---|---|"]
-        out += [f"| {r['code']} | {', '.join(r['contours'])} | {r['who']} | {cell(r['what'])} |" for r in rows]
+        out += [
+            f"### {status}: {len(rows)}",
+            "",
+            "| Код | Часть выпуска | РП | Кто | Что получает |",
+            "|---|---|---|---|---|",
+        ]
+        out += [
+            f"| {r['code']} | {', '.join(r['contours'])} | {', '.join(r['works'])} | {r['who']} | {cell(r['what'])} |"
+            for r in rows
+        ]
         out += [""]
     moved = [s for s in staging if s["staging_status"] == "promoted"]
     kept = [s for s in staging if s["staging_status"] == "rejected"]
@@ -346,6 +390,7 @@ def main() -> int:
     fmt_files = (src / "fmt-files.txt").read_text().split()
     goals = selected_goals((src / "map005.md").read_text())
     results = results_for((src / "sbg.md").read_text(), goals)
+    attach_works(results, (src / "result-codes.md").read_text(), (src / "weekplan.md").read_text())
     staging = staging_entries((src / "staging.md").read_text(), fmt_files)
     sections = changelog_sections((src / "changelog.md").read_text())
     unreleased = sections.pop("Unreleased")
