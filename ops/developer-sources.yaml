@@ -4,11 +4,11 @@
 
 built_at_local_date: '2026-11-06'   # dt.date.today() хоста сборки: шапки «Собрано …» и snapshot.collected_at
 host_timezone: EET                  # локальная дата зависит от таймзоны хоста
-recorded_at: '2026-11-06T13:05:00Z' # когда записан этот файл (после сборки)
+recorded_at: '2026-11-06T14:45:00Z' # когда записан этот файл (после сборки)
 
 builder:
   program: ops/build_board.py
-  program_commit: 0a003ff847c9c9fcac5e490f20fc7f3f6e8ffbb5   # запущена неизменённой из этой ревизии
+  program_commit: fed74a900870aab18e6dc1216997254bdee24e0c   # запущена неизменённой из этой ревизии
   program_sha256: 3cb42b11f583b3006450929fd9abdfa43903e0a6acf709b1420a68d3d80a881e
   python: 3.15.0
   dependencies: {pyyaml: 6.0.3}       # других сторонних модулей программа не импортирует
@@ -19,7 +19,7 @@ inputs:
   - name: map005.md
     repo: https://github.com/MimEcoSys/PACK-digital-platform.git
     path: pack/digital-platform/07-map/DP.MAP.005-mcp-scenarios.md
-    revision: 853f5d78d17d77391613e4333ecec5a745a6c8ae
+    revision: d33338c492f8cbe08412b8a4813d85ac89e06410
     sha256: cfbbe12405276870774511b7a0a10e86fef73885ed1bf44d3d4d0978abfc8512
   - name: sbg.md
     repo: https://github.com/aisystant/DS-ecosystem-development.git
@@ -54,19 +54,19 @@ inputs:
   - name: weekplan.md
     repo: https://github.com/TserenTserenov/DS-my-strategy.git        # закрытый, план недели Разработчика
     path: current/WeekPlan W45 2026-11-02.md   # каждую неделю — план текущей недели
-    revision: 11fd3c7be648805006890625125b60bd84f1ac21
+    revision: dccc6e89dfc50aa549bf8a65c9fa5150583d260c
     sha256: 85dad20f052fab128abadff8cc91953bdc5aa27014e2274a1cd1f767e87a2904
   - name: author-ahead.yaml   # результат замера рабочих копий хоста, не файл из Git
     produced_by:
       tool: https://github.com/TserenTserenov/DS-ai-systems.git setup/scripts/wp529-drift-inventory.py
-      tool_commit: a7b35ac0db8d27c9fa5568b9396b84f12025a39f   # запущен неизменённым
+      tool_commit: 1cc7aadab921734c9aca436593cad09ec1733969   # запущен неизменённым; в этой ревизии и template-sync.sh, который инвентарь вызывает
       tool_sha256: 7cfbc929e06d10c93640e1fa24ea745cc7716a5c5f76bd8e86b4c02e8f803557
-      command: (cd DS-ai-systems && python3 setup/scripts/wp529-drift-inventory.py --out <отчёт> --yaml-out <папка входов>/author-ahead.yaml)
+      command: (cd DS-IT-systems/DS-ai-systems && python3 setup/scripts/wp529-drift-inventory.py --out <отчёт> --yaml-out <папка входов>/author-ahead.yaml)
       host: Mac Разработчика   # зависит от setup/.sync-hashes этого хоста
-    measured_at: '2026-11-06T12:23:50Z'
-    complete: false            # причина — в самом файле и на странице board/2.2-at-developer.md
-    sha256: b4f11b2f7420d98265b681700c0c4a0e95e452409aeb2729e3c41407354ab822
-    kept_at: закрытый журнал сессий Разработчика, MC-sessions 2026-11/06/2026-11-06-07-wp529-board-src-release/author-ahead.yaml
+    measured_at: '2026-11-06T14:36:01Z'
+    complete: true
+    sha256: b45396bc56db5ed3c58f3ca67642d23a0c6b060da7dae3e3f0e25ef819ec1c67
+    kept_at: закрытый журнал сессий Разработчика, MC-sessions 2026-11/06/2026-11-06-07-wp529-board-src-release/author-ahead-full.yaml
 
 # Порядок сборки. Любой отказ команды — стоп, табло не пересобирается.
 steps:
@@ -74,7 +74,7 @@ steps:
   - 'В каждом репозитории: git fetch origin; ревизия = git rev-parse origin/main (записать в inputs).'
   - 'Новая пустая папка входов SRC; в неё для каждого входа с path: git -C <repo> show <revision>:<path> > SRC/<name>.'
   - 'FMT: git -C FMT rev-parse <revision> > SRC/fmt-sha; git -C FMT ls-tree -r --name-only <revision> > SRC/fmt-files.txt.'
-  - 'Замер (около 4 минут): команда из produced_by; complete: false — не ошибка сборки, причина уйдёт на табло.'
+  - 'Замер (около 4 минут): сразу перед ним canon-refresh.sh DS-my-strategy и DS-IT-systems/DS-ai-systems (иначе «позади origin» даёт complete: false); команда из produced_by; complete: false — не ошибка сборки, причина уйдёт на табло.'
   - 'shasum -a 256 SRC/* — записать в inputs.'
   - 'Сборка в чистую копию DS-iwe-releases: command из builder; код возврата 0, строка goals=… results=… совпадает с прошлой или расхождение объяснено входами.'
   - 'Проверка: вторая сборка из той же SRC в другую чистую копию; diff -r -x .git двух копий пустой.'
