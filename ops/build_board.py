@@ -14,7 +14,11 @@ Sources expected in --src:
   weekplan.md    the Developer's current week plan
   fmt-sha        commit of FMT main the snapshot was taken at
   fmt-files.txt  file list of FMT main at that commit
+  author-ahead.yaml  (optional) author <-> template measurement, written by
+                 DS-ai-systems/setup/scripts/wp529-drift-inventory.py --yaml-out
 """
+
+from __future__ import annotations
 
 import argparse
 import datetime as dt
@@ -198,15 +202,55 @@ def changelog_sections(changelog: str) -> dict[str, list[dict]]:
     return sections
 
 
-def author_ahead_placeholder() -> dict:
-    # The drift inventory (F248) runs on the author's host and is not readable here;
-    # the Developer fills this block from its report.
-    return {
-        "measured_at": None,
-        "files": [],
-        "note": "замер расхождений автор↔шаблон при первом заполнении не получен (сетевой предел замера); "
-        "последнее известное число — 14 файлов (04.11.2026, РП-529 Ф248)",
-    }
+AUTHOR_AHEAD_CATEGORIES = {
+    # category of wp529-drift-inventory.py -> (group on the 2.2 page, what it means)
+    "would_update": ("sync", "синхронизация перенесёт версию Разработчика в шаблон"),
+    "template_has_foreign_edits": ("both", "в шаблоне есть свои правки; нужна сверка версий"),
+    "accepted_base_unproven": ("unproven", "принятая версия не прошла проверку перед доставкой"),
+}
+AUTHOR_AHEAD_GROUPS = (
+    ("sync", "Уйдёт в шаблон при синхронизации"),
+    ("both", "Расходится с шаблоном — сверить вручную"),
+    ("unproven", "Не доказано — нужна проверка Разработчика"),
+)
+AUTHOR_AHEAD_HEADING = "## Версия файла у Разработчика отличается от шаблона"
+REQUIRED_MEASUREMENT_FIELDS = ("measured_at", "template_commit", "duration_s", "complete", "incomplete_reasons", "files")
+
+
+def load_author_ahead(path: Path) -> dict:
+    """The author <-> template measurement; a missing file differs from a broken one.
+
+    The measurement runs on the Developer's host (it compares the Developer's IWE
+    with the template), so the Developer puts its YAML into --src. Missing file:
+    the 2.2 page says so. Broken file: the run stops, so a damaged measurement is
+    never shown as a current one.
+    """
+    if not path.exists():
+        return {"present": False, "files": []}
+    doc = yaml.safe_load(path.read_text())
+    if not isinstance(doc, dict) or doc.get("schema_version") != 1:
+        raise SystemExit(f"{path.name}: expected schema_version 1")
+    missing = [k for k in REQUIRED_MEASUREMENT_FIELDS if k not in doc]
+    if missing:
+        raise SystemExit(f"{path.name}: missing {missing}")
+    if not isinstance(doc["complete"], bool) or not isinstance(doc["files"], list):
+        raise SystemExit(f"{path.name}: complete must be true/false and files a list")
+    if doc["complete"] and (doc["incomplete_reasons"] or not doc["template_commit"]):
+        raise SystemExit(f"{path.name}: complete measurement needs template_commit and no incomplete_reasons")
+    seen = set()
+    for f in doc["files"]:
+        if not isinstance(f, dict) or not isinstance(f.get("path"), str):
+            raise SystemExit(f"{path.name}: file entry {f!r} needs a path")
+        if "|" in f["path"] or "`" in f["path"]:
+            raise SystemExit(f"{path.name}: {f['path']}: path with | or ` breaks the board table")
+        if f.get("category") not in AUTHOR_AHEAD_CATEGORIES:
+            raise SystemExit(f"{path.name}: {f.get('path')}: unknown category {f.get('category')!r}")
+        if f["path"] in seen:
+            raise SystemExit(f"{path.name}: {f['path']} listed twice")
+        seen.add(f["path"])
+    if not doc["complete"] and not doc.get("incomplete_reasons"):
+        raise SystemExit(f"{path.name}: incomplete measurement without incomplete_reasons")
+    return {"present": True, **doc}
 
 
 def cell(text: str) -> str:
@@ -580,7 +624,60 @@ def link_label(link: dict) -> str:
     return "не привязано"
 
 
-def stage_extra(page, staging, unreleased, unreleased_links, author_ahead) -> list[str]:
+def author_ahead_lines(author_ahead: dict, fmt_sha: str) -> list[str]:
+    """2.2 page block: files whose Developer version differs from the template.
+
+    The files do not move results between stages and are not counted as
+    results; each is shown once, with the result the Developer links it to.
+    """
+    out = ["", AUTHOR_AHEAD_HEADING, ""]
+    if not author_ahead["present"]:
+        return out + ["Замер расхождений Разработчика и шаблона не приложен к сборке.", ""]
+    commit = str(author_ahead["template_commit"] or "—")
+    out.append(f"Замер {author_ahead['measured_at']} по шаблону {commit[:10]}, шёл {author_ahead['duration_s']} с.")
+    if author_ahead["template_commit"] and not fmt_sha.startswith(commit[:10]):
+        out += ["", f"**Замер сделан по другой версии шаблона, чем табло ({fmt_sha[:10]}).**"]
+    if not author_ahead["complete"]:
+        reasons = "; ".join(author_ahead["incomplete_reasons"])
+        return out + ["", f"**Замер неполный, файлы не показаны:** {cell(reasons)}", ""]
+    groups = {key: [] for key, _ in AUTHOR_AHEAD_GROUPS}
+    for f in author_ahead["files"]:
+        groups[AUTHOR_AHEAD_CATEGORIES[f["category"]][0]].append(f)
+    for key, title in AUTHOR_AHEAD_GROUPS:
+        out += ["", f"### {title}: {len(groups[key])}", ""]
+        if groups[key]:
+            out += ["| Файл | Что | Результат |", "|---|---|---|"]
+            out += [
+                f"| `{f['path']}` | {AUTHOR_AHEAD_CATEGORIES[f['category']][1]} | {link_label(f['link'])} |"
+                for f in groups[key]
+            ]
+    return out + [""]
+
+
+def count_measured_rows(page: str) -> int:
+    """File rows actually written under the measurement heading of the 2.2 page."""
+    if AUTHOR_AHEAD_HEADING not in page:
+        return 0
+    block = page.split(AUTHOR_AHEAD_HEADING, 1)[1].split("\n## ", 1)[0]
+    return sum(1 for line in block.splitlines() if line.startswith("| `"))
+
+
+def apply_file_links(author_ahead: dict, declared_files, by_code: dict) -> list[str]:
+    """Attach the Developer's file -> result links; return links to files the measurement no longer lists."""
+    declared_files = declared_files or {}
+    if not isinstance(declared_files, dict):
+        raise SystemExit("developer-links.yaml: files must be a mapping path -> link")
+    for path, link in declared_files.items():
+        check_link(f"files: {path}", link, by_code)
+    for f in author_ahead["files"]:
+        f["link"] = declared_files.get(f["path"], {})
+    if not author_ahead["present"] or not author_ahead["complete"]:
+        return []
+    measured = {f["path"] for f in author_ahead["files"]}
+    return sorted(set(declared_files) - measured)
+
+
+def stage_extra(page, staging, unreleased, unreleased_links, author_ahead, fmt_sha) -> list[str]:
     """Record-level tables that belong to one list page."""
     if page == "2.2-at-developer.md":
         testing = [s for s in staging if s["staging_status"] == "testing"]
@@ -593,11 +690,7 @@ def stage_extra(page, staging, unreleased, unreleased_links, author_ahead) -> li
             "|---|---|---|---|",
         ]
         out += [f"| {s['id']} | {cell(s['title'])} | {s['date']} | {s.get('mismatch', '')} |" for s in testing]
-        out += ["", "## Версия файла у Разработчика опережает шаблон", ""]
-        if author_ahead["files"]:
-            out += [f"- `{f['path']}`" for f in author_ahead["files"]]
-        else:
-            out += [f"- {author_ahead.get('note', 'расхождений нет')}"]
+        out += author_ahead_lines(author_ahead, fmt_sha)
         out += [
             "",
             f"## Обкатка завершена: перенесено в шаблон {len(moved)}, остаётся только у Разработчика {len(kept)}",
@@ -619,7 +712,8 @@ def stage_extra(page, staging, unreleased, unreleased_links, author_ahead) -> li
 
 
 def write_views(
-    repo: Path, stamp: str, results, staging, unreleased, unreleased_links, released, author_ahead, released_links, released_counts
+    repo: Path, stamp: str, results, staging, unreleased, unreleased_links, released, author_ahead, released_links, released_counts,
+    fmt_sha: str,
 ) -> None:
     lists = repo / "board"
     lists.mkdir(parents=True, exist_ok=True)
@@ -641,7 +735,7 @@ def write_views(
         title = name.strip("*")
         out = [stamp, "", f"# {title}: {len(rows)}", "", "[← табло](../BOARD.md)", "", notes[name][1], ""]
         out += RESULT_HEADER + result_rows(rows) + [""]
-        out += stage_extra(page, staging, unreleased, unreleased_links, author_ahead)
+        out += stage_extra(page, staging, unreleased, unreleased_links, author_ahead, fmt_sha)
         (lists / page).write_text("\n".join(out))
     out = [
         stamp,
@@ -870,7 +964,7 @@ def main() -> int:
             released["0.41.11"][ver] = entries
         else:
             raise SystemExit(f"released version {ver} is newer than 0.41.11; extend the board ranges")
-    author_ahead = author_ahead_placeholder()
+    author_ahead = load_author_ahead(src / "author-ahead.yaml")
 
     today = dt.date.today().isoformat()
     stamp = f"> Собрано {today} по шаблону {fmt_sha[:10]}."
@@ -884,7 +978,8 @@ def main() -> int:
         },
         "results": results,
         "staging": staging,
-        "author_ahead": author_ahead,
+        # An incomplete measurement keeps its reasons, not its partial file list.
+        "author_ahead": author_ahead if author_ahead.get("complete") else {**author_ahead, "files": []},
         "unreleased_links": [
             {"key": u["key"], "tag": u["tag"], "first_words": short(u["text"], 80)} for u in unreleased
         ],
@@ -892,6 +987,9 @@ def main() -> int:
     links_file = args.repo / "ops" / "developer-links.yaml"
     apply_links(results, developer["unreleased_links"], staging, links_file)
     declared = yaml.safe_load(links_file.read_text())
+    stale_file_links = apply_file_links(
+        author_ahead, declared.get("files", {}), {r["code"]: r for r in results}
+    )
     released_counts = apply_released_links(
         results,
         released["0.41.11"],
@@ -922,6 +1020,7 @@ def main() -> int:
         author_ahead,
         declared["released_0_41_11"],
         released_counts,
+        fmt_sha,
     )
 
     # Completeness: every source item is on the board, linked or explicitly not linked.
@@ -946,6 +1045,9 @@ def main() -> int:
             len(developer["unreleased_links"]) + on_board_released,
         ),
     ]
+    if author_ahead["present"] and author_ahead["complete"]:
+        page = (args.repo / "board" / "2.2-at-developer.md").read_text()
+        checks.append(("Файлы замера Разработчик ↔ шаблон", len(author_ahead["files"]), count_measured_rows(page)))
     staging_ids = [s["id"] for s in staging]
     duplicates = sorted({i for i in staging_ids if staging_ids.count(i) > 1})
     lines = [
@@ -970,6 +1072,7 @@ def main() -> int:
             "(у завершённых записей обкатки связь не ведётся)."
         ),
         f"Повторяющиеся номера записей обкатки: {', '.join(duplicates) or 'нет'}.",
+        f"Связи файлов, которых нет в последнем полном замере: {', '.join(stale_file_links) or 'нет'}.",
         "",
         (
             f"Сверка с «Состоянием по целям»: всего результатов {sbg_total} = на табло IWE {iwe_total} "
