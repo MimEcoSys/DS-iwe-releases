@@ -3400,16 +3400,57 @@ staging:
 author_ahead:
   present: true
   schema_version: 1
-  measured_at: '2026-11-06T12:23:50Z'
+  measured_at: '2026-11-06T14:36:01Z'
   template_commit: 1a4b9afc47d5a186a875fe3c9ac1a45aace059cb
-  author_tree_fingerprint: 12dbaa4acdd32522
-  duration_s: 224
+  author_tree_fingerprint: d30b887847262263
+  duration_s: 216
   timeout_s: 900
-  complete: false
-  incomplete_reasons:
-  - 'журнал сообщил об отказе: WARN: Source not found: <workspace>/iwe-local-config/scripts/session-dir-reserve.sh'
+  complete: true
+  incomplete_reasons: []
   clean_files: 47
-  files: []
+  files:
+  - path: .claude/skills/artifactor/SKILL.md
+    category: template_has_foreign_edits
+    link: {}
+  - path: .claude/skills/kimi-peer-writer/SKILL.md
+    category: template_has_foreign_edits
+    link: {}
+  - path: .claude/skills/peer-conversation/SKILL.md
+    category: template_has_foreign_edits
+    link: {}
+  - path: CLAUDE.md
+    category: template_has_foreign_edits
+    link: {}
+  - path: memory/protocol-close.md
+    category: would_update
+    link: {}
+  - path: memory/protocol-open.md
+    category: would_update
+    link: {}
+  - path: roles/strategist/prompts/session-prep.md
+    category: template_has_foreign_edits
+    link: {}
+  - path: roles/strategist/prompts/week-review.md
+    category: template_has_foreign_edits
+    link: {}
+  - path: scripts/artifactor.py
+    category: template_has_foreign_edits
+    link: {}
+  - path: scripts/canon-reconcile-published.sh
+    category: template_has_foreign_edits
+    link: {}
+  - path: scripts/check-dirty-repos.sh
+    category: accepted_base_unproven
+    link: {}
+  - path: scripts/grok-peer-adapter.sh
+    category: template_has_foreign_edits
+    link: {}
+  - path: scripts/lib/peer-adapter-common.sh
+    category: template_has_foreign_edits
+    link: {}
+  - path: scripts/peer-session-finalize.sh
+    category: template_has_foreign_edits
+    link: {}
 unreleased_links:
 - key: U-444921
   tag: optional
