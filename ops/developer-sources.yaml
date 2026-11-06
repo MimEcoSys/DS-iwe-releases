@@ -1,0 +1,82 @@
+# Порядок сборки табло и версии входов последней сборки (файл Разработчика, WP-529 Ф259).
+# Ведёт Разработчик руками при каждой пересборке; build_board.py этот файл не читает.
+# Запись описывает сборку, после которой BOARD.md и board/ в этом же коммите.
+
+built_at_local_date: '2026-11-06'   # dt.date.today() хоста сборки: шапки «Собрано …» и snapshot.collected_at
+host_timezone: EET                  # локальная дата зависит от таймзоны хоста
+recorded_at: '2026-11-06T13:05:00Z' # когда записан этот файл (после сборки)
+
+builder:
+  program: ops/build_board.py
+  program_commit: 0a003ff847c9c9fcac5e490f20fc7f3f6e8ffbb5   # запущена неизменённой из этой ревизии
+  program_sha256: 3cb42b11f583b3006450929fd9abdfa43903e0a6acf709b1420a68d3d80a881e
+  python: 3.15.0
+  dependencies: {pyyaml: 6.0.3}       # других сторонних модулей программа не импортирует
+  command: python3 ops/build_board.py --src <папка входов> --repo <копия DS-iwe-releases>
+
+# Все входы, кроме замера, читаются из закреплённой ревизии origin/main: git show <revision>:<path>.
+inputs:
+  - name: map005.md
+    repo: https://github.com/MimEcoSys/PACK-digital-platform.git
+    path: pack/digital-platform/07-map/DP.MAP.005-mcp-scenarios.md
+    revision: 853f5d78d17d77391613e4333ecec5a745a6c8ae
+    sha256: cfbbe12405276870774511b7a0a10e86fef73885ed1bf44d3d4d0978abfc8512
+  - name: sbg.md
+    repo: https://github.com/aisystant/DS-ecosystem-development.git
+    path: C.IT-Platform/C2.IT-Platform/C2.3.Operations/Goals-State/state-by-goals.md
+    revision: 36dc4b00066e5ec5b3c37440bc0ad1d574cc5e60
+    sha256: 8bb0277d47dcef935e22d4659af54b794d41340cfcd065700ddf9e55b596ad26
+  - name: result-codes.md
+    repo: https://github.com/aisystant/DS-ecosystem-development.git
+    path: C.IT-Platform/C2.IT-Platform/C2.3.Operations/Goals-State/working-records/result-codes.md
+    revision: 36dc4b00066e5ec5b3c37440bc0ad1d574cc5e60
+    sha256: 54376555dd1f4d0456a1f835c04575b83c809f977b6d83988e75c2fc307b8b99
+  - name: changelog.md
+    repo: https://github.com/TserenTserenov/FMT-exocortex-template.git
+    path: CHANGELOG.md
+    revision: 1a4b9afc47d5a186a875fe3c9ac1a45aace059cb
+    sha256: 5b5c58afd3e97e25a6084d138f32c1f13c4f5a688ab0ba3eb6591ff55bddc437
+  - name: fmt-sha
+    repo: https://github.com/TserenTserenov/FMT-exocortex-template.git
+    derived_by: git rev-parse origin/main   # та же ревизия, что у changelog.md
+    revision: 1a4b9afc47d5a186a875fe3c9ac1a45aace059cb
+    sha256: c518108621527bc6623e011e8aa379b4c2d66ebdf202cc7ad7f111217a71f2b4
+  - name: fmt-files.txt
+    repo: https://github.com/TserenTserenov/FMT-exocortex-template.git
+    derived_by: git ls-tree -r --name-only <revision>
+    revision: 1a4b9afc47d5a186a875fe3c9ac1a45aace059cb
+    sha256: 03bb8620c2de20591b131fbc7db16604fb915f55ae5f0a50d24d8007e7a9e285
+  - name: staging.md
+    repo: https://github.com/TserenTserenov/iwe-local-config.git   # закрытый, корень IWE Разработчика
+    path: STAGING.md
+    revision: f45dbbd9e5bfe7b3e4f20bd83ef6527a7585b29a
+    sha256: 09510628f5bad5eebc9869ec3ae2529be442b5ac33d91a45873d941da050f03a
+  - name: weekplan.md
+    repo: https://github.com/TserenTserenov/DS-my-strategy.git        # закрытый, план недели Разработчика
+    path: current/WeekPlan W45 2026-11-02.md   # каждую неделю — план текущей недели
+    revision: 11fd3c7be648805006890625125b60bd84f1ac21
+    sha256: 85dad20f052fab128abadff8cc91953bdc5aa27014e2274a1cd1f767e87a2904
+  - name: author-ahead.yaml   # результат замера рабочих копий хоста, не файл из Git
+    produced_by:
+      tool: https://github.com/TserenTserenov/DS-ai-systems.git setup/scripts/wp529-drift-inventory.py
+      tool_commit: a7b35ac0db8d27c9fa5568b9396b84f12025a39f   # запущен неизменённым
+      tool_sha256: 7cfbc929e06d10c93640e1fa24ea745cc7716a5c5f76bd8e86b4c02e8f803557
+      command: (cd DS-ai-systems && python3 setup/scripts/wp529-drift-inventory.py --out <отчёт> --yaml-out <папка входов>/author-ahead.yaml)
+      host: Mac Разработчика   # зависит от setup/.sync-hashes этого хоста
+    measured_at: '2026-11-06T12:23:50Z'
+    complete: false            # причина — в самом файле и на странице board/2.2-at-developer.md
+    sha256: b4f11b2f7420d98265b681700c0c4a0e95e452409aeb2729e3c41407354ab822
+    kept_at: закрытый журнал сессий Разработчика, MC-sessions 2026-11/06/2026-11-06-07-wp529-board-src-release/author-ahead.yaml
+
+# Порядок сборки. Любой отказ команды — стоп, табло не пересобирается.
+steps:
+  - 'Подготовка: рабочие копии шести репозиториев выше рядом в одной папке IWE; python3 с pyyaml.'
+  - 'В каждом репозитории: git fetch origin; ревизия = git rev-parse origin/main (записать в inputs).'
+  - 'Новая пустая папка входов SRC; в неё для каждого входа с path: git -C <repo> show <revision>:<path> > SRC/<name>.'
+  - 'FMT: git -C FMT rev-parse <revision> > SRC/fmt-sha; git -C FMT ls-tree -r --name-only <revision> > SRC/fmt-files.txt.'
+  - 'Замер (около 4 минут): команда из produced_by; complete: false — не ошибка сборки, причина уйдёт на табло.'
+  - 'shasum -a 256 SRC/* — записать в inputs.'
+  - 'Сборка в чистую копию DS-iwe-releases: command из builder; код возврата 0, строка goals=… results=… совпадает с прошлой или расхождение объяснено входами.'
+  - 'Проверка: вторая сборка из той же SRC в другую чистую копию; diff -r -x .git двух копий пустой.'
+  - 'Проверка диффа к main: изменились только генерируемые файлы; каждое изменение кроме строк «Собрано …» и collected_at объясняется входами.'
+  - 'Один запрос на слияние: этот файл и пересобранное табло; слияние без squash.'
