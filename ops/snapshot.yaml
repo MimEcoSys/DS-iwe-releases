@@ -1,7 +1,7 @@
 # Снимок источников: результаты и их заявленные статусы из карточек работ.
 # Собирает ops/build_board.py при каждом запуске; руками не править.
 snapshot:
-  collected_at: '2026-11-05'
+  collected_at: '2026-11-06'
   template_commit: 1a4b9afc47d5a186a875fe3c9ac1a45aace059cb
   rule: результаты целей с размещением «шаблон IWE», «Staging» или Open, все цели блока «И. Своя IWE» и цели функции «Библиотека методов»
   goals:
@@ -3398,9 +3398,18 @@ staging:
       what: ответ агента сначала даёт результат понятными словами и заканчивается одним ясным следующим шагом
     why: строка «Дальше» не дублируется после замечания стража стиля
 author_ahead:
-  measured_at: null
+  present: true
+  schema_version: 1
+  measured_at: '2026-11-06T12:23:50Z'
+  template_commit: 1a4b9afc47d5a186a875fe3c9ac1a45aace059cb
+  author_tree_fingerprint: 12dbaa4acdd32522
+  duration_s: 224
+  timeout_s: 900
+  complete: false
+  incomplete_reasons:
+  - 'журнал сообщил об отказе: WARN: Source not found: <workspace>/iwe-local-config/scripts/session-dir-reserve.sh'
+  clean_files: 47
   files: []
-  note: замер расхождений автор↔шаблон при первом заполнении не получен (сетевой предел замера); последнее известное число — 14 файлов (04.11.2026, РП-529 Ф248)
 unreleased_links:
 - key: U-444921
   tag: optional
