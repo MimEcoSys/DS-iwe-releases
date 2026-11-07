@@ -1,7 +1,7 @@
 # Снимок источников: результаты и их заявленные статусы из карточек работ.
 # Собирает ops/build_board.py при каждом запуске; руками не править.
 snapshot:
-  collected_at: '2026-11-06'
+  collected_at: '2026-11-07'
   template_commit: 1a4b9afc47d5a186a875fe3c9ac1a45aace059cb
   rule: результаты целей с размещением «шаблон IWE», «Staging» или Open, все цели блока «И. Своя IWE» и цели функции «Библиотека методов»
   goals:
@@ -3411,46 +3411,67 @@ author_ahead:
   files:
   - path: .claude/skills/artifactor/SKILL.md
     category: template_has_foreign_edits
-    link: {}
+    link:
+      proposed:
+        goal: 38
+        what: разбор запроса проверяет, кто будет производить результат, и род его названия
   - path: .claude/skills/kimi-peer-writer/SKILL.md
     category: template_has_foreign_edits
-    link: {}
+    link:
+      proposed:
+        goal: 82
+        what: пир-сессия с Kimi-писателем выбирает напарника и не исполняется чужим агентом
   - path: .claude/skills/peer-conversation/SKILL.md
     category: template_has_foreign_edits
-    link: {}
+    link:
+      result:
+      - Ц82-02
   - path: CLAUDE.md
     category: template_has_foreign_edits
-    link: {}
+    link:
+      service: облегчённое ядро инструкций Разработчика; перенос в шаблон — отдельное решение Разработчика
   - path: memory/protocol-close.md
     category: would_update
-    link: {}
+    link:
+      result:
+      - Ц38-05
   - path: memory/protocol-open.md
     category: would_update
-    link: {}
+    link:
+      service: авторские шаги в зонах «только у автора» и подстановки имён; у пользователя шаблона ничего не меняется
   - path: roles/strategist/prompts/session-prep.md
     category: template_has_foreign_edits
-    link: {}
+    link:
+      service: пути и имена Разработчика вместо подстановок шаблона
   - path: roles/strategist/prompts/week-review.md
     category: template_has_foreign_edits
-    link: {}
+    link:
+      service: пост итогов недели и пути Разработчика
   - path: scripts/artifactor.py
     category: template_has_foreign_edits
-    link: {}
+    link:
+      proposed:
+        goal: 38
+        what: разбор запроса проверяет, кто будет производить результат, и род его названия
   - path: scripts/canon-reconcile-published.sh
     category: template_has_foreign_edits
-    link: {}
+    link:
+      result:
+      - Ц96-05
   - path: scripts/check-dirty-repos.sh
     category: accepted_base_unproven
     link: {}
   - path: scripts/grok-peer-adapter.sh
     category: template_has_foreign_edits
-    link: {}
+    link:
+      service: язык комментариев; шаблон впереди (комментарии на английском)
   - path: scripts/lib/peer-adapter-common.sh
     category: template_has_foreign_edits
     link: {}
   - path: scripts/peer-session-finalize.sh
     category: template_has_foreign_edits
-    link: {}
+    link:
+      service: раскладка сессий Разработчика; шаблон впереди по блокировке индекса сессий
 unreleased_links:
 - key: U-444921
   tag: optional

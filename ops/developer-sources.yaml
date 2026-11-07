@@ -1,16 +1,17 @@
 # Порядок сборки табло и версии входов последней сборки (файл Разработчика, WP-529 Ф259).
 # Ведёт Разработчик руками при каждой пересборке; build_board.py этот файл не читает.
 # Запись описывает сборку, после которой BOARD.md и board/ в этом же коммите.
+# Сборка 07.11 (Цех Разработчика): те же входы и тот же замер, что 06.11; изменён только раздел files: в developer-links.yaml.
 
-built_at_local_date: '2026-11-06'   # dt.date.today() хоста сборки: шапки «Собрано …» и snapshot.collected_at
+built_at_local_date: '2026-11-07'   # dt.date.today() хоста сборки: шапки «Собрано …» и snapshot.collected_at
 host_timezone: EET                  # локальная дата зависит от таймзоны хоста
-recorded_at: '2026-11-06T14:45:00Z' # когда записан этот файл (после сборки)
+recorded_at: '2026-11-07T15:26:06Z' # когда записан этот файл (после сборки)
 
 builder:
   program: ops/build_board.py
-  program_commit: fed74a900870aab18e6dc1216997254bdee24e0c   # запущена неизменённой из этой ревизии
+  program_commit: 0a003ff847c9c9fcac5e490f20fc7f3f6e8ffbb5   # запущена неизменённой из этой ревизии
   program_sha256: 3cb42b11f583b3006450929fd9abdfa43903e0a6acf709b1420a68d3d80a881e
-  python: 3.15.0
+  python: 3.12.12
   dependencies: {pyyaml: 6.0.3}       # других сторонних модулей программа не импортирует
   command: python3 ops/build_board.py --src <папка входов> --repo <копия DS-iwe-releases>
 

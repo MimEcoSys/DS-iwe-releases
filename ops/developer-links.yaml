@@ -945,3 +945,20 @@ released_0_41_11:
   U-e40a37: {kind: no_rp}
   U-d010b9: {commit_wp: [7], kind: none}
   U-3427d9: {kind: no_rp}
+
+# Файл, где версия Разработчика отличается от шаблона (страница 2.2) -> результат; те же три вида.
+# Решение Разработчика 07.11.2026 по предложению пир-сессии 2026-11-07-08-wp529-f259-file-links (Claude, Kimi, Codex).
+# scripts/lib/peer-adapter-common.sh и scripts/check-dirty-repos.sh связи не получают: к 07.11 совпали с шаблоном 33810758, уйдут со страницы при следующем замере.
+files:
+  memory/protocol-close.md: {result: [Ц38-05]}
+  memory/protocol-open.md: {service: "авторские шаги в зонах «только у автора» и подстановки имён; у пользователя шаблона ничего не меняется"}
+  .claude/skills/artifactor/SKILL.md: {proposed: {goal: 38, what: "разбор запроса проверяет, кто будет производить результат, и род его названия"}}
+  scripts/artifactor.py: {proposed: {goal: 38, what: "разбор запроса проверяет, кто будет производить результат, и род его названия"}}
+  .claude/skills/kimi-peer-writer/SKILL.md: {proposed: {goal: 82, what: "пир-сессия с Kimi-писателем выбирает напарника и не исполняется чужим агентом"}}
+  .claude/skills/peer-conversation/SKILL.md: {result: [Ц82-02]}
+  CLAUDE.md: {service: "облегчённое ядро инструкций Разработчика; перенос в шаблон — отдельное решение Разработчика"}
+  roles/strategist/prompts/session-prep.md: {service: "пути и имена Разработчика вместо подстановок шаблона"}
+  roles/strategist/prompts/week-review.md: {service: "пост итогов недели и пути Разработчика"}
+  scripts/canon-reconcile-published.sh: {result: [Ц96-05]}
+  scripts/grok-peer-adapter.sh: {service: "язык комментариев; шаблон впереди (комментарии на английском)"}
+  scripts/peer-session-finalize.sh: {service: "раскладка сессий Разработчика; шаблон впереди по блокировке индекса сессий"}
