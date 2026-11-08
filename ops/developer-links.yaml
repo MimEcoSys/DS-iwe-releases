@@ -5,6 +5,17 @@
 #   proposed: результата в документе нет — предлагаемый результат и номер цели (код назначит документ, РП-611)
 #   service:  служебная правка, видимого человеку результата нет (тесты, форматирование, внутренняя механика)
 links:
+  # Разметка 08.11.2026 (ИИ-агент Разработчика, пир-сессия 2026-11-08-02, по тексту записи; предварительная): 10 записей, вошедших в шаблон 07.11 (98417687).
+  U-a6276c: {result: [Ц93-03]}
+  U-9d3749: {result: [Ц93-03]}
+  U-0cd06f: {result: [Ц93-02]}
+  U-b18db2: {result: [Ц93-01]}
+  U-08820e: {proposed: {goal: 3, what: "лёгкий онбординг в шаблоне: разбор задачи методом из локальной библиотеки за один разговор, без аккаунта и подписки"}}
+  U-408b11: {result: [Ц38-04]}
+  U-296fca: {result: [Ц38-01]}
+  U-136e85: {result: [Ц78-04]}
+  U-925871: {result: [Ц78-03]}
+  U-e8402c: {service: "сканер кода синхронизатора не падает без репозиториев DS на bash 3.2"}
   U-444921: {proposed: {goal: 34, what: "рутинные уведомления среды идут в свою сводку, а не в чат"}}
   U-9476ea: {service: "правило чтения карточек агентом"}
   U-d3a985: {result: [Ц82-02]}
@@ -14,7 +25,7 @@ links:
   U-cc42d0: {result: [Ц84-08]}
   U-c90794: {proposed: {goal: 93, what: "тексты для агента в коде шаблона на русском и английском"}}
   U-58c3fa: {result: [Ц96-10]}
-  U-10d5af: {result: [Ц84-04]}
+  U-10d5af: {result: [Ц84-05]}  # 08.11: Ц84-04 перенесён в рабочие записи документа 4 как обещание (DS-ecosystem-development 15135ec9)
   U-365d06: {result: [Ц77-08]}
   U-54f3b7: {result: [Ц34-10]}
   U-e0a41e: {proposed: {goal: 78, what: "репетиция проверки установки ничего не записывает, в том числе на Windows и в Kimi"}}
@@ -73,7 +84,7 @@ staging:
     proposed: {goal: 44, what: 'агент не спрашивает разрешения на обычные действия: выполняет и отчитывается'}
     why: напоминание об автономности подаётся в следующий ход агента
   S-30:
-    result: [Ц84-04]
+    result: [Ц84-05]  # 08.11: Ц84-04 ушёл в рабочие записи документа 4
     why: коммит шаблона не проходит, если версия в журнале изменений и в манифесте расходится
   S-33:
     proposed: {goal: 81, what: 'агент не меняет защитные хуки и скрипты и не обходит их без разрешения, при блокировке сообщает'}
@@ -138,7 +149,7 @@ staging:
     proposed: {goal: 38, what: при возвращении к РП после паузы — сводка изменений и открытых фаз вместо согласования с нуля}
     why: пороговая шкала Ритуала при переоткрытии
   S-71:
-    result: [Ц37-02, Ц37-06]
+    result: [Ц37-02]  # 08.11: Ц37-06 ушёл в рабочие записи документа 4
     why: направления недели выводятся из пула недели и проверяются на шаге утверждения
   S-72:
     result: [Ц54-01]
@@ -159,9 +170,8 @@ staging:
 # Где сделанный по карточке результат на самом деле, с доказательством (05.11.2026, проверка по шаблону и карточкам):
 #   released-0.36 | released-0.37-0.41.11 | merged-after-0.41.11 | author-only | not-template
 placement:
+  # 08.11: сняты Ц1-15, Ц4-01, Ц49-03…05, Ц71-03 (убраны из документа 4, DS-ecosystem-development fe9b0774) и Ц38-01 (теперь связан с записью U-296fca шаблона)
   Ц1-09: {place: not-template, evidence: 'РП-589: Aisystant Open опубликован в каталоге ChatGPT (карточка, стр.105) — плагин/MCP вендора, в CHANGELOG шаблона РП-589 не встречается'}
-  Ц1-15: {place: not-template, evidence: 'РП-596 Ф5 закрыта 15.10: английские страницы сайта как источник, языковой фильтр сервера mcp.tserenov.com — сервер Open/MCP; в CHANGELOG нет'}
-  Ц4-01: {place: not-template, evidence: 'РП-442: форма поиска на сайте через open.tserenov.com/mcp + адаптер OpenRouter (14.10) — сайт; в CHANGELOG нет'}
   Ц23-06: {place: released-0.37-0.41.11, version: 0.39.2, evidence: 'шаблонная часть — хук .claude/hooks/session-start-hooks-bootstrap.sh (be4a486, PR #578, merge bea5f51 после v0.39.1), git tag --contains → v0.39.2; создание форка — платформенный fork_platform_template (github-integration-service), вне шаблона'}
   Ц23-07: {place: not-template, evidence: 'РП-559 стр.208: страница «Сначала установите приложение», state-тип space-install — github-integration-service/gateway (DS-MCP)'}
   Ц23-08: {place: not-template, evidence: 'РП-559: страница результата space-флоу в github-integration-service (DS-MCP); в CHANGELOG шаблона нет'}
@@ -172,7 +182,6 @@ placement:
   Ц35-05: {place: author-only, evidence: 'РП-577 Ф3: фикс strategist.sh/scheduler.sh в DS-ai-systems (5cbb0d7); карточка: у шаблона свой механизм, «переносить нечего»'}
   Ц37-01: {place: author-only, evidence: 'РП-484 §23 Lifework-мост: раздел 6 «Кандидаты в Lifework» в weekly-digest.sh, DS-my-strategy 0cf3f274af; weekly-digest.sh в шаблоне отсутствует'}
   Ц37-02: {place: released-0.37-0.41.11, version: 0.41.10, evidence: 'CHANGELOG 0.41.10: «этапы описаны одной таблицей «Этапы сессии» в strategy-session-monthly.md (10 этапов…)», рядом записи про пул недели и шаги 04/06a'}
-  Ц38-01: {place: author-only, evidence: 'РП-482 Ф6: close-runner-gate.sh + sentinel в close-gate-reminder.sh, проверка запуска process-runner.py start quick-close --close-ticket e4f3a43c0d1bf4a16d1aa400bab0f080 — ни close-runner-gate.sh, ни process-runner.py в шаблоне нет; 0.41.11 протокол лишь допускает установку «с раннером и без»'}
   Ц38-02: {place: author-only, evidence: 'РП-482: карточки RUN-*.md и борд генерирует process-runner.py — в шаблоне не поставляется (WP-561 стр.198: раннер закрытия author-only)'}
   Ц38-07: {place: author-only, evidence: 'РП-503 Ф23 (06.09): четвёртый фильтр hypothesis_falsified_review_needed в scripts/wp-pool-cascade.sh; шаблонный wp-pool-cascade.sh (с 0.38.6) этого фильтра не содержит (git grep пусто)'}
   Ц38-10: {place: released-0.37-0.41.11, version: 0.41.10, evidence: 'CHANGELOG 0.41.10: «session-guard.sh, canon-reconcile-published.sh: дефолт IWE_SESSION_LEASE_SEC поднят с 4ч до 24ч» (РП-561 Ф47, 21.10)'}
@@ -182,9 +191,6 @@ placement:
   Ц40-04: {place: released-0.36, version: 0.36.1, evidence: 'note-review.md b381a6e3 (v0.36.1): «Есть ответ на «что могло бы это опровергнуть?» — иначе это Задача»; захват через бота — платформенная часть, вне шаблона'}
   Ц40-05: {place: released-0.36, version: 0.36.1, evidence: 'verify-hypotheses SKILL.md с первого коммита 859304a1 (v0.36.1): «Не оставлять вердикт без выбранного действия — «повисший» вердикт не закрывает цикл»; выбор действий развит в lpf-hypothesis-log.md (0.38.3)'}
   Ц40-06: {place: released-0.36, version: 0.36.1, evidence: 'b381a6e3 «feat(strategist): Note-Review распознаёт категорию «Гипотеза» (8-е правило)», git tag --contains → v0.36.1'}
-  Ц49-03: {place: not-template, evidence: 'РП-600: каталог методов — DS-my-strategy/docs/catalog-methods-style-ai-era.md (содержательный каталог для участников, не код шаблона); в шаблоне кодов LMS.M нет. Если считать репозиторий автора «author-only» — переклассифицировать'}
-  Ц49-04: {place: not-template, evidence: 'РП-600 Ф24 (20.10): раздел «Реализация в IWE» в том же каталоге DS-my-strategy/docs; в шаблоне и CHANGELOG нет'}
-  Ц49-05: {place: not-template, evidence: 'РП-600 (25.10): LMS.M.052 «Составление заметок» внесён в каталог и ядро (DS-my-strategy docs); в шаблоне нет'}
   Ц52-01: {place: not-template, evidence: 'РП-151 repo: PACK-personal, DS-MCP/digital-twin-mcp, aist_bot — расчёт в цифровом двойнике платформы'}
   Ц52-03: {place: not-template, evidence: 'РП-522: схемы событий project_selected.v1 / weekly_work_product_set.v1 в платформенном чек-листе участника; в CHANGELOG нет'}
   Ц52-06: {place: not-template, evidence: 'РП-576 приёмка: stage_evaluator.evaluate_one, cp_gate_blocked — платформенный стейдж-эвалюатор'}
@@ -196,7 +202,6 @@ placement:
   Ц54-02: {place: not-template, evidence: 'РП-427 Ф6.1: поллер bridge-2-lms-homework, consent-gate, таблица learning.homework_content — платформа'}
   Ц70-01: {place: released-0.37-0.41.11, version: 0.41.11, evidence: 'CHANGELOG 0.41.11: «Скилл /apply-captures (1.3.1): кандидаты… карточкой из пяти строк» (PR #1389, 29.10); версия 1.4.0 (проверка соседей по смыслу) — только в iwe-local-config / ~/IWE, в шаблоне 1.3.1'}
   Ц70-03: {place: released-0.37-0.41.11, version: 0.40.1, evidence: 'РП-560 Ф13: PR #822 d24cb72 «fix(extractor): inbox-check pipeline never saw browser-source captures», git tag --contains → v0.40.1'}
-  Ц71-03: {place: not-template, evidence: 'РП-611: ECO.M.032-034 записаны в PACK-ecosystem 0.9.0 (26.10) — Pack, не шаблон'}
   Ц77-02: {place: released-0.37-0.41.11, version: 0.41.11, evidence: 'CHANGELOG 0.41.11: ext-railway убран из .mcp.json, changelog-append.sh без пустых строк, «(WP-7, #1409)»; c73d19bb в v0.41.11'}
   Ц77-04: {place: released-0.37-0.41.11, version: 0.41.10, evidence: 'CHANGELOG 0.41.10: «update.sh --check / --dry-run теперь показывает сводку «Главное в этом обновлении» до установки… пункты без метки [optional]» (PR #1365); доработка первого предложения — 0.41.11'}
   Ц77-05: {place: released-0.37-0.41.11, version: 0.41.11, evidence: 'CHANGELOG 0.41.11: «update.sh --check заканчивается одной строкой вердикта: ВЕРДИКТ: можно ставить…» и «Скилл iwe-update не применяет обновление, если положительный вердикт --check идёт с оговоркой»'}
@@ -279,8 +284,8 @@ released_0_41_11:
   U-6ce3e7: {kind: no_rp}
   U-4f9ab4: {code: Ц77-05, kind: result_by_reading}
   U-9bf422: {code: Ц77-05, kind: result_by_reading}
-  U-0793aa: {code: Ц77-09, kind: result_by_reading}
-  U-4593cb: {code: Ц77-09, kind: result_by_reading}
+  U-0793aa: {kind: none}  # 08.11: Ц77-09 (анонс) — работа шага 6, не изменение; ушёл из документа 4 (И-10)
+  U-4593cb: {kind: none}  # 08.11: то же, Ц77-09
   U-2d5a07: {kind: no_rp}
   U-7b27c9: {kind: none}
   U-0d37f5: {code: Ц79-01, kind: result_by_reading}
