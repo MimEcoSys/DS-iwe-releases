@@ -1,8 +1,8 @@
 # Снимок источников: результаты и их заявленные статусы из карточек работ.
 # Собирает ops/build_board.py при каждом запуске; руками не править.
 snapshot:
-  collected_at: '2026-11-07'
-  template_commit: 1a4b9afc47d5a186a875fe3c9ac1a45aace059cb
+  collected_at: '2026-11-08'
+  template_commit: 984176879430067b601b69968d186c69ead0f9d3
   rule: результаты целей с размещением «шаблон IWE», «Staging» или Open, все цели блока «И. Своя IWE» и цели функции «Библиотека методов»
   goals:
   - 1
@@ -49,18 +49,8 @@ results:
   where: браузерный чат
   status: в работе
   works:
-  - РП-250
-  in_week_plan: false
-- code: Ц1-02
-  goal: 1
-  contours: *id001
-  who: гость
-  what: 10 установок открытого MCP к 31.12 как мера ветви В1; прежняя цель ≥100 регистраций заменена
-  where: любой клиент
-  status: план
-  works:
-  - РП-250
-  in_week_plan: false
+  - РП-581
+  in_week_plan: true
 - code: Ц1-03
   goal: 1
   contours: *id001
@@ -89,8 +79,8 @@ results:
   where: браузерный чат
   status: план
   works:
-  - РП-552
-  in_week_plan: false
+  - РП-581
+  in_week_plan: true
 - code: Ц1-06
   goal: 1
   contours: *id001
@@ -107,16 +97,6 @@ results:
   who: гость
   what: Open МИМ с онбордингом в МИМ (одна кодовая база, два развёртывания)
   where: сайт и кабинет
-  status: план
-  works:
-  - РП-581
-  in_week_plan: true
-- code: Ц1-08
-  goal: 1
-  contours: *id001
-  who: тестировщик
-  what: '16 разговоров в Claude и ChatGPT пройдены: онбординг, поиск по русским и бытовым запросам, нет неподтверждённых обещаний про данные'
-  where: браузерный чат
   status: план
   works:
   - РП-581
@@ -182,17 +162,6 @@ results:
   works:
   - РП-590
   in_week_plan: false
-- code: Ц1-15
-  goal: 1
-  contours: *id001
-  who: гость
-  what: англоязычные ответы mcp.tserenov.com
-  where: любой клиент
-  status: работает вне выпуска шаблона
-  works:
-  - РП-596
-  in_week_plan: true
-  evidence: 'РП-596 Ф5 закрыта 15.10: английские страницы сайта как источник, языковой фильтр сервера mcp.tserenov.com — сервер Open/MCP; в CHANGELOG нет'
 - code: Ц1-16
   goal: 1
   contours: *id001
@@ -223,22 +192,11 @@ results:
   works:
   - РП-608
   in_week_plan: true
-- code: Ц4-01
+- code: Ц4-02
   goal: 4
   contours: &id002
   - Open
   - Библиотека методов
-  who: гость
-  what: поиск по MCP и ответы ИИ на сайте через OpenRouter
-  where: сайт и кабинет
-  status: работает вне выпуска шаблона
-  works:
-  - РП-442
-  in_week_plan: false
-  evidence: 'РП-442: форма поиска на сайте через open.tserenov.com/mcp + адаптер OpenRouter (14.10) — сайт; в CHANGELOG нет'
-- code: Ц4-02
-  goal: 4
-  contours: *id002
   who: гость
   what: 'гостевой доступ к FPF: поиск, чтение, навигация через открытый MCP'
   where: браузерный чат
@@ -256,16 +214,6 @@ results:
   works:
   - РП-581
   in_week_plan: true
-- code: Ц4-04
-  goal: 4
-  contours: *id002
-  who: гость
-  what: кандидат контента сценария для чата на сайте МИМ
-  where: браузерный чат
-  status: в работе
-  works:
-  - РП-586
-  in_week_plan: false
 - code: Ц4-05
   goal: 4
   contours: *id002
@@ -357,30 +305,10 @@ results:
   works:
   - РП-598
   in_week_plan: false
-- code: Ц23-01
+- code: Ц23-03
   goal: 23
   contours: &id004
   - шаблон IWE
-  who: пользователь IWE
-  what: шаблон IWE 2.0 у 10 внешних пользователей
-  where: среда на компьютере
-  status: план
-  works:
-  - РП-250
-  in_week_plan: false
-- code: Ц23-02
-  goal: 23
-  contours: *id004
-  who: новичок
-  what: 'путь новичка: отрезок «Первая неделя в IWE», альбом «Старт для новичка», три состояния входа'
-  where: любой клиент
-  status: план
-  works:
-  - РП-385
-  in_week_plan: true
-- code: Ц23-03
-  goal: 23
-  contours: *id004
   who: новичок
   what: стартовый скелет шаблона и карта доменов данных (ADR-004, DATA-DOMAINS-REGISTRY), типовые семьи репозиториев
   where: среда на компьютере
@@ -400,16 +328,6 @@ results:
   works:
   - РП-526
   in_week_plan: true
-- code: Ц23-05
-  goal: 23
-  contours: *id004
-  who: пользователь IWE
-  what: 'матрица состава среды и общий прогон: создание, результат, сохранение, продолжение'
-  where: среда на компьютере
-  status: план
-  works:
-  - РП-552
-  in_week_plan: false
 - code: Ц23-06
   goal: 23
   contours: *id004
@@ -449,16 +367,6 @@ results:
   who: новичок
   what: репозитории по плану пяти семей, созданные на выбранном аккаунте без дублей
   where: браузерный чат
-  status: в работе
-  works:
-  - РП-559
-  in_week_plan: true
-- code: Ц23-10
-  goal: 23
-  contours: *id004
-  who: новичок
-  what: 'чистая приёмка: новый аккаунт без установки проходит установку, вход и создание пространства'
-  where: сайт и кабинет
   status: в работе
   works:
   - РП-559
@@ -741,16 +649,6 @@ results:
   - РП-518
   in_week_plan: true
   on_staging: true
-- code: Ц37-04
-  goal: 37
-  contours: *id007
-  who: участник
-  what: Раздел 8.08 и 9.07 руководства Методы саморазвития, памятка ведущего практикума
-  where: сайт и кабинет
-  status: в работе
-  works:
-  - РП-518
-  in_week_plan: true
 - code: Ц37-05
   goal: 37
   contours: *id007
@@ -761,18 +659,6 @@ results:
   works:
   - РП-518
   in_week_plan: true
-- code: Ц37-06
-  goal: 37
-  contours: *id007
-  who: пользователь IWE
-  what: Девять направлений и метод выделения
-  where: среда на компьютере
-  status: план
-  works:
-  - РП-518
-  in_week_plan: true
-  on_staging: true
-  mismatch: 'расходится: в карточке «план», но часть уже на обкатке или влита в шаблон'
 - code: Ц37-07
   goal: 37
   contours: *id007
@@ -790,11 +676,11 @@ results:
   who: пользователь IWE
   what: хуки принуждают запустить раннер после слов о закрытии
   where: среда на компьютере
-  status: у автора
+  status: готово для передачи
   works:
   - РП-482
   in_week_plan: false
-  evidence: 'РП-482 Ф6: close-runner-gate.sh + sentinel в close-gate-reminder.sh, проверка запуска process-runner.py start quick-close --close-ticket e4f3a43c0d1bf4a16d1aa400bab0f080 — ни close-runner-gate.sh, ни process-runner.py в шаблоне нет; 0.41.11 протокол лишь допускает установку «с раннером и без»'
+  merged_after_0_41_11: true
 - code: Ц38-02
   goal: 38
   contours: *id008
@@ -1030,85 +916,12 @@ results:
   works:
   - РП-522
   in_week_plan: true
-- code: Ц49-02
-  goal: 49
-  contours: *id010
-  who: пользователь IWE
-  what: различение продукта, изменения человека и изменения среды
-  where: любой клиент
-  status: план
-  works:
-  - РП-595
-  in_week_plan: true
-- code: Ц49-03
-  goal: 49
-  contours: *id010
-  who: участник
-  what: каталог из 49 методов без пересечений с тактом, необходимостью и ядром самоподдерживающегося развития
-  where: сайт и кабинет
-  status: работает вне выпуска шаблона
-  works:
-  - РП-600
-  in_week_plan: true
-  evidence: 'РП-600: каталог методов — DS-my-strategy/docs/catalog-methods-style-ai-era.md (содержательный каталог для участников, не код шаблона); в шаблоне кодов LMS.M нет. Если считать репозиторий автора «author-only» — переклассифицировать'
-- code: Ц49-04
-  goal: 49
-  contours: *id010
-  who: участник
-  what: 'таблица «Реализация в IWE»: да / частично / нет по каждому из 49 методов'
-  where: среда на компьютере
-  status: работает вне выпуска шаблона
-  works:
-  - РП-600
-  in_week_plan: true
-  evidence: 'РП-600 Ф24 (20.10): раздел «Реализация в IWE» в том же каталоге DS-my-strategy/docs; в шаблоне и CHANGELOG нет'
-- code: Ц49-05
-  goal: 49
-  contours: *id010
-  who: участник
-  what: LMS.M.052 «Составление заметок», последовательность M.026 по встрече 6 S1
-  where: мессенджер
-  status: работает вне выпуска шаблона
-  works:
-  - РП-600
-  in_week_plan: true
-  evidence: 'РП-600 (25.10): LMS.M.052 «Составление заметок» внесён в каталог и ядро (DS-my-strategy docs); в шаблоне нет'
-- code: Ц49-06
-  goal: 49
-  contours: *id010
-  who: участник
-  what: карточка на каждый метод в Pack с кратким и полным описанием
-  where: сайт и кабинет
-  status: в работе
-  works:
-  - РП-600
-  in_week_plan: true
-- code: Ц49-07
-  goal: 49
-  contours: *id010
-  who: участник
-  what: 'правило: минимальный набор методов и порядок их постановки, выдаваемое в рекомендации'
-  where: любой клиент
-  status: план
-  works:
-  - РП-600
-  in_week_plan: true
 - code: Ц49-08
   goal: 49
   contours: *id010
   who: участник
   what: контракт выдачи правила в (код читает набор и порядок)
   where: мессенджер
-  status: план
-  works:
-  - РП-600
-  in_week_plan: true
-- code: Ц49-09
-  goal: 49
-  contours: *id010
-  who: участник
-  what: поля вход/промежуточное/выход в карточках методов
-  where: любой клиент
   status: план
   works:
   - РП-600
@@ -1207,16 +1020,6 @@ results:
   works:
   - РП-576
   in_week_plan: false
-- code: Ц52-08
-  goal: 52
-  contours: *id011
-  who: участник
-  what: правило двух независимых путей присвоения ступени и скачок на несколько ступеней, решено 31.10, не включено
-  where: любой клиент
-  status: отложено
-  works:
-  - РП-576
-  in_week_plan: false
 - code: Ц52-09
   goal: 52
   contours: *id011
@@ -1297,8 +1100,8 @@ results:
   where: любой клиент
   status: план
   works:
-  - РП-250
-  in_week_plan: false
+  - РП-427
+  in_week_plan: true
 - code: Ц53-02
   goal: 53
   contours: *id012
@@ -1555,16 +1358,6 @@ results:
   works:
   - РП-561
   in_week_plan: true
-- code: Ц53-27
-  goal: 53
-  contours: *id012
-  who: новичок
-  what: метод составления руководства и рекомендаций, проведение занятий агентом
-  where: браузерный чат
-  status: план
-  works:
-  - РП-581
-  in_week_plan: true
 - code: Ц54-01
   goal: 54
   contours: &id013
@@ -1617,16 +1410,6 @@ results:
   status: план
   works:
   - РП-578
-  in_week_plan: true
-- code: Ц54-06
-  goal: 54
-  contours: *id013
-  who: новичок
-  what: открытая рубрика, проверка агентом
-  where: браузерный чат
-  status: план
-  works:
-  - РП-581
   in_week_plan: true
 - code: Ц70-01
   goal: 70
@@ -1686,17 +1469,6 @@ results:
   works:
   - РП-590
   in_week_plan: false
-- code: Ц71-03
-  goal: 71
-  contours: *id015
-  who: автор метода
-  what: 'Методы ECO.M.032-034: проектирование экосистемы, путь автора, создание пака'
-  where: не применимо
-  status: работает вне выпуска шаблона
-  works:
-  - РП-611
-  in_week_plan: true
-  evidence: 'РП-611: ECO.M.032-034 записаны в PACK-ecosystem 0.9.0 (26.10) — Pack, не шаблон'
 - code: Ц72-01
   goal: 72
   contours: &id016
@@ -1721,16 +1493,6 @@ results:
   in_week_plan: true
   on_staging: true
   mismatch: 'расходится: в карточке «план», но часть уже на обкатке или влита в шаблон'
-- code: Ц72-03
-  goal: 72
-  contours: *id016
-  who: подписчик
-  what: 'тест на реальной участнице: подключение пака за 1 минуту, понятное сообщение без права доступа, 5 задач на материале паков'
-  where: среда на компьютере
-  status: план
-  works:
-  - РП-532
-  in_week_plan: true
 - code: Ц72-04
   goal: 72
   contours: *id016
@@ -1772,8 +1534,8 @@ results:
   where: любой клиент
   status: план
   works:
-  - РП-588
-  in_week_plan: false
+  - РП-608
+  in_week_plan: true
 - code: Ц73-03
   goal: 73
   contours: *id017
@@ -1784,32 +1546,12 @@ results:
   works:
   - РП-604
   in_week_plan: false
-- code: Ц73-04
-  goal: 73
-  contours: *id017
-  who: автор метода
-  what: Карточка метода по общей схеме со свидетельствами применения
-  where: не применимо
-  status: план
-  works:
-  - РП-608
-  in_week_plan: true
 - code: Ц73-05
   goal: 73
   contours: *id017
   who: автор метода
   what: Очередь запросов на новый метод с проверкой, нет ли готового
   where: не применимо
-  status: план
-  works:
-  - РП-608
-  in_week_plan: true
-- code: Ц73-06
-  goal: 73
-  contours: *id017
-  who: автор метода
-  what: ручная проверка первых публикаций до конца 2026
-  where: любой клиент
   status: план
   works:
   - РП-608
@@ -1866,16 +1608,6 @@ results:
   - U-6d71c7
   - U-d8cfe7
   - U-f8bbbc
-- code: Ц77-03
-  goal: 77
-  contours: *id018
-  who: пользователь IWE
-  what: живой прогон на установленной копии, не на голом клоне
-  where: среда на компьютере
-  status: план
-  works:
-  - РП-485
-  in_week_plan: true
 - code: Ц77-04
   goal: 77
   contours: *id018
@@ -1938,19 +1670,6 @@ results:
   - РП-529
   in_week_plan: true
   merged_after_0_41_11: true
-- code: Ц77-09
-  goal: 77
-  contours: *id018
-  who: пользователь IWE
-  what: анонс с разделом «Главное»
-  where: Telegram, сайт GitHub
-  status: в работе
-  works:
-  - РП-529
-  in_week_plan: true
-  released_041_records:
-  - U-0793aa
-  - U-4593cb
 - code: Ц77-10
   goal: 77
   contours: *id018
@@ -1999,8 +1718,8 @@ results:
   where: компьютер
   status: план
   works:
-  - РП-552
-  in_week_plan: false
+  - РП-529
+  in_week_plan: true
 - code: Ц78-01
   goal: 78
   contours: &id019
@@ -2013,16 +1732,6 @@ results:
   - РП-485
   in_week_plan: true
   merged_after_0_41_11: true
-- code: Ц78-02
-  goal: 78
-  contours: *id019
-  who: пользователь IWE
-  what: отчёт что отличается и что решено, сверенный инвентарь двух хостов
-  where: среда на компьютере
-  status: в работе
-  works:
-  - РП-529
-  in_week_plan: true
 - code: Ц78-03
   goal: 78
   contours: *id019
@@ -2033,6 +1742,7 @@ results:
   works:
   - РП-529
   in_week_plan: true
+  merged_after_0_41_11: true
 - code: Ц78-04
   goal: 78
   contours: *id019
@@ -2043,6 +1753,7 @@ results:
   works:
   - РП-561
   in_week_plan: true
+  merged_after_0_41_11: true
 - code: Ц79-01
   goal: 79
   contours: &id020
@@ -2147,16 +1858,6 @@ results:
   - РП-544
   in_week_plan: true
   merged_after_0_41_11: true
-- code: Ц81-06
-  goal: 81
-  contours: *id021
-  who: пользователь IWE
-  what: инструмента без экспозиции нет; диагноз сделан
-  where: среда на компьютере
-  status: план
-  works:
-  - РП-544
-  in_week_plan: true
 - code: Ц81-07
   goal: 81
   contours: *id021
@@ -2288,26 +1989,6 @@ results:
   works:
   - РП-606
   in_week_plan: false
-- code: Ц83-04
-  goal: 83
-  contours: *id023
-  who: пользователь IWE
-  what: Таблица сценариев по целям человека с отметкой, на каком выпуске проверено
-  where: любой клиент
-  status: в работе
-  works:
-  - РП-611
-  in_week_plan: true
-- code: Ц83-05
-  goal: 83
-  contours: *id023
-  who: пользователь IWE
-  what: 'Описание IWE DP.IWE.013: функциональные подсистемы, модули, размещение, системы окружения'
-  where: сайт и кабинет
-  status: в работе
-  works:
-  - РП-616
-  in_week_plan: true
 - code: Ц93-01
   goal: 93
   contours: &id024
@@ -2319,6 +2000,7 @@ results:
   works:
   - РП-415
   in_week_plan: false
+  merged_after_0_41_11: true
 - code: Ц93-02
   goal: 93
   contours: *id024
@@ -2329,6 +2011,7 @@ results:
   works:
   - РП-617
   in_week_plan: true
+  merged_after_0_41_11: true
   released_041_records:
   - U-1d20b2
 - code: Ц93-03
@@ -2341,6 +2024,8 @@ results:
   works:
   - РП-617
   in_week_plan: true
+  merged_after_0_41_11: true
+  mismatch: 'расходится: в карточке «план», но часть уже на обкатке или влита в шаблон'
 - code: Ц93-04
   goal: 93
   contours: *id024
@@ -2382,36 +2067,6 @@ results:
   works:
   - РП-554
   in_week_plan: false
-- code: Ц94-04
-  goal: 94
-  contours: *id025
-  who: пользователь IWE
-  what: карта пути по вариантам среды DP.ARCH.013 и описание для человека и наставника
-  where: любой клиент
-  status: в работе
-  works:
-  - РП-610
-  in_week_plan: true
-- code: Ц94-05
-  goal: 94
-  contours: *id025
-  who: пользователь IWE
-  what: 'порядок ухода: отключение, удаление копии, выгрузка'
-  where: любой клиент
-  status: план
-  works:
-  - РП-610
-  in_week_plan: true
-- code: Ц94-06
-  goal: 94
-  contours: *id025
-  who: владелец своей ИИ-среды
-  what: приёмка комплекта и удаления копии на тестовом аккаунте
-  where: среда на компьютере
-  status: план
-  works:
-  - РП-610
-  in_week_plan: true
 - code: Ц95-01
   goal: 95
   contours: &id026
@@ -2594,18 +2249,6 @@ results:
   works:
   - РП-468
   in_week_plan: false
-- code: Ц84-04
-  goal: 84
-  contours: *id028
-  who: пользователь IWE
-  what: 'Обещание: любое изменение проходит одинаковые проверки; виден след проверок'
-  where: не применимо
-  status: в работе
-  works:
-  - РП-519
-  in_week_plan: false
-  merged_after_0_41_11: true
-  on_staging: true
 - code: Ц84-05
   goal: 84
   contours: *id028
@@ -2616,6 +2259,8 @@ results:
   works:
   - РП-519
   in_week_plan: false
+  merged_after_0_41_11: true
+  on_staging: true
 - code: Ц84-06
   goal: 84
   contours: *id028
@@ -2911,7 +2556,7 @@ staging:
   mismatch: 'сверить: файл уже есть в шаблоне, доставлено ли само изменение — не проверено'
   link:
     result:
-    - Ц84-04
+    - Ц84-05
     why: коммит шаблона не проходит, если версия в журнале изменений и в манифесте расходится
 - id: S-31
   title: 'WP-217 Ф6: реестр ТО IWE — T-checklist (22 действия в Session/Day/Week/Month Close), R-вопросник (3 недельных + 6 месячных вопросов, экзоскелетный режим)…'
@@ -3328,7 +2973,6 @@ staging:
   link:
     result:
     - Ц37-02
-    - Ц37-06
     why: направления недели выводятся из пула недели и проверяются на шаге утверждения
 - id: S-72
   title: 'Скилл `/project-analysis` «Анализ проекта» (Аудитор VR.R.002, обещание VR.SC.007): проект участника по блоку «дела и проекты» Чек-листа защиты этапа S0–S3 →…'
@@ -3400,79 +3044,44 @@ staging:
 author_ahead:
   present: true
   schema_version: 1
-  measured_at: '2026-11-06T14:36:01Z'
-  template_commit: 1a4b9afc47d5a186a875fe3c9ac1a45aace059cb
-  author_tree_fingerprint: d30b887847262263
-  duration_s: 216
+  measured_at: '2026-11-08T07:25:28Z'
+  template_commit: 984176879430067b601b69968d186c69ead0f9d3
+  author_tree_fingerprint: d0cc179257925052
+  duration_s: 206
   timeout_s: 900
-  complete: true
-  incomplete_reasons: []
-  clean_files: 47
-  files:
-  - path: .claude/skills/artifactor/SKILL.md
-    category: template_has_foreign_edits
-    link:
-      proposed:
-        goal: 38
-        what: разбор запроса проверяет, кто будет производить результат, и род его названия
-  - path: .claude/skills/kimi-peer-writer/SKILL.md
-    category: template_has_foreign_edits
-    link:
-      proposed:
-        goal: 82
-        what: пир-сессия с Kimi-писателем выбирает напарника и не исполняется чужим агентом
-  - path: .claude/skills/peer-conversation/SKILL.md
-    category: template_has_foreign_edits
-    link:
-      result:
-      - Ц82-02
-  - path: CLAUDE.md
-    category: template_has_foreign_edits
-    link:
-      service: облегчённое ядро инструкций Разработчика; перенос в шаблон — отдельное решение Разработчика
-  - path: memory/protocol-close.md
-    category: would_update
-    link:
-      result:
-      - Ц38-05
-  - path: memory/protocol-open.md
-    category: would_update
-    link:
-      service: авторские шаги в зонах «только у автора» и подстановки имён; у пользователя шаблона ничего не меняется
-  - path: roles/strategist/prompts/session-prep.md
-    category: template_has_foreign_edits
-    link:
-      service: пути и имена Разработчика вместо подстановок шаблона
-  - path: roles/strategist/prompts/week-review.md
-    category: template_has_foreign_edits
-    link:
-      service: пост итогов недели и пути Разработчика
-  - path: scripts/artifactor.py
-    category: template_has_foreign_edits
-    link:
-      proposed:
-        goal: 38
-        what: разбор запроса проверяет, кто будет производить результат, и род его названия
-  - path: scripts/canon-reconcile-published.sh
-    category: template_has_foreign_edits
-    link:
-      result:
-      - Ц96-05
-  - path: scripts/check-dirty-repos.sh
-    category: accepted_base_unproven
-    link: {}
-  - path: scripts/grok-peer-adapter.sh
-    category: template_has_foreign_edits
-    link:
-      service: язык комментариев; шаблон впереди (комментарии на английском)
-  - path: scripts/lib/peer-adapter-common.sh
-    category: template_has_foreign_edits
-    link: {}
-  - path: scripts/peer-session-finalize.sh
-    category: template_has_foreign_edits
-    link:
-      service: раскладка сессий Разработчика; шаблон впереди по блокировке индекса сессий
+  complete: false
+  incomplete_reasons:
+  - 'журнал сообщил об отказе: STALE SOURCE: root позади origin/main на 6 коммит(ов) — расхождения ниже могут быть ложными (canon-refresh.sh)'
+  - 'свежесть источников: STALE'
+  clean_files: 48
+  files: []
 unreleased_links:
+- key: U-a6276c
+  tag: optional
+  first_words: 'Поставщик терминов перевода доработан по независимой проверке: открытый запрос…'
+  result:
+  - Ц93-03
+- key: U-9d3749
+  tag: optional
+  first_words: 'Поставщик терминов перевода: задание `.github/workflows/glossary-supplier.yml`…'
+  result:
+  - Ц93-03
+- key: U-b18db2
+  tag: optional
+  first_words: 'Перевод шаблона на английский снова доходит до публикации: поля шапки `readers`…'
+  result:
+  - Ц93-01
+- key: U-0cd06f
+  tag: optional
+  first_words: Перевод шаблона на английский берёт термины из снимка графа понятий…
+  result:
+  - Ц93-02
+- key: U-08820e
+  tag: behavior
+  first_words: 'Лёгкий онбординг: новый навык `/onboarding`…'
+  proposed:
+    goal: 3
+    what: 'лёгкий онбординг в шаблоне: разбор задачи методом из локальной библиотеки за один разговор, без аккаунта и подписки'
 - key: U-444921
   tag: optional
   first_words: '`roles/synchronizer/scripts/notify.sh`: рабочее место может подключить…'
@@ -3520,11 +3129,35 @@ unreleased_links:
   first_words: 'Автоматическая доставка из авторского источника (template-sync.sh): обновлены…'
   result:
   - Ц96-10
+- key: U-408b11
+  tag: behavior
+  first_words: '`scripts/isolate-push.sh` (и копия `seed/strategy/scripts/isolate-push.sh`)…'
+  result:
+  - Ц38-04
+- key: U-296fca
+  tag: behavior
+  first_words: '`.claude/hooks/close-gate-reminder.sh`: «заливай» и «запуши» больше не…'
+  result:
+  - Ц38-01
+- key: U-136e85
+  tag: behavior
+  first_words: '`.claude/hooks/pull-on-touch.sh` на обычной установке больше не падает с…'
+  result:
+  - Ц78-04
+- key: U-925871
+  tag: behavior
+  first_words: '`roles/synchronizer/install.sh`: агенты `com.strategist.morning` и…'
+  result:
+  - Ц78-03
+- key: U-e8402c
+  tag: behavior
+  first_words: '`roles/synchronizer/scripts/code-scan.sh`: без downstream-репозиториев `DS-*`…'
+  service: сканер кода синхронизатора не падает без репозиториев DS на bash 3.2
 - key: U-10d5af
   tag: behavior
   first_words: '`setup/validate-template.sh --mode=staged` больше не тратит десятки минут на…'
   result:
-  - Ц84-04
+  - Ц84-05
 - key: U-365d06
   tag: behavior
   first_words: '`update.sh` на Git Bash (Windows) больше не останавливается после первой записи…'

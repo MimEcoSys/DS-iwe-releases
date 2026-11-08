@@ -1,11 +1,11 @@
 # Порядок сборки табло и версии входов последней сборки (файл Разработчика, WP-529 Ф259).
 # Ведёт Разработчик руками при каждой пересборке; build_board.py этот файл не читает.
 # Запись описывает сборку, после которой BOARD.md и board/ в этом же коммите.
-# Сборка 07.11 (Цех Разработчика): те же входы и тот же замер, что 06.11; изменён только раздел files: в developer-links.yaml.
+# Сборка 08.11 (Мак Разработчика): все входы с origin/main на 08.11; шаблон 98417687 (10 новых записей связаны, передаточный лист — черновик агента); документ 4 после перестройки РП-611 (7 мест размещения сняты, 4 связи перепривязаны); замер неполный.
 
-built_at_local_date: '2026-11-07'   # dt.date.today() хоста сборки: шапки «Собрано …» и snapshot.collected_at
+built_at_local_date: '2026-11-08'   # dt.date.today() хоста сборки: шапки «Собрано …» и snapshot.collected_at
 host_timezone: EET                  # локальная дата зависит от таймзоны хоста
-recorded_at: '2026-11-07T15:26:06Z' # когда записан этот файл (после сборки)
+recorded_at: '2026-11-08T08:10:00Z' # когда записан этот файл (после сборки)
 
 builder:
   program: ops/build_board.py
@@ -20,54 +20,54 @@ inputs:
   - name: map005.md
     repo: https://github.com/MimEcoSys/PACK-digital-platform.git
     path: pack/digital-platform/07-map/DP.MAP.005-mcp-scenarios.md
-    revision: d33338c492f8cbe08412b8a4813d85ac89e06410
-    sha256: cfbbe12405276870774511b7a0a10e86fef73885ed1bf44d3d4d0978abfc8512
+    revision: 575ca05062240a50d828fac8e26419e66f1f1f02
+    sha256: e4e24109b90395c93e399bae5c279ce59ec87ce6eff0b4178d6eee86b278b890
   - name: sbg.md
     repo: https://github.com/aisystant/DS-ecosystem-development.git
     path: C.IT-Platform/C2.IT-Platform/C2.3.Operations/Goals-State/state-by-goals.md
-    revision: 36dc4b00066e5ec5b3c37440bc0ad1d574cc5e60
-    sha256: 8bb0277d47dcef935e22d4659af54b794d41340cfcd065700ddf9e55b596ad26
+    revision: 1445c471baca57e22d27c42f7f92ab8f09dfc17a
+    sha256: 9ad5293e7ee70ad5c19a6c9db20dc097bc5e7bbdb5ae84ba91f29efec12fa8e1
   - name: result-codes.md
     repo: https://github.com/aisystant/DS-ecosystem-development.git
     path: C.IT-Platform/C2.IT-Platform/C2.3.Operations/Goals-State/working-records/result-codes.md
-    revision: 36dc4b00066e5ec5b3c37440bc0ad1d574cc5e60
-    sha256: 54376555dd1f4d0456a1f835c04575b83c809f977b6d83988e75c2fc307b8b99
+    revision: 1445c471baca57e22d27c42f7f92ab8f09dfc17a
+    sha256: 48ed9e5b10ae3b521021540474f778ec0f5c7abb8a6be860681300421a317f7f
   - name: changelog.md
     repo: https://github.com/TserenTserenov/FMT-exocortex-template.git
     path: CHANGELOG.md
-    revision: 1a4b9afc47d5a186a875fe3c9ac1a45aace059cb
-    sha256: 5b5c58afd3e97e25a6084d138f32c1f13c4f5a688ab0ba3eb6591ff55bddc437
+    revision: 984176879430067b601b69968d186c69ead0f9d3
+    sha256: 33c5063efdb47532c35ed1fedbb9cdc6a7bed3895a09c9aa0a04cf92e6c422a5
   - name: fmt-sha
     repo: https://github.com/TserenTserenov/FMT-exocortex-template.git
     derived_by: git rev-parse origin/main   # та же ревизия, что у changelog.md
-    revision: 1a4b9afc47d5a186a875fe3c9ac1a45aace059cb
-    sha256: c518108621527bc6623e011e8aa379b4c2d66ebdf202cc7ad7f111217a71f2b4
+    revision: 984176879430067b601b69968d186c69ead0f9d3
+    sha256: 57d5715c6c74501ee74f0e14df3977f5edcfe7d381b98706ca314b5b3b11e6cd
   - name: fmt-files.txt
     repo: https://github.com/TserenTserenov/FMT-exocortex-template.git
     derived_by: git ls-tree -r --name-only <revision>
-    revision: 1a4b9afc47d5a186a875fe3c9ac1a45aace059cb
-    sha256: 03bb8620c2de20591b131fbc7db16604fb915f55ae5f0a50d24d8007e7a9e285
+    revision: 984176879430067b601b69968d186c69ead0f9d3
+    sha256: 93de4eaf119c873f18a1cb5e94f9ef8feeab5e83bb7310d3f0339a3d46614a83
   - name: staging.md
     repo: https://github.com/TserenTserenov/iwe-local-config.git   # закрытый, корень IWE Разработчика
     path: STAGING.md
-    revision: f45dbbd9e5bfe7b3e4f20bd83ef6527a7585b29a
+    revision: ecb2803de85831e9f4590a1eea0939e16e86e011
     sha256: 09510628f5bad5eebc9869ec3ae2529be442b5ac33d91a45873d941da050f03a
   - name: weekplan.md
     repo: https://github.com/TserenTserenov/DS-my-strategy.git        # закрытый, план недели Разработчика
     path: current/WeekPlan W45 2026-11-02.md   # каждую неделю — план текущей недели
-    revision: dccc6e89dfc50aa549bf8a65c9fa5150583d260c
+    revision: ff27f8bf762126d15cdbf16798fa88d7b0b7f28c
     sha256: 85dad20f052fab128abadff8cc91953bdc5aa27014e2274a1cd1f767e87a2904
   - name: author-ahead.yaml   # результат замера рабочих копий хоста, не файл из Git
     produced_by:
       tool: https://github.com/TserenTserenov/DS-ai-systems.git setup/scripts/wp529-drift-inventory.py
-      tool_commit: 1cc7aadab921734c9aca436593cad09ec1733969   # запущен неизменённым; в этой ревизии и template-sync.sh, который инвентарь вызывает
+      tool_commit: dc6343c2f6bc0c5b64ab4e191995aec59660f098   # запущен неизменённым; в этой ревизии и template-sync.sh, который инвентарь вызывает
       tool_sha256: 7cfbc929e06d10c93640e1fa24ea745cc7716a5c5f76bd8e86b4c02e8f803557
       command: (cd DS-IT-systems/DS-ai-systems && python3 setup/scripts/wp529-drift-inventory.py --out <отчёт> --yaml-out <папка входов>/author-ahead.yaml)
       host: Mac Разработчика   # зависит от setup/.sync-hashes этого хоста
-    measured_at: '2026-11-06T14:36:01Z'
-    complete: true
-    sha256: b45396bc56db5ed3c58f3ca67642d23a0c6b060da7dae3e3f0e25ef819ec1c67
-    kept_at: закрытый журнал сессий Разработчика, MC-sessions 2026-11/06/2026-11-06-07-wp529-board-src-release/author-ahead-full.yaml
+    measured_at: '2026-11-08T07:25:28Z'
+    complete: false   # 08.11: корневая рабочая копия позади origin на 6 коммитов; canon-refresh её не перематывает (в ней неучтённая папка)
+    sha256: a587efb28dedb813f13bf09e68b646683a35da3647721c7f97920b7d139d4681
+    kept_at: закрытый журнал сессий Разработчика, MC-sessions 2026-11/08/2026-11-08-02-wp529-actualize-open-phases/author-ahead.yaml
 
 # Порядок сборки. Любой отказ команды — стоп, табло не пересобирается.
 steps:
