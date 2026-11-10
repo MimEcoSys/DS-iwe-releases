@@ -144,7 +144,7 @@ def repo_with(tmp_path, decisions_text, rc_files=None):
 
 
 def verdict(**overrides):
-    block = {"verdict": "STABLE", "checker": "codex-fresh-session", "report": "https://example.org/pr/1#c1", "tree": TREE}
+    block = {"verdict": "GO", "checker": "codex-fresh-session", "report": "https://example.org/pr/1#c1", "tree": TREE}
     block.update(overrides)
     return {"build": "0.42-rc.1", "red_team": block}
 
@@ -188,6 +188,14 @@ def test_blocked_and_unaccepted_caution_fail(tmp_path):
     other.mkdir()
     caution = cd.red_team_problems(repo_with(other, FILLED, {"rc.1.yaml": verdict(verdict="CAUTION")}) / "releases" / "0.42" / "tests", None)
     assert any("accepted_by" in p for p in caution)
+
+
+def test_skill_verdict_words_are_the_scale(tmp_path):
+    # The skill iwe-platform-redteam answers GO / CAUTION / BLOCKED or cannot_verify; the old local word STABLE is refused.
+    tests = repo_with(tmp_path, FILLED, {"rc.1.yaml": verdict(verdict="cannot_verify")}) / "releases" / "0.42" / "tests"
+    assert any("cannot_verify" in p and "не пройдена" in p for p in cd.red_team_problems(tests, None))
+    (tests / "rc.1.yaml").write_text(yaml.safe_dump(verdict(verdict="STABLE"), allow_unicode=True), encoding="utf-8")
+    assert any("GO, CAUTION, BLOCKED" in p for p in cd.red_team_problems(tests, None))
 
 
 def test_verdict_for_another_tree_fails(tmp_path):
