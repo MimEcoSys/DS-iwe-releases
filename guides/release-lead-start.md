@@ -18,9 +18,23 @@
 
 Роль описана в Паке платформы: [DP.ROLE.120 «Выпускающий»](https://github.com/MimEcoSys/PACK-digital-platform/blob/main/pack/digital-platform/02-domain-entities/DP.ROLE.120-release-issuer.md).
 
+## Что нужно от твоего IWE
+
+Считаем, что свой IWE у тебя уже есть. Для роли Выпускающего он должен работать **на твоём компьютере**, а не в браузере:
+
+| Нужно | Зачем |
+|---|---|
+| VS Code с агентом IWE (Claude Code или другой агент, который читает файлы и запускает команды в терминале) | агент читает этот репозиторий, готовит решения и запускает программы проверки |
+| `git` и GitHub CLI `gh` с выполненным входом (`gh auth status`) | скачать этот репозиторий, смотреть запросы на слияние, ставить свои правки формы решений |
+| `python3` с пакетом PyYAML (`python3 -m pip install pyyaml`) | программа проверки решений `ops/check_decisions.py` |
+
+Браузерная версия IWE (сайт или чат-клиент) для этой роли не подходит: в ней агент не может скачать репозиторий и запустить проверки. Ей можно пользоваться, чтобы читать документы и тему выпуска.
+
+Тестировщику нужно больше (Мак, отдельная учётная запись) — это в [его инструкции](tester-macos.md).
+
 ## Быстрый старт
 
-1. **Свой IWE.** Если IWE у тебя ещё нет — поставь по [быстрому старту шаблона](https://github.com/TserenTserenov/FMT-exocortex-template/blob/main/docs/QUICK-START.md) (с нуля — [полная установка](https://github.com/TserenTserenov/FMT-exocortex-template/blob/main/docs/SETUP-GUIDE.md)). Твой ИИ-агент в IWE будет помощником Выпускающего.
+1. **Проверь IWE** по таблице выше: в терминале `git --version`, `gh auth status`, `python3 -c "import yaml"` — все три без ошибок.
 2. **Доступы.** Пришли владельцу шаблона свой логин GitHub. Тебя добавят в команду `iwe-release-lead` организации MimEcoSys и дадут права в репозитории шаблона (запуск проверок и слияние). Нужен ещё доступ к Зулипу МИМ — там тема каждого выпуска.
 3. **Этот репозиторий у себя:**
    ```bash
@@ -40,6 +54,6 @@
 | Твои шаги по порядку (для тебя и твоего агента) | [release-lead.md](release-lead.md) |
 | Инструкция тестировщику, которую ты раздаёшь | [tester-macos.md](tester-macos.md) |
 | Как стать Выпускающим: путь подготовки | [release-lead-training.md](release-lead-training.md) |
-| Текущий выпуск 0.42 — что и где взять, что сделать | [releases/0.42/README.md](../releases/0.42/README.md) |
+| Выпуск 0.42: что взять и что сделать | [releases/0.42/README.md](../releases/0.42/README.md) |
 | Табло: где каждый обещанный результат | [BOARD.md](../BOARD.md) |
 | Механика веток и меток (для Разработчика) | [процесс выпуска шаблона](https://github.com/TserenTserenov/FMT-exocortex-template/blob/main/docs/RELEASE-PROCESS.md) |
