@@ -51,13 +51,26 @@ def record_problems(key: str, record: dict) -> list[str]:
     return problems
 
 
-def decision_keys(decisions: str, row: str) -> set[str]:
-    """Keys from the value cell of the decisions table row that starts with `row`."""
+class DecisionsFormError(ValueError):
+    """decisions.md lacks a row the check relies on, so it cannot be read."""
+
+
+def decision_keys(decisions: str, row: str) -> tuple[set[str], int]:
+    """Keys from the value cells of the table rows that start with `row`, and the row count.
+
+    A missing row is a broken form, not an empty decision: reading it as "nothing
+    taken" would let the check report OK on a form it never parsed.
+    """
+    keys: set[str] = set()
+    rows = 0
     for line in decisions.splitlines():
         cells = [c.strip() for c in line.strip().strip("|").split("|")]
         if len(cells) >= 2 and cells[0].startswith(row):
-            return set(KEY.findall(cells[1]))
-    return set()
+            rows += 1
+            keys |= set(KEY.findall(cells[1]))
+    if not rows:
+        raise DecisionsFormError(f"в decisions.md нет строки «{row}»")
+    return keys, rows
 
 
 def inseparable_groups(handoff: dict) -> dict[str, list[str]]:
@@ -77,21 +90,27 @@ def inseparable_groups(handoff: dict) -> dict[str, list[str]]:
 
 def decision_problems(handoff: dict, decisions: str) -> list[str]:
     known = set((handoff.get("records") or {}).keys())
-    taken = decision_keys(decisions, TAKEN_ROW)
-    deferred = decision_keys(decisions, DEFERRED_ROW)
-    problems = [f"{key}: в решениях, но нет среди кандидатов" for key in sorted((taken | deferred) - known)]
+    taken, taken_rows = decision_keys(decisions, TAKEN_ROW)
+    deferred, deferred_rows = decision_keys(decisions, DEFERRED_ROW)
+    problems = [
+        f"строка «{row}» в decisions.md повторяется {count} раза — оставить одну"
+        for row, count in ((TAKEN_ROW, taken_rows), (DEFERRED_ROW, deferred_rows))
+        if count > 1
+    ]
+    problems += [f"{key}: в решениях, но нет среди кандидатов" for key in sorted((taken | deferred) - known)]
     problems += [f"{key}: одновременно «взято» и «отложено»" for key in sorted(taken & deferred)]
     for unit, keys in sorted(inseparable_groups(handoff).items()):
         in_taken = sorted(k for k in keys if k in taken)
         in_deferred = sorted(k for k in keys if k in deferred)
+        unnamed = sorted(set(keys) - set(in_taken) - set(in_deferred))
         if in_taken and in_deferred:
             problems.append(
                 f"группа {unit} неразделима, но разорвана: взято {', '.join(in_taken)}, "
                 f"отложено {', '.join(in_deferred)}"
             )
-        elif in_taken and len(in_taken) < len(keys):
-            missing = sorted(set(keys) - set(in_taken))
-            problems.append(f"группа {unit} неразделима: взято {', '.join(in_taken)}, не названо {', '.join(missing)}")
+        elif (in_taken or in_deferred) and unnamed:
+            verb, named = ("взято", in_taken) if in_taken else ("отложено", in_deferred)
+            problems.append(f"группа {unit} неразделима: {verb} {', '.join(named)}, не названо {', '.join(unnamed)}")
     return problems
 
 
@@ -105,15 +124,14 @@ def main(argv: list[str]) -> int:
         handoff = yaml.safe_load((args.repo / "ops" / "developer-handoff.yaml").read_text(encoding="utf-8")) or {}
         release = args.release or str(handoff.get("release") or "")
         decisions = (args.repo / "releases" / release / "decisions.md").read_text(encoding="utf-8")
-    except (OSError, yaml.YAMLError) as error:
+        records = handoff.get("records") or {}
+        problems: list[str] = []
+        for key, record in records.items():
+            problems += record_problems(key, record or {})
+        problems += decision_problems(handoff, decisions)
+    except (OSError, yaml.YAMLError, DecisionsFormError) as error:
         print(f"check_decisions: {error}", file=sys.stderr)
         return 2
-
-    records = handoff.get("records") or {}
-    problems: list[str] = []
-    for key, record in records.items():
-        problems += record_problems(key, record or {})
-    problems += decision_problems(handoff, decisions)
 
     for problem in problems:
         print(f"FAIL: {problem}")

@@ -63,6 +63,28 @@ def test_partly_named_inseparable_group_is_reported():
     assert problems == ["группа aaaa1111 (#1) неразделима: взято U-000001, не названо U-000002"]
 
 
+def test_partly_deferred_inseparable_group_is_reported():
+    problems = cd.decision_problems(HANDOFF, decisions(deferred="U-000002"))
+    assert problems == ["группа aaaa1111 (#1) неразделима: отложено U-000002, не названо U-000001"]
+
+
+def test_missing_decision_row_is_a_form_error_not_ok():
+    form = "| Решение | Значение |\n|---|---|\n| Состав: что взято | U-000001 U-000002 |\n"
+    try:
+        cd.decision_problems(HANDOFF, form)
+    except cd.DecisionsFormError as error:
+        assert "Состав: что отложено" in str(error)
+    else:
+        raise AssertionError("missing row must raise DecisionsFormError")
+
+
+def test_duplicated_decision_row_is_reported_and_both_rows_are_read():
+    form = decisions(taken="U-000001") + "| Состав: что взято, продолжение | U-abcdef |\n"
+    problems = cd.decision_problems(HANDOFF, form)
+    assert "строка «Состав: что взято» в decisions.md повторяется 2 раза — оставить одну" in problems
+    assert "U-abcdef: в решениях, но нет среди кандидатов" in problems
+
+
 def test_separable_group_may_be_split():
     assert cd.decision_problems(HANDOFF, decisions(taken="U-000003", deferred="U-000004")) == []
 
