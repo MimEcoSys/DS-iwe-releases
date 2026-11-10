@@ -4,7 +4,7 @@
 
 ## Обязательно загружай
 
-Перед работой в роли выпуска — прочитай [guides/release-process.md](guides/release-process.md) и инструкцию своей роли: Выпускающему — [guides/release-lead.md](guides/release-lead.md), тестировщику — [guides/tester-macos.md](guides/tester-macos.md). Роль и метод — в Паке (DP.ROLE.120); расходится — прав Пак.
+Перед работой в роли выпуска — прочитай [guides/release-process.md](guides/release-process.md) и инструкцию своей роли: Выпускающему — [guides/release-lead-start.md](guides/release-lead-start.md) и [guides/release-lead.md](guides/release-lead.md), затем `releases/<N>/README.md` текущего выпуска, тестировщику — [guides/tester-macos.md](guides/tester-macos.md). Роль и метод — в Паке (DP.ROLE.120); расходится — прав Пак.
 
 ## Обязательно
 
