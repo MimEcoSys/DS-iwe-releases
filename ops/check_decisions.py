@@ -44,7 +44,8 @@ FINAL_ROWS = (
     "Кто исполняет роли",
     "Итог: выпускаем / откладываем",
 )
-RED_TEAM_VERDICTS = ("STABLE", "CAUTION", "BLOCKED")
+# The verdict words of the template skill iwe-platform-redteam (Verdict Contract), not a local scale.
+RED_TEAM_VERDICTS = ("GO", "CAUTION", "BLOCKED")
 SHA1 = re.compile(r"^[0-9a-f]{40}$")
 RC_FILE = re.compile(r"^rc\.(\d+)\.yaml$")
 REQUIRED_TEXT = {
@@ -173,7 +174,9 @@ def red_team_problems(tests_dir: Path, rc_tree: str | None) -> list[str]:
         return [f"{name}: нет блока red_team — независимая атака на последнем кандидате не записана"]
     problems = []
     verdict = str(block.get("verdict") or "").strip()
-    if verdict not in RED_TEAM_VERDICTS:
+    if verdict == "cannot_verify":
+        problems.append(f"{name}: атака не смогла проверить кандидата (cannot_verify) — строка 13 не пройдена")
+    elif verdict not in RED_TEAM_VERDICTS:
         problems.append(f"{name}: red_team.verdict должен быть одним из {', '.join(RED_TEAM_VERDICTS)}, а не «{verdict}»")
     for field in ("checker", "report"):
         if not str(block.get(field) or "").strip():

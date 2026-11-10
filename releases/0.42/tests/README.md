@@ -10,7 +10,7 @@ marks:
     tester: <логин GitHub>
     note: ""                # пересказ без имён и личных данных
 red_team:                   # вердикт независимой атаки (строка 13) на ЭТОМ кандидате
-  verdict: STABLE           # STABLE | CAUTION | BLOCKED
+  verdict: GO               # GO | CAUTION | BLOCKED — слова навыка iwe-platform-redteam; cannot_verify = не пройдено
   checker: <кто проверял>   # не автор кода выпуска
   report: <ссылка на отчёт или комментарий в запросе на слияние>
   tree: <полный SHA дерева кандидата, из комментария next-rc>
