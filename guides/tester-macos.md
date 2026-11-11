@@ -4,7 +4,7 @@
 
 **Сейчас проверяем:** кандидат `v0.42.0-rc.1` ([сборка](https://github.com/TserenTserenov/FMT-exocortex-template/tree/v0.42.0-rc.1)), прошлый выпуск — `v0.41.11`.
 **Время:** 3–4 часа, можно в два захода (после шага 5 и после шага 8).
-**Что понадобится:** Мак, аккаунт GitHub, доступ к Claude — его пришлёт Выпускающий.
+**Что понадобится:** Мак, аккаунт GitHub, свой аккаунт Claude с подпиской Max (для шага 9 нужна самая сильная модель).
 
 **Если что-то не так или непонятно** — остановись и напиши Выпускающему (TserenTserenov) в Telegram: номер шага, что ожидал, что увидел, снимок экрана. Не чини сам: несовпадение с инструкцией — тоже результат. Ты проходишь эту инструкцию первым, поэтому любое расхождение с экраном особенно ценно.
 
@@ -25,7 +25,7 @@
    npm install -g @anthropic-ai/claude-code
    gh auth login        # GitHub.com → HTTPS → Login with a web browser
    ```
-4. **VS Code:** скачай с [code.visualstudio.com](https://code.visualstudio.com), открой, Cmd+Shift+X → найди «Claude Code» → Install. Войди в Claude доступом от Выпускающего.
+4. **VS Code:** скачай с [code.visualstudio.com](https://code.visualstudio.com), открой, Cmd+Shift+X → найди «Claude Code» → Install. Войди в свой аккаунт Claude.
 5. **Номера версий** — чтобы дальше копировать команды как есть:
    ```bash
    echo 'export RC=v0.42.0-rc.1 PREV=v0.41.11' >> ~/.zshrc && source ~/.zshrc
