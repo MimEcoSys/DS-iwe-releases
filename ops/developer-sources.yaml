@@ -1,17 +1,18 @@
 # Порядок сборки табло и версии входов последней сборки (файл Разработчика, WP-529 Ф259).
 # Ведёт Разработчик руками при каждой пересборке; build_board.py этот файл не читает.
 # Запись описывает сборку, после которой BOARD.md и board/ в этом же коммите.
-# Сборка 08.11 (Мак Разработчика): все входы с origin/main на 08.11; шаблон 98417687 (10 новых записей связаны, передаточный лист — черновик агента); документ 4 после перестройки РП-611 (7 мест размещения сняты, 4 связи перепривязаны); замер неполный.
+# Сборка 11.11 (Мак Разработчика, пересборка кандидатов после rc.1): шаблон — снимок «режем» 637e06a1 (не вершина main: состав выпуска);
+# остальные входы — origin/main на 11.11; 34 новые записи и приведение всех 81 связи к полю «Цель · Результат» (FMT #1525) — черновик агента; замер не приложен.
 
-built_at_local_date: '2026-11-08'   # dt.date.today() хоста сборки: шапки «Собрано …» и snapshot.collected_at
+built_at_local_date: '2026-11-11'   # dt.date.today() хоста сборки: шапки «Собрано …» и snapshot.collected_at
 host_timezone: EET                  # локальная дата зависит от таймзоны хоста
-recorded_at: '2026-11-08T08:10:00Z' # когда записан этот файл (после сборки)
+recorded_at: '2026-11-11T07:30:00Z' # когда записан этот файл (после сборки)
 
 builder:
   program: ops/build_board.py
-  program_commit: 0a003ff847c9c9fcac5e490f20fc7f3f6e8ffbb5   # запущена неизменённой из этой ревизии
+  program_commit: 06aca4ad7f9eefa103f8d739e009693d5a8c3fc5   # запущена неизменённой из этой ревизии
   program_sha256: 3cb42b11f583b3006450929fd9abdfa43903e0a6acf709b1420a68d3d80a881e
-  python: 3.12.12
+  python: 3.14.6
   dependencies: {pyyaml: 6.0.3}       # других сторонних модулей программа не импортирует
   command: python3 ops/build_board.py --src <папка входов> --repo <копия DS-iwe-releases>
 
@@ -20,54 +21,45 @@ inputs:
   - name: map005.md
     repo: https://github.com/MimEcoSys/PACK-digital-platform.git
     path: pack/digital-platform/07-map/DP.MAP.005-mcp-scenarios.md
-    revision: 575ca05062240a50d828fac8e26419e66f1f1f02
-    sha256: e4e24109b90395c93e399bae5c279ce59ec87ce6eff0b4178d6eee86b278b890
+    revision: 4e9d24956bb56ba03f3bdcced1ef7d55cb3bd757
+    sha256: fb873ea3a5671715d01a214a10b65a5fb9a95a0c1dc38f02338b460af3f78b00
   - name: sbg.md
     repo: https://github.com/aisystant/DS-ecosystem-development.git
     path: C.IT-Platform/C2.IT-Platform/C2.3.Operations/Goals-State/state-by-goals.md
-    revision: 1445c471baca57e22d27c42f7f92ab8f09dfc17a
-    sha256: 9ad5293e7ee70ad5c19a6c9db20dc097bc5e7bbdb5ae84ba91f29efec12fa8e1
+    revision: c8bcc6916069454c17abbeebc393f728be39a3a4
+    sha256: c008f417a52b672aedb7dbf748b7e69771db5ccdad92c059846bd881ca881ae1
   - name: result-codes.md
     repo: https://github.com/aisystant/DS-ecosystem-development.git
     path: C.IT-Platform/C2.IT-Platform/C2.3.Operations/Goals-State/working-records/result-codes.md
-    revision: 1445c471baca57e22d27c42f7f92ab8f09dfc17a
-    sha256: 48ed9e5b10ae3b521021540474f778ec0f5c7abb8a6be860681300421a317f7f
+    revision: c8bcc6916069454c17abbeebc393f728be39a3a4
+    sha256: 0018fca20e5a036482276183283c68477bbdee8efd0311d9dfc711e3e8500b88
   - name: changelog.md
     repo: https://github.com/TserenTserenov/FMT-exocortex-template.git
     path: CHANGELOG.md
-    revision: 984176879430067b601b69968d186c69ead0f9d3
-    sha256: 33c5063efdb47532c35ed1fedbb9cdc6a7bed3895a09c9aa0a04cf92e6c422a5
+    revision: 637e06a1afb3b635f8f4954aec6aa80e8956f924
+    sha256: de23bbb26493943bfb4495624b2cfc70d1e77745a3e23ac808727844f4800c0f
   - name: fmt-sha
     repo: https://github.com/TserenTserenov/FMT-exocortex-template.git
-    derived_by: git rev-parse origin/main   # та же ревизия, что у changelog.md
-    revision: 984176879430067b601b69968d186c69ead0f9d3
-    sha256: 57d5715c6c74501ee74f0e14df3977f5edcfe7d381b98706ca314b5b3b11e6cd
+    derived_by: git rev-parse 637e06a1   # снимок «режем» 0.42, та же ревизия, что у changelog.md
+    revision: 637e06a1afb3b635f8f4954aec6aa80e8956f924
+    sha256: 5f6dc0ceb499f71d086b7cfacf65b39f0ede8cb355595ad7f0f7ce6ed19bdccb
   - name: fmt-files.txt
     repo: https://github.com/TserenTserenov/FMT-exocortex-template.git
     derived_by: git ls-tree -r --name-only <revision>
-    revision: 984176879430067b601b69968d186c69ead0f9d3
-    sha256: 93de4eaf119c873f18a1cb5e94f9ef8feeab5e83bb7310d3f0339a3d46614a83
+    revision: 637e06a1afb3b635f8f4954aec6aa80e8956f924
+    sha256: 45d0a708b9b7a911054ed6b51b035754cbff4cca06afb6b17ad16b1d101e7ebd
   - name: staging.md
     repo: https://github.com/TserenTserenov/iwe-local-config.git   # закрытый, корень IWE Разработчика
     path: STAGING.md
-    revision: ecb2803de85831e9f4590a1eea0939e16e86e011
+    revision: 7a211522457ebde6092a67bb14a275b33f6186d3
     sha256: 09510628f5bad5eebc9869ec3ae2529be442b5ac33d91a45873d941da050f03a
   - name: weekplan.md
     repo: https://github.com/TserenTserenov/DS-my-strategy.git        # закрытый, план недели Разработчика
-    path: current/WeekPlan W45 2026-11-02.md   # каждую неделю — план текущей недели
-    revision: ff27f8bf762126d15cdbf16798fa88d7b0b7f28c
-    sha256: 85dad20f052fab128abadff8cc91953bdc5aa27014e2274a1cd1f767e87a2904
+    path: current/WeekPlan W46 2026-11-09.md   # каждую неделю — план текущей недели
+    revision: 98a4ff3e65733ffc60410d22149245a44b124f3a
+    sha256: 52d6cd21067214549a4d51a1bc75a7d01558b8923664b8cbf061a17d6e4d5df1
   - name: author-ahead.yaml   # результат замера рабочих копий хоста, не файл из Git
-    produced_by:
-      tool: https://github.com/TserenTserenov/DS-ai-systems.git setup/scripts/wp529-drift-inventory.py
-      tool_commit: dc6343c2f6bc0c5b64ab4e191995aec59660f098   # запущен неизменённым; в этой ревизии и template-sync.sh, который инвентарь вызывает
-      tool_sha256: 7cfbc929e06d10c93640e1fa24ea745cc7716a5c5f76bd8e86b4c02e8f803557
-      command: (cd DS-IT-systems/DS-ai-systems && python3 setup/scripts/wp529-drift-inventory.py --out <отчёт> --yaml-out <папка входов>/author-ahead.yaml)
-      host: Mac Разработчика   # зависит от setup/.sync-hashes этого хоста
-    measured_at: '2026-11-08T07:25:28Z'
-    complete: false   # 08.11: корневая рабочая копия позади origin на 6 коммитов; canon-refresh её не перематывает (в ней неучтённая папка)
-    sha256: a587efb28dedb813f13bf09e68b646683a35da3647721c7f97920b7d139d4681
-    kept_at: закрытый журнал сессий Разработчика, MC-sessions 2026-11/08/2026-11-08-02-wp529-actualize-open-phases/author-ahead.yaml
+    status: не приложен к сборке 11.11 — пересобирались кандидаты 0.42; страница 2.2 табло так и пишет; прошлый неполный замер 08.11 — в журнале сессий Разработчика
 
 # Порядок сборки. Любой отказ команды — стоп, табло не пересобирается.
 steps:
