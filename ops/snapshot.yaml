@@ -1,8 +1,8 @@
 # Снимок источников: результаты и их заявленные статусы из карточек работ.
 # Собирает ops/build_board.py при каждом запуске; руками не править.
 snapshot:
-  collected_at: '2026-11-08'
-  template_commit: 984176879430067b601b69968d186c69ead0f9d3
+  collected_at: '2026-11-11'
+  template_commit: 637e06a1afb3b635f8f4954aec6aa80e8956f924
   rule: результаты целей с размещением «шаблон IWE», «Staging» или Open, все цели блока «И. Своя IWE» и цели функции «Библиотека методов»
   goals:
   - 1
@@ -131,7 +131,7 @@ results:
   status: в работе
   works:
   - РП-590
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц1-12
   goal: 1
   contours: *id001
@@ -141,7 +141,7 @@ results:
   status: в работе
   works:
   - РП-590
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц1-13
   goal: 1
   contours: *id001
@@ -151,7 +151,7 @@ results:
   status: план
   works:
   - РП-590
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц1-14
   goal: 1
   contours: *id001
@@ -161,7 +161,7 @@ results:
   status: план
   works:
   - РП-590
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц1-16
   goal: 1
   contours: *id001
@@ -223,7 +223,7 @@ results:
   status: в работе
   works:
   - РП-586
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц4-06
   goal: 4
   contours: *id002
@@ -233,7 +233,7 @@ results:
   status: план
   works:
   - РП-586
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц4-07
   goal: 4
   contours: *id002
@@ -243,7 +243,7 @@ results:
   status: в работе
   works:
   - РП-590
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц14-01
   goal: 14
   contours: &id003
@@ -254,7 +254,7 @@ results:
   status: в работе
   works:
   - РП-151
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц14-02
   goal: 14
   contours: *id003
@@ -284,7 +284,7 @@ results:
   status: план
   works:
   - РП-469
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц14-05
   goal: 14
   contours: *id003
@@ -294,7 +294,7 @@ results:
   status: план
   works:
   - РП-493
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц14-06
   goal: 14
   contours: *id003
@@ -304,7 +304,7 @@ results:
   status: в работе
   works:
   - РП-598
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц23-03
   goal: 23
   contours: &id004
@@ -337,7 +337,7 @@ results:
   status: в разнице 0.36–0.41.11
   works:
   - РП-559
-  in_week_plan: true
+  in_week_plan: false
   evidence: 'шаблонная часть — хук .claude/hooks/session-start-hooks-bootstrap.sh (be4a486, PR #578, merge bea5f51 после v0.39.1), git tag --contains → v0.39.2; создание форка — платформенный fork_platform_template (github-integration-service), вне шаблона'
 - code: Ц23-07
   goal: 23
@@ -348,7 +348,7 @@ results:
   status: работает вне выпуска шаблона
   works:
   - РП-559
-  in_week_plan: true
+  in_week_plan: false
   evidence: 'РП-559 стр.208: страница «Сначала установите приложение», state-тип space-install — github-integration-service/gateway (DS-MCP)'
 - code: Ц23-08
   goal: 23
@@ -359,7 +359,7 @@ results:
   status: работает вне выпуска шаблона
   works:
   - РП-559
-  in_week_plan: true
+  in_week_plan: false
   evidence: 'РП-559: страница результата space-флоу в github-integration-service (DS-MCP); в CHANGELOG шаблона нет'
 - code: Ц23-09
   goal: 23
@@ -370,7 +370,7 @@ results:
   status: в работе
   works:
   - РП-559
-  in_week_plan: true
+  in_week_plan: false
 - code: Ц23-11
   goal: 23
   contours: *id004
@@ -391,6 +391,17 @@ results:
   works:
   - РП-610
   in_week_plan: true
+- code: Ц23-13
+  goal: 23
+  contours: *id004
+  who: пользователь IWE на Linux
+  what: установка на Linux и WSL2 ставит роли по расписанию (systemd --user или cron); без планировщика — предупреждение и команда повторной установки роли
+  where: терминал
+  status: в работе
+  works:
+  - РП-618
+  in_week_plan: true
+  merged_after_0_41_11: true
 - code: Ц34-01
   goal: 34
   contours: &id005
@@ -423,7 +434,7 @@ results:
   works:
   - РП-484
   in_week_plan: true
-  merged_after_0_41_11: true
+  evidence: 'запись U-ba3ac8 (WakaTime за день, #1467, в 0.42): 08.11 Разработчик связал её с Ц34-03, РП-611 дал записи код Ц31-13; требует сверки владельцем документа 4'
 - code: Ц34-04
   goal: 34
   contours: *id005
@@ -494,7 +505,6 @@ results:
   works:
   - РП-561
   in_week_plan: true
-  merged_after_0_41_11: true
   on_staging: true
 - code: Ц34-11
   goal: 34
@@ -544,8 +554,8 @@ results:
   where: по расписанию
   status: у автора
   works:
-  - РП-577
-  in_week_plan: false
+  - РП-484
+  in_week_plan: true
   evidence: 'РП-577 Ф4: правки в iwe-local-config/scripts/day-open-scaffold.sh (launchctl на systemd) и week-open-orchestrator.sh (DAY_OPEN_FORCE_STRATEGY_DAY); оркестратора в шаблоне нет'
 - code: Ц34-16
   goal: 34
@@ -557,6 +567,17 @@ results:
   works:
   - РП-581
   in_week_plan: true
+- code: Ц34-17
+  goal: 34
+  contours: *id005
+  who: пользователь IWE на Маке
+  what: после обновления план дня не показывает ложную пометку «агенты стратега не загружены»
+  where: среда на компьютере
+  status: готово для передачи
+  works:
+  - РП-618
+  in_week_plan: true
+  evidence: 'запись U-925871 (#1480, в 0.42): агенты com.strategist.* переименовываются в .plist.disabled, поэтому план дня не видит их «не загруженными»; РП-611 дал записи код Ц78-03'
 - code: Ц35-01
   goal: 35
   contours: &id006
@@ -609,8 +630,8 @@ results:
   where: по расписанию
   status: у автора
   works:
-  - РП-577
-  in_week_plan: false
+  - РП-484
+  in_week_plan: true
   evidence: 'РП-577 Ф3: фикс strategist.sh/scheduler.sh в DS-ai-systems (5cbb0d7); карточка: у шаблона свой механизм, «переносить нечего»'
 - code: Ц37-01
   goal: 37
@@ -676,11 +697,11 @@ results:
   who: пользователь IWE
   what: хуки принуждают запустить раннер после слов о закрытии
   where: среда на компьютере
-  status: готово для передачи
+  status: выпущено в 0.36
   works:
   - РП-482
   in_week_plan: false
-  merged_after_0_41_11: true
+  evidence: 2eb18471 «Close hook v3 — принудительный /run-protocol вместо напоминания», git tag --contains → v0.28.11
 - code: Ц38-02
   goal: 38
   contours: *id008
@@ -712,7 +733,6 @@ results:
   works:
   - РП-484
   in_week_plan: true
-  merged_after_0_41_11: true
   on_staging: true
 - code: Ц38-05
   goal: 38
@@ -743,7 +763,7 @@ results:
   status: у автора
   works:
   - РП-503
-  in_week_plan: false
+  in_week_plan: true
   evidence: 'РП-503 Ф23 (06.09): четвёртый фильтр hypothesis_falsified_review_needed в scripts/wp-pool-cascade.sh; шаблонный wp-pool-cascade.sh (с 0.38.6) этого фильтра не содержит (git grep пусто)'
 - code: Ц38-08
   goal: 38
@@ -754,7 +774,7 @@ results:
   status: план
   works:
   - РП-503
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц38-09
   goal: 38
   contours: *id008
@@ -764,7 +784,7 @@ results:
   status: в работе
   works:
   - РП-537
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц38-10
   goal: 38
   contours: *id008
@@ -782,12 +802,12 @@ results:
   who: пользователь IWE
   what: чтение свежей карточки и автоархивация
   where: любой клиент
-  status: готово для передачи
+  status: в разнице 0.36–0.41.11
   works:
   - РП-561
   in_week_plan: true
-  merged_after_0_41_11: true
   on_staging: true
+  evidence: 'CHANGELOG 0.41.0: Sync Gate — wp-sync-bundle.sh читает карточку со снимка origin (origin-pinned), если рабочая копия отстала; автоархивация — не сверена'
 - code: Ц38-12
   goal: 38
   contours: *id008
@@ -798,6 +818,64 @@ results:
   works:
   - РП-561
   in_week_plan: true
+- code: Ц38-13
+  goal: 38
+  contours: *id008
+  who: пользователь IWE
+  what: Артефактор и создание РП (/wp-new) первым шагом спрашивают, что будет результатом — действующая система или документ, и по ответу ведут через нужную проверку
+  where: среда на компьютере
+  status: в разнице 0.36–0.41.11
+  works:
+  - РП-575
+  in_week_plan: false
+  evidence: 'CHANGELOG 0.40.2: «WP-575: тип результата определяется до имени нового РП» (запись U-aabfc6); основа — дискриминатор result_type в 0.40.1 (#793)'
+  released_041_records:
+  - U-aabfc6
+  - U-eba398
+- code: Ц38-14
+  goal: 38
+  contours: *id008
+  who: пользователь IWE
+  what: 'создание РП сверяет слово в названии с реестром понятий и родов: при несовместимом роде — отказ, обход только с записанной причиной'
+  where: среда на компьютере
+  status: у автора
+  works:
+  - РП-575
+  in_week_plan: false
+  evidence: 'документ 4: «у разработчика»; в шаблоне создание РП реестр понятий не сверяет — #1497 добавил только artifactor.py --check-registry (Ц38-15), «создание РП не меняется»'
+- code: Ц38-15
+  goal: 38
+  contours: *id008
+  who: пользователь IWE
+  what: Артефактор ловит подмену «документ без производящей системы» и «система без наблюдаемого результата», имя системы выбирается по главной функции
+  where: среда на компьютере
+  status: готово для передачи
+  works:
+  - РП-575
+  in_week_plan: false
+  merged_after_0_41_11: true
+- code: Ц38-16
+  goal: 38
+  contours: *id008
+  who: пользователь IWE
+  what: закрытие сессии не застревает навсегда после повторного открытия служебной сессии и не переносит повторно уже опубликованные коммиты
+  where: среда на компьютере
+  status: готово для передачи
+  works:
+  - РП-618
+  in_week_plan: true
+  merged_after_0_41_11: true
+- code: Ц38-17
+  goal: 38
+  contours: *id008
+  who: пользователь IWE
+  what: 'слова «заливай», «запуши» и цитаты в сообщении больше не запускают закрытие сессии: только напоминание про коммит и отправку'
+  where: среда на компьютере
+  status: готово для передачи
+  works:
+  - РП-618
+  in_week_plan: true
+  merged_after_0_41_11: true
 - code: Ц40-01
   goal: 40
   contours: &id009
@@ -808,7 +886,7 @@ results:
   status: выпущено в 0.36
   works:
   - РП-496
-  in_week_plan: false
+  in_week_plan: true
   evidence: note-review.md b381a6e3 (8-е правило «Гипотеза» → черновик 4 полей в current/hypotheses-log.md) первым в v0.36.1; полный регламент memory/lpf-hypothesis-log.md («4 обязательных поля») — CHANGELOG 0.38.3
 - code: Ц40-02
   goal: 40
@@ -819,7 +897,7 @@ results:
   status: выпущено в 0.36
   works:
   - РП-496
-  in_week_plan: false
+  in_week_plan: true
   evidence: .claude/skills/verify-hypotheses/SKILL.md добавлен 859304a1 (19.07), git tag --contains → v0.36.1
 - code: Ц40-03
   goal: 40
@@ -830,7 +908,7 @@ results:
   status: у автора
   works:
   - РП-496
-  in_week_plan: false
+  in_week_plan: true
   evidence: 'РП-496 Ф10 (15.10): § «Скрытая выборка (holdout)» (H-NNN mod 5, без черновика агента) есть в ~/IWE/memory/lpf-hypothesis-log.md, нет в шаблонном memory/lpf-hypothesis-log.md и в CHANGELOG'
 - code: Ц40-04
   goal: 40
@@ -841,7 +919,7 @@ results:
   status: выпущено в 0.36
   works:
   - РП-496
-  in_week_plan: false
+  in_week_plan: true
   evidence: 'note-review.md b381a6e3 (v0.36.1): «Есть ответ на «что могло бы это опровергнуть?» — иначе это Задача»; захват через бота — платформенная часть, вне шаблона'
 - code: Ц40-05
   goal: 40
@@ -852,7 +930,7 @@ results:
   status: выпущено в 0.36
   works:
   - РП-496
-  in_week_plan: false
+  in_week_plan: true
   evidence: 'verify-hypotheses SKILL.md с первого коммита 859304a1 (v0.36.1): «Не оставлять вердикт без выбранного действия — «повисший» вердикт не закрывает цикл»; выбор действий развит в lpf-hypothesis-log.md (0.38.3)'
 - code: Ц40-06
   goal: 40
@@ -863,7 +941,7 @@ results:
   status: выпущено в 0.36
   works:
   - РП-496
-  in_week_plan: false
+  in_week_plan: true
   evidence: 'b381a6e3 «feat(strategist): Note-Review распознаёт категорию «Гипотеза» (8-е правило)», git tag --contains → v0.36.1'
 - code: Ц40-07
   goal: 40
@@ -874,7 +952,7 @@ results:
   status: в работе
   works:
   - РП-496
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц40-08
   goal: 40
   contours: *id009
@@ -884,7 +962,7 @@ results:
   status: план
   works:
   - РП-496
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц40-09
   goal: 40
   contours: *id009
@@ -894,7 +972,7 @@ results:
   status: план
   works:
   - РП-496
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц40-10
   goal: 40
   contours: *id009
@@ -908,6 +986,7 @@ results:
 - code: Ц49-01
   goal: 49
   contours: &id010
+  - шаблон IWE
   - Библиотека методов
   who: участник
   what: Подсказки по освоению методов каталога
@@ -946,6 +1025,17 @@ results:
   works:
   - РП-608
   in_week_plan: true
+- code: Ц49-12
+  goal: 49
+  contours: *id010
+  who: пользователь IWE
+  what: 'навык «найти и применить метод» (/find-method): подбор метода под затруднение по локальным FPF, SPF, подключённым DPF и своим пакам, фрагмент, по которому…'
+  where: среда на компьютере
+  status: в работе
+  works:
+  - РП-608
+  in_week_plan: true
+  merged_after_0_41_11: true
 - code: Ц52-01
   goal: 52
   contours: &id011
@@ -956,7 +1046,7 @@ results:
   status: работает вне выпуска шаблона
   works:
   - РП-151
-  in_week_plan: false
+  in_week_plan: true
   evidence: 'РП-151 repo: PACK-personal, DS-MCP/digital-twin-mcp, aist_bot — расчёт в цифровом двойнике платформы'
 - code: Ц52-02
   goal: 52
@@ -1008,7 +1098,7 @@ results:
   status: работает вне выпуска шаблона
   works:
   - РП-576
-  in_week_plan: false
+  in_week_plan: true
   evidence: 'РП-576 приёмка: stage_evaluator.evaluate_one, cp_gate_blocked — платформенный стейдж-эвалюатор'
 - code: Ц52-07
   goal: 52
@@ -1019,7 +1109,7 @@ results:
   status: в работе
   works:
   - РП-576
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц52-09
   goal: 52
   contours: *id011
@@ -1049,7 +1139,7 @@ results:
   status: работает вне выпуска шаблона
   works:
   - РП-602
-  in_week_plan: false
+  in_week_plan: true
   evidence: 'РП-602: стейдж-эвалюатор stage_v6, переключение чтения продакшна v5→v6 — платформенный сервис'
 - code: Ц52-12
   goal: 52
@@ -1060,7 +1150,7 @@ results:
   status: в работе
   works:
   - РП-602
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц52-13
   goal: 52
   contours: *id011
@@ -1070,7 +1160,7 @@ results:
   status: план
   works:
   - РП-602
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц52-14
   goal: 52
   contours: *id011
@@ -1080,7 +1170,7 @@ results:
   status: план
   works:
   - РП-602
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц52-15
   goal: 52
   contours: *id011
@@ -1090,7 +1180,7 @@ results:
   status: план
   works:
   - РП-602
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц53-01
   goal: 53
   contours: &id012
@@ -1111,7 +1201,7 @@ results:
   status: в работе
   works:
   - РП-289
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц53-03
   goal: 53
   contours: *id012
@@ -1121,7 +1211,7 @@ results:
   status: в работе
   works:
   - РП-364
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц53-04
   goal: 53
   contours: *id012
@@ -1131,7 +1221,7 @@ results:
   status: план
   works:
   - РП-364
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц53-05
   goal: 53
   contours: *id012
@@ -1141,7 +1231,7 @@ results:
   status: отложено
   works:
   - РП-364
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц53-06
   goal: 53
   contours: *id012
@@ -1151,7 +1241,7 @@ results:
   status: план
   works:
   - РП-469
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц53-07
   goal: 53
   contours: *id012
@@ -1161,7 +1251,7 @@ results:
   status: выпущено в 0.36
   works:
   - РП-483
-  in_week_plan: false
+  in_week_plan: true
   evidence: 'CHANGELOG 0.36.0: «017235c feat(wp483-f4): deliver guide-kit v0.1.0 to the template»; guide-kit/generator/planner.py first tag v0.36.0'
 - code: Ц53-08
   goal: 53
@@ -1172,7 +1262,7 @@ results:
   status: выпущено в 0.36
   works:
   - РП-483
-  in_week_plan: false
+  in_week_plan: true
   evidence: 'CHANGELOG 0.36.0: «078f66c feat(wp483-f4): guide-kit → template sync tooling (vendored-by-tag model)» + 017235c; РП-483 Ф4 закрыта 17.07'
 - code: Ц53-09
   goal: 53
@@ -1183,7 +1273,7 @@ results:
   status: выпущено в 0.36
   works:
   - РП-483
-  in_week_plan: false
+  in_week_plan: true
   evidence: guide-kit/generator/personal_export.py и test_zero_upload.py добавлены 5aabac27 «sync guide-kit v0.1.1 into template», git tag --contains → v0.36.0
 - code: Ц53-10
   goal: 53
@@ -1194,7 +1284,7 @@ results:
   status: в разнице 0.36–0.41.11
   works:
   - РП-483
-  in_week_plan: false
+  in_week_plan: true
   evidence: 'CHANGELOG 0.38.2: «guide-kit обновлён до v0.1.3: прикладная дорожка (вход domain_traits…)»; test_applied_track.py first tag v0.38.2; мост health.db → swimming.yaml — личные данные автора'
   released_041_records:
   - U-dc049b
@@ -1207,7 +1297,7 @@ results:
   status: в работе
   works:
   - РП-483
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц53-12
   goal: 53
   contours: *id012
@@ -1217,7 +1307,7 @@ results:
   status: в работе
   works:
   - РП-483
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц53-13
   goal: 53
   contours: *id012
@@ -1227,7 +1317,7 @@ results:
   status: план
   works:
   - РП-483
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц53-14
   goal: 53
   contours: *id012
@@ -1237,7 +1327,7 @@ results:
   status: план
   works:
   - РП-483
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц53-15
   goal: 53
   contours: *id012
@@ -1247,7 +1337,7 @@ results:
   status: в работе
   works:
   - РП-521
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц53-16
   goal: 53
   contours: *id012
@@ -1257,7 +1347,7 @@ results:
   status: в работе
   works:
   - РП-521
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц53-17
   goal: 53
   contours: *id012
@@ -1267,7 +1357,7 @@ results:
   status: в работе
   works:
   - РП-521
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц53-18
   goal: 53
   contours: *id012
@@ -1277,7 +1367,7 @@ results:
   status: в работе
   works:
   - РП-521
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц53-19
   goal: 53
   contours: *id012
@@ -1287,7 +1377,7 @@ results:
   status: план
   works:
   - РП-521
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц53-20
   goal: 53
   contours: *id012
@@ -1297,7 +1387,7 @@ results:
   status: план
   works:
   - РП-521
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц53-21
   goal: 53
   contours: *id012
@@ -1307,7 +1397,7 @@ results:
   status: отложено
   works:
   - РП-521
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц53-22
   goal: 53
   contours: *id012
@@ -1317,7 +1407,7 @@ results:
   status: отложено
   works:
   - РП-521
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц53-23
   goal: 53
   contours: *id012
@@ -1327,7 +1417,7 @@ results:
   status: отложено
   works:
   - РП-521
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц53-24
   goal: 53
   contours: *id012
@@ -1434,7 +1524,7 @@ results:
   status: план
   works:
   - РП-483
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц70-03
   goal: 70
   contours: *id014
@@ -1448,6 +1538,28 @@ results:
   evidence: 'РП-560 Ф13: PR #822 d24cb72 «fix(extractor): inbox-check pipeline never saw browser-source captures», git tag --contains → v0.40.1'
   released_041_records:
   - U-180b20
+- code: Ц70-04
+  goal: 70
+  contours: *id014
+  who: пользователь IWE
+  what: параллельные прогоны экстрактора знаний не теряют цикл на замке настроек репозитория
+  where: по расписанию
+  status: готово для передачи
+  works:
+  - РП-618
+  in_week_plan: true
+  merged_after_0_41_11: true
+- code: Ц70-05
+  goal: 70
+  contours: *id014
+  who: пользователь IWE
+  what: знание из разборщика доходит до общей копии только через гейт публикации, в том числе на установке без origin/HEAD; без гейта — понятная остановка с подсказкой…
+  where: по расписанию
+  status: в работе
+  works:
+  - РП-618
+  in_week_plan: true
+  merged_after_0_41_11: true
 - code: Ц71-01
   goal: 71
   contours: &id015
@@ -1468,7 +1580,7 @@ results:
   status: план
   works:
   - РП-590
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц72-01
   goal: 72
   contours: &id016
@@ -1525,7 +1637,7 @@ results:
   status: план
   works:
   - РП-364
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц73-02
   goal: 73
   contours: *id017
@@ -1545,7 +1657,7 @@ results:
   status: отложено
   works:
   - РП-604
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц73-05
   goal: 73
   contours: *id017
@@ -1657,6 +1769,7 @@ results:
   works:
   - РП-529
   in_week_plan: true
+  merged_after_0_41_11: true
   released_041_records:
   - U-f1dc3c
 - code: Ц77-08
@@ -1669,7 +1782,6 @@ results:
   works:
   - РП-529
   in_week_plan: true
-  merged_after_0_41_11: true
 - code: Ц77-10
   goal: 77
   contours: *id018
@@ -1720,6 +1832,17 @@ results:
   works:
   - РП-529
   in_week_plan: true
+- code: Ц77-15
+  goal: 77
+  contours: *id018
+  who: пользователь IWE на Windows
+  what: 'обновление шаблона в Git Bash не обрывается на проверке прав файлов: сверяются тип и содержимое файла'
+  where: терминал Windows
+  status: в работе
+  works:
+  - РП-618
+  in_week_plan: true
+  merged_after_0_41_11: true
 - code: Ц78-01
   goal: 78
   contours: &id019
@@ -1727,11 +1850,11 @@ results:
   who: пользователь IWE
   what: check-dirty-repos.sh доставлен в корень и шаблон, дедупликация по toplevel
   where: по расписанию
-  status: готово для передачи
+  status: в разнице 0.36–0.41.11
   works:
   - РП-485
   in_week_plan: true
-  merged_after_0_41_11: true
+  evidence: 'CHANGELOG 0.41.10: check-dirty-repos.sh — дедупликация по git rev-parse --show-toplevel (PR #1269)'
 - code: Ц78-03
   goal: 78
   contours: *id019
@@ -1752,6 +1875,71 @@ results:
   status: в работе
   works:
   - РП-561
+  in_week_plan: true
+- code: Ц78-05
+  goal: 78
+  contours: *id019
+  who: пользователь IWE
+  what: репетиция проверки установки и закрытия дня пропускает вызовы, которые предписывают сами навыки, и не даёт писать через MCP платформы и календарь
+  where: среда на компьютере
+  status: готово для передачи
+  works:
+  - РП-618
+  in_week_plan: true
+  merged_after_0_41_11: true
+- code: Ц78-06
+  goal: 78
+  contours: *id019
+  who: пользователь IWE на Windows
+  what: 'репетиция навыков в Git Bash выполнима: каталог репетиции проверяется по правам NTFS'
+  where: терминал Windows
+  status: в работе
+  works:
+  - РП-618
+  in_week_plan: true
+  merged_after_0_41_11: true
+- code: Ц78-07
+  goal: 78
+  contours: *id019
+  who: пользователь IWE
+  what: проверка кода по расписанию на macOS не падает на пустом наборе репозиториев
+  where: по расписанию
+  status: готово для передачи
+  works:
+  - РП-618
+  in_week_plan: true
+  merged_after_0_41_11: true
+- code: Ц78-08
+  goal: 78
+  contours: *id019
+  who: пользователь IWE
+  what: проверка свежести копии при первом обращении к репозиторию находит свою библиотеку на обычной установке, иначе честно пишет «недоступна»
+  where: среда на компьютере
+  status: готово для передачи
+  works:
+  - РП-618
+  in_week_plan: true
+  merged_after_0_41_11: true
+- code: Ц78-09
+  goal: 78
+  contours: *id019
+  who: пользователь IWE
+  what: проверка памяти не пропускает молча файлы без полей горизонта и укладывается во время шага закрытия месяца
+  where: среда на компьютере
+  status: в работе
+  works:
+  - РП-618
+  in_week_plan: true
+  merged_after_0_41_11: true
+- code: Ц78-10
+  goal: 78
+  contours: *id019
+  who: пользователь IWE
+  what: проверка установки без подписки отмечает подписочные инструменты паузой, а не ошибкой; второй бесплатный инструмент проверки
+  where: среда на компьютере
+  status: в работе
+  works:
+  - РП-618
   in_week_plan: true
   merged_after_0_41_11: true
 - code: Ц79-01
@@ -1790,8 +1978,8 @@ results:
   where: компьютер
   status: план
   works:
-  - РП-552
-  in_week_plan: false
+  - РП-610
+  in_week_plan: true
 - code: Ц80-01
   goal: 80
   contours:
@@ -1801,8 +1989,8 @@ results:
   where: компьютер
   status: план
   works:
-  - РП-552
-  in_week_plan: false
+  - РП-610
+  in_week_plan: true
 - code: Ц81-01
   goal: 81
   contours: &id021
@@ -1891,7 +2079,6 @@ results:
   works:
   - РП-524
   in_week_plan: false
-  merged_after_0_41_11: true
   on_staging: true
 - code: Ц82-03
   goal: 82
@@ -1943,7 +2130,7 @@ results:
   status: у автора
   works:
   - РП-533
-  in_week_plan: true
+  in_week_plan: false
   evidence: 'РП-533: скрипты peer-fanout.sh, peer-pipeline.sh, peer-supervisor.sh, peer-swarm.sh лежат в DS-my-strategy/scripts; в шаблоне их нет, в CHANGELOG нет'
 - code: Ц82-08
   goal: 82
@@ -1954,7 +2141,7 @@ results:
   status: план
   works:
   - РП-533
-  in_week_plan: true
+  in_week_plan: false
 - code: Ц83-01
   goal: 83
   contours: &id023
@@ -1975,7 +2162,7 @@ results:
   status: в разнице 0.36–0.41.11
   works:
   - РП-606
-  in_week_plan: false
+  in_week_plan: true
   evidence: 'CHANGELOG 0.41.9: «CLAUDE.md (Pre-action Gates): … указать область их уникальности и ответственного за схему» (PR #1270, РП-606)'
   released_041_records:
   - U-7cb0ba
@@ -1988,7 +2175,7 @@ results:
   status: план
   works:
   - РП-606
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц93-01
   goal: 93
   contours: &id024
@@ -1998,8 +2185,8 @@ results:
   where: любой клиент
   status: в работе
   works:
-  - РП-415
-  in_week_plan: false
+  - РП-620
+  in_week_plan: true
   merged_after_0_41_11: true
 - code: Ц93-02
   goal: 93
@@ -2024,8 +2211,6 @@ results:
   works:
   - РП-617
   in_week_plan: true
-  merged_after_0_41_11: true
-  mismatch: 'расходится: в карточке «план», но часть уже на обкатке или влита в шаблон'
 - code: Ц93-04
   goal: 93
   contours: *id024
@@ -2036,6 +2221,29 @@ results:
   works:
   - РП-617
   in_week_plan: true
+- code: Ц93-05
+  goal: 93
+  contours: *id024
+  who: пользователь IWE
+  what: 'английская редакция карточек Библиотеки методов и текстов для организаций aisystant и iwesys на GitHub: термины по утверждённому словарю, правка исходника даёт…'
+  where: любой клиент
+  status: план
+  works:
+  - РП-620
+  in_week_plan: true
+  merged_after_0_41_11: true
+  mismatch: 'расходится: в карточке «план», но часть уже на обкатке или влита в шаблон'
+- code: Ц93-06
+  goal: 93
+  contours: *id024
+  who: пользователь IWE
+  what: сообщения хуков и скриптов на выбранном языке (IWE_LANG), английские фразы закрытия распознаются
+  where: среда на компьютере
+  status: в работе
+  works:
+  - РП-610
+  in_week_plan: true
+  merged_after_0_41_11: true
 - code: Ц94-01
   goal: 94
   contours: &id025
@@ -2046,7 +2254,7 @@ results:
   status: план
   works:
   - РП-483
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц94-02
   goal: 94
   contours: *id025
@@ -2056,7 +2264,7 @@ results:
   status: отложено
   works:
   - РП-510
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц94-03
   goal: 94
   contours: *id025
@@ -2066,7 +2274,7 @@ results:
   status: план
   works:
   - РП-554
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц95-01
   goal: 95
   contours: &id026
@@ -2130,6 +2338,7 @@ results:
   works:
   - РП-530
   in_week_plan: true
+  merged_after_0_41_11: true
 - code: Ц96-03
   goal: 96
   contours: *id027
@@ -2225,7 +2434,7 @@ results:
   status: выпущено в 0.36
   works:
   - РП-415
-  in_week_plan: false
+  in_week_plan: true
   evidence: 'РП-415: шаг «Cyrillic gate» в translate-sync.yml (63c2ec5) и публикация без следов происхождения (8c9c305), оба 16.07, git tag --contains → v0.36.0; сам iwesys/IWE — внешнее зеркало'
   released_041_records:
   - U-087300
@@ -2238,7 +2447,7 @@ results:
   status: в работе
   works:
   - РП-468
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц84-03
   goal: 84
   contours: *id028
@@ -2248,7 +2457,7 @@ results:
   status: план
   works:
   - РП-468
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц84-05
   goal: 84
   contours: *id028
@@ -2258,8 +2467,7 @@ results:
   status: в работе
   works:
   - РП-519
-  in_week_plan: false
-  merged_after_0_41_11: true
+  in_week_plan: true
   on_staging: true
 - code: Ц84-06
   goal: 84
@@ -2270,7 +2478,7 @@ results:
   status: план
   works:
   - РП-519
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц84-07
   goal: 84
   contours: *id028
@@ -2291,7 +2499,6 @@ results:
   works:
   - РП-529
   in_week_plan: true
-  merged_after_0_41_11: true
 - code: Ц84-09
   goal: 84
   contours: *id028
@@ -2322,6 +2529,7 @@ results:
   works:
   - РП-529
   in_week_plan: true
+  merged_after_0_41_11: true
 - code: Ц84-12
   goal: 84
   contours: *id028
@@ -2332,6 +2540,17 @@ results:
   works:
   - РП-529
   in_week_plan: true
+- code: Ц84-13
+  goal: 84
+  contours: *id028
+  who: автор шаблона
+  what: проверка шаблона перед коммитом идёт секунды вместо десятков минут в Git Bash и проверяет переименованные файлы
+  where: терминал
+  status: готово для передачи
+  works:
+  - РП-618
+  in_week_plan: true
+  merged_after_0_41_11: true
 staging:
 - id: S-13
   title: Именование РП = существительное-артефакт
@@ -3042,30 +3261,176 @@ staging:
       what: ответ агента сначала даёт результат понятными словами и заканчивается одним ясным следующим шагом
     why: строка «Дальше» не дублируется после замечания стража стиля
 author_ahead:
-  present: true
-  schema_version: 1
-  measured_at: '2026-11-08T07:25:28Z'
-  template_commit: 984176879430067b601b69968d186c69ead0f9d3
-  author_tree_fingerprint: d0cc179257925052
-  duration_s: 206
-  timeout_s: 900
-  complete: false
-  incomplete_reasons:
-  - 'журнал сообщил об отказе: STALE SOURCE: root позади origin/main на 6 коммит(ов) — расхождения ниже могут быть ложными (canon-refresh.sh)'
-  - 'свежесть источников: STALE'
-  clean_files: 48
+  present: false
   files: []
 unreleased_links:
+- key: U-50c464
+  tag: optional
+  first_words: (#1523) Описание процесса выпуска называет вердикт независимой атаки словами…
+  service: согласование слов вердикта в документации выпуска; пользователь его не видит
+- key: U-e01e1f
+  tag: behavior
+  first_words: (#1520) `update.sh` распознаёт откат по версии установленного манифеста раньше…
+  service: защита установленного состояния при возврате на прошлый выпуск; нового поведения для пользователя без отката нет
+- key: U-ff385a
+  tag: optional
+  first_words: '(#1520) Конвейер выпуска (WP-529 Ф261): нарезка берёт только вершину основной…'
+  service: порядок выпуска для автора шаблона; пользователь его не видит
+- key: U-d4e32e
+  tag: docs
+  first_words: '`docs/RELEASE-PROCESS.md`, шаг «Проверка»: тестировщики проходят строки…'
+  service: описание порядка выпуска для автора шаблона; пользователь его не видит
+- key: U-400fd1
+  tag: optional
+  first_words: (#1521) Переводчик (`scripts/translate.py`, `scripts/glossary_source.py`)…
+  service: автор шаблона видит, какие английские имена в переводе не утверждены; у пользователя шаблона поведение не меняется
+- key: U-b9b569
+  tag: optional
+  first_words: Новый навык `/find-method` «Найти и применить метод» (экспериментальный)…
+  result:
+  - Ц49-12
+- key: U-8e31a8
+  tag: behavior
+  first_words: 'Выпуск только через проверенного кандидата: `release.yml` останавливает релиз…'
+  service: выпускающая проверка и источник объяснения изменений; набор файлов у пользователя не меняется
+- key: U-a21c72
+  tag: behavior
+  first_words: Навык `apply-captures` вызывает `ke-queue-stats.sh` и `ke-report-reconcile.sh`…
+  proposed:
+    goal: 77
+    what: 'дополняет Ц77-02 (результат уже выпущен в 0.41.11, #1409): исправления навыков и скриптов по issue #1519'
+- key: U-213519
+  tag: behavior
+  first_words: Проверка на дубли в навыке `apply-captures` идёт по файлам Pack пользователя, а…
+  proposed:
+    goal: 77
+    what: 'дополняет Ц77-02 (результат уже выпущен в 0.41.11, #1409): исправления навыков и скриптов по issue #1519'
+- key: U-82e68c
+  tag: behavior
+  first_words: '`create-wp.sh` может не добавлять строку нового РП в план недели (#1503…'
+  proposed:
+    goal: 77
+    what: 'дополняет Ц77-02 (результат уже выпущен в 0.41.11, #1409): исправления навыков и скриптов по issue #1519'
+- key: U-b5c2a5
+  tag: optional
+  first_words: 'Навык `day-open`: описан контракт `day-open-scaffold.sh` (#1488, #1519). Скрипт…'
+  proposed:
+    goal: 77
+    what: 'дополняет Ц77-02 (результат уже выпущен в 0.41.11, #1409): исправления навыков и скриптов по issue #1519'
+- key: U-964431
+  tag: behavior
+  first_words: Копия `guide-kit/` обновлена до iwesys/guide-kit v0.1.5. Поддельные ключи AWS и…
+  proposed:
+    goal: 77
+    what: 'дополняет Ц77-02 (результат уже выпущен в 0.41.11, #1409): guide-kit v0.1.5, вторая половина исправления #1492'
+- key: U-9972fc
+  tag: optional
+  first_words: 'Граница «Разработчик → Выпускающий»: запись CHANGELOG передана в выпуск, только…'
+  service: граница передачи доработок Выпускающему; пользователь шаблона её не видит
+- key: U-528799
+  tag: optional
+  first_words: Снимок терминов графа понятий для перевода шаблона на английский обновлён…
+  result:
+  - Ц93-02
+- key: U-4300bd
+  tag: behavior
+  first_words: '`update.sh`: `CLAUDE.md`, который обновление оставило нетронутым (нет базы для…'
+  result:
+  - Ц77-07
+- key: U-84e3e5
+  tag: behavior
+  first_words: Навыки `day-open` (шаг 7e) и `day-close` (шаг 10d) снимают служебную отметку…
+  result:
+  - Ц96-01
+- key: U-640b23
+  tag: optional
+  first_words: Тестовый образец адреса базы с паролем в `.claude/hooks/rule-engine.sh` (тест…
+  service: тестовые образцы секретов в доставленных файлах; пользователь шаблона их не видит
+- key: U-0f3c80
+  tag: optional
+  first_words: Выпуск шаблона — только через кандидата и по ручному запуску…
+  service: порядок выпуска для автора шаблона; у пользователя канал кандидата прежний
+- key: U-4801ec
+  tag: optional
+  first_words: '`translation/glossary-local.csv`: убраны строки «Беспокойство → Concern» и…'
+  result:
+  - Ц93-02
+- key: U-49ca78
+  tag: optional
+  first_words: '`scripts/export-glossary-snapshot.py`: понятие с английским именем длиннее 200…'
+  result:
+  - Ц93-02
+- key: U-134a2c
+  tag: optional
+  first_words: '`scripts/fetch-glossary-concepts.py`: эталон проверки полноты поставщика…'
+  service: эталон ночной проверки поставщика терминов; пользователь его не видит
+- key: U-498d98
+  tag: optional
+  first_words: '`translation/glossary-local.csv`: 15 терминов двух первых методов Библиотеки…'
+  result:
+  - Ц93-05
+- key: U-7c6997
+  tag: optional
+  first_words: '`.github/author-sourced-paths.txt`: убраны…'
+  service: список путей с авторским источником; пользователь шаблона его не видит
+- key: U-628fd6
+  tag: optional
+  first_words: '`CLAUDE.md`: раздел «Новый человек — лёгкий онбординг» обрамлён зоной `<!…'
+  service: разметка доставки ядра; текст CLAUDE.md не меняется
+- key: U-15322a
+  tag: behavior
+  first_words: 'Лёгкий онбординг v1.0.2 (WP-406 Ф40): новый человек больше не попадает в…'
+  proposed:
+    goal: 3
+    what: 'Ц3-13 лёгкий онбординг в шаблоне IWE: за один разговор разбор своей задачи методом из локальной  (цель 3 вне выборки табло)'
+- key: U-c3212e
+  tag: behavior
+  first_words: Артефактор (`scripts/artifactor.py`, `.claude/skills/artifactor/SKILL.md`…
+  result:
+  - Ц38-15
+- key: U-858870
+  tag: optional
+  first_words: '`setup/validate-template.sh`: проверка [1/5] «авторское содержимое» исключает…'
+  service: ложные срабатывания проверки шаблона у автора
+- key: U-861409
+  tag: optional
+  first_words: Лёгкий онбординг (`docs/onboarding/light-onboarding.md`, версия 1.0.1) сверен с…
+  proposed:
+    goal: 3
+    what: 'Ц3-13 лёгкий онбординг в шаблоне IWE: за один разговор разбор своей задачи методом из локальной  (цель 3 вне выборки табло)'
+- key: U-08dd8d
+  tag: optional
+  first_words: В `shared/rubrics/form-089.yaml` вопрос 4 диагностики приведён к формулировке…
+  service: список вопросов догнал навык /diagnose; текст вопроса у пользователя прежний
+- key: U-46a015
+  tag: behavior
+  first_words: '`roles/synchronizer/scripts/notify.sh` и сигнал Note-Review в…'
+  proposed:
+    goal: 16
+    what: 'Ц16-28 единый центр уведомлений: источники пишут запись, в чат уходит только требующее решения; с (цель 16 вне выборки табло)'
+- key: U-3ac6c5
+  tag: optional
+  first_words: Поставщик терминов перевода запускается в 00:17 МСК вместо 05:00 МСК…
+  service: время ночного запуска поставщика терминов
+- key: U-f12222
+  tag: behavior
+  first_words: Новая команда отправки `scripts/iwe-notify --source <id> "текст"` …
+  proposed:
+    goal: 16
+    what: 'Ц16-28 единый центр уведомлений: источники пишут запись, в чат уходит только требующее решения; с (цель 16 вне выборки табло)'
+- key: U-5dc5f6
+  tag: optional
+  first_words: '`setup/validate-template.sh`, проверка [9/9] «хуки, заявленные в SKILL.md…'
+  service: ложные срабатывания проверки шаблона у автора
 - key: U-a6276c
   tag: optional
   first_words: 'Поставщик терминов перевода доработан по независимой проверке: открытый запрос…'
-  result:
-  - Ц93-03
+  service: надёжность ночного поставщика терминов (отбор запроса по владельцу ветки, один пуш в день, метка конфликта); словарь у пользователя тот же
 - key: U-9d3749
   tag: optional
   first_words: 'Поставщик терминов перевода: задание `.github/workflows/glossary-supplier.yml`…'
   result:
-  - Ц93-03
+  - Ц93-02
 - key: U-b18db2
   tag: optional
   first_words: 'Перевод шаблона на английский снова доходит до публикации: поля шапки `readers`…'
@@ -3081,69 +3446,69 @@ unreleased_links:
   first_words: 'Лёгкий онбординг: новый навык `/onboarding`…'
   proposed:
     goal: 3
-    what: 'лёгкий онбординг в шаблоне: разбор задачи методом из локальной библиотеки за один разговор, без аккаунта и подписки'
+    what: 'Ц3-13 лёгкий онбординг в шаблоне IWE: за один разговор разбор своей задачи методом из локальной  (цель 3 вне выборки табло)'
 - key: U-444921
   tag: optional
   first_words: '`roles/synchronizer/scripts/notify.sh`: рабочее место может подключить…'
   proposed:
-    goal: 34
-    what: рутинные уведомления среды идут в свою сводку, а не в чат
+    goal: 16
+    what: 'Ц16-28 единый центр уведомлений: источники пишут запись, в чат уходит только требующее решения; с (цель 16 вне выборки табло)'
 - key: U-9476ea
   tag: behavior
   first_words: '`.claude/rules/wp-scope.md`: правило «читать только открытые фазы» теперь…'
-  service: правило чтения карточек агентом
+  service: агент реже читает закрытые фазы; навык учёта сбоев агента вызывается и словами — учёт для автора, результат работы пользователя прежний
 - key: U-d3a985
   tag: optional
   first_words: '`scripts/kimi-peer-adapter.sh` экспортирует `IWE_STYLE_CONTEXT=peer`, как уже…'
-  result:
-  - Ц82-02
+  service: в шаблоне поведение не меняется
 - key: U-68b71f
   tag: behavior
   first_words: 'Экстрактор без гейта публикации больше не делает прямой `git push`: коммит…'
-  proposed:
-    goal: 70
-    what: разборщик публикует результат только через проверку публикации и не теряет его
+  result:
+  - Ц70-05
 - key: U-a9b16e
   tag: optional
   first_words: '`roles/extractor/scripts/extractor-branches-prune.sh` — отчёт о брошенных…'
-  proposed:
-    goal: 70
-    what: разборщик публикует результат только через проверку публикации и не теряет его
+  service: инструмент уборки веток разборщика, запускается вручную
 - key: U-c1eb8a
   tag: behavior
   first_words: Тесты репетиции (`test_dry_run_gate.py`, `test_issue_549_dryrun_redesign.sh`)…
-  service: тесты репетиции
+  service: тесты репетиции; поведение у пользователя прежнее
 - key: U-cc42d0
   tag: optional
   first_words: 'CI: проверка «Author Source Gate» — PR, меняющий файл с авторским источником…'
   result:
-  - Ц84-08
+  - Ц84-11
 - key: U-c90794
   tag: behavior
   first_words: 'Языковые каталоги для кода (WP-610 Ф9, шаг 2): `.claude/lib/i18n.sh` и…'
-  proposed:
-    goal: 93
-    what: тексты для агента в коде шаблона на русском и английском
+  result:
+  - Ц93-06
 - key: U-58c3fa
   tag: behavior
   first_words: 'Автоматическая доставка из авторского источника (template-sync.sh): обновлены…'
   result:
   - Ц96-10
+- key: U-3396de
+  tag: behavior
+  first_words: '`scripts/canon-reconcile-published.sh` — три исправления, догнавшие шаблон из…'
+  result:
+  - Ц96-02
 - key: U-408b11
   tag: behavior
   first_words: '`scripts/isolate-push.sh` (и копия `seed/strategy/scripts/isolate-push.sh`)…'
   result:
-  - Ц38-04
+  - Ц38-16
 - key: U-296fca
   tag: behavior
   first_words: '`.claude/hooks/close-gate-reminder.sh`: «заливай» и «запуши» больше не…'
   result:
-  - Ц38-01
+  - Ц38-17
 - key: U-136e85
   tag: behavior
   first_words: '`.claude/hooks/pull-on-touch.sh` на обычной установке больше не падает с…'
   result:
-  - Ц78-04
+  - Ц78-08
 - key: U-925871
   tag: behavior
   first_words: '`roles/synchronizer/install.sh`: агенты `com.strategist.morning` и…'
@@ -3152,70 +3517,66 @@ unreleased_links:
 - key: U-e8402c
   tag: behavior
   first_words: '`roles/synchronizer/scripts/code-scan.sh`: без downstream-репозиториев `DS-*`…'
-  service: сканер кода синхронизатора не падает без репозиториев DS на bash 3.2
+  result:
+  - Ц78-07
 - key: U-10d5af
   tag: behavior
   first_words: '`setup/validate-template.sh --mode=staged` больше не тратит десятки минут на…'
   result:
-  - Ц84-05
+  - Ц84-13
 - key: U-365d06
   tag: behavior
   first_words: '`update.sh` на Git Bash (Windows) больше не останавливается после первой записи…'
   result:
-  - Ц77-08
+  - Ц77-15
 - key: U-54f3b7
   tag: behavior
   first_words: '`/day-close`, шаг 4 (подсчёт HOT-лимита памяти) теперь проходит под репетицией…'
   result:
-  - Ц34-10
+  - Ц78-05
 - key: U-e0a41e
   tag: security
   first_words: Гейт репетиции (`dry-run-gate.sh`) блокирует запись через MCP и при именах…
-  proposed:
-    goal: 78
-    what: репетиция проверки установки ничего не записывает, в том числе на Windows и в Kimi
+  result:
+  - Ц78-05
 - key: U-d5528d
   tag: security
   first_words: Репетиция (`dry-run-begin.sh`, `dry-run-gate.sh`, `dry-run-complete.sh`)…
-  proposed:
-    goal: 78
-    what: репетиция проверки установки ничего не записывает, в том числе на Windows и в Kimi
+  result:
+  - Ц78-06
 - key: U-cabda4
   tag: behavior
   first_words: '`scripts/session-guard.sh`: уборка осиротевших семафоров (`__quarantine-dead`)…'
   result:
-  - Ц38-04
+  - Ц38-16
 - key: U-ee97f4
   tag: behavior
   first_words: 'Разборщик (`roles/extractor/scripts/extractor.sh`): два изолированных прогона…'
   result:
-  - Ц96-01
+  - Ц70-04
 - key: U-ba3ac8
   tag: behavior
   first_words: '`scripts/wakatime-day-total.py`: WakaTime перестал принимать ключ плагина на…'
-  result:
-  - Ц34-03
+  proposed:
+    goal: 31
+    what: 'Ц31-13 дневной итог учёта времени WakaTime не обрывается на отказе 403 по ключу плагина: берётся  (цель 31 вне выборки табло)'
 - key: U-c2fd78
   tag: behavior
   first_words: '`scripts/lib/governance-repo-path.sh`: если рабочий каталог (`IWE_ROOT`)…'
-  result:
-  - Ц96-05
+  service: 'защита тестов: временный рабочий каталог не пишет отчёт в настоящий каталог сессий; при обычном рабочем каталоге поведение не меняется'
 - key: U-d03d54
   tag: optional
   first_words: '`roles/synchronizer/scripts/dt-collect.sh` спрашивает путь журнала открытий…'
-  result:
-  - Ц78-01
+  service: подсчёт открытий у существующих установок не меняется
 - key: U-58be5f
   tag: optional
   first_words: '`scripts/session-guard.sh open-log-path` печатает путь журнала открытий сессий…'
-  result:
-  - Ц78-01
+  service: новая служебная команда охранника, поведение не меняется
 - key: U-9dd45c
   tag: behavior
   first_words: '`memory-bleed.sh` снова укладывается в предел времени шага закрытия месяца на…'
-  proposed:
-    goal: 36
-    what: память пересчитывается в пределах времени шага закрытия месяца
+  result:
+  - Ц78-09
 - key: U-5579db
   tag: security
   first_words: '`.claude/hooks/rule-engine.sh`: если реестр правил не найден, не читается или…'
@@ -3224,83 +3585,71 @@ unreleased_links:
 - key: U-e2d67b
   tag: docs
   first_words: '`memory/agent-architecture-framework.md` и `memory/navigation.md`: агент описан…'
-  proposed:
-    goal: 83
-    what: описания агента, ролей и видов практики в шаблоне сведены с паком
+  service: уточнение формулировок в памяти шаблона
 - key: U-10348e
   tag: optional
   first_words: '`.github/scripts/author-source-gate.sh`: проверка источника правок больше не…'
   result:
-  - Ц84-08
+  - Ц84-11
 - key: U-511ae4
   tag: behavior
   first_words: '`memory/protocol-open.md` и `scripts/wp-inbox.sh`: подготовка контекста РП при…'
   result:
-  - Ц38-11
+  - Ц96-10
 - key: U-ae9e5a
   tag: docs
   first_words: '`memory/roles.md`: в таблицах ролей появилась колонка «Код пака» — единственный…'
-  proposed:
-    goal: 83
-    what: описания агента, ролей и видов практики в шаблоне сведены с паком
+  service: справочник ролей в памяти шаблона
 - key: U-cda13f
   tag: docs
   first_words: '`memory/repo-type-rules.md`: виды практики названы по FPF — «LPF нашей IWE…'
-  proposed:
-    goal: 83
-    what: описания агента, ролей и видов практики в шаблоне сведены с паком
+  service: справочник видов практики в памяти шаблона
 - key: U-9a23a5
   tag: docs
   first_words: '`memory/hard-distinctions.md`: в разделе 32 строка «Подробно:» снова обычный…'
-  service: форматирование файла памяти
+  service: ложное расхождение с авторским источником
 - key: U-c3f860
   tag: behavior
   first_words: '`setup.sh` на Linux (в том числе WSL2) снова ставит роли с `auto: true` на шаге…'
-  proposed:
-    goal: 23
-    what: установка на Linux и WSL2 ставит фоновые роли сама
+  result:
+  - Ц23-13
 - key: U-efce06
   tag: behavior
   first_words: '`/audit-installation`, шаг 2.5: команды начала и завершения репетиции сами…'
-  proposed:
-    goal: 78
-    what: репетиция проверки установки ничего не записывает, в том числе на Windows и в Kimi
+  result:
+  - Ц78-05
 - key: U-763c08
   tag: docs
   first_words: '`/audit-installation`, шаг 2: `github_status` отмечен подписочным (отказ…'
-  proposed:
-    goal: 78
-    what: проверка установки отличает подписочные инструменты от сломанных
+  result:
+  - Ц78-10
 - key: U-61220f
   tag: behavior
   first_words: Изолированный `inbox-check` extractor снова публикует результат, если у…
-  proposed:
-    goal: 70
-    what: разборщик публикует результат только через проверку публикации и не теряет его
+  result:
+  - Ц70-05
 - key: U-5aae39
   tag: security
   first_words: Пробный прогон (`dry-run-gate.sh`) блокирует скрипт, запущенный по пути или…
-  proposed:
-    goal: 78
-    what: репетиция проверки установки ничего не записывает, в том числе на Windows и в Kimi
+  result:
+  - Ц78-05
 - key: U-47c314
   tag: behavior
   first_words: 'Репетицию можно начать с удержанием: `dry-run-begin.sh <initiator> <session_id>…'
-  proposed:
-    goal: 78
-    what: репетиция проверки установки ничего не записывает, в том числе на Windows и в Kimi
+  result:
+  - Ц78-05
 - key: U-d100fb
   tag: behavior
   first_words: Служебная отметка с той же причиной (`open --housekeeping day-open` и т.п.)…
   result:
-  - Ц38-04
+  - Ц38-16
 - key: U-75f0ca
   tag: behavior
   first_words: '`memory-bleed.sh` больше не пропускает молча файлы автопамяти без `valid_from`…'
-  proposed:
-    goal: 36
-    what: память пересчитывается в пределах времени шага закрытия месяца
+  result:
+  - Ц78-09
 - key: U-780f77
   tag: behavior
   first_words: '`iwe_resolve_root` (`scripts/lib/common.sh`) из копии библиотеки в `<рабочий…'
-  service: поиск корня рабочего каталога из копии библиотеки
+  result:
+  - Ц96-05

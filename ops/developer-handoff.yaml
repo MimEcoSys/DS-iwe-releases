@@ -31,6 +31,18 @@ groups:
   b69ac2f8 (#1467):
     separable: да
     note: у каждой записи свои коммиты; но U-54f3b7, U-e0a41e и U-d5528d дописывают один файл тестов защиты репетиции (scripts/tests/test_dry_run_gate.py), поэтому при откате одной из них без других этот файл придётся свести вручную
+  ff8968bf (#1519):
+    separable: нет
+    note: 'одно слияние, четыре исправления по issue #1513, #1514, #1503, #1488; запись в CHANGELOG у каждой своя — 11.11, черновик агента'
+  03930dfd (#1520):
+    separable: нет
+    note: 'одно слияние конвейера выпуска Ф261: откат по версии в update.sh, порядок выпуска, описание проверки кандидата — 11.11, черновик агента'
+  c6a27413 (#1509):
+    separable: нет
+    note: один коммит с кодом (4d7e9497) на все три записи
+  be40dd99 (#1491):
+    separable: нет
+    note: 'одно слияние: правка онбординга и список вопросов диагностики — 11.11, черновик агента'
 records:
   U-444921:
     rollback_unit: 4fba3a74 (#1460)
@@ -40,7 +52,8 @@ records:
     how_to_check: 'Запустить bash scripts/tests/test_notify_optional_gate.sh (файл есть на origin/main). Вручную: без IWE_TG_BIN и IWE_GOVERNANCE_REPO вызвать roles/synchronizer/scripts/notify.sh и убедиться, что сообщение уходит напрямую, как раньше.'
     risk: 'низкий: подключение явное и необязательное, при отказе шлюза отправка остаётся прямой, существующие установки не меняются.'
     recommendation: 'взять: безопасное необязательное расширение с тестом.'
-    depends_on: []
+    depends_on:
+    - U-46a015
     off_switch: не задавать IWE_TG_BIN и не класть scripts/iwe-tg — отправка остаётся прямой.
   U-9476ea:
     rollback_unit: 0822abb2 (#1449)
@@ -544,4 +557,372 @@ records:
     how_to_check: 'Запустить bash scripts/tests/test_issue_1471_1474_synchronizer.sh.'
     risk: 'низкий: отсутствие репозиториев стало штатным состоянием.'
     recommendation: 'взять: чинит падение на Маке, есть тест.'
+    depends_on: []
+  # 11.11.2026, черновик ИИ-агента Разработчика: 34 записи, влитые после сборки 08.11 (снимок 637e06a1); поля проверки и отката — из записей на ветке выпуска (FMT #1526).
+  U-08dd8d:
+    rollback_unit: be40dd99 (#1491)
+    commits:
+    - 6c77c8c2
+    - 5594a6d8
+    user_gets: 'Пользователь ничего не заметит: список вопросов диагностики догнал навык /diagnose, проверка генератора снова проходит.'
+    how_to_check: '`python3 scripts/generate-diagnose-skill.py --check`'
+    risk: 'низкий: только данные, текст вопроса у пользователя прежний.'
+    recommendation: 'взять: исправление расхождения.'
+    depends_on: []
+  U-0f3c80:
+    rollback_unit: 5c312391 (#1508)
+    commits:
+    - 26cd9c21
+    - edce4cab
+    - ee78ed01
+    user_gets: 'Пользователь ничего не заметит: выпуск шаблона идёт только через кандидата по ручному запуску, недельного выпуска больше нет.'
+    how_to_check: '`bash scripts/tests/test_tag_release_candidate.sh`; файла `.github/workflows/weekly-release.yml` нет'
+    risk: 'низкий: меняется только механика выпуска у автора, канал кандидата прежний.'
+    recommendation: 'взять: основа выпуска 0.42.'
+    depends_on: []
+  U-134a2c:
+    rollback_unit: cca1b022 (#1505)
+    commits:
+    - f4c0bf4d
+    - 10f56bb4
+    - b1d7a403
+    user_gets: 'Пользователь ничего не заметит: ночная проверка поставщика терминов снова проходит.'
+    how_to_check: '`python3 -m pytest -q scripts/tests/test_fetch_glossary_concepts.py`'
+    risk: 'низкий: только эталон проверки.'
+    recommendation: 'взять: без неё не появляется снимок словаря.'
+    depends_on: []
+  U-15322a:
+    rollback_unit: 626002b7 (#1498)
+    commits:
+    - d9d588c4
+    - b3642e7c
+    user_gets: Новый человек на чистой установке попадает в лёгкий онбординг, а не в правила рабочей среды; у тех, кто уже работает, ничего не меняется.
+    how_to_check: '`bash scripts/tests/test_light_onboarding_state.sh`'
+    risk: 'средний: меняются хук напоминания и CLAUDE.md для всех установок; признак «новый человек» вычисляется по рабочей папке.'
+    recommendation: 'взять: живая приёмка 09.11 показала, что без правки онбординг не работает; установкам в России дописать region: ru.'
+    depends_on:
+    - U-628fd6
+    - U-861409
+  U-213519:
+    rollback_unit: ff8968bf (#1519)
+    commits:
+    - 375338a3
+    - 0db6c591
+    - 13a9fec4
+    user_gets: Проверка на дубли в apply-captures смотрит файлы своего Pack, а не только поиск платформы, и предупреждает о будущей коллизии номеров с авторской веткой.
+    how_to_check: '`bash scripts/tests/test_issue_1514_pack_duplicates.sh`'
+    risk: 'средний: новый скрипт в шаге навыка; при ошибке скрипта шаг навыка требует ручной сверки.'
+    recommendation: 'взять: убирает ложные «дублей нет» у ответвления авторского Pack.'
+    depends_on: []
+  U-3396de:
+    rollback_unit: 27bf2a60 (#1494)
+    commits:
+    - 2ac20446
+    - b8953bbb
+    - 98e06baf
+    - '96043639'
+    user_gets: Замена главной копии репозитория управления реже отказывает без причины и называет сессию, которая ей помешала.
+    how_to_check: '`bash scripts/tests/canon-reconcile-published-smoke.sh`'
+    risk: 'средний: меняются условия замены главной копии; без нужного Python замена отказывает, как раньше.'
+    recommendation: 'взять: три исправления, догнавшие шаблон из авторской копии.'
+    depends_on: []
+  U-3ac6c5:
+    rollback_unit: 51e92b8a (#1486)
+    commits:
+    - 334930a9
+    user_gets: 'Пользователь ничего не заметит: поставщик терминов перевода запускается ночью, а не утром.'
+    how_to_check: '`grep -n ''cron:'' .github/workflows/glossary-supplier.yml` показывает `17 21 * * *` (00:17 МСК)'
+    risk: 'низкий: только время расписания.'
+    recommendation: 'взять: служебная правка.'
+    depends_on: []
+  U-400fd1:
+    rollback_unit: 1827383b (#1521)
+    commits:
+    - 8b513c9d
+    - babed76d
+    - 621d5b42
+    - 128c90f1
+    - ea173971
+    user_gets: 'Пользователь шаблона ничего не заметит: автор видит, какие английские имена в переводе не утверждены.'
+    how_to_check: '`python3 -m pytest scripts/tests/test_translate_unapproved_report.py scripts/tests/test_check_card_terms.py`'
+    risk: 'низкий: коды возврата переводчика не меняются, новая проверка пользователям не доставляется.'
+    recommendation: 'взять: служебная проверка перевода с тестами.'
+    depends_on: []
+  U-4300bd:
+    rollback_unit: c6a27413 (#1509)
+    commits:
+    - 4d7e9497
+    user_gets: Обновление, оставившее CLAUDE.md нетронутым, больше не останавливается ложной ошибкой про пути установки, а штатно просит сверить CLAUDE.md вручную.
+    how_to_check: '`bash scripts/tests/test_issue_541_workspace_base.sh`'
+    risk: 'средний: путь обновления update.sh.'
+    recommendation: 'взять: исправление остановки обновления с тестом (случай 29).'
+    depends_on: []
+  U-46a015:
+    rollback_unit: 79612cd1 (#1490)
+    commits:
+    - 43a5bae6
+    - 4bfa6e90
+    user_gets: Уведомления синхронизатора и Стратега идут через одну команду отправки; без своего шлюза уведомлений всё как раньше, с ним — и сообщения с кнопками, и пульс идут через шлюз.
+    how_to_check: '`bash scripts/tests/test_notify_optional_gate.sh`'
+    risk: 'средний: меняется путь отправки уведомлений; с подключённым шлюзом кнопки не переносятся.'
+    recommendation: 'взять: поведение без шлюза прежнее, коды возврата те же.'
+    depends_on:
+    - U-444921
+    - U-f12222
+  U-4801ec:
+    rollback_unit: 4d2f59d9 (#1511)
+    commits:
+    - bff7199c
+    - eae895c3
+    user_gets: 'Пользователь ничего не заметит: два термина перевода берутся из графа понятий с именами, утверждёнными пилотом.'
+    how_to_check: '`grep -cE ''^(Беспокойство|Ложное допущение),'' translation/glossary-local.csv` даёт 0'
+    risk: 'низкий: только данные словаря перевода.'
+    recommendation: 'взять: решение пилота 09.11 по терминам.'
+    depends_on: []
+  U-498d98:
+    rollback_unit: 599b650c (#1502)
+    commits:
+    - 9e9d4646
+    - 7549b82b
+    user_gets: 'Пользователь ничего не заметит: в словарь перевода добавлены 15 утверждённых терминов двух первых методов Библиотеки методов.'
+    how_to_check: '`grep -c ''^Общая цель,Common objective,'' translation/glossary-local.csv` даёт 1 (часть из 15 терминов позже ушла в снимок графа или удалена, см. #1511)'
+    risk: 'низкий: только данные словаря перевода.'
+    recommendation: 'взять: решение пилота 09.11.'
+    depends_on: []
+  U-49ca78:
+    rollback_unit: 06402fb7 (#1507)
+    commits:
+    - 1cb0aa7e
+    - 0f494f30
+    user_gets: 'Пользователь ничего не заметит: длинные имена понятий больше не роняют снимок словаря перевода.'
+    how_to_check: '`python3 -m pytest -q scripts/tests/test_export_glossary_snapshot.py`'
+    risk: 'низкий: служебный скрипт с тестом.'
+    recommendation: 'взять: исправление ночного прогона.'
+    depends_on: []
+  U-50c464:
+    rollback_unit: 637e06a1 (#1523)
+    commits:
+    - 4f30868e
+    - d8cdd703
+    - c02e4a5a
+    user_gets: 'Пользователь ничего не заметит: в описании выпуска вердикт независимой атаки назван словами навыка (GO / CAUTION / BLOCKED).'
+    how_to_check: '`grep -n ''GO / CAUTION'' docs/RELEASE-PROCESS.md` находит строку, `grep -c STABLE docs/RELEASE-PROCESS.md` даёт 0'
+    risk: 'низкий: правка только текста описания выпуска.'
+    recommendation: 'взять: согласует описание с навыком.'
+    depends_on: []
+  U-528799:
+    rollback_unit: 63363196 (#1510)
+    commits:
+    - 01d3adc8
+    - 33007a80
+    user_gets: 'Пользователь ничего не заметит: обновлён снимок терминов для перевода шаблона на английский.'
+    how_to_check: '`python3 -m pytest -q scripts/tests/test_glossary_source.py` — снимок читается общим загрузчиком без ошибок'
+    risk: 'низкий: только данные словаря перевода.'
+    recommendation: 'взять: штатное обновление снимка.'
+    depends_on: []
+  U-5dc5f6:
+    rollback_unit: 3bdb6a43 (#1484)
+    commits:
+    - 4202d4ef
+    - 297516a1
+    user_gets: 'Пользователь ничего не заметит: проверка шаблона у автора перестала давать ложные отказы по пути файла.'
+    how_to_check: '`bash scripts/tests/test_validate_skill_hook_claims_path.sh`'
+    risk: 'низкий: служебная проверка с тестом.'
+    recommendation: 'взять: исправление проверки шаблона.'
+    depends_on: []
+  U-628fd6:
+    rollback_unit: 6ba32cf3 (#1500)
+    commits:
+    - 2ba7b29e
+    - d5855ff7
+    user_gets: 'Пользователь ничего не заметит: раздел «Новый человек» в CLAUDE.md размечен для доставки ядра, текст прежний.'
+    how_to_check: '`grep -n ''TEMPLATE-ONLY: new-person-light-onboarding'' CLAUDE.md` находит начало и конец зоны'
+    risk: 'низкий: только разметка комментариями.'
+    recommendation: 'взять: нужно для доставки ядра без потери раздела.'
+    depends_on:
+    - U-15322a
+    - U-861409
+  U-640b23:
+    rollback_unit: c6a27413 (#1509)
+    commits:
+    - 4d7e9497
+    user_gets: Коммит файлов после update.sh больше не останавливается собственной проверкой секретов шаблона на тестовом образце в rule-engine.sh.
+    how_to_check: '`bash .claude/hooks/rule-engine.sh test | grep ''PASS Test 29''` находит строку; `grep -cE ''postgres(ql)?://[^ ]*:[^ ]*@'' .claude/hooks/rule-engine.sh` даёт 0 (образец записан по частям)'
+    risk: 'низкий: строка теста та же, проверка секретов не ослаблена.'
+    recommendation: 'взять: исправление ложного отказа.'
+    depends_on:
+    - U-964431
+  U-7c6997:
+    rollback_unit: 24a3a43e (#1501)
+    commits:
+    - f099eecc
+    - 3230f709
+    - 13e9f9ff
+    user_gets: 'Пользователь шаблона ничего не заметит: два запроса Стратега больше не числятся доставляемыми из авторского источника.'
+    how_to_check: '`grep -cE ''prompts/(week-review|strategy-session)\.md'' .github/author-sourced-paths.txt` даёт 0'
+    risk: 'низкий: только список путей проверки авторского источника.'
+    recommendation: 'взять: согласует список с решением Ф248.'
+    depends_on: []
+  U-82e68c:
+    rollback_unit: ff8968bf (#1519)
+    commits:
+    - 375338a3
+    - 0db6c591
+    - 13a9fec4
+    user_gets: 'Можно создавать РП без добавления строки в план недели: флаг --no-weekplan или параметр wp_new_add_to_weekplan: false; по умолчанию всё как раньше.'
+    how_to_check: '`bash scripts/tests/test_issue_1503_no_weekplan.sh`'
+    risk: 'низкий: поведение по умолчанию прежнее.'
+    recommendation: 'взять: необязательная настройка.'
+    depends_on: []
+  U-84e3e5:
+    rollback_unit: c6a27413 (#1509)
+    commits:
+    - 4d7e9497
+    user_gets: После открытия и закрытия дня не остаётся служебной отметки сессии, и следующее открытие сессии не выводит ложное предупреждение.
+    how_to_check: '`bash scripts/tests/test_issue_1419_hk_reopen.sh`'
+    risk: 'средний: новый признак --only-own-harness в session-guard.sh.'
+    recommendation: 'взять: исправление с тестом; чужая отметка не трогается.'
+    depends_on: []
+  U-858870:
+    rollback_unit: 9273c32a (#1495)
+    commits:
+    - ae3896f0
+    - 9996bad0
+    user_gets: 'Пользователь ничего не заметит: проверка шаблона у автора перестала давать ложные срабатывания.'
+    how_to_check: '`bash scripts/tests/test_validate_filters.sh`'
+    risk: 'низкий: служебная проверка с тестом.'
+    recommendation: 'взять: исправление проверки шаблона.'
+    depends_on: []
+  U-861409:
+    rollback_unit: be40dd99 (#1491)
+    commits:
+    - 6c77c8c2
+    - 5594a6d8
+    user_gets: 'Онбординг правильно отвечает на вопросы об аккаунте и подписке: этот разговор их не требует.'
+    how_to_check: '`grep -n ''не требует аккаунта и не требует подписки'' docs/onboarding/light-onboarding.md` находит строку'
+    risk: 'низкий: правка только текста онбординга.'
+    recommendation: 'взять: сверено с режимами доступа.'
+    depends_on:
+    - U-15322a
+    - U-628fd6
+  U-8e31a8:
+    rollback_unit: 57e73c18 (#1516)
+    commits:
+    - 7c70896b
+    - 8ed26f5c
+    user_gets: Обновление объясняет изменения именно установленной версии (по метке кандидата или выпуска), а не правки основной ветки, ещё не вошедшие в выпуск.
+    how_to_check: на ветке выпуска без метки rc шаг «Verify release tree matches the release candidate» падает с «нет кандидата»; `grep -n 'Канал поставки' .claude/skills/iwe-update/SKILL.md`
+    risk: 'средний: выпуск без кандидата теперь останавливается; меняется источник объяснения в навыке обновления.'
+    recommendation: 'взять: основа выпуска через кандидата.'
+    depends_on: []
+  U-964431:
+    rollback_unit: 7d05f403 (#1515)
+    commits:
+    - '22362634'
+    - '03121444'
+    user_gets: После update.sh коммит доставленных файлов guide-kit больше не останавливается собственной проверкой секретов шаблона.
+    how_to_check: в пустом репозитории добавить все пути из `update-manifest.json` и запустить `bash scripts/pre-commit-secret-scan.sh` — срабатываний нет; на прежних тестовых файлах guide-kit — блок (aws-access-key 6, private-key-header 1)
+    risk: 'средний: обновление встроенной копии guide-kit до v0.1.5 приносит и другие изменения (реестр рекомендаций не подключён).'
+    recommendation: 'взять: вторая половина исправления #1492.'
+    depends_on:
+    - U-640b23
+  U-9972fc:
+    rollback_unit: 9fece009 (#1512)
+    commits:
+    - e15e7a29
+    - c2c0b0be
+    - e5fcbb21
+    - 636ef187
+    user_gets: 'Пользователь шаблона ничего не заметит: запись журнала изменений передаётся в выпуск только с полями «Цель · Результат», «Как проверить», «Как откатить».'
+    how_to_check: python3 scripts/tests/test_check_changelog_fields.py; в PR без полей у новой записи Changelog Gate падает с перечнем недостающих полей
+    risk: 'низкий: меняется только механика выпуска; анонс эти поля не берёт.'
+    recommendation: 'взять: граница передачи, по которой собран 0.42.'
+    depends_on: []
+  U-a21c72:
+    rollback_unit: ff8968bf (#1519)
+    commits:
+    - 375338a3
+    - 0db6c591
+    - 13a9fec4
+    user_gets: Шаги 1 и 6 навыка apply-captures больше не падают с «No such file or directory».
+    how_to_check: '`bash scripts/tests/test_issue_1513_skill_paths.sh`; на прежней основной ветке проверка перечисляет 7 таких вызовов'
+    risk: 'низкий: меняется только путь вызова скриптов, есть проверка по всем навыкам.'
+    recommendation: 'взять: исправление дефекта с тестом.'
+    depends_on: []
+  U-b5c2a5:
+    rollback_unit: ff8968bf (#1519)
+    commits:
+    - 375338a3
+    - 0db6c591
+    - 13a9fec4
+    user_gets: План дня собирается из скелета скрипта без лишнего отдельного запуска ради списка задач.
+    how_to_check: '`bash scripts/tests/test_issue_1488_dayplan_contract.sh` (команда шага 7a выполняется как написана)'
+    risk: 'низкий: правка только текста навыка day-open.'
+    recommendation: 'взять: уточнение навыка.'
+    depends_on: []
+  U-b9b569:
+    rollback_unit: 172ebcd8 (#1518)
+    commits:
+    - ac4d5d51
+    - 8dde50c9
+    - 36def6d8
+    - f8d8ea6a
+    user_gets: Новый экспериментальный навык /find-method подбирает метод из локальных паков под затруднение человека и ведёт по шагам, не выдумывая план.
+    how_to_check: '`bash scripts/validate-skill.sh find-method`; в чате сказать «/find-method как вывести закваску для хлеба» — ответ «метода нет» без выдуманного метода; «/find-method нужно ли мне исследование, чтобы ответить на мой вопрос, или хватит того, что уже известно» — кандидат `RMP.1`, после выбора 8 шагов из `RMP.1:4.1` дословно'
+    risk: 'низкий: новый навык, ничего существующего не меняет; работает только на локальных копиях.'
+    recommendation: 'взять: решение пилота 10.11 — /find-method в 0.42 (Ц49-12).'
+    depends_on: []
+  U-c3212e:
+    rollback_unit: 428fc809 (#1497)
+    commits:
+    - 940ec586
+    - '54803916'
+    user_gets: Артефактор называет, кто создаёт заказанный документ, и может сверить название РП с реестром понятий, если пак установлен; без пака всё как раньше.
+    how_to_check: '`bash scripts/tests/test_1231_artifactor.sh`'
+    risk: 'средний: новая версия схемы ответа (4).'
+    recommendation: 'взять: без пака режим ничего не меняет, есть тест.'
+    depends_on: []
+  U-d4e32e:
+    rollback_unit: 03930dfd (#1520)
+    commits:
+    - 9f39f0cb
+    - 6e5a0918
+    - 4562fd14
+    user_gets: 'Пользователь ничего не заметит: в описании выпуска добавлен шаг проверки кандидата по протоколу и независимой атакой.'
+    how_to_check: grep -n 'red team' docs/RELEASE-PROCESS.md
+    risk: 'низкий: правка только документации.'
+    recommendation: 'взять: описывает порядок, по которому проверяется 0.42.'
+    depends_on: []
+  U-e01e1f:
+    rollback_unit: 03930dfd (#1520)
+    commits:
+    - 9f39f0cb
+    - 6e5a0918
+    - 4562fd14
+    user_gets: Если папка шаблона стоит на старом выпуске, а файлы в ней от более нового, обновление называет это откатом и без подтверждения ничего не переписывает.
+    how_to_check: '`bash scripts/tests/test-wp529-f261-rollback-by-installed-version.sh` и `bash scripts/tests/test-issue-1411-update-rollback-unrelated-history.sh`'
+    risk: 'средний: меняется распознавание отката в update.sh, путь обновления у всех установок.'
+    recommendation: 'взять: закрывает молчаливую перезапись файлов при возврате на прошлый выпуск; проверяется строкой протокола «возврат на 0.41.11».'
+    depends_on: []
+  U-f12222:
+    rollback_unit: 51b5039e (#1485)
+    commits:
+    - 7a34ead7
+    - '25017318'
+    user_gets: 'В шаблоне одна команда отправки в Telegram (scripts/iwe-notify): с подключённым шлюзом решение о доставке принимает он, без шлюза — одна прямая отправка, как раньше.'
+    how_to_check: '`bash scripts/tests/test_critical_alert_notify_outcome.sh`'
+    risk: 'средний: новая общая точка отправки; аварийные оповещения теперь идут через неё.'
+    recommendation: 'взять: основа для U-46a015, поведение без шлюза прежнее.'
+    depends_on:
+    - U-46a015
+  U-ff385a:
+    rollback_unit: 03930dfd (#1520)
+    commits:
+    - 9f39f0cb
+    - 6e5a0918
+    - 4562fd14
+    user_gets: 'Пользователь ничего не заметит: выпуск режется только от вершины основной ветки, метка кандидата не ставится, если основная ветка сдвинулась.'
+    how_to_check: '`bash scripts/tests/test-wp529-f261-release-branch-base.sh` и `bash scripts/tests/test-wp529-f261-changelog-append-fields.sh`'
+    risk: 'низкий: меняется только механика выпуска у автора.'
+    recommendation: 'взять: часть конвейера выпуска 0.42.'
     depends_on: []
