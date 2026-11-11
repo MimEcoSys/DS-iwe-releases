@@ -1,0 +1,12 @@
+2026-11-11T17:46:52+02:00 gh auth status
+2026-11-11T17:47:06+02:00 gh api repos/TserenTserenov/FMT-exocortex-template/releases?per_page=8 --jq .[]|[.tag_name,.prerelease,.draft,.published_at,.target_commitish,(.assets|length)]|@tsv
+BLOCKED-ARG api --jq
+2026-11-11T17:47:06+02:00 gh api repos/TserenTserenov/FMT-exocortex-template/commits/48dd21520fb5321112bd4893faacca73beabb881/check-runs?per_page=100 --jq .check_runs[]|[.name,.status,.conclusion]|@tsv
+BLOCKED-ARG api --jq
+2026-11-11T17:47:06+02:00 gh api repos/TserenTserenov/FMT-exocortex-template/branches/main --jq .commit.sha
+BLOCKED-ARG api --jq
+2026-11-11T17:47:12+02:00 gh api repos/TserenTserenov/FMT-exocortex-template/releases?per_page=10
+2026-11-11T17:47:12+02:00 gh api repos/TserenTserenov/FMT-exocortex-template/commits/48dd21520fb5321112bd4893faacca73beabb881/check-runs?per_page=100
+2026-11-11T17:47:13+02:00 gh api repos/TserenTserenov/FMT-exocortex-template/branches/main
+2026-11-11T18:00:17+02:00 gh pr view --json url
+BLOCKED pr view --json url
