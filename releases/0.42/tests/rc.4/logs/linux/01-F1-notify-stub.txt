@@ -1,0 +1,21 @@
+=== r4-up
+sent
+notify.sh: capabilities/regress outcome=deferred
+Notification routed through the gate: capabilities/regress
+код=0
+заглушка шлюза вызвана: 1 раз
+=== r3-10
+Telegram send FAILED: capabilities/regress (iwe-notify not found; run update.sh)
+код=0
+заглушка шлюза вызвана: 0 раз
+=== r3-13
+sent
+notify.sh: capabilities/regress outcome=deferred
+Notification routed through the gate: capabilities/regress
+код=0
+заглушка шлюза вызвана: 1 раз
+=== r4-clean (чистая rc.4)
+sent
+notify.sh: capabilities/regress outcome=deferred
+Notification routed through the gate: capabilities/regress
+заглушка шлюза вызвана: 1 раз
