@@ -1,0 +1,15 @@
+2026-11-11T20:02:42+02:00 gh auth status
+2026-11-11T20:02:45+02:00 gh release view v0.42.0-rc.6 -R TserenTserenov/FMT-exocortex-template
+BLOCKED release view v0.42.0-rc.6 -R TserenTserenov/FMT-exocortex-template
+2026-11-11T20:02:45+02:00 gh run list -R TserenTserenov/FMT-exocortex-template --commit 557ecb21bbf388d7ae4a60a7b09c18f6a4d52225
+UNSUPPORTED run list -R TserenTserenov/FMT-exocortex-template --commit 557ecb21bbf388d7ae4a60a7b09c18f6a4d52225
+2026-11-11T20:03:02+02:00 gh api repos/TserenTserenov/FMT-exocortex-template/releases/tags/v0.42.0-rc.6
+2026-11-11T20:03:02+02:00 gh api repos/TserenTserenov/FMT-exocortex-template/commits/557ecb21bbf388d7ae4a60a7b09c18f6a4d52225/check-runs?per_page=100
+2026-11-11T20:03:03+02:00 gh api repos/TserenTserenov/FMT-exocortex-template/actions/runs?head_sha=557ecb21bbf388d7ae4a60a7b09c18f6a4d52225&per_page=50
+2026-11-11T20:03:03+02:00 gh api repos/TserenTserenov/FMT-exocortex-template/releases/tags/v0.41.11
+2026-11-11T20:03:20+02:00 gh api repos/TserenTserenov/FMT-exocortex-template/releases?per_page=8
+2026-11-11T20:03:42+02:00 gh api rate_limit
+2026-11-11T20:03:54+02:00 gh pr view --json url
+BLOCKED pr view --json url
+2026-11-11T20:04:01+02:00 gh api repos/TserenTserenov/FMT-exocortex-template/actions/workflows/release-candidate.yml/runs?per_page=5
+2026-11-11T20:04:06+02:00 gh api repos/TserenTserenov/FMT-exocortex-template/actions/runs/43068628486/jobs
