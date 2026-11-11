@@ -1,0 +1,263 @@
+==========================================
+  Exocortex Setup v0.7.0
+==========================================
+
+Template: /home/iwe-test/IWE/FMT-exocortex-template
+
+Checking prerequisites...
+  ✓ Git: /run/current-system/sw/bin/git
+  ✓ Git identity: задана
+  ✓ jq: /run/current-system/sw/bin/jq
+  ✓ GitHub CLI: /home/iwe-test/.local/bin/gh
+  ✓ Node.js: /run/current-system/sw/bin/node
+  ✓ npm: /run/current-system/sw/bin/npm
+  ✓ AI Agent: claude (/home/iwe-test/.npm-global/bin/claude)
+  ✓ GitHub CLI: authenticated
+
+
+Configuration:
+  GitHub user:    your-username
+  Workspace:      /home/iwe-test/IWE
+  Claude path:    /home/iwe-test/.npm-global/bin/claude
+  Schedule hour:  4 (местное время)
+  Time desc:      4:00 (местное время)
+  Home dir:       /home/iwe-test
+  Project slug:   -home-iwe-test-IWE
+
+Data Policy
+  IWE collects and processes data as described in docs/DATA-POLICY.md
+  Summary: profile, sessions, and learning data are stored on the platform (Neon DB).
+  Your personal/ files stay local. Claude API receives prompts + profile context.
+  You can view your data (/mydata) and delete it at any time.
+
+  Full policy: docs/DATA-POLICY.md
+
+
+
+
+setup.sh: line 588: source: filename argument required
+source: usage: source filename [arguments]
+  Configuration saved to /home/iwe-test/IWE/.exocortex.env
+
+[1/6] Building generated runtime...
+  === build-runtime ===
+    Template: /home/iwe-test/IWE/FMT-exocortex-template
+    Workspace: /home/iwe-test/IWE
+    Env file: /home/iwe-test/IWE/.exocortex.env
+    Runtime: /home/iwe-test/IWE/.iwe-runtime
+  
+    ⚠ params.yaml отсутствовал в /home/iwe-test/IWE — засеян значениями шаблона. Ваши прежние настройки в нём НЕ восстановлены.
+  ✓ runtime: 27 файлов в /home/iwe-test/IWE/.iwe-runtime/
+  ✓ workspace: 2 файлов обновлено / 2 проверено
+    Build hash: 4536cf15ecf67e9e...
+    FMT version: 0.41.11
+  Pre-commit hook enabled (.githooks/)
+[2/6] Installing CLAUDE.md + AGENTS.md...
+  Copied CLAUDE.md (+ merge base) and AGENTS.md (substituted)
+[3/6] Installing memory...
+  Copied to /home/iwe-test/.claude/projects/-home-iwe-test-IWE/memory
+  Symlink: /home/iwe-test/IWE/memory → /home/iwe-test/.claude/projects/-home-iwe-test-IWE/memory
+[4/6] Installing Claude settings...
+  WARN: settings.local.json not found in template, skipping.
+  Знаниевые MCP-серверы подключаются через Gateway (автоматически):
+
+  .mcp.json содержит iwe-knowledge → https://mcp.aisystant.com/mcp
+  T1-T2: при первом запуске откроется браузер (OAuth через Ory).
+  T3-T4: CLI-режим (IWE_TIER=T3 в env или tier: T3 в ~/.iwe/config.yaml).
+  Необходима подписка «Инженерия интеллекта» (ранее «Бесконечное развитие»).
+  После входа: /mcp в Claude Code.
+[4b] Installing skills, hooks, rules, rules-lazy, lib, bin, config, detectors, scripts, styles...
+  ✓ .claude/skills/ → /home/iwe-test/IWE/.claude/skills/
+  ✓ .claude/hooks/ → /home/iwe-test/IWE/.claude/hooks/
+  ✓ .claude/rules/ → /home/iwe-test/IWE/.claude/rules/
+  ✓ .claude/rules-lazy/ → /home/iwe-test/IWE/.claude/rules-lazy/
+  ✓ .claude/lib/ → /home/iwe-test/IWE/.claude/lib/
+  ✓ .claude/bin/ → /home/iwe-test/IWE/.claude/bin/
+  ✓ .claude/config/ → /home/iwe-test/IWE/.claude/config/
+  ✓ .claude/detectors/ → /home/iwe-test/IWE/.claude/detectors/
+  ✓ .claude/scripts/ → /home/iwe-test/IWE/.claude/scripts/
+  ✓ .claude/agents/ → /home/iwe-test/IWE/.claude/agents/
+  ✓ .claude/styles/ → /home/iwe-test/IWE/.claude/styles/
+  ✓ .claude/templates/ → /home/iwe-test/IWE/.claude/templates/
+  ✓ .claude/settings.json
+  ✓ .claude/capture-config.sh.example
+  ✓ .claude/parity-contract.yaml
+  ✓ .claude/process-pattern-catalog.yaml
+  ✓ .claude/rules-registry.yaml
+  ✓ .claude/runtime-overlay.yaml
+  ✓ .claude/skills-catalog.yaml
+  ✓ .claude/sync-manifest.yaml
+[4c] Configuring .mcp.json...
+  ✓ /home/iwe-test/IWE/.mcp.json → iwe-knowledge (браузерный OAuth, tier=T1)
+[4d] Installing IWE environment variables...
+    ✓ /home/iwe-test/IWE/.iwe-paths written (workspace=/home/iwe-test/IWE)
+    ○ /home/iwe-test/.zshenv already sources /home/iwe-test/IWE/.iwe-paths
+    ○ /home/iwe-test/.bashrc already sources /home/iwe-test/IWE/.iwe-paths
+  ℹ  Restart shell or run: source /home/iwe-test/.zshenv
+[4f] Regenerating hot-files.list...
+  generate-hot-files-list: wrote 5 file(s) to /home/iwe-test/IWE/.iwe-runtime/hot-files.list (governance repo: "DS-strategy")
+[5/6] Автоматизация... пропущена (launchd не найден — не macOS)
+  Роли используют launchd (macOS). На Linux используйте cron/systemd вручную.
+  См. /home/iwe-test/IWE/FMT-exocortex-template/roles/ROLE-CONTRACT.md
+[6/6] Setting up DS-strategy...
+[6a] Generating executor-catalog.yaml...
+  OK: executor-catalog generated
+      total entries : 50
+      skipped       : 2 (not auto-routable)
+        - _template: template
+        - residency-gate: no-SKILL.md
+      by executor:
+        agent       : 1
+        haiku       : 6
+        opus        : 5
+        script      : 5
+        script+judgment: 2
+        sonnet      : 31
+      optimization candidates (5):
+        [1] consent → script
+        [1] w-reflection → script
+        [2] check-secret → script
+        [2] local-llm → script+judgment
+        [2] transcribe → script
+      output        : /home/iwe-test/IWE/DS-strategy/scripts/executor-catalog.yaml (updated)
+Initialized empty Git repository in /home/iwe-test/IWE/DS-strategy/.git/
+[main (root-commit) 871e55a] Initial exocortex: DS-strategy governance hub
+ 62 files changed, 12692 insertions(+)
+ create mode 100755 .githooks/pre-commit
+ create mode 100755 .githooks/pre-commit-deny-legacy-sessions.sh
+ create mode 100755 .githooks/pre-push
+ create mode 100644 .gitignore
+ create mode 100644 CLAUDE.md
+ create mode 100644 REPO-TYPE.md
+ create mode 100644 archive/.gitkeep
+ create mode 100644 archive/day-plans/.gitkeep
+ create mode 100644 archive/notes/.gitkeep
+ create mode 100644 archive/week-plans/.gitkeep
+ create mode 100644 archive/week-reports/.gitkeep
+ create mode 100644 archive/wp-contexts/.gitkeep
+ create mode 100644 current/.gitkeep
+ create mode 100644 current/WeekPlan W1.md
+ create mode 100644 decisions/.gitkeep
+ create mode 100644 docs/Dissatisfactions.md
+ create mode 100644 docs/Session Agenda.md
+ create mode 100644 docs/Strategy.md
+ create mode 100644 docs/WP-REGISTRY.md
+ create mode 100644 drafts/README.md
+ create mode 100644 drafts/draft-list.md
+ create mode 100644 exocortex/.gitkeep
+ create mode 100644 exocortex/agent-fault-profile/.gitignore
+ create mode 100644 inbox/.gitkeep
+ create mode 100644 inbox/fleeting-notes.md
+ create mode 100644 personal/.gitkeep
+ create mode 100755 scripts/agent_fault_remind.py
+ create mode 100755 scripts/agent_fault_remind.sh
+ create mode 100755 scripts/day-open-bottleneck-patch.sh
+ create mode 100755 scripts/day-open-budget-patch.py
+ create mode 100755 scripts/day-open-checks-runner.sh
+ create mode 100755 scripts/day-open-close-error-patch.py
+ create mode 100755 scripts/day-open-hooks-runner.sh
+ create mode 100755 scripts/day-open-ledger-render-patch.py
+ create mode 100755 scripts/day-open-llm-fill.py
+ create mode 100755 scripts/day-open-multiplier-backfill-patch.py
+ create mode 100755 scripts/day-open-pipeline.sh
+ create mode 100755 scripts/day-open-priorities-patch.py
+ create mode 100755 scripts/day-open-scaffold.sh
+ create mode 100755 scripts/day-open-sync-banner-patch.py
+ create mode 100755 scripts/day-open-version-check-patch.py
+ create mode 100755 scripts/ds-publish.sh
+ create mode 100644 scripts/executor-catalog.yaml
+ create mode 100755 scripts/generate-executor-catalog.py
+ create mode 100755 scripts/install-hooks.sh
+ create mode 100755 scripts/isolate-push.sh
+ create mode 100755 scripts/iwe_checklist_memory.py
+ create mode 100755 scripts/ledger-append.sh
+ create mode 100755 scripts/lib/common.sh
+ create mode 100755 scripts/lib/day-open-hooks.sh
+ create mode 100755 scripts/lib/find-python3.sh
+ create mode 100755 scripts/lib/ledger-path.sh
+ create mode 100755 scripts/lib/ledger-publish-kick.sh
+ create mode 100644 scripts/lib/ledger_path.py
+ create mode 100755 scripts/lib/network-wait.sh
+ create mode 100755 scripts/lib/notification-render.sh
+ create mode 100755 scripts/lib/publish-gate.sh
+ create mode 100755 scripts/lib/telegram.sh
+ create mode 100644 scripts/lib/wp_inbox.py
+ create mode 100755 scripts/llm-proxy-launcher.sh
+ create mode 100755 scripts/sync_feedback_to_memory.py
+ create mode 100755 scripts/update-derived-snapshot.py
+  Pre-commit hook enabled (.githooks/)
+  ERROR: gh repo create failed for DS-strategy:
+    gh-shim: 'repo create' запрещено в тестовом окружении
+[7/7] Installing Base repos (ZP, FPF, SPF)...
+  ✓ ZP: клонирован (/home/iwe-test/IWE/ZP)
+  ✓ FPF: клонирован (/home/iwe-test/IWE/FPF)
+  ✓ SPF: клонирован (/home/iwe-test/IWE/SPF)
+[8/8] Enabling Knowledge Extractor feeders...
+[setup-extractor] 1/4 Проверка зависимостей
+  ✅ extractor.sh найден
+  ✅ claude CLI: /home/iwe-test/.npm-global/bin/claude
+[setup-extractor] Платформа: Linux (используем systemd --user)
+[setup-extractor] 2/4 Git-templates для post-commit hook
+  ✅ post-commit hook уже установлен
+[setup-extractor] 3/4 Cron для git-diff-feed
+Created symlink '/home/iwe-test/.config/systemd/user/timers.target.wants/extractor-git-diff-feed.timer' → '/home/iwe-test/.config/systemd/user/extractor-git-diff-feed.timer'.
+  ✅ systemd timer установлен и активирован
+[setup-extractor] 4/4 Fleeting-notes inbox
+  ✅ fleeting-notes.md уже существует
+
+[setup-extractor] Готово.
+[setup-extractor] Что включено (по результатам):
+[setup-extractor]  - post-commit hook на изменения captures/fleeting-notes (для нового clone — git init)
+[setup-extractor]  - cron 09:00 + 21:00 для git-diff-feed (на этой машине)
+[setup-extractor]  - fleeting-notes.md inbox создан
+[setup-extractor] 
+[setup-extractor] Что НЕ требует настройки (работает автоматически после update.sh):
+[setup-extractor]  - regex fix в pending counter (WP-7 Ф-EXTRACTOR-FP)
+[setup-extractor]  - inbox-check читает fleeting-notes как 2-й inbox (Ф-MULTI-SOURCE.3)
+[setup-extractor]  - session-close-feed вызывается из Quick Close шаг 2.6 (Ф-MULTI-SOURCE.1)
+[setup-extractor] 
+[setup-extractor] Проверка: /home/iwe-test/IWE/FMT-exocortex-template/scripts/setup-extractor-feeders.sh --check
+[setup-extractor] Удалить:  /home/iwe-test/IWE/FMT-exocortex-template/scripts/setup-extractor-feeders.sh --uninstall
+[8b] Настройка VS Code (режим Auto по умолчанию)...
+[8c] Определение возможностей установки...
+ℹ Бэкап IWE не настроен: в params.yaml нет backup_dir, а iCloud по умолчанию есть только на macOS.
+  Это не ошибка, тревоги не будет. Включить: укажите backup_dir в params.yaml.
+  Отказаться явно: backup_enabled: false. Это сообщение показывается один раз.
+
+==========================================
+  Setup Complete — with a warning (see above).
+  DS-strategy is local-only: not pushed to GitHub.
+==========================================
+
+Verify installation:
+  ✓ CLAUDE.md:   /home/iwe-test/IWE/CLAUDE.md
+  ✓ Memory:      /home/iwe-test/.claude/projects/-home-iwe-test-IWE/memory/ (33 files)
+  ✓ Symlink:     /home/iwe-test/IWE/memory → /home/iwe-test/.claude/projects/-home-iwe-test-IWE/memory
+  ✓ DS-strategy: /home/iwe-test/IWE/DS-strategy/
+  ✓ Template:    /home/iwe-test/IWE/FMT-exocortex-template/
+
+Next steps:
+  1. cd /home/iwe-test/IWE
+  2. claude
+  3. Ask Claude: «Проведём первую стратегическую сессию»
+
+Strategist will run automatically:
+  - Morning at 4:00 (местное время): strategy (Mon) / day-plan (Tue-Sun)
+  - Sunday night: week review
+
+Developer onboarding (T4+) — single entry point:
+  cat docs/developer/README.md
+
+Update from upstream:
+  cd /home/iwe-test/IWE/FMT-exocortex-template && bash update.sh
+
+Личные (PD-*) и служебные (MC-*) репозитории (WP-526/WP-527):
+  создаются по запросу, не при установке — см. README.md § «5 семей репозиториев»
+
+Финальная проверка инсталляции (рекомендуется):
+  validate-режим setup.sh проверит: env-конфиг, обязательные файлы,
+  extensions, доступность MCP, структурные инварианты.
+
+
+Пропущено. Запустить позже: cd /home/iwe-test/IWE/FMT-exocortex-template && bash setup.sh --validate
+
