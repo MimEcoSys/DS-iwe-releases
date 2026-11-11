@@ -1,0 +1,78 @@
+==========================================
+  Exocortex Update v2.4.1
+==========================================
+  Репо: /home/iwe-test/IWE/FMT-exocortex-template
+
+  Снимок поставки: 637e06a1afb3
+[0] Проверка update.sh...
+  ⚠ update.sh выпуска старше установленного — не заменяю его: сначала решение об откате.
+
+[1] Загрузка манифеста...
+  Установленная версия: 0.42.0
+  Версия upstream: 0.41.11
+
+[2] Сравнение файлов...
+  Скачиваю 8 файлов (до 8 параллельно)...
+  (1/8) .claude/bin/guarded-rm  (2/8) .claude/hooks/destructive-guard.sh  (3/8) .claude/hooks/tests/destructive-guard/guarded_rm_cases.py  (4/8) .claude/skills/find-method/SKILL.md  (5/8) .github/workflows/validate-template.yml  (6/8) CHANGELOG.md  (7/8) docs/DESTRUCTIVE-GUARD.md  (8/8) update.sh
+  ○ Устаревшие по манифесту, но отслеживаются git этой копии шаблона — оставлены: scripts/tests/test_session_guard_unknown_flag.sh docs/onboarding/web-onboarding.md translation/glossary-v0.1.csv
+    Удалить из своей копии: git -C "/home/iwe-test/IWE/FMT-exocortex-template" rm -- scripts/tests/test_session_guard_unknown_flag.sh docs/onboarding/web-onboarding.md translation/glossary-v0.1.csv
+
+==========================================
+  Обновления экзокортекса (v0.41.11)
+==========================================
+
+🔴 ВНИМАНИЕ: локальная установка новее того, что доставит этот канал.
+   Применение этого обновления ОТКАТИТ установку на более старый снимок.
+   Ставили кандидат выпуска — обновляйтесь его каналом: IWE_UPDATE_CHANNEL=rc bash update.sh
+   Следите за основной веткой — её каналом: IWE_UPDATE_CHANNEL=main bash update.sh
+   Любой канал, который вернёт установку назад, тоже спросит ROLLBACK.
+
+Обновлённые файлы (8):
+  ~ .claude/bin/guarded-rm                        — 12 строк изменено
+  ~ .claude/hooks/destructive-guard.sh            — 80 строк изменено
+  ~ .claude/hooks/tests/destructive-guard/guarded_rm_cases.py — 9 строк изменено
+  ~ .claude/skills/find-method/SKILL.md           — 6 строк изменено
+  ~ .github/workflows/validate-template.yml       — 13 строк изменено
+  ~ CHANGELOG.md                                  — 248 строк изменено
+  ~ docs/DESTRUCTIVE-GUARD.md                     — 6 строк изменено
+  ~ update.sh                                     — 68 строк изменено
+
+Не затрагиваются:
+  ✓ memory/MEMORY.md (личная оперативная память)
+  ✓ CLAUDE.md (3-way merge: ваши правки сохраняются)
+  ✓ extensions/ (ваши расширения протоколов)
+  ✓ params.yaml (ваши параметры — существующий файл не перезаписывается; отсутствующий засевается из шаблона)
+  ✓ .secrets/ (ключи)
+  ✓ .claude/settings.local.json (permissions)
+  ✓ sessions/00-index.md (журнал peer-сессий)
+  ✓ personal/ (ваши файлы)
+
+Кроме перечисленного, обычный запуск (без --check) также пишет — это зоны возможной перезаписи, пофайлового прогноза для них превью не строит (issue #350):
+  • /home/iwe-test/IWE/.claude/ — рабочие копии скиллов, хуков, правил
+  • /home/iwe-test/.claude/projects/-home-iwe-test-IWE/memory — рабочие копии memory-файлов
+  • /home/iwe-test/IWE/.iwe-runtime/ — пересобирается целиком из шаблона
+  • /home/iwe-test/IWE/.exocortex.env, /home/iwe-test/IWE/FMT-exocortex-template/.claude.md.base, /home/iwe-test/IWE/FMT-exocortex-template/update-manifest.json
+  • /home/iwe-test/IWE/.claude.md.base и /home/iwe-test/IWE/.claude.md.delivered — база слияния CLAUDE.md и запись хешей доставленной копии
+  • /home/iwe-test/IWE/.memory-deployed.tsv — запись версий памяти, которые установлены и не менялись (по ней update.sh отличает нетронутую копию от изменённой)
+  • /home/iwe-test/IWE/.iwe-paths и /home/iwe-test/.zshenv — пересоздаваемое окружение путей
+  • local core.hooksPath в git-репозиториях с .githooks под /home/iwe-test/IWE
+  • /home/iwe-test/IWE/DS-strategy/scripts/install-hooks.sh — установщик platform hooks
+  • /home/iwe-test/IWE/DS-strategy/.githooks/pre-commit и pre-push — platform hooks
+  • /home/iwe-test/IWE/DS-strategy/scripts/update-derived-snapshot.py — обновлятор derived snapshot
+  • /home/iwe-test/IWE/DS-strategy/scripts/generate-executor-catalog.py — генератор каталога исполнителей
+  • /home/iwe-test/IWE/DS-strategy/scripts/executor-catalog.yaml — каталог исполнителей
+  • /home/iwe-test/IWE/DS-strategy/scripts/ds-publish.sh — публикатор коммитов ночных ролей (кладётся только если файла нет, существующий не трогается)
+  • /home/iwe-test/IWE/DS-strategy/exocortex/agent-fault-profile/ — только миграция/права существующей приватной БД; отсутствующий профиль не создаётся
+    scripts/day-open-llm-fill.py больше не доставляется сюда (WP-485 Ф17) — Day Open исполняет копию шаблона через $IWE_SCRIPTS.
+    Symlink-пути блокируют backfill. Отличающиеся installer/hooks сохраняются в .git/hook-backups/ и заменяются.
+    Snapshot updater/executor-catalog generator: решение по содержимому (как memory/*), не по git-статусу — локальная правка не блокирует остальное обновление, только эти файлы; executor-catalog.yaml — генерируемый файл и заменяется при смысловом расхождении.
+  Расхождение рабочей копии с шаблоном чинится независимо от списков выше.
+
+Без изменений: 865 файлов
+
+🔴 Остановлено: обнаружен откат на более старый релиз, а --yes запрещает интерактивное подтверждение.
+   Для явного отката запустите без --yes и введите ROLLBACK на запрос подтверждения.
+   Ставили кандидат выпуска — обновляйтесь его каналом: IWE_UPDATE_CHANNEL=rc bash update.sh
+   Следите за основной веткой — её каналом: IWE_UPDATE_CHANNEL=main bash update.sh
+   Любой канал, который вернёт установку назад, тоже спросит ROLLBACK.
+ОШИБКА: update.sh прервался на строке 1: exit "$EXIT_USAGE"

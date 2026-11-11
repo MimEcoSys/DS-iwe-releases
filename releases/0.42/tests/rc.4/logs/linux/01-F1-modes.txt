@@ -1,0 +1,18 @@
+v0.42.0-rc.4 в /home/iwe-test/IWE/FMT-exocortex-template: программ (755 в git) из манифеста: 413, без права на запуск: 0
+  scripts/iwe-notify                       755
+  scripts/check-changelog-fields.py        755
+  scripts/pack-duplicate-check.py          755
+  .claude/hooks/dry-run-cmd-parse.pl       755
+--- сравнение: rc.3 после обновления с 0.41.11
+  без права на запуск: scripts/pack-duplicate-check.py (644)
+v0.42.0-rc.3 в /tmp/claude-1000/-home-tseren-IWE/7cdae38d-adf0-400c-ab92-7e6d0dc1af13/scratchpad/r3-10/home/IWE/FMT-exocortex-template: программ (755 в git) из манифеста: 413, без права на запуск: 4
+  scripts/iwe-notify                       644
+  scripts/check-changelog-fields.py        644
+  scripts/pack-duplicate-check.py          644
+  .claude/hooks/dry-run-cmd-parse.pl       644
+--- сравнение: rc.3 чистая установка
+v0.42.0-rc.3 в /tmp/claude-1000/-home-tseren-IWE/7cdae38d-adf0-400c-ab92-7e6d0dc1af13/scratchpad/r3-13/home/IWE/FMT-exocortex-template: программ (755 в git) из манифеста: 413, без права на запуск: 0
+  scripts/iwe-notify                       755
+  scripts/check-changelog-fields.py        755
+  scripts/pack-duplicate-check.py          755
+  .claude/hooks/dry-run-cmd-parse.pl       755

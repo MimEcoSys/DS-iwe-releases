@@ -1,0 +1,11 @@
+2026-11-11T14:13:59+02:00 gh auth status
+2026-11-11T14:14:03+02:00 gh release view v0.42.0-rc.4 -R TserenTserenov/FMT-exocortex-template --json tagName,isPrerelease,isDraft,targetCommitish,publishedAt,assets
+BLOCKED release view v0.42.0-rc.4 -R TserenTserenov/FMT-exocortex-template --json tagName,isPrerelease,isDraft,targetCommitish,publishedAt,assets
+2026-11-11T14:14:03+02:00 gh api repos/TserenTserenov/FMT-exocortex-template/git/refs/tags/v0.42.0-rc.4
+2026-11-11T14:14:03+02:00 gh api repos/TserenTserenov/FMT-exocortex-template/commits/5f1277bea5c639bc571126651aa0b8abe27b9ceb/check-runs --jq .check_runs[]|[.name,.status,.conclusion,.head_sha[0:12]]|@tsv
+BLOCKED-ARG api --jq
+2026-11-11T14:14:09+02:00 gh api repos/TserenTserenov/FMT-exocortex-template/commits/5f1277bea5c639bc571126651aa0b8abe27b9ceb/check-runs
+2026-11-11T14:14:09+02:00 gh api repos/TserenTserenov/FMT-exocortex-template/releases/tags/v0.42.0-rc.4
+2026-11-11T14:14:11+02:00 gh api repos/TserenTserenov/FMT-exocortex-template/releases/tags/v0.42.0-rc.4
+2026-11-11T14:14:11+02:00 gh api repos/TserenTserenov/FMT-exocortex-template/releases
+2026-11-11T14:14:15+02:00 gh api repos/TserenTserenov/FMT-exocortex-template/releases

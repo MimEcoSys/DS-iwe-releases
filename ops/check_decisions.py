@@ -13,8 +13,8 @@ that must not depend on judgement:
 
 3. With --require-final (run by the Release Lead right before merging the release
    PR, WP-529 Ф261): the rows the release hangs on are filled, and the newest
-   candidate has an independent red team verdict in releases/<N>/tests/rc.<K>.yaml
-   (`red_team:` block; BLOCKED fails, CAUTION needs the Release Lead's acceptance,
+   candidate has an independent red team verdict in releases/<N>/tests/rc.<K>/<platform>-<tester>.yaml
+   (`red_team:` block in any marks file of the newest rc.<K>/ folder, every such block is checked; BLOCKED fails, CAUTION needs the Release Lead's acceptance,
    `--rc-tree` ties the verdict to the tree of the candidate the PR will release).
    Without the flag an unfilled form is only reported as a note: a form still being
    filled is normal before the candidate, but it must not read as "all clear".
@@ -47,7 +47,7 @@ FINAL_ROWS = (
 # The verdict words of the template skill iwe-platform-redteam (Verdict Contract), not a local scale.
 RED_TEAM_VERDICTS = ("GO", "CAUTION", "BLOCKED")
 SHA1 = re.compile(r"^[0-9a-f]{40}$")
-RC_FILE = re.compile(r"^rc\.(\d+)\.yaml$")
+RC_DIR = re.compile(r"^rc\.(\d+)$")
 REQUIRED_TEXT = {
     "user_gets": "что получит пользователь",
     "how_to_check": "как проверить",
@@ -153,25 +153,13 @@ def unfilled_rows(decisions: str) -> list[str]:
     return unfilled
 
 
-def latest_rc_file(tests_dir: Path) -> Path | None:
-    candidates = [(int(m.group(1)), path) for path in tests_dir.glob("rc.*.yaml") if (m := RC_FILE.match(path.name))]
+def latest_rc_dir(tests_dir: Path) -> Path | None:
+    """The rc.<K>/ folder with the largest K: one folder per candidate, a new candidate starts a new folder."""
+    candidates = [(int(m.group(1)), path) for path in tests_dir.glob("rc.*") if path.is_dir() and (m := RC_DIR.match(path.name))]
     return max(candidates, key=lambda item: item[0])[1] if candidates else None
 
 
-def red_team_problems(tests_dir: Path, rc_tree: str | None) -> list[str]:
-    """The newest candidate has a verdict of an independent attack recorded outside the template tree.
-
-    The verdict cannot live in docs/release-audit-log.md of the template: that file is part of the
-    release branch tree and a write after the rc stops the release (finding 1 of the 10.11 review).
-    """
-    latest = latest_rc_file(tests_dir)
-    if latest is None:
-        return [f"нет файла отметок rc.<K>.yaml в {tests_dir.name}/ — вердикта независимой атаки нет"]
-    data = yaml.safe_load(latest.read_text(encoding="utf-8")) or {}
-    block = data.get("red_team") or {}
-    name = latest.name
-    if not isinstance(block, dict) or not block:
-        return [f"{name}: нет блока red_team — независимая атака на последнем кандидате не записана"]
+def block_problems(name: str, block: dict, rc_tree: str | None) -> list[str]:
     problems = []
     verdict = str(block.get("verdict") or "").strip()
     if verdict == "cannot_verify":
@@ -191,6 +179,27 @@ def red_team_problems(tests_dir: Path, rc_tree: str | None) -> list[str]:
     if verdict == "CAUTION" and not str(block.get("accepted_by") or "").strip():
         problems.append(f"{name}: вердикт CAUTION без red_team.accepted_by — оговорки не приняты Выпускающим")
     return problems
+
+
+def red_team_problems(tests_dir: Path, rc_tree: str | None) -> list[str]:
+    """The newest candidate has a verdict of an independent attack recorded outside the template tree.
+
+    The verdict cannot live in docs/release-audit-log.md of the template: that file is part of the
+    release branch tree and a write after the rc stops the release (finding 1 of the 10.11 review).
+    Several testers may record an attack on the same candidate; every recorded verdict must pass.
+    """
+    latest = latest_rc_dir(tests_dir)
+    if latest is None:
+        return [f"нет папки отметок rc.<K>/ в {tests_dir.name}/ — вердикта независимой атаки нет"]
+    blocks = []
+    for path in sorted(latest.glob("*.yaml")):
+        data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+        block = data.get("red_team") if isinstance(data, dict) else None
+        if isinstance(block, dict) and block:
+            blocks.append((f"{latest.name}/{path.name}", block))
+    if not blocks:
+        return [f"{latest.name}/: ни в одном файле отметок нет блока red_team — независимая атака на последнем кандидате не записана"]
+    return [problem for name, block in blocks for problem in block_problems(name, block, rc_tree)]
 
 
 def main(argv: list[str]) -> int:

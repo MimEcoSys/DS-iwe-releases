@@ -139,7 +139,9 @@ def repo_with(tmp_path, decisions_text, rc_files=None):
     (tmp_path / "ops" / "developer-handoff.yaml").write_text(yaml.safe_dump(HANDOFF, allow_unicode=True), encoding="utf-8")
     (tmp_path / "releases" / "0.42" / "decisions.md").write_text(decisions_text, encoding="utf-8")
     for name, body in (rc_files or {}).items():
-        (tmp_path / "releases" / "0.42" / "tests" / name).write_text(yaml.safe_dump(body, allow_unicode=True), encoding="utf-8")
+        target = tmp_path / "releases" / "0.42" / "tests" / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(yaml.safe_dump(body, allow_unicode=True), encoding="utf-8")
     return tmp_path
 
 
@@ -161,44 +163,59 @@ def test_final_fails_on_empty_rows_and_missing_verdict(tmp_path, capsys):
     assert cd.main(["--repo", str(repo), "--require-final"]) == 1
     out = capsys.readouterr().out
     assert "не заполнена строка «Итог: выпускаем / откладываем»" in out
-    assert "нет файла отметок rc.<K>.yaml" in out
+    assert "нет папки отметок rc.<K>/" in out
 
 
 def test_final_passes_with_filled_form_and_stable_verdict(tmp_path, capsys):
-    repo = repo_with(tmp_path, FILLED, {"rc.1.yaml": verdict()})
+    repo = repo_with(tmp_path, FILLED, {"rc.1/linux-tester.yaml": verdict()})
     assert cd.main(["--repo", str(repo), "--require-final", "--rc-tree", TREE]) == 0
     assert "замечаний нет" in capsys.readouterr().out
 
 
 def test_final_without_rc_tree_is_refused(tmp_path, capsys):
-    repo = repo_with(tmp_path, FILLED, {"rc.1.yaml": verdict()})
+    repo = repo_with(tmp_path, FILLED, {"rc.1/linux-tester.yaml": verdict()})
     assert cd.main(["--repo", str(repo), "--require-final"]) == 1
     assert "требует --rc-tree" in capsys.readouterr().out
 
 
 def test_final_reads_the_newest_rc_only(tmp_path, capsys):
-    repo = repo_with(tmp_path, FILLED, {"rc.1.yaml": verdict(), "rc.2.yaml": {"build": "0.42-rc.2", "marks": []}})
+    repo = repo_with(tmp_path, FILLED, {"rc.1/linux-tester.yaml": verdict(), "rc.2/macos-tester.yaml": {"build": "0.42-rc.2", "marks": []}})
     assert cd.main(["--repo", str(repo), "--require-final", "--rc-tree", TREE]) == 1
-    assert "rc.2.yaml: нет блока red_team" in capsys.readouterr().out
+    assert "rc.2/: ни в одном файле отметок нет блока red_team" in capsys.readouterr().out
 
 
 def test_blocked_and_unaccepted_caution_fail(tmp_path):
-    assert any("BLOCKED" in p for p in cd.red_team_problems(repo_with(tmp_path, FILLED, {"rc.1.yaml": verdict(verdict="BLOCKED")}) / "releases" / "0.42" / "tests", None))
+    assert any("BLOCKED" in p for p in cd.red_team_problems(repo_with(tmp_path, FILLED, {"rc.1/linux-tester.yaml": verdict(verdict="BLOCKED")}) / "releases" / "0.42" / "tests", None))
     other = tmp_path / "other"
     other.mkdir()
-    caution = cd.red_team_problems(repo_with(other, FILLED, {"rc.1.yaml": verdict(verdict="CAUTION")}) / "releases" / "0.42" / "tests", None)
+    caution = cd.red_team_problems(repo_with(other, FILLED, {"rc.1/linux-tester.yaml": verdict(verdict="CAUTION")}) / "releases" / "0.42" / "tests", None)
     assert any("accepted_by" in p for p in caution)
 
 
 def test_skill_verdict_words_are_the_scale(tmp_path):
     # The skill iwe-platform-redteam answers GO / CAUTION / BLOCKED or cannot_verify; the old local word STABLE is refused.
-    tests = repo_with(tmp_path, FILLED, {"rc.1.yaml": verdict(verdict="cannot_verify")}) / "releases" / "0.42" / "tests"
+    tests = repo_with(tmp_path, FILLED, {"rc.1/linux-tester.yaml": verdict(verdict="cannot_verify")}) / "releases" / "0.42" / "tests"
     assert any("cannot_verify" in p and "не пройдена" in p for p in cd.red_team_problems(tests, None))
-    (tests / "rc.1.yaml").write_text(yaml.safe_dump(verdict(verdict="STABLE"), allow_unicode=True), encoding="utf-8")
+    (tests / "rc.1/linux-tester.yaml").write_text(yaml.safe_dump(verdict(verdict="STABLE"), allow_unicode=True), encoding="utf-8")
     assert any("GO, CAUTION, BLOCKED" in p for p in cd.red_team_problems(tests, None))
 
 
 def test_verdict_for_another_tree_fails(tmp_path):
-    repo = repo_with(tmp_path, FILLED, {"rc.1.yaml": verdict()})
+    repo = repo_with(tmp_path, FILLED, {"rc.1/linux-tester.yaml": verdict()})
     problems = cd.red_team_problems(repo / "releases" / "0.42" / "tests", "b" * 40)
     assert any("относится к дереву" in p for p in problems)
+
+
+def test_every_verdict_in_the_newest_folder_is_checked(tmp_path):
+    # Two testers attacked the same candidate: one GO does not hide the other's unaccepted CAUTION.
+    files = {"rc.3/linux-tester.yaml": verdict(), "rc.3/macos-tester.yaml": verdict(verdict="CAUTION"),
+             "rc.3/macos-marks-only.yaml": {"build": "0.42-rc.3", "marks": []}}
+    problems = cd.red_team_problems(repo_with(tmp_path, FILLED, files) / "releases" / "0.42" / "tests", TREE)
+    assert problems == ["rc.3/macos-tester.yaml: вердикт CAUTION без red_team.accepted_by — оговорки не приняты Выпускающим"]
+
+
+def test_newest_folder_is_chosen_by_number_not_by_name(tmp_path):
+    # rc.10 sorts before rc.9 as text; the newer candidate must win.
+    files = {"rc.9/linux-tester.yaml": verdict(), "rc.10/linux-tester.yaml": verdict(verdict="BLOCKED")}
+    problems = cd.red_team_problems(repo_with(tmp_path, FILLED, files) / "releases" / "0.42" / "tests", None)
+    assert problems == ["rc.10/linux-tester.yaml: вердикт BLOCKED — не сливать"]
