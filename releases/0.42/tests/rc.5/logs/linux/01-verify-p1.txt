@@ -1,0 +1,22 @@
+== v0.42.0-rc.5 destructive-guard (2 = blocked, 0 = allowed)
+2    rm -rf /tmp/rt-verify.0JTt7R/victim
+2    find /tmp/rt-verify.0JTt7R/victim -exec rm -f {} +
+2    find /tmp/rt-verify.0JTt7R/victim -type f -exec env rm {} +
+2    find /tmp/rt-verify.0JTt7R/victim -type f -print0 | xargs -0 rm
+0    TMPDIR=/tmp/rt-verify.0JTt7R/home /tmp/rt-verify.0JTt7R/ws/.claude/bin/guarded-rm -rf /tmp/rt-verify.0JTt7R/home/IWE
+2    git diff --output=.claude/hooks/destructive-guard.sh
+2    find .claude/hooks -maxdepth 0 -fprint .claude/hooks/secret-leak-block.sh
+0    git add --al
+0    git add :/
+== guarded-rm path validation with a hostile TMPDIR (dry: target is a fixture dir)
+== v0.42.0-rc.4 destructive-guard (2 = blocked, 0 = allowed)
+2    rm -rf /tmp/rt-verify.jmUcy1/victim
+2    find /tmp/rt-verify.jmUcy1/victim -exec rm -f {} +
+2    find /tmp/rt-verify.jmUcy1/victim -type f -exec env rm {} +
+2    find /tmp/rt-verify.jmUcy1/victim -type f -print0 | xargs -0 rm
+0    TMPDIR=/tmp/rt-verify.jmUcy1/home /tmp/rt-verify.jmUcy1/ws/.claude/bin/guarded-rm -rf /tmp/rt-verify.jmUcy1/home/IWE
+2    git diff --output=.claude/hooks/destructive-guard.sh
+2    find .claude/hooks -maxdepth 0 -fprint .claude/hooks/secret-leak-block.sh
+0    git add --al
+0    git add :/
+== guarded-rm path validation with a hostile TMPDIR (dry: target is a fixture dir)

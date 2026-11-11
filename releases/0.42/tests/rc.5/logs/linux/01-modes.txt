@@ -1,0 +1,10 @@
+--- rc.5 после обновления с 0.41.11
+v0.42.0-rc.5 в /tmp/claude-1000/-home-<user>-IWE/7cdae38d-adf0-400c-ab92-7e6d0dc1af13/scratchpad/r5-up/home/IWE/FMT-exocortex-template: программ (755 в git) из манифеста: 414, без права на запуск: 0
+  scripts/iwe-notify                       755
+  scripts/check-changelog-fields.py        755
+  scripts/pack-duplicate-check.py          755
+  .claude/hooks/dry-run-cmd-parse.pl       755
+--- rc.5 чистая установка
+v0.42.0-rc.5 в /tmp/claude-1000/-home-<user>-IWE/7cdae38d-adf0-400c-ab92-7e6d0dc1af13/scratchpad/r5-clean/home/IWE/FMT-exocortex-template: программ (755 в git) из манифеста: 414, без права на запуск: 0
+--- rc.4 после обновления с 0.41.11
+v0.42.0-rc.4 в /tmp/claude-1000/-home-<user>-IWE/7cdae38d-adf0-400c-ab92-7e6d0dc1af13/scratchpad/r4-up/home/IWE/FMT-exocortex-template: программ (755 в git) из манифеста: 413, без права на запуск: 0
