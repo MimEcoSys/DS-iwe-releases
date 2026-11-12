@@ -1,0 +1,117 @@
+==========================================
+  Exocortex Update v2.4.1
+==========================================
+  Репо: /home/iwe-test/IWE/FMT-exocortex-template
+
+/home/iwe-test/.local/bin/gh: line 5: /home/iwe-test/iwe-rc9-linux/logs/gh-calls.log: No such file or directory
+/home/iwe-test/.local/bin/gh: line 5: /home/iwe-test/iwe-rc9-linux/logs/gh-calls.log: No such file or directory
+  Канал поставки: кандидат v0.42.0-rc.9 (снимок 267a281a1982)
+/home/iwe-test/.local/bin/gh: line 5: /home/iwe-test/iwe-rc9-linux/logs/gh-calls.log: No such file or directory
+[0] Проверка update.sh...
+  update.sh актуален.
+
+[1] Загрузка манифеста...
+  Установленная версия: 0.42.0
+  Версия upstream: 0.42.0
+
+[2] Сравнение файлов...
+⚠ Установленный curl не поддерживает параллельное скачивание (--parallel/--parallel-max/--remove-on-error) — используется более медленный последовательный режим.
+
+  ○ Устаревшие по манифесту, но отслеживаются git этой копии шаблона — оставлены: scripts/tests/test_session_guard_unknown_flag.sh
+    Удалить из своей копии: git -C "/home/iwe-test/IWE/FMT-exocortex-template" rm -- scripts/tests/test_session_guard_unknown_flag.sh
+
+==========================================
+  Обновления экзокортекса (v0.42.0)
+==========================================
+
+Кроме перечисленного, обычный запуск (без --check) также пишет — это зоны возможной перезаписи, пофайлового прогноза для них превью не строит (issue #350):
+  • /home/iwe-test/IWE/.claude/ — рабочие копии скиллов, хуков, правил
+  • /home/iwe-test/.claude/projects/-home-iwe-test-IWE/memory — рабочие копии memory-файлов
+  • /home/iwe-test/IWE/.iwe-runtime/ — пересобирается целиком из шаблона
+  • /home/iwe-test/IWE/.exocortex.env, /home/iwe-test/IWE/FMT-exocortex-template/.claude.md.base, /home/iwe-test/IWE/FMT-exocortex-template/update-manifest.json
+  • /home/iwe-test/IWE/.claude.md.base и /home/iwe-test/IWE/.claude.md.delivered — база слияния CLAUDE.md и запись хешей доставленной копии
+  • /home/iwe-test/IWE/.memory-deployed.tsv — запись версий памяти, которые установлены и не менялись (по ней update.sh отличает нетронутую копию от изменённой)
+  • /home/iwe-test/IWE/.iwe-paths и /home/iwe-test/.zshenv — пересоздаваемое окружение путей
+  • local core.hooksPath в git-репозиториях с .githooks под /home/iwe-test/IWE
+  • /home/iwe-test/IWE/DS-my-strategy/scripts/install-hooks.sh — установщик platform hooks
+  • /home/iwe-test/IWE/DS-my-strategy/.githooks/pre-commit и pre-push — platform hooks
+  • /home/iwe-test/IWE/DS-my-strategy/scripts/update-derived-snapshot.py — обновлятор derived snapshot
+  • /home/iwe-test/IWE/DS-my-strategy/scripts/generate-executor-catalog.py — генератор каталога исполнителей
+  • /home/iwe-test/IWE/DS-my-strategy/scripts/executor-catalog.yaml — каталог исполнителей
+  • /home/iwe-test/IWE/DS-my-strategy/scripts/ds-publish.sh — публикатор коммитов ночных ролей (кладётся только если файла нет, существующий не трогается)
+  • /home/iwe-test/IWE/DS-my-strategy/exocortex/agent-fault-profile/ — только миграция/права существующей приватной БД; отсутствующий профиль не создаётся
+    scripts/day-open-llm-fill.py больше не доставляется сюда (WP-485 Ф17) — Day Open исполняет копию шаблона через $IWE_SCRIPTS.
+    Symlink-пути блокируют backfill. Отличающиеся installer/hooks сохраняются в .git/hook-backups/ и заменяются.
+    Snapshot updater/executor-catalog generator: решение по содержимому (как memory/*), не по git-статусу — локальная правка не блокирует остальное обновление, только эти файлы; executor-catalog.yaml — генерируемый файл и заменяется при смысловом расхождении.
+  Расхождение рабочей копии с шаблоном чинится независимо от списков выше.
+
+
+Generated runtime (.iwe-runtime/)...
+
+Agent fault profile (safe update hardening)...
+
+Agent fault legacy entrypoints (all-or-none upgrade)...
+  ✓ legacy agent-fault shims already match the release payload.
+
+Platform hooks (upgrade backfill)...
+✅ Hooks wired: /home/iwe-test/IWE/DS-my-strategy/.githooks
+   core.hooksPath = .githooks
+
+Governance-скрипты (upgrade backfill)...
+
+Публикатор коммитов ds-publish.sh (upgrade backfill)...
+  ✓ scripts/ds-publish.sh уже совпадает с поставкой (версия 1).
+
+Гейт публикации publish-gate.sh (upgrade backfill)...
+  ✓ scripts/lib/publish-gate.sh уже совпадает с release payload.
+
+Executor catalog (upgrade backfill)...
+  OK: executor-catalog generated
+      total entries : 52
+      skipped       : 2 (not auto-routable)
+        - _template: template
+        - residency-gate: no-SKILL.md
+      by executor:
+        agent       : 1
+        haiku       : 6
+        opus        : 5
+        script      : 5
+        script+judgment: 2
+        sonnet      : 33
+      optimization candidates (5):
+        [1] consent → script
+        [1] w-reflection → script
+        [2] check-secret → script
+        [2] local-llm → script+judgment
+        [2] transcribe → script
+      output        : /home/iwe-test/IWE/DS-my-strategy/scripts/executor-catalog.yaml (unchanged)
+
+Knowledge Extractor feeders (upgrade backfill)...
+  [setup-extractor] 1/4 Проверка зависимостей
+    ✅ extractor.sh найден
+    ✅ claude CLI: /home/iwe-test/.npm-global/bin/claude
+  [setup-extractor] Платформа: Linux (используем systemd --user)
+  [setup-extractor] 2/4 Git-templates — пропущено (режим только расписания)
+  [setup-extractor] 3/4 Cron для git-diff-feed
+    ✅ systemd timer установлен и активирован
+  [setup-extractor] 4/4 Fleeting-notes inbox
+  
+  [setup-extractor] Готово.
+  [setup-extractor] Что включено (по результатам):
+  [setup-extractor]  - post-commit hook на изменения captures/fleeting-notes (для нового clone — git init)
+  [setup-extractor]  - cron 09:00 + 21:00 для git-diff-feed (на этой машине)
+  [setup-extractor]  - fleeting-notes.md inbox создан
+  [setup-extractor] 
+  [setup-extractor] Что НЕ требует настройки (работает автоматически после update.sh):
+  [setup-extractor]  - regex fix в pending counter (WP-7 Ф-EXTRACTOR-FP)
+  [setup-extractor]  - inbox-check читает fleeting-notes как 2-й inbox (Ф-MULTI-SOURCE.3)
+  [setup-extractor]  - session-close-feed вызывается из Quick Close шаг 2.6 (Ф-MULTI-SOURCE.1)
+  [setup-extractor] 
+  [setup-extractor] Проверка: /home/iwe-test/IWE/FMT-exocortex-template/scripts/setup-extractor-feeders.sh --check
+  [setup-extractor] Удалить:  /home/iwe-test/IWE/FMT-exocortex-template/scripts/setup-extractor-feeders.sh --uninstall
+
+FPF base copy (upgrade refresh)...
+  ✓ FPF: копия уже актуальна (b223469).
+  ✓ Маркер незавершённого обновления снят.
+  --apply-settings-merge: settings.json уже совпадает с шаблоном, слияние не требуется
+✓ Всё актуально. Обновлений нет. (878 файлов проверено)

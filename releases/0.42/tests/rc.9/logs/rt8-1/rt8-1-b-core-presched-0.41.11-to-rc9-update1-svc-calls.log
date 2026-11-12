@@ -1,0 +1,3 @@
+crontab -l
+systemctl --user daemon-reload
+systemctl --user enable --now extractor-git-diff-feed.timer
