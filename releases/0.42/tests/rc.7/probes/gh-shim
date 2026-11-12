@@ -1,0 +1,27 @@
+#!/run/current-system/sw/bin/bash
+# Test-only gh shim for the disposable iwe-test user: pretends to be logged in,
+# refuses anything that writes to GitHub, forwards read-only calls unauthenticated.
+log="$HOME/iwe-rc7-linux/logs/gh-calls.log"
+printf '%s gh %s\n' "$(date -Is)" "$*" >> "$log"
+case "$1 ${2:-}" in
+  "auth status"|"auth token") [ "$2" = status ] && { echo "Logged in (iwe-test shim)"; exit 0; }; exit 1 ;;
+  "repo create"|"repo fork"|"repo delete"|"repo edit"|"pr "*|"issue "*|"release "*|"auth login"|"repo sync")
+    echo "gh-shim: '$1 $2' запрещено в тестовом окружении" >&2; echo "BLOCKED $*" >> "$log"; exit 1 ;;
+  "api "*)
+    # Only GET is allowed; served by unauthenticated curl against the public API.
+    shift; ep=""; method=GET
+    while [ $# -gt 0 ]; do case "$1" in
+      --hostname) shift 2;; --method|-X) method="$2"; shift 2;;
+      --jq|-q|--paginate|-H|--header|-f|-F|--field|--raw-field|--input) echo "BLOCKED-ARG api $1" >> "$log"; echo "gh-shim: параметр $1 не поддерживается" >&2; exit 1;;
+      *) ep="$1"; shift;; esac; done
+    [ "$method" = GET ] || { echo "BLOCKED api $method $ep" >> "$log"; echo "gh-shim: запись через api запрещена" >&2; exit 1; }
+    exec curl -q -sSfL -H "Accept: application/vnd.github+json" "https://api.github.com/${ep#/}" ;;
+  "repo clone")
+    src="$3"; dst="${4:-}"; shift 3; [ -n "$dst" ] && [ "$dst" != "--" ] && shift
+    [ "${1:-}" = "--" ] && shift
+    case "$src" in https://*|git@*) url="$src";; *) url="https://github.com/$src.git";; esac
+    exec git clone "$@" "$url" ${dst:+"$dst"} ;;
+  "repo view"|"repo list")
+    echo "gh-shim: нет входа в GitHub (тест), считаем, что хранилища нет" >&2; exit 1 ;;
+esac
+echo "gh-shim: '$*' не поддерживается без входа" >&2; echo "UNSUPPORTED $*" >> "$log"; exit 1
