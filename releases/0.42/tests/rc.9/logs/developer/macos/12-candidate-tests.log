@@ -1,0 +1,28 @@
+### bash setup/test-apply-op.sh
+apply-op: 132 проверок прошли, 0 не прошли
+RC=0
+### python3 -m pytest -q -p no:cacheprovider scripts/tests/test_dry_run_gate.py
+/opt/homebrew/opt/python@3.15/bin/python3.15: No module named pytest
+RC=1
+### bash scripts/tests/dryrun-gate-knowledge-namespace-regression.sh
+
+OK: все проверки прошли.
+RC=0
+### python3 -m pytest -q -p no:cacheprovider scripts/tests/test_glossary_source.py
+/opt/homebrew/opt/python@3.15/bin/python3.15: No module named pytest
+RC=1
+### bash setup/test-i18n.sh
+
+OK: all checks passed.
+RC=0
+### bash scripts/tests/test_issue_1433_gov_branch.sh
+  ✅ PASS: no gate anywhere yields empty (caller falls back to the governance branch)
+PASS: issue #1433 governance branch and publish gate
+RC=0
+### scripts/tests/test_dry_run_gate.py
+FAILED scripts/tests/test_dry_run_gate.py::test_posix_and_cygwin_still_require_0700[Linux]
+FAILED scripts/tests/test_dry_run_gate.py::test_posix_and_cygwin_still_require_0700[CYGWIN_NT-10.0-19045]
+3 failed, 328 passed in 57.63s
+### scripts/tests/test_glossary_source.py
+.......................                                                  [100%]
+23 passed in 0.14s
