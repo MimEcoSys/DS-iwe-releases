@@ -1,0 +1,29 @@
+--- Rejected: unknown channel values ---
+  ✅ PASS: channel 'realese' rejected with exit 1
+  ✅ PASS: channel 'realese' names the problem
+  ✅ PASS: channel 'realese' lists both accepted values
+  ✅ PASS: channel 'RELEASE' rejected with exit 1
+  ✅ PASS: channel 'RELEASE' names the problem
+  ✅ PASS: channel 'RELEASE' lists both accepted values
+  ✅ PASS: channel 'dev' rejected with exit 1
+  ✅ PASS: channel 'dev' names the problem
+  ✅ PASS: channel 'dev' lists both accepted values
+  ✅ PASS: channel ' ' rejected with exit 1
+  ✅ PASS: channel ' ' names the problem
+  ✅ PASS: channel ' ' lists both accepted values
+  ✅ PASS: channel 'main-branch' rejected with exit 1
+  ✅ PASS: channel 'main-branch' names the problem
+  ✅ PASS: channel 'main-branch' lists both accepted values
+--- Accepted: the three real channels pass the guard ---
+  ✅ PASS: channel 'release' passes the enum guard
+  ✅ PASS: channel 'main' passes the enum guard
+  ✅ PASS: channel 'rc' passes the enum guard
+--- Rejection message lists all three accepted values ---
+  ✅ PASS: rejection message lists 'release'
+  ✅ PASS: rejection message lists 'rc'
+  ✅ PASS: rejection message lists 'main'
+--- Default: unset and empty both fall back to the safe channel ---
+  ✅ PASS: unset IWE_UPDATE_CHANNEL passes the enum guard
+  ✅ PASS: empty IWE_UPDATE_CHANNEL defaults like unset, not rejected
+
+Result: 23 PASS, 0 FAIL

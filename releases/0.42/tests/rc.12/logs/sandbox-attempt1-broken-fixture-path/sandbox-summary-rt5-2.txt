@@ -1,0 +1,6 @@
+v0.42.0-rc.12 setup --core: код 0; файл режима: core
+  файлов службы экстрактора после установки: 0
+cp: cannot stat '/home/<user>/rt5-1/lsremote-upto-rc12.txt': No such file or directory
+  update.sh --yes: код 2; 
+  файлов службы экстрактора после обновления: 0
+rc=0

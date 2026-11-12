@@ -1,0 +1,4 @@
+  ⚠ broken/one.txt: curl код 7; curl: (7) Failed to connect to 127.0.0.1 port 1 after 0 ms: Could not connect to server
+  ⚠ broken/two.txt: curl код 7; curl: (7) Failed to connect to 127.0.0.1 port 1 after 0 ms: Could not connect to server
+PASS: network failure — download_batch returns 0 under set -e and stages nothing
+PASS: positive control — a reachable file is staged with its real content

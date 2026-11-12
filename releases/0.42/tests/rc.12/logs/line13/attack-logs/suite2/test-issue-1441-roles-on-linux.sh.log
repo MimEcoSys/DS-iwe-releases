@@ -1,0 +1,5 @@
+  ✅ PASS: macOS with launchd: roles installed
+  ✅ PASS: Linux without launchd: roles installed (#1441)
+  ✅ PASS: other OS without launchd: skipped with a manual hint
+  ✅ PASS: skip message names the manual install command
+PASS: issue #1441 roles on Linux

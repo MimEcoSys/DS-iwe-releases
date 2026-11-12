@@ -1,0 +1,8 @@
+RC=0 bash setup/test-apply-op.sh :: apply-op: 132 проверок прошли, 0 не прошли
+RC=1 python -m pytest -q -p no:cacheprovider scripts/tests/test_dry_run_gate.py :: 3 failed, 328 passed in 51.78s
+RC=0 bash scripts/tests/dryrun-gate-knowledge-namespace-regression.sh :: OK: все проверки прошли.
+RC=0 python -m pytest -q -p no:cacheprovider scripts/tests/test_glossary_source.py :: 23 passed in 0.13s
+RC=0 bash setup/test-i18n.sh :: OK: all checks passed.
+RC=0 bash scripts/tests/test_issue_1433_gov_branch.sh :: PASS: issue #1433 governance branch and publish gate
+RC=0 bash setup/test-update-legacy-template-base.sh :: PASS: legacy template base, edited copy, conflicted retry, top-level refusal
+RC=0 bash scripts/tests/test_issue_541_workspace_base.sh :: Result: 193 PASS, 0 FAIL

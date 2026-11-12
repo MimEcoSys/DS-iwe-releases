@@ -1,0 +1,351 @@
+============================================
+  Edge-Case Tests: update.sh (issue #206)
+============================================
+  Template: /tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template
+  Test workspace: /tmp/iwe-edge-test-524309
+
+--- T1: --check mode is read-only ---
+  ✅ PASS: T1: CLAUDE.md unchanged after --check
+  ✅ PASS: T1: --check does not create an incomplete-update marker
+--- T2: orphaned placeholder detection ---
+  ✅ PASS: T2: orphaned {{WORKSPACE_DIR}} is detectable by update.sh's grep pattern
+  ✅ PASS: T2: clean file is NOT flagged (only 1 orphan found)
+--- T3: conflict-marker stacking guard ---
+  ✅ PASS: T3: pre-existing conflict markers are detectable (stacking guard can fire)
+--- T4: role install error surfacing ---
+  ✅ PASS: T4: role install exit code (1) is non-zero — caller CAN detect failure
+     ⚠️  KNOWN GAP: setup.sh line 695 does not check exit code — failure is silent
+--- T5: --check is network-independent when manifest is cached ---
+  ✅ PASS: T5: local manifest cache is valid JSON and parseable
+--- T6: owner: marker is read, but the memory policy decides (issues #229/#965) ---
+  ✅ PASS: T6: get_field detects owner:user (single-quoted)
+  ✅ PASS: T6: no owner: guard decides any more; Step 6 and repair_pass() both call apply_memory_policy
+--- T7: hot-budget validator sums horizon:hot lines ---
+  ✅ PASS: T7: hot-budget validator sums to 160 (>150), warning would fire
+  ✅ PASS: T7: warm-c.md correctly excluded from hot sum
+--- T8: copied_to_workspace protects an existing params.yaml ---
+  ✅ PASS: T8: existing params.yaml survives build-runtime.sh (edit not overwritten)
+  ✅ PASS: T8: is_protected_user_file guard is wired into copied_to_workspace loop
+--- T9: .mcp.json migration keeps user-added servers ---
+  ✅ PASS: T9: ext-figma survives migration, knowledge-mcp removed, iwe-knowledge added
+  ✅ PASS: T9: update.sh Step 6c still preserves existing servers (not a whole-file overwrite)
+--- T10: CLAUDE.md fallback path without .base does not clobber pilot edits ---
+  ⚠ CLAUDE.md НЕ тронут — базовый файл для слияния отсутствовал.
+    Сверьте свои правки §8/§9 вручную с шаблонной версией: diff "/tmp/iwe-edge-test-524309/t10-claude-md/current.md" "/tmp/iwe-edge-test-524309/t10-claude-md/new.md"
+  ✅ PASS: T10: Step 5 — pilot's §8/§9 content survives the real fallback branch
+  ✅ PASS: T10: Step 5 — CLAUDE_BASE_MISSING_FILES tracked (feeds the disambiguated final summary, issue #336 follow-up)
+  ✅ PASS: T10: Step 5 — no false-ancestry base file written while CURRENT_FILE stayed stale (issue #541)
+  ⚠ /tmp/iwe-edge-test-524309/t10-claude-md/current-b.md: правки вне блока USER-SPACE будут заменены версией шаблона; резервная копия: /tmp/iwe-edge-test-524309/t10-claude-md/.backups/claude-md-pre-update/20261112T141101Z-524309
+  ✓ /tmp/iwe-edge-test-524309/t10-claude-md/current-b.md обновлён (USER-SPACE сохранён, базовый файл создан)
+  ✅ PASS: T10: Step 6 — USER-SPACE case still merges upstream + preserves the marked section
+/tmp/iwe-edge-test-524309/t10-claude-md/step6-block.sh: строка 22: is_author_mode: команда не найдена
+  ⚠ /tmp/iwe-edge-test-524309/t10-claude-md/current-c.md НЕ тронут — базовый файл для слияния отсутствовал.
+    Сверьте свои правки §8/§9 вручную с шаблонной версией: diff "/tmp/iwe-edge-test-524309/t10-claude-md/current-c.md" "/tmp/iwe-edge-test-524309/t10-claude-md/new-c.md"
+  ✅ PASS: T10: Step 6 — no-markers case leaves WS_CURRENT untouched (issue #541)
+  ✅ PASS: T10: Step 6 — no false-ancestry WS_BASE written while WS_CURRENT stayed stale (issue #541)
+--- T11: DayPlan multiplier/mandatory/budget checks (issue #328) ---
+  ✅ PASS: T11: default-install DayPlan (no multiplier, no mandatory config, ч-budget) passes all three checks
+  ✅ PASS: T11: DayPlan with mandatory_daily_wps configured still requires the mandatory section
+--- T12: memory backup keeps nested files ---
+  ✅ PASS: T12: nested memory/reference/agent-core.md reaches the backup
+  ✅ PASS: T12: directory skeletons with no matching files are not mirrored
+  ✅ PASS: T12: ownership sync preserves all non-memory writer subtrees
+  ✅ PASS: T12: manifest prunes an unchanged formerly-owned memory file
+  ✅ PASS: T12: ownership manifest records the production backup
+--- T13: scheduler state is four-valued, not boolean ---
+  ✅ PASS: T13: host with no launcher artefacts reports not_deployed (no red, no incident)
+  ✅ PASS: T13: stale scheduler log alone proves past deployment → deployed_inactive
+  ✅ PASS: T13: a failing service-manager query reports unknown, not not_deployed
+  ✅ PASS: T13: a single role's plist still counts as deployed (partial install is normal)
+  ✅ PASS: T13: a failed probe outranks on-disk artefacts (no daily false Mode A on WSL)
+  ✅ PASS: T13: the three situations the old boolean merged now differ
+--- T14: params.yaml is seeded from the example, not tracked by the template ---
+  ✅ PASS: T14: absent params.yaml is seeded into the workspace
+  ✅ PASS: T14: seeding a protected user file is announced, not silent
+  ✅ PASS: T14: template ships params.yaml.example
+  ✅ PASS: T14: template repo does not track a working params.yaml
+--- T15: residency-gate scripts resolve residency-gate.py correctly ---
+  ✅ PASS: T15: residency-gate-init.sh honors an explicit CLAUDE_ROOT from a foreign cwd
+  ✅ PASS: T15: residency-gate-init.sh default resolves from the project root
+  ✅ PASS: T15: residency-gate-lazy.sh honors an explicit CLAUDE_ROOT from a foreign cwd
+  ✅ PASS: T15: residency-gate-lazy.sh default resolves from the project root
+--- T16: newly wired hooks honor their event protocols (template-run, clean env) ---
+  ✅ PASS: T16: inject-code-style.sh is registered in settings.json
+  ✅ PASS: T16: inject-communication-style.sh is registered in settings.json
+  ✅ PASS: T16: inject-fault-profile.sh is registered in settings.json
+  ✅ PASS: T16: response-clarity-hook.sh is registered in settings.json
+  ✅ PASS: T16: inject-code-style is not wired to UserPromptSubmit (PreToolUse-only)
+  ✅ PASS: T16: inject-communication-style serves the snapshot on a real UserPromptSubmit
+  ✅ PASS: T16: inject-code-style serves the style core on a real PreToolUse
+  ✅ PASS: T16: inject-fault-profile serves reminders from the canonical CLI fixture
+  ✅ PASS: T16: traversal-shaped session_id is sanitized in the state-file name
+  ✅ PASS: T16: no path-traversal artifact outside the state directory
+  ✅ PASS: T16: inject-fault-profile degrades to a silent no-op without jq
+  ✅ PASS: T16: response-clarity-hook honors the stop_hook_active recursion guard
+  ✅ PASS: T16: response-clarity-hook flags the A10 marker in warning mode
+  ✅ PASS: T16: response-clarity-hook blocks with a reason in enforce mode
+--- T17: seed delivers scripts/lib/ to a fresh governance install ---
+  ✅ PASS: T17: seed/strategy/scripts/lib/common.sh is present
+  ✅ PASS: T17: setup.sh copies the whole seed tree recursively
+--- T18: decision log has one canonical home ---
+  ✅ PASS: T18: all decision-log consumers name the canonical governance decisions/ path
+  ✅ PASS: T18: repository rules and fresh-install seed both provide the decisions/ home
+  ✅ PASS: T18: first write and Month Close migrate legacy logs without silent overwrite
+  ✅ PASS: T18: Month Close defines a non-error outcome for a month without decisions
+--- T19: orphan detection is diagnostic and CWD-independent ---
+  ✅ PASS: T19: orphan detection resolves the manifest from SCRIPT_DIR outside the template CWD
+  ✅ PASS: T19: an orphan-check failure warns and does not fail the applied update
+--- T20: index-health skip keeps semantic checks ---
+  ✅ PASS: T20: skip suppresses size FAIL while done-no-strike still produces WARN
+--- T21: platform memory migrates once with backup ---
+  ✅ PASS: T21: exact shared-memory allowlist declares owner:platform
+  ✅ PASS: T21: the migration has no overwrite path of its own
+  ✅ PASS: T21: an untouched legacy copy migrates with a backup, once; an edited one is kept
+--- T22: Quick Close falls back only when runner capability is absent ---
+  ✅ PASS: T22: missing runner capability selects a visible manual fallback
+  ✅ PASS: T22: installed runner without a terminal card still blocks close
+  ✅ PASS: T22: installed runner with a completed matching card permits close
+  ✅ PASS: T22: protocol text documents strict and manual modes
+--- T23: wp-sync-bundle uses the canonical folder card and phase statuses ---
+  ✅ PASS: T23: folder card wins and only pending/in_progress/blocked phases are listed
+  ✅ PASS: T23: legacy cards without phases keep checkbox fallback
+  ✅ PASS: T23: a shorter WP ID does not resolve a longer numeric prefix
+  ✅ PASS: T23: inline related, title fallback, dedup/self-filter, and linked-worktree history work together
+  ✅ PASS: T23: block related keeps typed relations
+  ✅ PASS: T23: a WP-780 phase reference does not create drift for closed WP-78
+  ✅ PASS: T23: runtime variant reads inline blockers
+  ✅ PASS: T23: a plain directory nested in another repository is not treated as its Git root
+--- T24: raw CLAUDE base + transactional rules preservation (#379/#381) ---
+  ✅ PASS: T24: legacy absolute path migrates back to placeholder without losing delta
+  ✅ PASS: T24: setup no longer writes substituted base into the public template repo
+  ↳ backup: /tmp/iwe-edge-test-524309/t24-root/.claude/rules/example.md → /tmp/iwe-edge-test-524309/t24-root/.backups/rules-pre-update/20261112T141107Z-524309/example.md
+  ✅ PASS: T24: rule update preserves USER-SPACE and creates a recoverable pre-image
+  ↳ backup: /tmp/iwe-edge-test-524309/t24-root/.claude/rules/diverged.md → /tmp/iwe-edge-test-524309/t24-root/.backups/rules-pre-update/20261112T141107Z-524309/diverged.md
+  ⚠ .claude/rules/diverged.md — рабочая копия отличается от прежнего шаблона; пользовательская правка сохранена.
+    Сверьте: diff "/tmp/iwe-edge-test-524309/t24-root/rule-diverged-upstream.md" "/tmp/iwe-edge-test-524309/t24-root/.claude/rules/diverged.md"
+  ↳ backup: /tmp/iwe-edge-test-524309/t24-root/.claude/rules/diverged.md → /tmp/iwe-edge-test-524309/t24-root/.backups/rules-pre-update/20261112T141107Z-524309/diverged.md
+  ⚠ .claude/rules/diverged.md — рабочая копия отличается от прежнего шаблона; пользовательская правка сохранена.
+    Сверьте: diff "/tmp/iwe-edge-test-524309/t24-root/rule-diverged-upstream.md" "/tmp/iwe-edge-test-524309/t24-root/.claude/rules/diverged.md"
+  ✅ PASS: T24: diverged rule survives repeated repair attempts unchanged
+--- T25: bootstrap/path contracts (#300/#362/#366/#368/#371/#374/#377) ---
+  ✅ PASS: T25: manifest delivers setup/build-runtime.sh
+  ✅ PASS: T25: manifest delivers setup/install-iwe-paths.sh
+  ✅ PASS: T25: legacy HOME source is replaced by the eight-variable workspace SoT
+  ✅ PASS: T25: common resolver derives a non-HOME workspace from its installed location
+setup/test-update-edge-cases.sh: строка 1952: iwe_claude_project_slug: команда не найдена
+  ✅ PASS: T25: physical workspace/memory target wins over a guessed Claude slug
+  ✅ PASS: T25: params.yaml.example is the hash input and content changes alter its digest
+  ✅ PASS: T25: cwd guard blocks sticky cd without false positives for subshell/quoted text
+  ✅ PASS: T25: both runners and all four plists support native Claude; runners fail with 127
+--- T26: multiplier opt-out is end-to-end (#376) ---
+day-open-scaffold: WARN: day-rhythm-config.yaml не распарсился (/tmp/iwe-edge-test-524309/t26-workspace/memory/day-rhythm-config.yaml not found or python3 unavailable) — strategy_day не проверен, DayPlan генерируется как в обычный день
+  ✅ PASS: T26: deterministic DayPlan scaffold selects the multiplier-off budget contract
+  ✅ PASS: T26: DayPlan, WeekPlan, Week Close and Day Close all provide multiplier-off branches
+--- T27: bootstrap, hot-files and memory frontmatter contracts ---
+  ✅ PASS: T27: bootstrap leaves the caller's SCRIPT_DIR unchanged
+  ✅ PASS: T27: memory-bleed starts successfully with the shared bootstrap
+  ✅ PASS: T27: read-only context check does not create runtime state on a fresh clone
+  ✅ PASS: T27: install-specific hot list is generated only in runtime
+  ✅ PASS: T27: every shipped memory frontmatter checked by the validator is valid
+
+--- T28: settings.json merge preview (WP-7 F71 stage A) ---
+  ✅ PASS: T28: preview is generated and is valid JSON
+  ✅ PASS: T28: user hook preserved AND template-new hook added
+  ✅ PASS: T28: conflict keeps user value; template-new and user-only keys survive
+  ✅ PASS: T28: report names the conflict key and counts deduped hooks
+  ✅ PASS: T28: workspace settings.json is byte-identical after preview
+  ✅ PASS: T28: broken input rejected, no preview written
+
+--- T29: author_mode skip classifier (WP-7 F71 stage A) ---
+  ✅ PASS: T29: unknown no-history
+  ✅ PASS: T29: stale history
+  ✅ PASS: T29: authored diverged
+  ✅ PASS: T29: uptodate current
+  ✅ PASS: T29: unknown no-git
+  ✅ PASS: T29: --templated downgrades authored to unknown (substituted placeholders)
+
+--- T30: update.sh integration of stage-A observability (WP-7 F71) ---
+  ✅ PASS: T30: update.sh calls classifier, merge preview and prints the skip summary
+  ✅ PASS: T30: generic skip message survives only as the degraded-mode fallback
+
+--- T31: extensions-gate fail-closed matrix (WP-7 F71) ---
+  ✅ PASS: T31: own skill (not in manifest) is allowed
+  ✅ PASS: T31: nonexistent leaf of a new own skill is classified and allowed
+  ✅ PASS: T31: ordinary file is allowed
+  ✅ PASS: T31: global/user skill outside workspace is allowed
+  ✅ PASS: T31: external manifest is outside gate ownership
+  ✅ PASS: T31: workspace prefix collision stays outside gate ownership
+  ✅ PASS: T31: platform skill is blocked
+  ✅ PASS: T31: nonexistent leaf under a platform skill is blocked
+  ✅ PASS: T31: memory/protocol-* is blocked
+  ✅ PASS: T31: nonexistent protocol leaf is blocked
+  ✅ PASS: T31: traversal via .. is blocked before classification
+  ✅ PASS: T31: manifest itself is always blocked
+  ✅ PASS: T31: symlink into a platform skill is blocked by real path
+  ✅ PASS: T31: symlink to external user territory is allowed
+  ✅ PASS: T31: external symlink into platform skill is blocked by real path
+  ✅ PASS: T31: missing manifest names the real failure
+  ✅ PASS: T31: broken manifest fails closed (no allow on tool failure)
+  ✅ PASS: T31: empty manifest .files fails closed
+  ✅ PASS: T31: restoring the manifest restores the allow
+  ✅ PASS: T31: template settings.json ships defaultMode=default (not acceptEdits)
+  ✅ PASS: T31: extensions-gate declares its actual Edit|Write enforcement scope
+  ✅ PASS: T31: docs disclose Bash bypass and preserve the issue-311 local-skill path
+
+--- T32: settings.json merge APPLY with backup/rollback (WP-7 F71 stage B) ---
+  ✅ PASS: T32: merge applied — user values kept, template additions present
+  ✅ PASS: T32: backup of the pre-merge settings.json exists
+  ✅ PASS: T32: preview file is consumed after a successful apply
+  ✅ PASS: T32: broken input rejected, workspace settings.json byte-identical
+
+--- T33: stage-B flags contract in update.sh (WP-7 F71) ---
+  ✅ PASS: T33: both stage-B flags are parsed and default to off
+  ✅ PASS: T33: refresh-stale refuses on unknown>0 and backs up before overwrite
+  ✅ PASS: T33: update.sh delegates settings apply to the standalone tested script
+
+--- T34: code-style Unicode cap contract (#435) ---
+  ✅ PASS: T34: Cyrillic context at its character cap is not falsely truncated by bytes
+
+--- T35: /extend catalog matches protocol extension points (#436) ---
+  ✅ PASS: T35: /extend lists every invoked point and new skill lifecycles are ordered
+
+--- T36: extension loader lifecycle contract (#508) ---
+  ✅ PASS: T36a: suffix and manifest extensions are returned in stable lexical order
+  ✅ PASS: T36b: no matching extension is an explicit no-op (rc=1)
+  ✅ PASS: T36c: malformed loader invocation is distinguishable from no-op (rc=2)
+  ✅ PASS: T36d: missing extensions directory is a typed loader failure, not a no-op
+  ✅ PASS: T36e: configured dangling extension is a typed failure, not a no-op
+  ✅ PASS: T36f: matching non-file extension is a typed failure, not a no-op
+  ✅ PASS: T36g: existing explicit workspace cannot fail open into script fallback
+  ✅ PASS: T36h: mixed after set preserves healthy paths while reporting damage
+  ✅ PASS: T36i/before: recursion delimiters are rejected without blocking lookalikes (ARCHGATE_EXTENSION: BLOCK)
+  ✅ PASS: T36i/checks: recursion delimiters are rejected without blocking lookalikes (ARCHGATE_EXTENSION: BLOCK)
+  ✅ PASS: T36i/after: recursion delimiters are rejected without blocking lookalikes (ARCHGATE_EXTENSION: WARN)
+
+--- T37: governance backfills are explicit in update preview (#508) ---
+  ✅ PASS: T37: preview resolves legacy config and lists every governance backfill target
+  ✅ PASS: T37: no broad untouched-governance promise remains
+
+--- T38: State-Transition Gate lazy trigger contract (#481) ---
+  ✅ PASS: T38a: generated AGENTS.md matches the CLAUDE.md hot source
+  ✅ PASS: T38b: trigger, full rule, fresh/author routing and negative mutation pass
+  ✓ /tmp/iwe-edge-test-524309/t38-sync/workspace/AGENTS.md обновлён (generated, substituted)
+  ✓ /tmp/iwe-edge-test-524309/t38-sync/workspace/AGENTS.md обновлён (generated, substituted)
+  ✅ PASS: T38c: setup/update recovery delivers and repairs substituted workspace AGENTS.md
+  ✅ PASS: T38d: setup and update reject AGENTS symlinks without touching the target
+  ✅ PASS: T38e: setup and update reject non-file AGENTS targets without fail-open
+  ✅ PASS: T38f: actual setup bundle aborts before a CLAUDE symlink can poison merge base
+  ✅ PASS: T38g: setup safely substitutes &, | and backslash and preserves merge-base parity
+--- T39: hash_file() on a system with no hasher at all (issue #755) ---
+  ✅ PASS: T39: no hasher on PATH -> loud EXIT_RUNTIME(3) naming the missing tools, not a silent empty hash
+--- T40: Kimi peer heartbeat namespace and watchdog consumer (WP-484) ---
+  ✅ PASS: T40a: peer adapter writes visibility beacon outside sessions/*.open
+  ✅ PASS: T40b: explicit idempotent cutover keeps immutable fence while v4 lineage publishes vendor PGID
+  ✅ PASS: T40c: rejected duplicate cannot replace the live owner's beacon
+  ✅ PASS: T40d: normal peer exit reaps runtime lineage, preserves permanent fence, and removes its beacon
+  ✅ PASS: T40e: successful peer call records a timestamped session journal entry
+  ✅ PASS: T40f: concurrent same-id adapters elect exactly one owner
+  ✅ PASS: T40g: owner metadata loss keeps stable admission closed and kills vendor fail-closed
+setup/test-update-edge-cases.sh: строка 3506: 534003 Killed                  t40_launch_peer "$T40_CRASH_ADD" "$T40_CRASH_BIN" "$T40_ROOT/crash.out" "$T40_ROOT/crash.err" IWE_PEER_TIMEOUT_SECONDS=30
+  ✅ PASS: T40h: top SIGKILL preserves same/cross-id exclusion until resistant lineage is dead
+  ✅ PASS: T40i: SIGKILL helper leaves its survivor authoritative through same/cross drain and reaps both
+  ✅ PASS: T40j: SIGKILL sentinel leaves its survivor authoritative through same/cross drain and reaps both
+  ✅ PASS: T40v: double controller fault remains closed by vendor PGID until group death
+  ✅ PASS: T40k: hung --help cannot pin the lifetime FIFO after top SIGKILL
+  ✅ PASS: T40l: helper SIGKILL in both staging windows preserves fence and leaves runtime free
+  ✅ PASS: T40w: paused legacy ABA blocks admission/cutover; drained cutover fence blocks rollback
+  ✅ PASS: T40x: no-fence ordinary call fails closed without auto-cutover or vendor entry
+  ✅ PASS: T40z: non-ASCII OAuth metadata faults closed without vendor entry
+  ✅ PASS: T40m: live pid-only scheduler remains untouched before explicit cutover
+  ✅ PASS: T40n: dead ownerless/raw legacy directories remain fail-closed
+  ✅ PASS: T40o: valid v2 real directory stays fail-closed at the cutover boundary
+  ✅ PASS: T40y: missing-target v4 runtime recovers without changing permanent fence
+  ✅ PASS: T40p: TERM exits after exact cleanup and cannot continue the peer call
+  ✅ PASS: T40q: watchdog consumes the separate peer-heartbeats namespace
+  ✅ PASS: T40r: watchdog does not alert on a fresh peer heartbeat
+  ✅ PASS: T40s: watchdog rejects zero and non-numeric timing controls
+  ✅ PASS: T40t: watchdog escapes peer labels before AppleScript interpolation
+  ✅ PASS: T40u: template delivers the peer language-check dependency
+--- T41: workspace CLAUDE.md conflict-pending sidecar (issue #846) ---
+  ~ /tmp/iwe-edge-test-524309/t41-claude-conflict/workspace/CLAUDE.md (1 конфликтов — разрешите вручную)
+    Конфликты обозначены <<<<<<< / ======= / >>>>>>>
+  ✅ PASS: T41: first run — real conflict surfaced and recorded as pending
+  ✓ /tmp/iwe-edge-test-524309/t41-claude-conflict/workspace/CLAUDE.md принят как разрешённый вручную (база обновлена, прежняя сохранена рядом)
+  ✅ PASS: T41: hand-resolved file accepted — base advanced without re-merging, file untouched
+  ✅ PASS: T41: old base backed up before being advanced
+  ~ /tmp/iwe-edge-test-524309/t41-claude-conflict/workspace2/CLAUDE.md (1 конфликтов — разрешите вручную)
+    Конфликты обозначены <<<<<<< / ======= / >>>>>>>
+  ✅ PASS: T41: stale pending (upstream moved on) is discarded — fresh merge runs instead of blind accept
+--- T42: memory/* stale-repair backup (issue #847) ---
+  ✅ PASS: T42: memory/navigation.md backed up before stale-repair overwrite
+  ✅ PASS: T42: non-memory path is a no-op, matching the .claude/rules/*-only scope of the sibling function
+  ✅ PASS: T42: repair_pass() actually calls the backup before the stale-repair cp
+--- T43: Step 6 keeps the edited memory file, backs up and reports the replaced one (issues #967/#965) ---
+  ✅ PASS: T43: the pilot's edited navigation.md is kept, with one line and a ready command
+  ✅ PASS: T43: a file the pilot never changed is replaced with the release version, after a backup
+  ✅ PASS: T43: the summary names the replaced file, their number and the backup directory
+  ✅ PASS: T43: kept, new and identical files are not in the replaced-files summary
+  ✅ PASS: T43: a new file is copied, and nothing is backed up for new, identical or kept files
+  ✅ PASS: T43: a pilot-owned (owner: user) file the pilot rewrote is still left alone
+  ✅ PASS: T43: no replaced-files summary when no file is replaced
+--- T44: author_mode stale hint: odd paths, two runs keep two copies ---
+  ✅ PASS: T44: the printed command refreshes exactly the printed path, interprets nothing in it, and two identical runs keep two copies
+--- T45: kept memory copy: odd paths, the hint's two runs keep two copies (issues #965/#967) ---
+  ✅ PASS: T45: a copy equal to a committed version is refreshed at exactly its odd path, after a backup
+  ✅ PASS: T45: the printed command refreshes exactly the printed path, interprets nothing in it, and two identical runs keep two copies
+--- T46: memory policy — untouched copies refreshed, edited ones kept (issues #965/#967) ---
+  ✅ PASS: T46: the update runs to its end under set -e
+  ✅ PASS: T46: untouched copies are refreshed after a backup — owner: user and owner: platform alike, odd paths included
+  ✅ PASS: T46: an untouched legacy owner: user protocol migrates to the platform version, the line naming the proof
+  ✅ PASS: T46: no shell expanded the odd paths (no '…EXPANDED…' path appeared)
+  ✅ PASS: T46: edited copies are kept — owner: user, owner: platform and a legacy protocol — each with one line and a ready command
+  ✅ PASS: T46: a missing copy is copied and an identical one left alone, neither backed up
+  ✅ PASS: T46: the summary names all four replaced files and the backup directory, and counts the three kept ones
+  ✅ PASS: T46: the record names the template version of every refreshed, new and identical copy, and no kept one
+  ✅ PASS: T46: a repeated update changes nothing — copies, backups, record; the three kept files are reported again
+  ✅ PASS: T46: a copy stuck on a past release is refreshed through the clone's history, with a backup
+  ✅ PASS: T46: an owner: platform copy that matches no committed version is kept, naming both possible causes
+  ✅ PASS: T46: in a --depth 1 clone a stuck copy is kept — owner: platform too — with the reason and a command
+  ✅ PASS: T46: a failed backup leaves the copy as it was, warns, counts it among the files not updated and does not end the run
+  ✅ PASS: T46: author_mode keeps its own branch — the author's copy is reported, not refreshed
+--- T47: memory record — broken-off run, lag, unusable record, setup, author_mode (#965/#967 review) ---
+  ✅ PASS: T47: update.sh and setup.sh write the record with the same memory_record_put and hash_file
+  ✅ PASS: T47: after a broken-off run a copy two releases behind is refreshed by the record, which then names the new version
+  ✅ PASS: T47: an edited copy stays after a broken-off run, and its record line still names the version installed before
+  ✅ PASS: T47: a record path that is a directory costs one warning; the update and its other proofs go on
+  ✅ PASS: T47: malformed record lines prove nothing and are dropped; a valid line still proves its copy
+  ✅ PASS: T47: author_mode reports an owner: user copy once, outside its counters; --refresh-stale still refreshes the stale platform copy
+  ✅ PASS: T47: setup.sh records every memory file it installs, keeps other lines, replaces an older line
+  ✅ PASS: T47: setup.sh --dry-run writes no record
+--- T48: record before Step 5, atomic writes, unusable record, closing summary (review-12 of #965/#967) ---
+  ✅ PASS: T48: before Step 5 untouched copies get their record line — owner: user and owner: platform; edited copy, MEMORY.md, personal config none
+  ✅ PASS: T48: author_mode writes no record before Step 5
+  ✅ PASS: T48: the record is rewritten by rename — a read-only record still takes the line, under a new inode
+  ✅ PASS: T48: a memory copy is replaced by rename (new inode), keeps its mode and leaves no temporary file
+  ✅ PASS: T48: an unreadable record is not rewritten — its six lines survive
+  ✅ PASS: T48: a record that is a link is left as it is, with one warning for the run
+  ✅ PASS: T48: a record that is a link proves nothing when it is read (the same file read directly does)
+  ✅ PASS: T48: a copy that could not be delivered and an unreadable template file are in the closing summary
+--- T49: governance script policy — content decides, never git status; never aborts (WP-485 Ф17) ---
+  ✅ PASS: T49: a never-delivered path is copied fresh, executable
+  ✅ PASS: T49: a copy equal to a historical (not current) release is replaced after a backup — not blocked by git status
+  ✅ PASS: T49: content matching no release is kept untouched (authored — could be the pilot's own edit)
+  ✅ PASS: T49: the kept file's line carries a diff pointer and a ready accept command
+  ✅ PASS: T49: the closing summary names the kept script by its own label, not as a 'файл памяти'
+
+=== T50: skill SKILL.md keeps its USER-SPACE block across an update ===
+  ✅ PASS: T50: Case A — the platform text outside the block moved to the upstream revision
+  ✅ PASS: T50: Case A — the pilot's USER-SPACE block survived the update
+  ✅ PASS: T50: Case B — a skill with no USER-SPACE block is a plain overwrite
+--- T51: .backups/ unwritable stops the update before it touches anything ---
+  ✅ PASS: T51: an existing .backups/ with mode 000 fails the gate with exit 3
+  ✅ PASS: T51: the prior backup under .backups/ is untouched by the failed probe
+  ✅ PASS: T51: .backups as a symlink (even to a writable target) fails the gate with exit 3
+  ✅ PASS: T51: a broken .backups symlink fails the gate with exit 3
+  ✅ PASS: T51: .backups as a plain file (not a directory) fails the gate with exit 3
+  ✅ PASS: T51: a missing .backups/ under a writable parent is created and the gate passes
+  ✅ PASS: T51: Step 5 actually calls require_backup_root_writable()
+
+============================================
+  Results: 253 PASS, 0 FAIL
+============================================

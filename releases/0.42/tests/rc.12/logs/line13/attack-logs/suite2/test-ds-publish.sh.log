@@ -1,0 +1,83 @@
+== publishes exactly the given commit; the checkout is left alone
+  ✅ PASS: exit 0
+  ✅ PASS: origin got only the requested commit
+  ✅ PASS: local HEAD unchanged
+  ✅ PASS: uncommitted and staged changes preserved
+  ✅ PASS: temp worktree removed
+  ✅ PASS: the push carried no force flag
+== already on origin: same SHA
+  ✅ PASS: no-op, origin unchanged
+== already on origin: same patch, different SHA
+  ✅ PASS: equivalent patch recognised, no duplicate
+== conflict: exit 3, origin untouched, nothing left behind
+  ✅ PASS: exit 3
+  ✅ PASS: origin unchanged
+  ✅ PASS: no temp worktree left
+  ✅ PASS: the commit stays local
+== origin moves between fetch and push: replayed on the new tip, nothing lost
+  ✅ PASS: exit 0 after a retry
+  ✅ PASS: both the racer's commit and ours are on origin
+  ✅ PASS: the refused attempt is reported
+== push refused every time: exit 4, no force push, origin untouched
+  ✅ PASS: exit 4
+  ✅ PASS: origin unchanged
+  ✅ PASS: three attempts
+  ✅ PASS: exactly three push attempts
+  ✅ PASS: no force flag on any retry
+  ✅ PASS: no temp worktree left
+== preconditions fail cleanly (exit 1)
+  ✅ PASS: unknown commit
+  ✅ PASS: not a git repository
+  ✅ PASS: no origin
+  ✅ PASS: bad priority
+  ✅ PASS: unknown option
+== a merge commit is refused (exit 2)
+  ✅ PASS: merge commit refused, origin untouched
+== a single-branch clone (remote.origin.fetch narrowed to another branch)
+  ✅ PASS: published although refs/remotes/origin/main does not exist
+  ✅ PASS: the private fetch ref is removed
+== a stale origin/<branch> tracking ref must not fake 'already published'
+  ✅ PASS: re-published after origin was rewritten (the stale tracking ref was not trusted)
+== a cherry-pick that fails for a reason other than a conflict is NOT success
+  ✅ PASS: exit 1, not a false success
+  ✅ PASS: origin unchanged
+  ✅ PASS: the reason is stated
+== the strategist call shape from the template
+  ✅ PASS: strategist.sh's exact argument shape publishes
+== isolated copy on strategist/note-review-20261001223000-4242: --branch main publishes to origin/main
+  ✅ PASS: exit 0
+  ✅ PASS: origin/main got the copy's commit
+  ✅ PASS: no branch named after the copy appeared on origin
+  ✅ PASS: the copy keeps its named branch and HEAD
+  ✅ PASS: no temp worktree left (the checkout and the copy only)
+  ✅ PASS: a repeated publication is a no-op (exit 0, no second commit)
+== isolated copy on session-isolate/claude-s1: --branch main publishes to origin/main
+  ✅ PASS: exit 0
+  ✅ PASS: origin/main got the copy's commit
+  ✅ PASS: no branch named after the copy appeared on origin
+  ✅ PASS: the copy keeps its named branch and HEAD
+  ✅ PASS: no temp worktree left (the checkout and the copy only)
+  ✅ PASS: a repeated publication is a no-op (exit 0, no second commit)
+== isolated copy, conflict on --branch main: exit 3, the commit stays local, origin untouched
+  ✅ PASS: exit 3
+  ✅ PASS: origin unchanged
+  ✅ PASS: the commit stays local on the copy's branch
+  ✅ PASS: no temp worktree left
+== default unchanged: without --branch an isolated copy targets its own branch, absent on origin
+  ✅ PASS: exit 1, origin untouched, no branch created
+  ✅ PASS: the error names the branch it tried
+== the old call shape from a detached copy still publishes (origin/HEAD, then main)
+  ✅ PASS: detached HEAD without --branch publishes to main
+== --branch takes a branch name only: garbage gives usage (exit 1) before any fetch or push
+  ✅ PASS: --branch '' refused with usage
+  ✅ PASS: --branch '-main' refused with usage
+  ✅ PASS: --branch 'ma in' refused with usage
+  ✅ PASS: --branch 'main..x' refused with usage
+  ✅ PASS: --branch 'ma:in' refused with usage
+  ✅ PASS: --branch 'ma~in' refused with usage
+  ✅ PASS: --branch 'refs/heads/../x' refused with usage
+  ✅ PASS: --branch without a value refused with usage
+  ✅ PASS: origin untouched by the refused calls
+  ✅ PASS: a valid name absent on origin: exit 1, nothing created on origin
+
+PASS: ds-publish (#941)

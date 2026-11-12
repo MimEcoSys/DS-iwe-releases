@@ -1,0 +1,142 @@
+==========================================
+  Exocortex Setup v0.7.0 (core)
+==========================================
+
+Template: /tmp/rt-rc13-v0.36.3.3H7R55/IWE/FMT-exocortex-template
+
+Checking prerequisites...
+  ✓ Git: /run/current-system/sw/bin/git
+  ✓ jq: /run/current-system/sw/bin/jq
+
+  Режим --core: проверяются только обязательные зависимости (git).
+  GitHub CLI, Node.js, Claude Code — не требуются.
+
+  [CI] GITHUB_USER=rt-fixture WORKSPACE_DIR=/tmp/rt-rc13-v0.36.3.3H7R55/IWE
+
+Configuration:
+  GitHub user:    rt-fixture
+  Workspace:      /tmp/rt-rc13-v0.36.3.3H7R55/IWE
+  Mode:           core (offline)
+  Home dir:       /tmp/rt-rc13-v0.36.3.3H7R55
+  Project slug:   -tmp-rt-rc13-v0.36.3.3H7R55-IWE
+
+setup.sh: строка 374: source: требуется аргумент с именем файла
+source: использование: source файл [аргументы]
+  Configuration saved to /tmp/rt-rc13-v0.36.3.3H7R55/IWE/.exocortex.env
+
+[1/6] Building generated runtime...
+  === build-runtime ===
+    Template: /tmp/rt-rc13-v0.36.3.3H7R55/IWE/FMT-exocortex-template
+    Workspace: /tmp/rt-rc13-v0.36.3.3H7R55/IWE
+    Env file: /tmp/rt-rc13-v0.36.3.3H7R55/IWE/.exocortex.env
+    Runtime: /tmp/rt-rc13-v0.36.3.3H7R55/IWE/.iwe-runtime
+  
+  ✓ runtime: 24 файлов в /tmp/rt-rc13-v0.36.3.3H7R55/IWE/.iwe-runtime/
+  ✓ workspace: 2 файлов обновлено / 2 проверено
+    Build hash: 197dec6819525b6f...
+    FMT version: 0.36.3
+  Pre-commit hook enabled (.githooks/)
+[2/6] Installing CLAUDE.md...
+  Copied to /tmp/rt-rc13-v0.36.3.3H7R55/IWE/CLAUDE.md (+ merge base, substituted)
+[3/6] Installing memory...
+  Copied to /tmp/rt-rc13-v0.36.3.3H7R55/.claude/projects/-tmp-rt-rc13-v0.36.3.3H7R55-IWE/memory
+  Symlink: /tmp/rt-rc13-v0.36.3.3H7R55/IWE/memory → /tmp/rt-rc13-v0.36.3.3H7R55/.claude/projects/-tmp-rt-rc13-v0.36.3.3H7R55-IWE/memory
+[4/6] Claude settings... пропущено (core mode)
+[4b] Installing skills, hooks, rules, rules-lazy, lib, config, detectors, scripts, styles...
+  ✓ .claude/skills/ → /tmp/rt-rc13-v0.36.3.3H7R55/IWE/.claude/skills/
+  ✓ .claude/hooks/ → /tmp/rt-rc13-v0.36.3.3H7R55/IWE/.claude/hooks/
+  ✓ .claude/rules/ → /tmp/rt-rc13-v0.36.3.3H7R55/IWE/.claude/rules/
+  ✓ .claude/rules-lazy/ → /tmp/rt-rc13-v0.36.3.3H7R55/IWE/.claude/rules-lazy/
+  ✓ .claude/lib/ → /tmp/rt-rc13-v0.36.3.3H7R55/IWE/.claude/lib/
+  ✓ .claude/config/ → /tmp/rt-rc13-v0.36.3.3H7R55/IWE/.claude/config/
+  ✓ .claude/detectors/ → /tmp/rt-rc13-v0.36.3.3H7R55/IWE/.claude/detectors/
+  ✓ .claude/scripts/ → /tmp/rt-rc13-v0.36.3.3H7R55/IWE/.claude/scripts/
+  ✓ .claude/agents/ → /tmp/rt-rc13-v0.36.3.3H7R55/IWE/.claude/agents/
+  ✓ .claude/styles/ → /tmp/rt-rc13-v0.36.3.3H7R55/IWE/.claude/styles/
+  ✓ .claude/templates/ → /tmp/rt-rc13-v0.36.3.3H7R55/IWE/.claude/templates/
+  ✓ .claude/settings.json
+[4c] Configuring .mcp.json...
+  ✓ /tmp/rt-rc13-v0.36.3.3H7R55/IWE/.mcp.json → iwe-knowledge (браузерный OAuth, tier=T1)
+[4d] Installing IWE environment variables...
+    ✓ /tmp/rt-rc13-v0.36.3.3H7R55/IWE/.iwe-paths written (workspace=/tmp/rt-rc13-v0.36.3.3H7R55/IWE)
+    ✓ /tmp/rt-rc13-v0.36.3.3H7R55/.zshenv → sources $WORKSPACE_DIR/.iwe-paths
+  ℹ  Restart shell or run: source /tmp/rt-rc13-v0.36.3.3H7R55/.zshenv
+[4e] executor-catalog.yaml... пропущено (core mode, нет агента для маршрутизации)
+[4f] Regenerating hot-files.list...
+  generate-hot-files-list: wrote 5 file(s) to /tmp/rt-rc13-v0.36.3.3H7R55/IWE/FMT-exocortex-template/scripts/hot-files.list (governance repo: "DS-strategy")
+[5/6] Автоматизация... пропущена (core mode)
+[6/6] Setting up DS-strategy...
+hint: Using 'master' as the name for the initial branch. This default branch name
+hint: is subject to change. To configure the initial branch name to use in all
+hint: of your new repositories, which will suppress this warning, call:
+hint:
+hint: 	git config --global init.defaultBranch <name>
+hint:
+hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+hint: 'development'. The just-created branch can be renamed via this command:
+hint:
+hint: 	git branch -m <name>
+hint:
+hint: Disable this message with "git config set advice.defaultBranchName false"
+Инициализирован пустой репозиторий Git в /tmp/rt-rc13-v0.36.3.3H7R55/IWE/DS-strategy/.git/
+[master (корневой коммит) a9f0a31] Initial exocortex: DS-strategy governance hub
+ 31 files changed, 3882 insertions(+)
+ create mode 100755 .githooks/pre-commit
+ create mode 100755 .githooks/pre-push
+ create mode 100644 CLAUDE.md
+ create mode 100644 REPO-TYPE.md
+ create mode 100644 archive/.gitkeep
+ create mode 100644 archive/day-plans/.gitkeep
+ create mode 100644 archive/notes/.gitkeep
+ create mode 100644 archive/week-plans/.gitkeep
+ create mode 100644 archive/week-reports/.gitkeep
+ create mode 100644 archive/wp-contexts/.gitkeep
+ create mode 100644 current/.gitkeep
+ create mode 100644 decisions/.gitkeep
+ create mode 100644 docs/Dissatisfactions.md
+ create mode 100644 docs/Session Agenda.md
+ create mode 100644 docs/Strategy.md
+ create mode 100644 docs/WP-REGISTRY.md
+ create mode 100644 drafts/README.md
+ create mode 100644 drafts/draft-list.md
+ create mode 100644 exocortex/.gitkeep
+ create mode 100644 inbox/.gitkeep
+ create mode 100644 inbox/fleeting-notes.md
+ create mode 100644 personal/.gitkeep
+ create mode 100755 scripts/day-open-budget-patch.py
+ create mode 100755 scripts/day-open-checks-runner.sh
+ create mode 100755 scripts/day-open-llm-fill.py
+ create mode 100755 scripts/day-open-pipeline.sh
+ create mode 100755 scripts/day-open-scaffold.sh
+ create mode 100755 scripts/install-hooks.sh
+ create mode 100755 scripts/lib/common.sh
+ create mode 100755 scripts/llm-proxy-launcher.sh
+ create mode 100755 scripts/update-derived-snapshot.py
+  Pre-commit hook enabled (.githooks/)
+  Локальный репозиторий создан. Для публикации на GitHub:
+    cd /tmp/rt-rc13-v0.36.3.3H7R55/IWE/DS-strategy && gh repo create rt-fixture/DS-strategy --private --source=. --push
+[7/7] Installing Base repos (ZP, FPF, SPF)...
+  пропущено (core mode)
+
+==========================================
+  Setup Complete! (core)
+==========================================
+
+Verify installation:
+  ✓ CLAUDE.md:   /tmp/rt-rc13-v0.36.3.3H7R55/IWE/CLAUDE.md
+  ✓ Memory:      /tmp/rt-rc13-v0.36.3.3H7R55/.claude/projects/-tmp-rt-rc13-v0.36.3.3H7R55-IWE/memory/ (30 files)
+  ✓ Symlink:     /tmp/rt-rc13-v0.36.3.3H7R55/IWE/memory → /tmp/rt-rc13-v0.36.3.3H7R55/.claude/projects/-tmp-rt-rc13-v0.36.3.3H7R55-IWE/memory
+  ✓ DS-strategy: /tmp/rt-rc13-v0.36.3.3H7R55/IWE/DS-strategy/
+  ✓ Template:    /tmp/rt-rc13-v0.36.3.3H7R55/IWE/FMT-exocortex-template/
+
+Next steps:
+  1. cd /tmp/rt-rc13-v0.36.3.3H7R55/IWE
+  2. Запустите ваш AI CLI (Claude Code, Codex, Aider, Continue.dev и др.)
+  3. Скажите: «Проведём первую стратегическую сессию»
+
+Developer onboarding (T4+) — single entry point:
+  cat docs/developer/README.md
+
+Update from upstream:
+  cd /tmp/rt-rc13-v0.36.3.3H7R55/IWE/FMT-exocortex-template && bash update.sh
+

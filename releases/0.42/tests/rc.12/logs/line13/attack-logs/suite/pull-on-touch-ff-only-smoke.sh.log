@@ -1,0 +1,104 @@
+=== FF: clean tree, remote ahead -> fast-forwards, no stash ===
+warning: Похоже, что вы клонировали пустой репозиторий.
+  ok: HEAD advanced to match origin
+  ok: HEAD actually moved
+  ok: no stash left behind
+  ok: hook reports a pull, not a stale warning
+=== STALE-SAFE: dirty tracked tree, remote ahead -> no merge, no stash, no data loss ===
+warning: Похоже, что вы клонировали пустой репозиторий.
+  ok: HEAD did not move (merge was skipped)
+  ok: no autostash was created
+  ok: local edit survived on disk
+  ok: hook names it a stale-not-fetched case
+=== STALE-SAFE: untracked file present, remote ahead -> no merge, no stash (the exact #1245 class) ===
+warning: Похоже, что вы клонировали пустой репозиторий.
+  ok: HEAD did not move with an untracked file present
+  ok: no autostash was created
+  ok: untracked file survived on disk
+=== DIVERGED: both sides advanced -> no merge attempted, no stash ===
+warning: Похоже, что вы клонировали пустой репозиторий.
+  ok: HEAD did not move on diverged history
+  ok: no autostash was created
+=== OK: already up to date -> no pull message ===
+warning: Похоже, что вы клонировали пустой репозиторий.
+  ok: no stash
+  ok: hook stays silent when already fresh
+=== PRE-EXISTING STASH: unrelated stash from before this hook ran is left untouched ===
+warning: Похоже, что вы клонировали пустой репозиторий.
+  ok: HEAD still fast-forwards normally despite the unrelated stash
+  ok: pre-existing stash entry is untouched (same ref, not popped/dropped/added to)
+  ok: pre-existing stash content still pops cleanly afterwards
+=== DETACHED HEAD: no upstream branch to compare against -> no merge, no stash ===
+warning: Похоже, что вы клонировали пустой репозиторий.
+  ok: HEAD did not move on detached HEAD
+  ok: no autostash was created
+=== RACE: during-fetch, merge.autoStash=true -> local work and stash stay untouched ===
+warning: Похоже, что вы клонировали пустой репозиторий.
+  ok: race injection actually ran
+  ok: seed.md preserved byte-for-byte
+  ok: new-wp-draft.md preserved byte-for-byte
+  ok: index preserved byte-for-byte
+  ok: index-entries preserved byte-for-byte
+  ok: head preserved byte-for-byte
+  ok: stash preserved byte-for-byte
+  ok: fetch-time edits prevent invoking merge
+  ok: hook emits a stale warning
+  ok: hook does not claim an update succeeded
+=== RACE: before-merge, merge.autoStash=true -> local work and stash stay untouched ===
+warning: Похоже, что вы клонировали пустой репозиторий.
+  ok: race injection actually ran
+  ok: seed.md preserved byte-for-byte
+  ok: new-wp-draft.md preserved byte-for-byte
+  ok: index preserved byte-for-byte
+  ok: index-entries preserved byte-for-byte
+  ok: head preserved byte-for-byte
+  ok: stash preserved byte-for-byte
+  ok: race occurs at the real merge boundary
+  ok: hook emits a stale warning
+  ok: hook does not claim an update succeeded
+=== STATUS FAILURE: status-first, empty stdout -> fail closed ===
+warning: Похоже, что вы клонировали пустой репозиторий.
+  ok: failing status was reached
+  ok: seed.md preserved byte-for-byte
+  ok: index preserved byte-for-byte
+  ok: index-entries preserved byte-for-byte
+  ok: head preserved byte-for-byte
+  ok: stash preserved byte-for-byte
+  ok: merge was never invoked after a status failure
+  ok: initial status failure prevents fetch
+  ok: hook emits a stale warning
+  ok: hook does not claim an update succeeded
+=== STATUS FAILURE: status-after-fetch, empty stdout -> fail closed ===
+warning: Похоже, что вы клонировали пустой репозиторий.
+  ok: failing status was reached
+  ok: seed.md preserved byte-for-byte
+  ok: index preserved byte-for-byte
+  ok: index-entries preserved byte-for-byte
+  ok: head preserved byte-for-byte
+  ok: stash preserved byte-for-byte
+  ok: merge was never invoked after a status failure
+  ok: hook emits a stale warning
+  ok: hook does not claim an update succeeded
+=== HIDDEN UNTRACKED: status.showUntrackedFiles=no cannot permit an update ===
+warning: Похоже, что вы клонировали пустой репозиторий.
+  ok: seed.md preserved byte-for-byte
+  ok: new-wp-draft.md preserved byte-for-byte
+  ok: index preserved byte-for-byte
+  ok: index-entries preserved byte-for-byte
+  ok: head preserved byte-for-byte
+  ok: stash preserved byte-for-byte
+  ok: hook emits a stale warning
+  ok: hook does not claim an update succeeded
+=== IGNORED COLLISION: upstream starts tracking a local ignored draft -> preserve it ===
+warning: Похоже, что вы клонировали пустой репозиторий.
+  ok: fixture draft is ignored
+  ok: seed.md preserved byte-for-byte
+  ok: new-wp-draft.md preserved byte-for-byte
+  ok: index preserved byte-for-byte
+  ok: index-entries preserved byte-for-byte
+  ok: head preserved byte-for-byte
+  ok: stash preserved byte-for-byte
+  ok: hook emits a stale warning
+  ok: hook does not claim an update succeeded
+
+PASS: все проверки pull-on-touch.sh (ff-only, без autostash) прошли

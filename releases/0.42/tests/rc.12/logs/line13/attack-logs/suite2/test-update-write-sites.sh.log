@@ -1,0 +1,2 @@
+PASS: 63 blocks, 203 write commands, all classified (A=33, B=9, C=2, H=4, R=7, T=8)
+PASS: negative cases detected (missing row, stale row, new unclassified function, hidden write)

@@ -1,0 +1,14 @@
+== v0.42.0-rc.12 destructive-guard (2 = blocked, 0 = allowed)
+2    rm -rf /tmp/rt-verify.r8TT30/victim
+2    find /tmp/rt-verify.r8TT30/victim -exec rm -f {} +
+2    find /tmp/rt-verify.r8TT30/victim -type f -exec env rm {} +
+2    find /tmp/rt-verify.r8TT30/victim -type f -print0 | xargs -0 rm
+0    TMPDIR=/tmp/rt-verify.r8TT30/home /tmp/rt-verify.r8TT30/ws/.claude/bin/guarded-rm -rf /tmp/rt-verify.r8TT30/home/IWE
+2    git diff --output=.claude/hooks/destructive-guard.sh
+2    find .claude/hooks -maxdepth 0 -fprint .claude/hooks/secret-leak-block.sh
+0    git add --al
+0    git add :/
+== guarded-rm path validation with a hostile TMPDIR (dry: target is a fixture dir)
+baseline (no TMPDIR)  rc=0 exists=no
+hostile TMPDIR=home   rc=0 exists=no
+fixture: /tmp/rt-verify.r8TT30

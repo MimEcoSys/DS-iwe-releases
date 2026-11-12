@@ -1,0 +1,40 @@
+== #919 scheduler row
+  ok: no scheduler evidence is not green
+  ok: empty scheduler log is yellow
+  ok: empty scheduler log explains missing proof
+  ok: failed scheduler log is red
+  ok: real rc=75 alarm is red
+  ok: started but unfinished dispatch is yellow
+  ok: concurrent-run skip remains neutral yellow
+  ok: clean completed dispatch is green
+  ok: old dispatch in today's file is yellow
+  ok: completion cannot mask a later failure
+  ok: triage report cannot mask a scheduler failure
+  ok: installed DayPlan records scheduler failure
+== #1060 legacy triage evidence
+  ok: empty triage report is yellow
+  ok: error-only triage report is red
+  ok: structured dated triage report is green
+  ok: error after complete-looking counters overrides report
+  ok: error text inside a report table is data
+  ok: unfinished scheduler log cannot be hidden by report
+  ok: empty watchdog log is yellow
+  ok: error-only watchdog log is red
+  ok: clean watchdog completion is green
+  ok: empty triage stdout log is yellow
+  ok: error-only triage stdout log is red
+  ok: dated triage producer completion is green
+  ok: old rolling triage log cannot prove today
+  ok: previous watchdog failure stays in Mode B pending
+  ok: previous watchdog fixture exercises Mode B
+  ok: previous triage failure stays in Mode B pending
+  ok: previous triage fixture exercises Mode B
+== #920 Scout row
+  ok: no Scout dir, preflight unavailable → grey
+  ok: Scout dir exists, preflight unavailable → still yellow
+== #929 Day Close recognition
+  ok: no archived plan → not found
+  ok: archived plan + free-form commit message → found
+  ok: archived plan → PENDING marker for the synthesis
+
+PASS

@@ -1,0 +1,10 @@
+==========================================
+  Exocortex Update v2.4.1
+==========================================
+  Репо: /tmp/rt-rc13-v0.36.3.3H7R55/IWE/FMT-exocortex-template
+
+/home/iwe-test/.local/bin/gh: строка 5: /tmp/rt-rc13-v0.36.3.3H7R55/iwe-rc13-linux/logs/gh-calls.log: No such file or directory
+curl: (22) The requested URL returned error: 403
+ОШИБКА: authenticated GitHub API request via gh failed; fallback disabled.
+ОШИБКА: не удалось получить список rc-тегов (API недоступен, страница 1).
+  Канал rc fail-closed: без списка кандидатов обновление не выполняется.

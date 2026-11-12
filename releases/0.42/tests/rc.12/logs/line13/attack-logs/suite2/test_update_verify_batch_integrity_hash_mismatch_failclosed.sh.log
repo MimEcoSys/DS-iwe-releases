@@ -1,0 +1,2 @@
+  ⚠ tampered.txt: sha256 не совпадает с манифестом
+PASS: verify_batch_integrity removes only the file whose sha256 does not match its own manifest hash

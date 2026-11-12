@@ -1,0 +1,10 @@
+  ✅ PASS: a: loop did not abort (exit 0)
+  ✅ PASS: a: install.sh was called (plist already installed, auto:false)
+  ✅ PASS: a: IWE_SKIP_LOAD is empty (role was loaded, must not skip load)
+  ✅ PASS: b: install.sh was called (plist refreshed even though role was unloaded)
+  ✅ PASS: b: IWE_SKIP_LOAD=1 (role was unloaded by the user, load must be skipped)
+  ✅ PASS: c: install.sh was correctly skipped (role not installed, not auto)
+  ✅ PASS: d: loop did not abort when a role has no PLIST_DST= line (set -e regression guard)
+  ✅ PASS: d: the no-PLIST_DST= auto:true role was still reached and reinstalled
+
+Passed: 8, failed: 0

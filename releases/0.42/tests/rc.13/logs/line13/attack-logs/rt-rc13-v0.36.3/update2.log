@@ -1,0 +1,102 @@
+==========================================
+  Exocortex Update v2.4.1
+==========================================
+  Репо: /tmp/rt-rc13-v0.36.3.3H7R55/IWE/FMT-exocortex-template
+
+/home/iwe-test/.local/bin/gh: строка 5: /tmp/rt-rc13-v0.36.3.3H7R55/iwe-rc13-linux/logs/gh-calls.log: No such file or directory
+/home/iwe-test/.local/bin/gh: строка 5: /tmp/rt-rc13-v0.36.3.3H7R55/iwe-rc13-linux/logs/gh-calls.log: No such file or directory
+  Канал поставки: кандидат v0.42.0-rc.13 (снимок 75b1d96c67f6)
+/home/iwe-test/.local/bin/gh: строка 5: /tmp/rt-rc13-v0.36.3.3H7R55/iwe-rc13-linux/logs/gh-calls.log: No such file or directory
+[0] Проверка update.sh...
+  update.sh актуален.
+
+[1] Загрузка манифеста...
+  Установленная версия: 0.42.0
+  Версия upstream: 0.42.0
+
+[2] Сравнение файлов...
+
+  ○ Устаревшие по манифесту, но отслеживаются git этой копии шаблона — оставлены: sessions/2026-06/2026-06-17-01-kimi-setup/00-writer.md sessions/2026-06/2026-06-17-01-kimi-setup/01-peer.md sessions/2026-06/2026-06-17-01-kimi-setup/02-writer.md sessions/2026-06/2026-06-17-01-kimi-setup/03-peer.md sessions/2026-06/2026-06-17-01-kimi-setup/meta.yaml sessions/2026-06/2026-06-17-01-kimi-setup/report.md .claude/skills/lesson-close/SKILL.md scripts/lesson-close.sh .claude/skills/day-close/day-close/SKILL.md .claude/skills/week-close/week-close/SKILL.md docs/onboarding/web-onboarding.md translation/glossary-v0.1.csv
+    Удалить из своей копии: git -C "/tmp/rt-rc13-v0.36.3.3H7R55/IWE/FMT-exocortex-template" rm -- sessions/2026-06/2026-06-17-01-kimi-setup/00-writer.md sessions/2026-06/2026-06-17-01-kimi-setup/01-peer.md sessions/2026-06/2026-06-17-01-kimi-setup/02-writer.md sessions/2026-06/2026-06-17-01-kimi-setup/03-peer.md sessions/2026-06/2026-06-17-01-kimi-setup/meta.yaml sessions/2026-06/2026-06-17-01-kimi-setup/report.md .claude/skills/lesson-close/SKILL.md scripts/lesson-close.sh .claude/skills/day-close/day-close/SKILL.md .claude/skills/week-close/week-close/SKILL.md docs/onboarding/web-onboarding.md translation/glossary-v0.1.csv
+
+==========================================
+  Обновления экзокортекса (v0.42.0)
+==========================================
+
+Кроме перечисленного, обычный запуск (без --check) также пишет — это зоны возможной перезаписи, пофайлового прогноза для них превью не строит (issue #350):
+  • /tmp/rt-rc13-v0.36.3.3H7R55/IWE/.claude/ — рабочие копии скиллов, хуков, правил
+  • /tmp/rt-rc13-v0.36.3.3H7R55/.claude/projects/-tmp-rt-rc13-v0.36.3.3H7R55-IWE/memory — рабочие копии memory-файлов
+  • /tmp/rt-rc13-v0.36.3.3H7R55/IWE/.iwe-runtime/ — пересобирается целиком из шаблона
+  • /tmp/rt-rc13-v0.36.3.3H7R55/IWE/.exocortex.env, /tmp/rt-rc13-v0.36.3.3H7R55/IWE/FMT-exocortex-template/.claude.md.base, /tmp/rt-rc13-v0.36.3.3H7R55/IWE/FMT-exocortex-template/update-manifest.json
+  • /tmp/rt-rc13-v0.36.3.3H7R55/IWE/.claude.md.base и /tmp/rt-rc13-v0.36.3.3H7R55/IWE/.claude.md.delivered — база слияния CLAUDE.md и запись хешей доставленной копии
+  • /tmp/rt-rc13-v0.36.3.3H7R55/IWE/.memory-deployed.tsv — запись версий памяти, которые установлены и не менялись (по ней update.sh отличает нетронутую копию от изменённой)
+  • /tmp/rt-rc13-v0.36.3.3H7R55/IWE/.iwe-paths и /tmp/rt-rc13-v0.36.3.3H7R55/.zshenv — пересоздаваемое окружение путей
+  • local core.hooksPath в git-репозиториях с .githooks под /tmp/rt-rc13-v0.36.3.3H7R55/IWE
+  • /tmp/rt-rc13-v0.36.3.3H7R55/IWE/DS-strategy/scripts/install-hooks.sh — установщик platform hooks
+  • /tmp/rt-rc13-v0.36.3.3H7R55/IWE/DS-strategy/.githooks/pre-commit и pre-push — platform hooks
+  • /tmp/rt-rc13-v0.36.3.3H7R55/IWE/DS-strategy/scripts/update-derived-snapshot.py — обновлятор derived snapshot
+  • /tmp/rt-rc13-v0.36.3.3H7R55/IWE/DS-strategy/scripts/generate-executor-catalog.py — генератор каталога исполнителей
+  • /tmp/rt-rc13-v0.36.3.3H7R55/IWE/DS-strategy/scripts/executor-catalog.yaml — каталог исполнителей
+  • /tmp/rt-rc13-v0.36.3.3H7R55/IWE/DS-strategy/scripts/ds-publish.sh — публикатор коммитов ночных ролей (кладётся только если файла нет, существующий не трогается)
+  • /tmp/rt-rc13-v0.36.3.3H7R55/IWE/DS-strategy/exocortex/agent-fault-profile/ — только миграция/права существующей приватной БД; отсутствующий профиль не создаётся
+    scripts/day-open-llm-fill.py больше не доставляется сюда (WP-485 Ф17) — Day Open исполняет копию шаблона через $IWE_SCRIPTS.
+    Symlink-пути блокируют backfill. Отличающиеся installer/hooks сохраняются в .git/hook-backups/ и заменяются.
+    Snapshot updater/executor-catalog generator: решение по содержимому (как memory/*), не по git-статусу — локальная правка не блокирует остальное обновление, только эти файлы; executor-catalog.yaml — генерируемый файл и заменяется при смысловом расхождении.
+  Расхождение рабочей копии с шаблоном чинится независимо от списков выше.
+
+
+Generated runtime (.iwe-runtime/)...
+
+Agent fault profile (safe update hardening)...
+
+Agent fault legacy entrypoints (all-or-none upgrade)...
+  ✓ legacy agent-fault shims already match the release payload.
+
+Platform hooks (upgrade backfill)...
+⚠️  pre-commit отличается от канонического шаблона — оставляю локальную версию (не самолечу контент, см. WP-484 в комментарии выше).
+✅ Hooks wired: /tmp/rt-rc13-v0.36.3.3H7R55/IWE/DS-strategy/.githooks
+   core.hooksPath = .githooks
+
+Governance-скрипты (upgrade backfill)...
+  ⚠ scripts/update-derived-snapshot.py — НЕ обновлён: не удалось проверить, менялся ли файл (клон шаблона сделан с --depth, его истории нет). Сам он не обновится. Сверьте: diff /tmp/rt-rc13-v0.36.3.3H7R55/IWE/FMT-exocortex-template/seed/strategy/scripts/update-derived-snapshot.py /tmp/rt-rc13-v0.36.3.3H7R55/IWE/DS-strategy/scripts/update-derived-snapshot.py. Если ваших правок там нет, примите версию шаблона (прежняя копия останется рядом): bak=$(mktemp /tmp/rt-rc13-v0.36.3.3H7R55/IWE/DS-strategy/scripts/update-derived-snapshot.py.before-update-XXXXXX) && cp -p /tmp/rt-rc13-v0.36.3.3H7R55/IWE/DS-strategy/scripts/update-derived-snapshot.py "$bak" && cp /tmp/rt-rc13-v0.36.3.3H7R55/IWE/FMT-exocortex-template/seed/strategy/scripts/update-derived-snapshot.py /tmp/rt-rc13-v0.36.3.3H7R55/IWE/DS-strategy/scripts/update-derived-snapshot.py
+  ⚠ Не обновлено скриптов governance-репо: 1 (scripts/update-derived-snapshot.py); почему и что сделать — в строке каждого файла выше
+
+Публикатор коммитов ds-publish.sh (upgrade backfill)...
+  ✓ scripts/ds-publish.sh уже совпадает с поставкой (версия 1).
+
+Гейт публикации publish-gate.sh (upgrade backfill)...
+  ✓ scripts/lib/publish-gate.sh уже совпадает с release payload.
+
+Executor catalog (upgrade backfill)...
+  OK: executor-catalog generated
+      total entries : 52
+      skipped       : 3 (not auto-routable)
+        - _template: template
+        - lesson-close: no-SKILL.md
+        - residency-gate: no-SKILL.md
+      by executor:
+        agent       : 1
+        haiku       : 6
+        opus        : 5
+        script      : 5
+        script+judgment: 2
+        sonnet      : 33
+      optimization candidates (5):
+        [1] consent → script
+        [1] w-reflection → script
+        [2] check-secret → script
+        [2] local-llm → script+judgment
+        [2] transcribe → script
+      output        : /tmp/rt-rc13-v0.36.3.3H7R55/IWE/DS-strategy/scripts/executor-catalog.yaml (unchanged)
+
+Knowledge Extractor feeders (upgrade backfill)...
+  ○ Экстрактор: расписания на этой установке нет, а режим установки не записан — расписание не заводим.
+    Включить: bash /tmp/rt-rc13-v0.36.3.3H7R55/IWE/FMT-exocortex-template/scripts/setup-extractor-feeders.sh
+
+FPF base copy (upgrade refresh)...
+  ○ FPF: копия не найдена (/tmp/rt-rc13-v0.36.3.3H7R55/IWE/FPF), обновление пропущено.
+  ✓ Маркер незавершённого обновления снят.
+    {"keys_added_from_template": 0, "keys_kept_user_only": 0, "hooks_added_from_template": 0, "hooks_deduped": 30, "hooks_only_in_workspace": 1, "permissions_added_from_template": 0, "conflicts": ["permissions.defaultMode"], "preview": "/tmp/rt-rc13-v0.36.3.3H7R55/IWE/.claude/settings.merged.preview.json"}
+    applied: /tmp/rt-rc13-v0.36.3.3H7R55/IWE/.claude/settings.json (backup: /tmp/rt-rc13-v0.36.3.3H7R55/IWE/.backups/settings-merge/settings.json.20261112T163214Z)
+  .claude/settings.json — слияние ничего не изменило, файл прежний
+✓ Всё актуально. Обновлений нет. (878 файлов проверено)

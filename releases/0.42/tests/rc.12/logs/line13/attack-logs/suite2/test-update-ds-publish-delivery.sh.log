@@ -1,0 +1,18 @@
+== the script is part of the delivered payload
+  ✅ PASS: seed/strategy/scripts/ds-publish.sh exists and is executable
+  ✅ PASS: update-manifest.json lists it (with a checksum)
+  ✅ PASS: the upgrade chain calls backfill_ds_publish
+== absent → delivered, executable, identical to the seed
+  ✅ PASS: exit 0
+  ✅ PASS: delivered as an executable copy of the seed
+== an existing publisher is never replaced
+  ✅ PASS: exit 0
+  ✅ PASS: user's file untouched
+  ✅ PASS: the output says it was left alone
+== a symlink at that path is left alone
+  ✅ PASS: symlink kept
+== no governance repo → skipped without an error
+  ✅ PASS: exit 0, nothing created
+  ✅ PASS: no directory invented
+
+PASS: ds-publish delivery (#941)

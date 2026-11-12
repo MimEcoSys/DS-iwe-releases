@@ -1,0 +1,53 @@
+=== verify_delivery_postcondition ===
+  ✅ PASS: report delivered to origin/main during the run -> proven
+  ✅ PASS: nothing pushed during the run -> not delivered, reason logged
+  ✅ PASS: an unrelated commit on origin/main does not count as delivery
+  ✅ PASS: a report written outside current/ does not count (exact path)
+  ✅ PASS: a report in a subfolder of current/ does not count (glob does not cross /)
+  ✅ PASS: force-pushed origin/main (old state not an ancestor) is refused even though a report file appears
+  ✅ PASS: deleting a report file is not a delivery
+  ✅ PASS: a pre-existing, unchanged report is not this run's delivery, and the log names what is already there
+  ✅ PASS: no baseline sha -> refused, cannot prove delivery
+=== delivery_baseline ===
+  ✅ PASS: reachable origin -> baseline is the current origin/main
+  ✅ PASS: failed pre-run fetch -> no baseline, the stale local origin/main is NOT reused
+  ✅ PASS: a scenario without a delivery contract has no baseline
+=== back to verify_delivery_postcondition ===
+  ✅ PASS: a scenario without a delivery contract is untouched
+  ✅ PASS: unreachable origin -> refused, cannot prove delivery
+=== fetch_delivery_origin: bounded retries ===
+  ✅ PASS: two failed fetches then a good one -> baseline is exactly the sha (stdout carries nothing else), 3 calls
+  ✅ PASS: exit 124 from timeout counts as a failed try, not as success
+  ✅ PASS: all three tries fail -> no baseline; pauses are 5 s then 10 s and none after the last try
+  ✅ PASS: the retry budget is per call: 3 tries before the model and 3 after it, each recovered
+  ✅ PASS: a zero or non-numeric setting falls back to the defaults instead of breaking the loop
+  ✅ PASS: a leading-zero pause (09) falls back to the default instead of an octal error
+  ✅ PASS: settings are checked one by one: attempts=2 is kept while the bad pause falls back to 5 s
+  ✅ PASS: a pause of 0 is accepted as no waiting
+  ✅ PASS: the fetch's stdout is discarded: the baseline is exactly the sha
+=== end to end: the real strategist.sh week-review with a stand-in model ===
+  ✅ PASS: model exits 0 but delivers nothing -> exit 70, FAILED + POSTCONDITION logged, no SUCCESS, alarm sent
+  ✅ PASS: the traffic-light status file records the failure
+  ✅ PASS: first failed run exits 70, second gives up with rc 76 and still alarms
+  ✅ PASS: report delivered to origin/main -> exit 0, SUCCESS logged, normal notification, no alarm
+  ✅ PASS: the model itself crashes (exit 1) -> the script exits 1 and alarms (before: silent under set -e)
+=== end to end: the session the wrapper opens for the model ===
+  ✅ PASS: session owned by the script: open (as scheduled runner) -> note-file current/ -> model -> close, exit 0
+  ✅ PASS: the model crashes -> the session is still closed, exactly once, and the run keeps its own exit code
+  ✅ PASS: a guard that refuses the session -> the model is NOT started, exit 71, alarm sent
+  ✅ PASS: the scope cannot be declared -> the half-open session is closed and the model is NOT started
+  ✅ PASS: an install with no guard at all runs as before (WARN in the log, no session)
+  ✅ PASS: no guard -> the model gets an empty IWE_CANONICAL_OWNER (caller's value overridden)
+  ✅ PASS: guarded week-review -> the model gets IWE_CANONICAL_OWNER = the session reason (week-review-2026-11-12-556819)
+  ✅ PASS: a leftover semaphore of a dead run (no live owner pid) is closed by its own reason, then the session opens as usual
+  ✅ PASS: a semaphore whose owner pid is alive is not touched (its run may still be in the model)
+  ✅ PASS: template's own guard, two runs in a row: both get a session, none is left open (no wedge after a closed receipt)
+  ✅ PASS: template's own guard, a second live session of the same agent: the run still gets its scope (selected by slug), delivers, and leaves the live session alone
+=== end to end: fetch failures around the model, and what counts as an auth failure ===
+  ✅ PASS: a short git outage before and after the model is ridden out: delivered, proven, exit 0, 4 failed tries logged
+  ✅ PASS: git is down before the run: the model STILL runs (no report is worse than an unprovable one), the run ends 70 with an alarm
+  ✅ PASS: a 401 from the publisher after a model failure is not a model auth error: no restart, the model ran once
+  ✅ PASS: the CLI's own auth error still restarts the model (3 runs, waits 60 s and 300 s), then the run fails with an alarm
+  ✅ PASS: a model that writes nothing and dies: no restart, and no stray complaint from head in stderr
+
+Results: 44 passed, 0 failed

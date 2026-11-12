@@ -1,0 +1,19 @@
+PASS: owned systemd unit updated and both active timers restarted
+PASS: foreign systemd units preserved
+PASS: masked/symlink systemd unit preserved
+PASS: systemd drop-in prevents ownership claim
+PASS: systemd EnvironmentFile prevents ownership claim
+PASS: custom systemd Unit target prevents ownership claim
+PASS: hand-rolled cron outside sentinel blocks systemd reinstall
+PASS: crontab read error blocks systemd reinstall
+PASS: manually stopped systemd timer is not restarted
+PASS: disabled and masked systemd timers are not reinstalled
+PASS: owned cron block updated without touching user job
+PASS: foreign cron block preserved byte for byte
+PASS: owner path in cron comment cannot spoof ownership
+PASS: removed week-review job is not recreated
+PASS: path inside cron echo command cannot spoof ownership
+PASS: disabled cron job stays disabled
+PASS: duplicate cron blocks are rejected
+PASS: mixed systemd/cron backend requires manual decision
+PASS: real installer preserves disabled and masked timers

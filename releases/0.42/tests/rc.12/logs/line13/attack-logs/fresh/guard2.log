@@ -1,0 +1,11 @@
+RESULT start api_left=60
+RESULT rollback --yes no-consent rc=1 changed=0 channel=[  Канал поставки: релиз v0.41.11 (снимок 46a864ee3007)] api_left=58
+RESULT rollback answer-no rc=0 changed=0 api_left=56
+RESULT rollback ROLLBACK rc=0 vs v0.41.11: version=0.41.11 want=0.41.11 missing=0 differs=0  api_left=54
+RESULT sentinels after rollback kept api_left=54
+RESULT release rerun rc=0 uptodate=1 api_left=52
+RESULT return to rc rc=0 vs rc: version=0.42.0 want=0.42.0 missing=0 differs=0  api_left=46
+RESULT sentinels after return kept api_left=46
+RESULT rc second run rc=0 uptodate=1 api_left=43
+RESULT DONE api_left=43
+guard rc=0

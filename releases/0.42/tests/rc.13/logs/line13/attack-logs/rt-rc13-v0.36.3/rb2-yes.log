@@ -1,0 +1,159 @@
+==========================================
+  Exocortex Update v2.4.1
+==========================================
+  Репо: /tmp/rt-rc13-v0.36.3.3H7R55/IWE/FMT-exocortex-template
+
+/home/iwe-test/.local/bin/gh: строка 5: /tmp/rt-rc13-v0.36.3.3H7R55/iwe-rc13-linux/logs/gh-calls.log: No such file or directory
+/home/iwe-test/.local/bin/gh: строка 5: /tmp/rt-rc13-v0.36.3.3H7R55/iwe-rc13-linux/logs/gh-calls.log: No such file or directory
+  Канал поставки: релиз v0.41.11 (снимок 46a864ee3007)
+[0] Проверка update.sh...
+  ⚠ update.sh выпуска старше установленного — не заменяю его: сначала решение об откате.
+
+[1] Загрузка манифеста...
+  Установленная версия: 0.42.0
+  Версия upstream: 0.41.11
+
+[2] Сравнение файлов...
+  Скачиваю 88 файлов (до 8 параллельно)...
+  (1/88) .claude/bin/guarded-rm  (2/88) .claude/hooks/close-gate-reminder.sh  (3/88) .claude/hooks/destructive-guard.sh  (4/88) .claude/hooks/dry-run-gate.sh  (5/88) .claude/hooks/protocol-artifact-validate.sh  (6/88) .claude/hooks/protocol-stop-gate.sh  (7/88) .claude/hooks/pull-on-touch.sh  (8/88) .claude/hooks/rule-engine.sh  (9/88) .claude/hooks/sql-pii-guard.sh  (10/88) .claude/hooks/tests/destructive-guard/guarded_rm_cases.py  (11/88) .claude/hooks/tests/destructive-guard/hook_cases.py  (12/88) .claude/hooks/wp-gate-reminder.sh  (13/88) .claude/rules/wp-scope.md  (14/88) .claude/settings.json  (15/88) .claude/skills/SKILL-INDEX.yaml  (16/88) .claude/skills/agent-fault/SKILL.md  (17/88) .claude/skills/apply-captures/SKILL.md  (18/88) .claude/skills/artifactor/SKILL.md  (19/88) .claude/skills/audit-installation/SKILL.md  (20/88) .claude/skills/day-close/SKILL.md  (21/88) .claude/skills/day-open/SKILL.md  (22/88) .claude/skills/diagnose/SKILL.md  (23/88) .claude/skills/iwe-update/SKILL.md  (24/88) .claude/skills/kimi-peer-writer/SKILL.md  (25/88) .claude/skills/setup-wakatime/SKILL.md  (26/88) .claude/skills/strategy-session/SKILL.md  (27/88) .claude/skills/wp-new/SKILL.md  (28/88) .github/workflows/validate-template.yml  (29/88) CHANGELOG.md  (30/88) CLAUDE.md  (31/88) docs/DESTRUCTIVE-GUARD.md  (32/88) docs/QUICK-START.md  (33/88) docs/RELEASE-PROCESS.md  (34/88) docs/SETUP-GUIDE.md  (35/88) docs/onboarding/onboarding-guide.md  (36/88) docs/onboarding/onboarding-slides.md  (37/88) docs/onboarding/web-connect-guide.md  (38/88) docs/onboarding/web-onboarding.md  (39/88) generate-manifest.sh  (40/88) guide-kit/scripts/test_publish_snapshot.sh  (41/88) guide-kit/structurer/test_quarantine.py  (42/88) memory/agent-architecture-framework.md  (43/88) memory/dry-run-contract.md  (44/88) memory/hard-distinctions.md  (45/88) memory/navigation.md  (46/88) memory/protocol-open.md  (47/88) memory/repo-type-rules.md  (48/88) memory/roles.md  (49/88) roles/extractor/README.md  (50/88) roles/extractor/scripts/extractor.sh  (51/88) roles/extractor/tests/test_extractor_pipeline.py  (52/88) roles/strategist/README.md  (53/88) roles/strategist/scripts/strategist.sh  (54/88) roles/synchronizer/install.sh  (55/88) roles/synchronizer/scripts/code-scan.sh  (56/88) roles/synchronizer/scripts/dt-collect.sh  (57/88) roles/synchronizer/scripts/notify.sh  (58/88) scripts/artifactor.py  (59/88) scripts/canon-reconcile-published.sh  (60/88) scripts/changelog-append.sh  (61/88) scripts/check-dirty-repos.sh  (62/88) scripts/check-manifest-coverage.py  (63/88) scripts/check-wp-registered.sh  (64/88) scripts/create-wp.sh  (65/88) scripts/day-open-scaffold.sh  (66/88) scripts/dry-run-begin.sh  (67/88) scripts/dry-run-complete.sh  (68/88) scripts/fmt-critical-alert.sh  (69/88) scripts/isolate-push.sh  (70/88) scripts/kimi-peer-adapter.sh  (71/88) scripts/lib/common.sh  (72/88) scripts/lib/governance-repo-path.sh  (73/88) scripts/lib/peer-adapter-common.sh  (74/88) scripts/memory-bleed.sh  (75/88) scripts/route-task.sh  (76/88) scripts/session-guard.sh  (77/88) scripts/tests/run-issue-tests.sh  (78/88) scripts/validate-staged-artifacts.sh  (79/88) scripts/wakatime-day-total.py  (80/88) seed/strategy/scripts/day-open-scaffold.sh  (81/88) seed/strategy/scripts/isolate-push.sh  (82/88) seed/strategy/scripts/lib/common.sh  (83/88) setup.sh  (84/88) setup/lib/apply-op.sh  (85/88) setup/validate-template.sh  (86/88) shared/rubrics/form-089.yaml  (87/88) translation-manifest.yaml  (88/88) update.sh
+  ○ Устаревшие по манифесту, но отслеживаются git этой копии шаблона — оставлены: sessions/2026-06/2026-06-17-01-kimi-setup/00-writer.md sessions/2026-06/2026-06-17-01-kimi-setup/01-peer.md sessions/2026-06/2026-06-17-01-kimi-setup/02-writer.md sessions/2026-06/2026-06-17-01-kimi-setup/03-peer.md sessions/2026-06/2026-06-17-01-kimi-setup/meta.yaml sessions/2026-06/2026-06-17-01-kimi-setup/report.md .claude/skills/lesson-close/SKILL.md scripts/lesson-close.sh .claude/skills/day-close/day-close/SKILL.md .claude/skills/week-close/week-close/SKILL.md
+    Удалить из своей копии: git -C "/tmp/rt-rc13-v0.36.3.3H7R55/IWE/FMT-exocortex-template" rm -- sessions/2026-06/2026-06-17-01-kimi-setup/00-writer.md sessions/2026-06/2026-06-17-01-kimi-setup/01-peer.md sessions/2026-06/2026-06-17-01-kimi-setup/02-writer.md sessions/2026-06/2026-06-17-01-kimi-setup/03-peer.md sessions/2026-06/2026-06-17-01-kimi-setup/meta.yaml sessions/2026-06/2026-06-17-01-kimi-setup/report.md .claude/skills/lesson-close/SKILL.md scripts/lesson-close.sh .claude/skills/day-close/day-close/SKILL.md .claude/skills/week-close/week-close/SKILL.md
+
+==========================================
+  Обновления экзокортекса (v0.41.11)
+==========================================
+
+🔴 ВНИМАНИЕ: локальная установка новее того, что доставит этот канал.
+   Применение этого обновления ОТКАТИТ установку на более старый снимок.
+   Ставили кандидат выпуска — обновляйтесь его каналом: IWE_UPDATE_CHANNEL=rc bash update.sh
+   Следите за основной веткой — её каналом: IWE_UPDATE_CHANNEL=main bash update.sh
+   Любой канал, который вернёт установку назад, тоже спросит ROLLBACK.
+
+Обновлённые файлы (88):
+  ~ .claude/bin/guarded-rm                        — 22 строк изменено
+  ~ .claude/hooks/close-gate-reminder.sh          — 44 строк изменено
+  ~ .claude/hooks/destructive-guard.sh            — 126 строк изменено
+  ~ .claude/hooks/dry-run-gate.sh                 — 442 строк изменено
+  ~ .claude/hooks/protocol-artifact-validate.sh   — 19 строк изменено
+  ~ .claude/hooks/protocol-stop-gate.sh           — 42 строк изменено
+  ~ .claude/hooks/pull-on-touch.sh                — 25 строк изменено
+  ~ .claude/hooks/rule-engine.sh                  — 19 строк изменено
+  ~ .claude/hooks/sql-pii-guard.sh                — 5 строк изменено
+  ~ .claude/hooks/tests/destructive-guard/guarded_rm_cases.py — 9 строк изменено
+  ~ .claude/hooks/tests/destructive-guard/hook_cases.py — 4 строк изменено
+  ~ .claude/hooks/wp-gate-reminder.sh             — 17 строк изменено
+  ~ .claude/rules/wp-scope.md                     — 6 строк изменено
+  ~ .claude/settings.json                         — 5 строк изменено
+  ~ .claude/skills/SKILL-INDEX.yaml               — 10 строк изменено
+  ~ .claude/skills/agent-fault/SKILL.md           — 6 строк изменено
+  ~ .claude/skills/apply-captures/SKILL.md        — 41 строк изменено
+  ~ .claude/skills/artifactor/SKILL.md            — 47 строк изменено
+  ~ .claude/skills/audit-installation/SKILL.md    — 29 строк изменено
+  ~ .claude/skills/day-close/SKILL.md             — 10 строк изменено
+  ~ .claude/skills/day-open/SKILL.md              — 26 строк изменено
+  ~ .claude/skills/diagnose/SKILL.md              — 4 строк изменено
+  ~ .claude/skills/iwe-update/SKILL.md            — 32 строк изменено
+  ~ .claude/skills/kimi-peer-writer/SKILL.md      — 14 строк изменено
+  ~ .claude/skills/setup-wakatime/SKILL.md        — 1 строк изменено
+  ~ .claude/skills/strategy-session/SKILL.md      — 2 строк изменено
+  ~ .claude/skills/wp-new/SKILL.md                — 11 строк изменено
+  ~ .github/workflows/validate-template.yml       — 60 строк изменено
+  ~ CHANGELOG.md                                  — 535 строк изменено
+  ~ CLAUDE.md                                     — 6 строк изменено
+  ~ docs/DESTRUCTIVE-GUARD.md                     — 6 строк изменено
+  ~ docs/QUICK-START.md                           — 9 строк изменено
+  ~ docs/RELEASE-PROCESS.md                       — 110 строк изменено
+  ~ docs/SETUP-GUIDE.md                           — 2 строк изменено
+  ~ docs/onboarding/onboarding-guide.md           — 4 строк изменено
+  ~ docs/onboarding/onboarding-slides.md          — 2 строк изменено
+  ~ docs/onboarding/web-connect-guide.md          — 15 строк изменено
+  ~ docs/onboarding/web-onboarding.md             — 1 строк изменено
+  ~ generate-manifest.sh                          — 11 строк изменено
+  ~ guide-kit/scripts/test_publish_snapshot.sh    — 8 строк изменено
+  ~ guide-kit/structurer/test_quarantine.py       — 14 строк изменено
+  ~ memory/agent-architecture-framework.md        — 33 строк изменено
+  ~ memory/dry-run-contract.md                    — 69 строк изменено
+  ~ memory/hard-distinctions.md                   — 2 строк изменено
+  ~ memory/navigation.md                          — 4 строк изменено
+  ~ memory/protocol-open.md                       — 56 строк изменено
+  ~ memory/repo-type-rules.md                     — 18 строк изменено
+  ~ memory/roles.md                               — 69 строк изменено
+  ~ roles/extractor/README.md                     — 13 строк изменено
+  ~ roles/extractor/scripts/extractor.sh          — 207 строк изменено
+  ~ roles/extractor/tests/test_extractor_pipeline.py — 64 строк изменено
+  ~ roles/strategist/README.md                    — 2 строк изменено
+  ~ roles/strategist/scripts/strategist.sh        — 26 строк изменено
+  ~ roles/synchronizer/install.sh                 — 18 строк изменено
+  ~ roles/synchronizer/scripts/code-scan.sh       — 10 строк изменено
+  ~ roles/synchronizer/scripts/dt-collect.sh      — 20 строк изменено
+  ~ roles/synchronizer/scripts/notify.sh          — 91 строк изменено
+  ~ scripts/artifactor.py                         — 273 строк изменено
+  ~ scripts/canon-reconcile-published.sh          — 156 строк изменено
+  ~ scripts/changelog-append.sh                   — 15 строк изменено
+  ~ scripts/check-dirty-repos.sh                  — 13 строк изменено
+  ~ scripts/check-manifest-coverage.py            — 8 строк изменено
+  ~ scripts/check-wp-registered.sh                — 37 строк изменено
+  ~ scripts/create-wp.sh                          — 26 строк изменено
+  ~ scripts/day-open-scaffold.sh                  — 15 строк изменено
+  ~ scripts/dry-run-begin.sh                      — 68 строк изменено
+  ~ scripts/dry-run-complete.sh                   — 47 строк изменено
+  ~ scripts/fmt-critical-alert.sh                 — 73 строк изменено
+  ~ scripts/isolate-push.sh                       — 46 строк изменено
+  ~ scripts/kimi-peer-adapter.sh                  — 4 строк изменено
+  ~ scripts/lib/common.sh                         — 17 строк изменено
+  ~ scripts/lib/governance-repo-path.sh           — 41 строк изменено
+  ~ scripts/lib/peer-adapter-common.sh            — 2 строк изменено
+  ~ scripts/memory-bleed.sh                       — 98 строк изменено
+  ~ scripts/route-task.sh                         — 7 строк изменено
+  ~ scripts/session-guard.sh                      — 157 строк изменено
+  ~ scripts/tests/run-issue-tests.sh              — 3 строк изменено
+  ~ scripts/validate-staged-artifacts.sh          — 29 строк изменено
+  ~ scripts/wakatime-day-total.py                 — 130 строк изменено
+  ~ seed/strategy/scripts/day-open-scaffold.sh    — 15 строк изменено
+  ~ seed/strategy/scripts/isolate-push.sh         — 46 строк изменено
+  ~ seed/strategy/scripts/lib/common.sh           — 17 строк изменено
+  ~ setup.sh                                      — 33 строк изменено
+  ~ setup/lib/apply-op.sh                         — 172 строк изменено
+  ~ setup/validate-template.sh                    — 419 строк изменено
+  ~ shared/rubrics/form-089.yaml                  — 2 строк изменено
+  ~ translation-manifest.yaml                     — 23 строк изменено
+  ~ update.sh                                     — 404 строк изменено
+
+Не затрагиваются:
+  ✓ memory/MEMORY.md (личная оперативная память)
+  ✓ CLAUDE.md (3-way merge: ваши правки сохраняются)
+  ✓ extensions/ (ваши расширения протоколов)
+  ✓ params.yaml (ваши параметры — существующий файл не перезаписывается; отсутствующий засевается из шаблона)
+  ✓ .secrets/ (ключи)
+  ✓ .claude/settings.local.json (permissions)
+  ✓ sessions/00-index.md (журнал peer-сессий)
+  ✓ personal/ (ваши файлы)
+
+Кроме перечисленного, обычный запуск (без --check) также пишет — это зоны возможной перезаписи, пофайлового прогноза для них превью не строит (issue #350):
+  • /tmp/rt-rc13-v0.36.3.3H7R55/IWE/.claude/ — рабочие копии скиллов, хуков, правил
+  • /tmp/rt-rc13-v0.36.3.3H7R55/.claude/projects/-tmp-rt-rc13-v0.36.3.3H7R55-IWE/memory — рабочие копии memory-файлов
+  • /tmp/rt-rc13-v0.36.3.3H7R55/IWE/.iwe-runtime/ — пересобирается целиком из шаблона
+  • /tmp/rt-rc13-v0.36.3.3H7R55/IWE/.exocortex.env, /tmp/rt-rc13-v0.36.3.3H7R55/IWE/FMT-exocortex-template/.claude.md.base, /tmp/rt-rc13-v0.36.3.3H7R55/IWE/FMT-exocortex-template/update-manifest.json
+  • /tmp/rt-rc13-v0.36.3.3H7R55/IWE/.claude.md.base и /tmp/rt-rc13-v0.36.3.3H7R55/IWE/.claude.md.delivered — база слияния CLAUDE.md и запись хешей доставленной копии
+  • /tmp/rt-rc13-v0.36.3.3H7R55/IWE/.memory-deployed.tsv — запись версий памяти, которые установлены и не менялись (по ней update.sh отличает нетронутую копию от изменённой)
+  • /tmp/rt-rc13-v0.36.3.3H7R55/IWE/.iwe-paths и /tmp/rt-rc13-v0.36.3.3H7R55/.zshenv — пересоздаваемое окружение путей
+  • local core.hooksPath в git-репозиториях с .githooks под /tmp/rt-rc13-v0.36.3.3H7R55/IWE
+  • /tmp/rt-rc13-v0.36.3.3H7R55/IWE/DS-strategy/scripts/install-hooks.sh — установщик platform hooks
+  • /tmp/rt-rc13-v0.36.3.3H7R55/IWE/DS-strategy/.githooks/pre-commit и pre-push — platform hooks
+  • /tmp/rt-rc13-v0.36.3.3H7R55/IWE/DS-strategy/scripts/update-derived-snapshot.py — обновлятор derived snapshot
+  • /tmp/rt-rc13-v0.36.3.3H7R55/IWE/DS-strategy/scripts/generate-executor-catalog.py — генератор каталога исполнителей
+  • /tmp/rt-rc13-v0.36.3.3H7R55/IWE/DS-strategy/scripts/executor-catalog.yaml — каталог исполнителей
+  • /tmp/rt-rc13-v0.36.3.3H7R55/IWE/DS-strategy/scripts/ds-publish.sh — публикатор коммитов ночных ролей (кладётся только если файла нет, существующий не трогается)
+  • /tmp/rt-rc13-v0.36.3.3H7R55/IWE/DS-strategy/exocortex/agent-fault-profile/ — только миграция/права существующей приватной БД; отсутствующий профиль не создаётся
+    scripts/day-open-llm-fill.py больше не доставляется сюда (WP-485 Ф17) — Day Open исполняет копию шаблона через $IWE_SCRIPTS.
+    Symlink-пути блокируют backfill. Отличающиеся installer/hooks сохраняются в .git/hook-backups/ и заменяются.
+    Snapshot updater/executor-catalog generator: решение по содержимому (как memory/*), не по git-статусу — локальная правка не блокирует остальное обновление, только эти файлы; executor-catalog.yaml — генерируемый файл и заменяется при смысловом расхождении.
+  Расхождение рабочей копии с шаблоном чинится независимо от списков выше.
+
+Без изменений: 765 файлов
+
+🔴 Остановлено: обнаружен откат на более старый релиз, а --yes запрещает интерактивное подтверждение.
+   Для явного отката запустите без --yes и введите ROLLBACK на запрос подтверждения.
+   Ставили кандидат выпуска — обновляйтесь его каналом: IWE_UPDATE_CHANNEL=rc bash update.sh
+   Следите за основной веткой — её каналом: IWE_UPDATE_CHANNEL=main bash update.sh
+   Любой канал, который вернёт установку назад, тоже спросит ROLLBACK.

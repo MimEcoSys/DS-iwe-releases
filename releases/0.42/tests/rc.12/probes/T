@@ -1,0 +1,7 @@
+#!/run/current-system/sw/bin/bash
+# Run a command as the disposable iwe-test user with a login-like environment.
+cd / && exec sudo -u iwe-test -H env -i HOME=/home/iwe-test USER=iwe-test LOGNAME=iwe-test LANG=ru_RU.UTF-8 \
+  XDG_RUNTIME_DIR=/run/user/1001 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1001/bus \
+  PATH=/home/iwe-test/.npm-global/bin:/home/iwe-test/.local/bin:/run/wrappers/bin:/run/current-system/sw/bin \
+  RC=v0.42.0-rc.12 PREV=v0.41.11 TERM=dumb \
+  /run/current-system/sw/bin/bash -lc "cd ~ && $*"

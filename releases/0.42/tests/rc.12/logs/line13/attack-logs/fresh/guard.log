@@ -1,0 +1,35 @@
+warning: refs/tags/v0.42.0-rc.12 2904ba4747a7a269e758f36aa7cd4f607b647188 не является коммитом!
+Примечание: переключение на «edbe1e7e758b43ca19d4fd8a30ae66eff6388a84».
+
+Вы сейчас в состоянии «отсоединённого указателя HEAD». Можете осмотреться,
+внести экспериментальные изменения и зафиксировать их, также можете
+отменить любые коммиты, созданные в этом состоянии, не затрагивая другие
+ветки, переключившись обратно на любую ветку.
+
+Если хотите создать новую ветку для сохранения созданных коммитов, можете
+сделать это (сейчас или позже), используя команду switch с параметром -c.
+Например:
+
+  git switch -c <новая-ветка>
+
+Или отмените эту операцию с помощью:
+
+  git switch -
+
+Отключите этот совет, установив переменную конфигурации
+advice.detachedHead в значение false
+
+RESULT fresh setup.sh full rc=0
+RESULT fresh vs manifest: version=0.42.0 want=0.42.0 total=878 missing=0 differs=0 
+RESULT rc->rc rerun rc=0 uptodate=1 changed_files=0
+RESULT rollback --yes (no consent) rc=2 changed_files=0 channel=
+RESULT rollback answer=no rc=2 changed_files=0
+RESULT rollback ROLLBACK rc=2 to= vs: version=0.42.0 want=0.41.11 total=853 missing=2 differs=87 D:.claude/bin/guarded-rm D:.claude/hooks/close-gate-reminder.sh D:.claude/hooks/destructive-guard.sh D:.claude/hooks/dry-run-gate.sh D:.claude/hooks/protocol-artifact-validate.sh D:.claude/hooks/protocol-stop-gate.sh
+RESULT sentinels after rollback: kept
+RESULT release rerun after rollback rc=2 uptodate=0
+RESULT return to rc rc=2 vs: version=0.42.0 want=0.42.0 total=878 missing=0 differs=0 
+RESULT sentinels after return: kept
+RESULT rc second run rc=2 uptodate=0
+RESULT orphan staging files: 0
+RESULT DONE
+guard rc=0

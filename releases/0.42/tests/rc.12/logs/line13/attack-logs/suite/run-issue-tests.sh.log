@@ -1,0 +1,1847 @@
+=== test_issue_1003_ds_publish.sh ===
+== (1) update path for a known earlier copy
+  PASS: untracked earlier template copy replaced by the current one (executable)
+  PASS: the replaced copy was saved under .backups/ds-publish-pre-update/ and the path printed
+  PASS: a foreign publisher is left alone
+== (2) a reverted equivalent patch is not 'already published'
+  PASS: the commit reached origin's tree after the revert
+== (2b) a commit really present by tree (equivalent patch, no revert) stays a no-op
+  PASS: no extra commit pushed
+== (2c) two independent commits converging on the same content are not 'already published'
+  PASS: not claimed as an already published patch (rc=0, outcome: ds-publish: the commit changes nothing on top of origin/main, nothing to do)
+== (2d) a commit that changes no tree is a successful no-op
+  PASS: rc=0, origin untouched
+
+PASS: #1003
+=== test_issue_1004_claude_md_backup.sh ===
+== backup is taken before the replacement
+  PASS: backup holds the pilot's outside edit
+  PASS: USER-SPACE block still kept
+  PASS: output names the backup
+== a failed backup leaves the file untouched
+  PASS: file kept as is when no backup can be made
+== the USER-SPACE block is restored with printf, not echo
+  PASS: no echo of USER_SECTION / WS_USER_SECTION
+
+PASS: #1004 CLAUDE.md backup
+=== test_issue_1004_step0_integrity.sh ===
+== the tag sits in the first 40 lines of the real update.sh
+  PASS: tag within 40 lines
+  PASS: real update.sh ends with the marker
+  PASS: the real update.sh is accepted
+== CRLF and trailing blanks
+  PASS: CRLF file with tag and marker is accepted
+  PASS: trailing blanks and blank last lines are tolerated
+  PASS: CRLF file without the closing marker is refused
+== untagged files (older releases): minimum size
+  PASS: 3-line stub without the tag is refused
+  PASS: 150-line untagged file is accepted
+  PASS: update.sh of release v0.40.2 is accepted
+
+PASS: #1004 step 0 integrity
+=== test_issue_1005_guarded_rm_canon.sh ===
+  ✅ PASS: three missing levels resolve literally
+  ✅ PASS: symlink in the existing prefix is expanded
+  ✅ PASS: '..' after a symlink means the parent of its target
+  ✅ PASS: '..' folds a missing segment
+  ✅ PASS: a symlink after a folded missing segment is still expanded
+  ✅ PASS: dangling symlink is replaced by its target
+  ✅ PASS: relative dangling symlink resolves next to the link
+  ✅ PASS: symlink loop: realpath -m platform, perl fallback not in use (skipped)
+=== test_issue_1005_sync_gate_no_posix_signals.sh ===
+PASS: issue 1005 sync gate wrapper (3 checks)
+=== test_issue_1005_update_fpf_timeout_no_pkill.sh ===
+PASS: issue 1005 FPF local bounded timeout, supervision failure, zero limit
+=== test_issue_1006_minor_findings.sh ===
+== 1 scheduler-cron.sh mode
+  PASS: mode 100755
+== 2 parity-contract.yaml
+  PASS: no double-quoted regex with a backslash
+  PASS: parity check still passes
+== 3 extractor.sh portable timeout
+  PASS: fallback times out (124) and passes a fast command (0)
+  PASS: signalled child -> 137, exit 7 -> 7 (not 124 or 0)
+  PASS: a TERM-ignoring child is killed, 124
+== 4 strategist.sh finds common.sh in the template
+  PASS: template copy found with an empty workspace
+  PASS: nothing found -> non-zero
+  PASS: no workspace-only lookup left
+== 5 SETUP_CI keeps the scheduler untouched
+  PASS: smoke test passes SETUP_CI=1
+  PASS: units written, systemctl not called
+== 6 no top-level cd in delivered skills and memory
+  PASS: every cd sits in a subshell
+
+PASS: #1006
+=== test_issue_1006_yml_author_scan.sh ===
+Примечание: переключение на «edbe1e7e758b43ca19d4fd8a30ae66eff6388a84».
+
+Вы сейчас в состоянии «отсоединённого указателя HEAD». Можете осмотреться,
+внести экспериментальные изменения и зафиксировать их, также можете
+отменить любые коммиты, созданные в этом состоянии, не затрагивая другие
+ветки, переключившись обратно на любую ветку.
+
+Если хотите создать новую ветку для сохранения созданных коммитов, можете
+сделать это (сейчас или позже), используя команду switch с параметром -c.
+Например:
+
+  git switch -c <новая-ветка>
+
+Или отмените эту операцию с помощью:
+
+  git switch -
+
+Отключите этот совет, установив переменную конфигурации
+advice.detachedHead в значение false
+
+warning: in the working copy of '.github/workflows/changelog-gate.yml', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of '.github/workflows/release-watchdog.yml', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of '.github/workflows/translate-sync.yml', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of '.github/workflows/validate-template.yml', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of '.github/workflows/changelog-gate.yml', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of '.github/workflows/changelog-gate.yml', CRLF will be replaced by LF the next time Git touches it
+PASS: issue 1006 .yml author-content scan (staged, pristine, LF/CRLF exact exceptions)
+=== test_issue_1010_detectors.sh ===
+  ✅ PASS: untouched tree passes
+  ✅ PASS: detector 3 sees a declared extension point past row 20
+  ✅ PASS: detector 8 catches sed "s|{{X}}|...|" without -e
+PASS: issue #1010 F13 detectors
+=== test_issue_1010_memory_limit.sh ===
+memory record limit: 42 passed, 0 failed
+=== test_issue_1010_rc_idem.sh ===
+  ✅ PASS: repeated runs leave .zshenv and .bashrc byte-identical
+  ✅ PASS: user line kept, exactly one managed block
+  ✅ PASS: symlinked .bashrc stays a symlink and its target gets the block
+  ✅ PASS: legacy block replaced, user lines before and after it kept
+PASS: issue #1010 rc idempotence
+=== test_issue_1010_red_team_findings.sh ===
+== F3 USER-SPACE kept by the stale/repair copy of a skill
+  PASS: new platform text and the USER-SPACE block
+== F5 offline hint in strategy-session step 0
+  PASS: offline way out named
+== F7 conflict gate before the marker is cleared
+  PASS: download-hiccup branch: gate (line 5638) before finish (line 5639)
+  PASS: zero-change branch: gate (line 5710) before finish (line 5711)
+== F11 setup.sh validation prompt is guarded
+  PASS: SETUP_CI guards the prompt
+== F14 GNU-first stat
+  PASS: no BSD-first 'stat -f %m || stat -c %Y' left
+  PASS: stat_mtime asks GNU stat for the mtime (-c %Y) first
+== F16 workflow permissions
+  PASS: top-level permissions present
+
+PASS: #1010
+=== test_issue_1010_update_idem.sh ===
+--- Run 1 (F9: deprecated paths) ---
+  ❌ FAIL: run 1: update.sh exit 2 (log: 
+/home/iwe-test/.local/bin/gh: строка 5: /tmp/rt-rc12.TMCaKc/suite/iwe-issue-1010.F8zvDo/fake-home/iwe-rc12-linux/logs/gh-calls.log: No such file or directory
+curl: (22) The requested URL returned error: 404
+ОШИБКА: authenticated GitHub API request via gh failed; fallback disabled.
+ОШИБКА: authenticated branch lookup failed; refusing anonymous or moving-branch fallback.)
+  ✅ PASS: F9: git-tracked deprecated file kept in the template clone
+  ✅ PASS: F9: git status shows no deletion of scripts/tests/old_test.sh
+  ❌ FAIL: F9: no 'отслеживаются git' line naming scripts/tests/old_test.sh in output
+  ❌ FAIL: F9 control: untracked deprecated file was not removed
+  ❌ FAIL: F9: deprecated skill: clone copy present=y, workspace copy present=y
+  ✅ PASS: F9 control: untracked file not reported as git-tracked
+  ❌ FAIL: F9 backup: expected one run dir, found 0 ()
+  ❌ FAIL: F9 backup: /template/scripts/tests/old_untracked.sh missing or different
+  ❌ FAIL: F9 backup: /workspace/.claude/skills/oldskill/SKILL.md missing or different
+  ❌ FAIL: F9 backup: memory copy not moved (/memory/old-note.md); still in memory dir: y
+  ❌ FAIL: F9 backup: expected move lines missing: 
+--- Run 2 (F10-a: same upstream, USER-SPACE skill) ---
+  ❌ FAIL: run 2: update.sh exit 2
+  ✅ PASS: F10-a: second run does not list SKILL.md as updated
+  ✅ PASS: F10-a: SKILL.md bytes unchanged across both runs
+  ✅ PASS: F10-a: user block survives byte-for-byte
+--- Run 3 (F10-b: upstream body changed) ---
+  ❌ FAIL: run 3: update.sh exit 2
+  ❌ FAIL: F10-b: changed-upstream SKILL.md not listed as updated
+  ❌ FAIL: F10-b: new upstream body missing or old body left behind
+  ✅ PASS: F10-b: user block preserved through the real update
+  ✅ PASS: F10-b: exactly one USER-SPACE block after update
+  ❌ FAIL: F10-b: SKILL.md listed again after being updated (rc=2)
+--- move_deprecated_to_backup: safety cases ---
+  ✅ PASS: pre-existing backup destination: not overwritten, original kept, warning printed
+  ✅ PASS: symlinked parent directory leading outside the root: refused, file kept
+  ✅ PASS: symlink entry: the link itself is moved, its target is untouched
+  ✅ PASS: '..' in the manifest path: refused
+
+passed: 12, failed: 14
+FAIL: issue #1010 update idempotence (14 failed)
+❌ test_issue_1010_update_idem.sh: упал
+=== test_issue_1032_strategy_session_offline.sh ===
+PASS: installed strategy-session opens a pinned copy offline without touching canonical contents
+PASS: incomplete partial clone refuses offline pin before worktree or remote access
+=== test_issue_1032_windows_fail_closed.sh ===
+PASS: native Windows Git Bash refuses before canonical or runtime writes
+=== test_issue_1036_migration_source.sh ===
+PASS: immutable migration legend is available; user notes stay outside delivery
+PASS: real update delivered the pinned migration guidance and preserved user notes
+=== test_issue_1037_filemode.sh ===
+PASS: exact executable-bit commands are reported without staging user files
+PASS: real update reports exact commands; index repair passes the real pre-commit guard
+=== test_issue_1038_validator.sh ===
+PASS: issue #1038 validator distinguishes fallback from hardcode
+=== test_issue_1061_platform_bottleneck_map.sh ===
+PASS: #1061 setup-layout platform route fails closed and resolves a user map
+=== test_issue_1067_week_review_gave_up.sh ===
+  FAIL: first failure keeps its retry code
+/tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/scripts/tests/test_issue_1067_week_review_gave_up.sh: строка 14: /tmp/rt-rc12.TMCaKc/suite/iwe-1067.UkQAQy/model-calls: No such file or directory
+/tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/scripts/tests/test_issue_1067_week_review_gave_up.sh: строка 14: [: : ожидается целочисленное выражение
+  FAIL: two failed model runs only
+grep: /tmp/rt-rc12.TMCaKc/suite/iwe-1067.UkQAQy/home/logs/synchronizer/scheduler-2026-09-28.log: No such file or directory
+  FAIL: strategist reports exhausted attempts
+grep: /tmp/rt-rc12.TMCaKc/suite/iwe-1067.UkQAQy/home/logs/synchronizer/scheduler-2026-09-28.log: No such file or directory
+  FAIL: second failure has nonzero scheduler code
+  ok: failed week-review does not set weekly done
+  FAIL: DayPlan is red after dispatch completed
+  FAIL: seed-installed DayPlan is red too
+grep: /tmp/rt-rc12.TMCaKc/suite/iwe-1067.UkQAQy/home/logs/synchronizer/scheduler-2026-09-28.log: No such file or directory
+  FAIL: dispatch completion is present
+grep: /tmp/rt-rc12.TMCaKc/suite/iwe-1067.UkQAQy/home/logs/strategist/week-review-last-status: No such file or directory
+  FAIL: status file keeps failure
+/tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/scripts/tests/test_issue_1067_week_review_gave_up.sh: строка 14: /tmp/rt-rc12.TMCaKc/suite/iwe-1067.UkQAQy/model-calls: No such file or directory
+/tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/scripts/tests/test_issue_1067_week_review_gave_up.sh: строка 14: [: : ожидается целочисленное выражение
+  FAIL: next dispatch does not restart exhausted model
+  ok: next dispatch still has no weekly done
+/tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/scripts/tests/test_issue_1067_week_review_gave_up.sh: строка 14: /tmp/rt-rc12.TMCaKc/suite/iwe-1067.UkQAQy/model-calls: No such file or directory
+/tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/scripts/tests/test_issue_1067_week_review_gave_up.sh: строка 14: [: : ожидается целочисленное выражение
+  FAIL: next-day manual retry reaches model
+  FAIL: next-day first failure returns its own code
+  FAIL: manual retry after cap can deliver
+  FAIL: recovered week-review sets weekly done
+/tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/scripts/tests/test_issue_1067_week_review_gave_up.sh: строка 14: /tmp/rt-rc12.TMCaKc/suite/iwe-1067.UkQAQy/model-calls: No such file or directory
+/tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/scripts/tests/test_issue_1067_week_review_gave_up.sh: строка 14: [: : ожидается целочисленное выражение
+  FAIL: recovered week-review does not rerun the model
+  FAIL: clean delivered week-review is green
+  FAIL: clean seed-installed week-review is green
+  ok: FAILED scenario: week-review (rc=70) alone overrides dispatch completion
+  ok: GAVE UP scenario: week-review after 2 failed runs today alone overrides dispatch completion
+  FAIL: spoof-gave-up first real failure preserves rc=70
+/tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/scripts/tests/test_issue_1067_week_review_gave_up.sh: строка 14: /tmp/rt-rc12.TMCaKc/suite/iwe-1067.UkQAQy/spoof-gave-up-model-calls: No such file or directory
+/tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/scripts/tests/test_issue_1067_week_review_gave_up.sh: строка 14: [: : ожидается целочисленное выражение
+  FAIL: spoof-gave-up still gets exactly two real model runs
+  ok: spoof-gave-up leaves weekly marker absent
+  FAIL: spoof-recorded first real failure preserves rc=70
+/tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/scripts/tests/test_issue_1067_week_review_gave_up.sh: строка 14: /tmp/rt-rc12.TMCaKc/suite/iwe-1067.UkQAQy/spoof-recorded-model-calls: No such file or directory
+/tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/scripts/tests/test_issue_1067_week_review_gave_up.sh: строка 14: [: : ожидается целочисленное выражение
+  FAIL: spoof-recorded still gets exactly two real model runs
+  ok: spoof-recorded leaves weekly marker absent
+  FAIL: spoof-success first real failure preserves rc=70
+/tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/scripts/tests/test_issue_1067_week_review_gave_up.sh: строка 14: /tmp/rt-rc12.TMCaKc/suite/iwe-1067.UkQAQy/spoof-success-model-calls: No such file or directory
+/tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/scripts/tests/test_issue_1067_week_review_gave_up.sh: строка 14: [: : ожидается целочисленное выражение
+  FAIL: spoof-success still gets exactly two real model runs
+  ok: spoof-success leaves weekly marker absent
+  FAIL: symlink state fails closed
+  ok: symlink state does not call model
+  FAIL: malformed state fails closed
+  ok: malformed state does not call model
+  ok: symlink target was not overwritten
+/tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/scripts/tests/test_issue_1067_week_review_gave_up.sh: строка 14: /tmp/rt-rc12.TMCaKc/suite/iwe-1067.UkQAQy/mv-failure-model-calls: No such file or directory
+/tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/scripts/tests/test_issue_1067_week_review_gave_up.sh: строка 14: [: : ожидается целочисленное выражение
+  FAIL: failed final rename cannot trigger model run three
+cat: /tmp/rt-rc12.TMCaKc/suite/iwe-1067.UkQAQy/status-mv-calls: No such file or directory
+/tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/scripts/tests/test_issue_1067_week_review_gave_up.sh: строка 14: [: : ожидается целочисленное выражение
+  FAIL: final rename refusal was injected
+awk: fatal: cannot open file `/tmp/rt-rc12.TMCaKc/suite/iwe-1067.UkQAQy/mv-failure-home/logs/strategist/week-review-last-status' for reading: No such file or directory
+  FAIL: failed final rename leaves uncertain reserved cap
+  ok: failed final rename leaves weekly marker absent
+  FAIL: manual recovery remains available after rename failure
+  FAIL: delivered but unrecorded success returns failure
+cat: /tmp/rt-rc12.TMCaKc/suite/iwe-1067.UkQAQy/success-status-mv-calls: No such file or directory
+/tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/scripts/tests/test_issue_1067_week_review_gave_up.sh: строка 14: [: : ожидается целочисленное выражение
+  FAIL: final success rename refusal was injected
+/tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/scripts/tests/test_issue_1067_week_review_gave_up.sh: строка 14: /tmp/rt-rc12.TMCaKc/suite/iwe-1067.UkQAQy/success-rename-failure-model-calls: No such file or directory
+/tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/scripts/tests/test_issue_1067_week_review_gave_up.sh: строка 14: [: : ожидается целочисленное выражение
+  FAIL: unknown outcome cannot replay delivered report
+  ok: unknown outcome does not set weekly done
+awk: fatal: cannot open file `/tmp/rt-rc12.TMCaKc/suite/iwe-1067.UkQAQy/success-rename-failure-home/logs/strategist/week-review-last-status' for reading: No such file or directory
+  FAIL: unknown outcome is persisted for manual reconciliation
+  ok: unknown outcome does not show green DayPlan
+  ok: unknown outcome does not show green installed DayPlan
+/tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/scripts/tests/test_issue_1067_week_review_gave_up.sh: строка 14: /tmp/rt-rc12.TMCaKc/suite/iwe-1067.UkQAQy/scheduled-success-rename-failure-model-calls: No such file or directory
+/tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/scripts/tests/test_issue_1067_week_review_gave_up.sh: строка 14: [: : ожидается целочисленное выражение
+  FAIL: scheduled unknown outcome does not replay model
+  ok: scheduled unknown outcome does not set weekly done
+grep: /tmp/rt-rc12.TMCaKc/suite/iwe-1067.UkQAQy/scheduled-success-rename-failure-home/logs/synchronizer/scheduler-2026-09-28.log: No such file or directory
+  FAIL: scheduler names uncertain pause
+grep: /tmp/rt-rc12.TMCaKc/suite/iwe-1067.UkQAQy/scheduled-success-rename-failure-home/logs/synchronizer/scheduler-2026-09-28.log: No such file or directory
+  ok: scheduler does not promise retry after uncertain delivery
+  FAIL: scheduled uncertain outcome is red in DayPlan
+/tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/scripts/tests/test_issue_1067_week_review_gave_up.sh: строка 14: /tmp/rt-rc12.TMCaKc/suite/iwe-1067.UkQAQy/mktemp-failure-model-calls: No such file or directory
+/tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/scripts/tests/test_issue_1067_week_review_gave_up.sh: строка 14: [: : ожидается целочисленное выражение
+  FAIL: failed reservation never starts second model
+cat: /tmp/rt-rc12.TMCaKc/suite/iwe-1067.UkQAQy/status-mktemp-calls: No such file or directory
+/tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/scripts/tests/test_issue_1067_week_review_gave_up.sh: строка 14: [: : ожидается целочисленное выражение
+  FAIL: reservation refusal persisted across dispatches
+  ok: failed reservation never sets weekly done
+/tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/scripts/tests/test_issue_1067_week_review_gave_up.sh: строка 14: /tmp/rt-rc12.TMCaKc/suite/iwe-1067.UkQAQy/mktemp-failure-model-calls: No such file or directory
+/tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/scripts/tests/test_issue_1067_week_review_gave_up.sh: строка 14: [: : ожидается целочисленное выражение
+  FAIL: after storage recovery second real attempt is possible
+  ok: legacy failed status pauses automatic replay
+  ok: legacy failed status never sets weekly done
+/tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/scripts/tests/test_issue_1067_week_review_gave_up.sh: строка 14: /tmp/rt-rc12.TMCaKc/suite/iwe-1067.UkQAQy/legacy-status-model-calls: No such file or directory
+/tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/scripts/tests/test_issue_1067_week_review_gave_up.sh: строка 14: [: : ожидается целочисленное выражение
+  FAIL: legacy status still allows manual retry
+  FAIL: failed manual retry after legacy cap returns 76
+FAILED: 40
+❌ test_issue_1067_week_review_gave_up.sh: упал
+=== test_issue_1084_runtime_placeholder_scope.sh ===
+PASS: declared runtime files only; preserved worktrees ignored
+=== test_issue_1099_residuals.sh ===
+  ✅ PASS: library is found in the directory above the repo without IWE_ROOT
+  ✅ PASS: msys: drive letter case does not matter
+  ✅ PASS: linux: comparison stays exact
+  ✅ PASS: identical paths are equal
+  ✅ PASS: old run directories are removed, fresh and foreign ones stay (20260103T000000Z-3 20260104T000000Z-4 20261012T080000Z-9 not-a-run-dir )
+  ✅ PASS: the newest three runs are kept even when old
+  ✅ PASS: notify-security passes the push commit count
+=== test_issue_1099_rules_no_rsync.sh ===
+  ✅ PASS: mirror succeeds without rsync
+  ✅ PASS: regular file copied
+  ✅ PASS: dotfile copied
+  ✅ PASS: file removed at the source is dropped
+  ✅ PASS: no temporary directory left
+  ✅ PASS: missing source fails
+  ✅ PASS: previous mirror kept after failed copy
+=== test_issue_1106_dt_collect_gov.sh ===
+✅ issue #1106 (dt-collect.sh GOVERNANCE_DIR resolution): OK
+=== test_issue_1114_encoding_gate.sh ===
+PASS: issue #1114 encoding gate — violations flagged, baseline add/stale/line-shift ratchet works
+=== test_issue_1146_smoke_cache_ignored.sh ===
+  ✅ seed .gitignore lists the cache
+  ✅ cache file is not shown by git status
+  ✅ exclude entry added once (idempotent)
+=== test_issue_1147_memory_migrate.sh ===
+== 1. columnar domains внутри metadata: не порождает плоского дубля
+  ✅ PASS: файл без изменений (OK, не DONE)
+  ✅ PASS: миграция сообщила OK (все поля видны)
+  ✅ PASS: get_field читает столбик как inline
+  ✅ PASS: валидатор принимает файл
+  ✅ PASS: конфликт: возвращается плоское значение
+  ✅ PASS: конфликт форм — предупреждение в stderr
+== 2. valid_from из metadata.modified
+  ✅ PASS: valid_from = дата modified, не сегодня
+== 3. valid_from из mtime, когда modified нет
+  ✅ PASS: valid_from = mtime файла
+== 4. --all: превышение бюджета HOT — стоп до любой записи
+  ✅ PASS: exit code ненулевой при превышении
+  ✅ PASS: в stderr перечислен кандидат
+  ✅ PASS: ни один файл не изменён
+== 5. --all: в пределах бюджета — hot присваивается
+  ✅ PASS: horizon: hot присвоен
+== 6. одиночный файл сверх бюджета — отказ без записи
+  ✅ PASS: exit code ненулевой
+  ✅ PASS: диагностика REFUSE
+  ✅ PASS: файл не изменён
+== 7. замок: второй параллельный запуск отклонён без записи
+  ✅ PASS: второй запуск отклонён
+  ✅ PASS: диагностика замка
+  ✅ PASS: файл не изменён
+
+PASS=18 FAIL=0
+=== test_issue_1149_1156_windows_path_and_ru_regex.sh ===
+  ✅ no raw open('$CONFIG') left in the scaffold
+  ✅ CONFIG_PY goes through cygpath -m when available
+  ✅ CONFIG_PY equals CONFIG without cygpath
+  ✅ lesson-hygiene regex found in sync-manifest.yaml
+  ✅ matches: memory: сжатие индекса памяти, ротация уроков
+  ✅ matches: Уроки: архивация старых
+  ✅ matches: lessons_ archive old
+  ✅ matches: memory hygiene pass
+  ✅ unrelated commit does not match
+=== test_issue_1149_dayopen_carryover.sh ===
+  ✅ PASS: both config opens use encoding='utf-8'
+  ✅ PASS: handoff list is taken from the heading-like section
+  ✅ PASS: earlier mention in the body is ignored
+  ✅ PASS: closing footer is not part of the list
+  ✅ PASS: unmarked heading line is used before a prose mention
+  ✅ PASS: the latest heading-like section wins across forms
+=== test_issue_1150_curl_crlf.sh ===
+  ✅ PASS: best-effort flag found through curl --help all
+  ✅ PASS: falls back to --ssl-no-revoke
+  ✅ PASS: no flag when curl offers neither
+  ✅ PASS: .gitattributes pins LF for all text and shell scripts
+=== test_issue_1152_weekplan_row_layout.sh ===
+  ✅ row has the 8 table cells
+  ✅ «РП» holds the WP number
+  ✅ «Работа» holds the title
+  ✅ «Часы (потолок)» holds the budget
+  ✅ «Репо» holds the repo
+=== test_issue_1165_verify_skill_install_layout.sh ===
+  ✅ resolver is found in the install layout (.claude/lib)
+  ✅ missing resolver still fails with an explicit message
+=== test_issue_1174_detector_user_messages.sh ===
+  ✅ exactly the 3 typed human messages are kept
+  ✅ string content of type=user is read
+  ✅ text block of type=user is read
+  ✅ legacy type=human form still works
+  ✅ tool results, meta, service text and assistant text are dropped
+=== test_issue_1201_router_log.sh ===
+  ✅ PASS: seed/strategy/.gitignore ignores logs/
+  ✅ PASS: logs/ does not show up in git status after the router writes
+  ✅ PASS: exclude entry added once (idempotent)
+  ✅ PASS: non-git directory: helper is a silent no-op
+  ✅ PASS: helper called from emit_error and log_audit
+=== test_issue_1209_isolate_branch.sh ===
+warning: Похоже, что вы клонировали пустой репозиторий.
+PASS: session-guard.sh --isolate resolves the default branch (#1209)
+=== test_issue_1213_strategy_day_guard.sh ===
+  ✅ PASS: missing config on a real Monday: exit 0 (not the false-positive 2)
+  ✅ PASS: warns about the unverified strategy_day guard
+  ✅ PASS: DayPlan body still produced despite the unreadable config
+  (skipped: python3+PyYAML unavailable, cannot exercise the readable-config branch)
+=== test_issue_1256_strategy_session_record.sh ===
+test_explicit_sessions_override (__main__.SessionRecordTest.test_explicit_sessions_override) ... ok
+test_invalid_override_fails_without_fallback (__main__.SessionRecordTest.test_invalid_override_fails_without_fallback) ... ok
+test_legacy (__main__.SessionRecordTest.test_legacy) ... ok
+test_legacy_markers_and_month_subdirectories (__main__.SessionRecordTest.test_legacy_markers_and_month_subdirectories) ... ok
+test_legacy_uses_active_copy_with_library_available (__main__.SessionRecordTest.test_legacy_uses_active_copy_with_library_available) ... ok
+test_migrated_install_without_root_scripts (__main__.SessionRecordTest.test_migrated_install_without_root_scripts) ... ok
+test_missing_library_preserves_valid_override (__main__.SessionRecordTest.test_missing_library_preserves_valid_override) ... ok
+test_missing_library_uses_active_governance_copy (__main__.SessionRecordTest.test_missing_library_uses_active_governance_copy) ... ok
+test_monthly_completion_contract (__main__.SessionRecordTest.test_monthly_completion_contract) ... ok
+test_monthly_loads_suffix_extension (__main__.SessionRecordTest.test_monthly_loads_suffix_extension) ... ok
+test_non_strategy_types_do_not_count (__main__.SessionRecordTest.test_non_strategy_types_do_not_count) ... ok
+test_relative_override_is_independent_of_current_directory (__main__.SessionRecordTest.test_relative_override_is_independent_of_current_directory) ... ok
+test_resolver_without_argument_keeps_legacy_contract (__main__.SessionRecordTest.test_resolver_without_argument_keeps_legacy_contract) ... ok
+test_root_library_fallback (__main__.SessionRecordTest.test_root_library_fallback) ... ok
+test_scripts_override (__main__.SessionRecordTest.test_scripts_override) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.230s
+
+OK
+=== test_issue_1257_wp_registration.sh ===
+PASS: canonical: card, registry, WeekPlan, active-wp, shared counter
+PASS: isolated: card, registry, WeekPlan, active-wp, shared counter
+PASS: missing governance copy refused before any write
+PASS: эквивалентность 1
+PASS: эквивалентность WP-1
+PASS: эквивалентность WP-001
+PASS: WP-1 не находит WP-10
+PASS: WP-10 не находит WP-1
+PASS: нет карточки
+PASS: неверное поле wp
+PASS: название в реестре не совпадает
+PASS: название в плане не совпадает
+PASS: нет строки реестра
+PASS: нет строки плана
+PASS: дубль в реестре
+PASS: дубль в плане
+PASS: упоминание вне таблицы «План»
+PASS: частичное создание: реестра нет
+PASS: после дозаписи проходит
+PASS: номер не менялся (одна карточка)
+PASS: раскладка без «#»: успех
+PASS: раскладка без «#»: нет строки
+PASS: префикс wp-12 в нижнем регистре
+PASS: жирные заголовки реестра и плана
+PASS: колонка номера не тянется из прошлой таблицы
+PASS: таблицы «План» и «Перенос»
+PASS: дубль внутри «План» при таблице «Перенос»
+PASS: пустой План не заменяется Переносом
+PASS: название в репозитории не заменяет название реестра
+PASS: название в результате не заменяет название плана
+PASS: длинное название: реестр режет до 80
+PASS: неверный номер
+PASS: нет аргументов
+all passed
+=== test_issue_1261_note_review_no_dayplan.sh ===
+PASS: note-review message is non-empty and static even without a DayPlan file
+=== test_issue_1263_refs.sh ===
+  ✅ PASS: Day Open scaffold and roles catalogue do not point to the absent /connect-guide
+  ✅ PASS: personal-guide-start does not copy skills via personal_write
+PASS: issue #1263 skill references
+=== test_issue_1266_open_log.sh ===
+  ✅ PASS: day-close SKILL.md does not ask to delete open-sessions.log lines
+  ✅ PASS: prepare shows today's openings, not the oldest lines
+PASS: issue #1266 open-sessions log
+=== test_issue_1279_exocortex_freeze.sh ===
+  ✅ PASS: T1: frozen by default — no write into the canon, publish handed to exocortex-publish.sh (non-git canon → status=fail recorded), hook exits 0
+  ✅ PASS: T2: frozen by default, Bash-reconcile path — no canon write, change handed to the publisher
+  ✅ PASS: T2b: unchanged memory under freeze — hook stays silent, nothing started
+  ✅ PASS: T3: freeze disabled via empty override — mirror still works as before
+  ✅ PASS: T4: freeze override points elsewhere — this repo's mirror is unaffected
+  ✅ PASS: T5: canonical-owner run under default freeze — mirror written, no skip warning
+  ✅ PASS: T6: default freeze without owner — canon not written, handed to the publisher (empty IWE_CANONICAL_OWNER grants nothing)
+test_issue_1279_exocortex_freeze: ALL PASS
+=== test_issue_1279_exo_publish.sh ===
+  ✅ PASS: T1a: day-close --backup under freeze leaves the canon checkout untouched (rc=0)
+  ✅ PASS: T1b: exocortex/ (memory + extensions) published to origin/main via the isolated worktree; other writers' roots kept; status ok with the published sha
+  ✅ PASS: T1c: Day Close says the snapshot is saved and the publish was started
+  ✅ PASS: T1d: the backup commit touches only exocortex/ and carries no local lock/quarantine files
+  ✅ PASS: T2: origin unreachable — status=fail recorded (fetch origin/main не удался: и репозитори...), snapshot kept, canon untouched
+  ✅ PASS: T2b: Day Close surfaces the last publish failure instead of hiding it (rc=0)
+  ✅ PASS: T3: retry after restoring origin publishes the kept snapshot
+  ✅ PASS: T4: a memory file removed at the source is pruned on origin; preserved roots stay
+  ✅ PASS: T5: concurrent runs serialize or queue cleanly (1 new commit(s), only exocortex/)
+  ✅ PASS: T6: hook under freeze — exocortex/ published via the isolated worktree, canon untouched, hook exit 0
+  ✅ PASS: T7: origin-only foreign.md and rules/x.md survive; owned.md (hash matches origin's manifest) pruned; an owned file changed elsewhere is kept
+  ✅ PASS: T8: unstamped canon ds-publish.sh is bypassed; the template's stamped copy published
+  ✅ PASS: T9: status=ok but the snapshot is unpublished past the limit — status exits 3 and says so
+  ✅ PASS: T10: caller's process group killed right after the launch — the detached publish still finished
+  ✅ PASS: T11: hook does not launch while a run is alive (leaves run.pending) or within the trigger interval
+test_issue_1279_exo_publish: ALL PASS
+=== test_issue_1279_open_log_isolate.sh ===
+hint: Using 'master' as the name for the initial branch. This default branch name
+hint: is subject to change. To configure the initial branch name to use in all
+hint: of your new repositories, which will suppress this warning, call:
+hint:
+hint: 	git config --global init.defaultBranch <name>
+hint:
+hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+hint: 'development'. The just-created branch can be renamed via this command:
+hint:
+hint: 	git branch -m <name>
+hint:
+hint: Disable this message with "git config set advice.defaultBranchName false"
+session-guard: --isolate: изолирую /tmp/rt-rc12.TMCaKc/suite/tmp.nTt6NLKkZe/DS-strategy (remote: origin)
+Preparing worktree (new branch 'session-isolate/claude-code-t1279-1794492185-260532')
+⚠️  cd "/tmp/rt-rc12.TMCaKc/suite/tmp.nTt6NLKkZe/iwe-root/.iwe-runtime/isolated-worktrees/claude-code-t1279-1794492185-260532" перед следующим действием -- рабочий каталог не переключается автоматически.
+PASS: canonical checkout has no inbox/open-sessions.log
+PASS: isolated worktree has inbox/open-sessions.log with the session entry
+PASS: semaphore does not register a canonical open-sessions.log allowlist entry
+PASS: semaphore resolves under .iwe-runtime, not under the governance repo
+=== test_issue_1279_orz_isolate.sh ===
+  ✅ PASS: failed --isolate writes nothing into the canonical sessions/
+  ✅ PASS: canonical checkout has no sessions/ after open --isolate
+  ✅ PASS: ORZ scaffold is in the isolated worktree
+  ✅ PASS: semaphore records the worktree sessions dir
+  ✅ PASS: close validates the ORZ file in the isolated worktree
+  ✅ PASS: close succeeds and leaves the .closed receipt
+  ✅ PASS: isolate from a linked governance worktree keeps the scaffold out of the canon
+PASS: issue #1279 ORZ scaffold under --isolate
+=== test_issue_1280_delivery_hint.sh ===
+  ✅ PASS: T1: hint opens via $SCRIPT_DIR/scripts/session-guard.sh (template copy)
+  ✅ PASS: T2: no governance-repo session-guard.sh path in the hint (file is never delivered there)
+  ✅ PASS: T3: --agent follows ${IWE_AGENT:-claude-code} (expanded at operator session), literal 'manual' gone
+  ✅ PASS: T5: scripts/session-guard.sh exists next to update.sh (hinted path is real)
+  ✅ PASS: T4: hint warns that open/commit/close must stay inside one agent session
+  ✅ PASS: T6: hint stages only the delivered paths (no git add -A)
+  ✅ PASS: T7: hint does not promise a canonical-owner refusal that does not exist
+test_issue_1280_delivery_hint: ALL PASS
+=== test_issue_1280_publish_stamp.sh ===
+== no stamp + hash of a pre-stamp template copy → replaced with backup
+  PASS: replaced by the shipped copy, old one saved in /tmp/rt-rc12.TMCaKc/suite/tmp.y35eBvd7qx/known/.backups/ds-publish-pre-update/20261112T140307Z-262804/ds-publish.sh
+== the last pre-stamp shipped copy (97a65121, 15.10) is recognised too
+  PASS: last unstamped template copy replaced, backup kept
+== no stamp + unknown content → kept, loud warning
+  PASS: own publisher untouched; warning names the path and the manual accept command
+== lower stamp → replaced with backup
+  PASS: version 0 < 1 replaced, backup kept
+== equal stamp, different content → kept
+  PASS: local edit with the same stamp left alone (  ○ scripts/ds-publish.sh: версия 1 не старше поставляемой 1, содержимое отличается — считаю это вашей правкой, не заменяю.)
+== higher stamp → kept
+  PASS: higher stamp left alone
+== malformed stamp "1a" → treated as no stamp (unknown hash → kept with warning)
+  PASS: malformed stamp falls into the no-stamp branch
+  PASS: a later well-formed stamp does not override a malformed first one
+
+PASS: #1280 ds-publish version stamp
+=== test_issue_1336_ws_paths.sh ===
+  ✅ PASS: T1: hook mirrors into .iwe-paths workspace, not into $HOME/IWE
+  ✅ PASS: T2: env WORKSPACE_DIR overrides .iwe-paths
+  ✅ PASS: T3: restore resolves workspace from .iwe-paths, memory lands in the real workspace
+test_issue_1336_ws_paths: ALL PASS
+=== test_issue_1349_backup_dir.sh ===
+  ✅ PASS: Linux + backup_dir without archives → warning, no critical
+  ✅ PASS: no iCloud wording for a non-iCloud backup_dir
+  ✅ PASS: Linux + backup_dir → backup-icloud.sh exit 0, archive in backup_dir
+  ✅ PASS: archive has workspace files and none of the excluded paths (tar (GNU tar) 1.35)
+  ✅ PASS: iwe-backup-check sees the fresh archive in backup_dir, no critical
+  ✅ PASS: stale archive in backup_dir → critical
+  ✅ PASS: read-only backup_dir → critical
+  ✅ PASS: backup-icloud.sh into a read-only backup_dir fails with a message
+  ✅ PASS: missing backup_dir under a read-only parent → critical
+  ✅ PASS: --no-icloud disables the archive section
+  ✅ PASS: without backup_dir on Linux the section is a plain N/A
+  ✅ PASS: backup-icloud.sh without any target refuses with a message
+  ✅ PASS: macOS + backup_dir outside iCloud → archive created without iCloud Drive
+  ✅ PASS: macOS check of a backup_dir outside iCloud ignores the missing iCloud root
+  ✅ PASS: macOS iCloud default without iCloud Drive → backup refuses
+  ✅ PASS: macOS iCloud default without iCloud Drive → critical
+  ✅ PASS: macOS iCloud default before the first backup → warning, no critical
+  ✅ PASS: backup_dir inside the workspace is excluded from its own archive
+PASS: issue #1349 backup_dir on any OS
+=== test_issue_1350_audit.sh ===
+  ✅ PASS: unmarked stale snapshot is not sent to check-seed-drift.sh --fix
+  ✅ PASS: marked stale snapshot keeps the --fix advice
+  ✅ PASS: a synced snapshot is still reported as in sync
+PASS: issue #1350 audit seed advice
+=== test_issue_1351_tier0.sh ===
+  ✅ PASS: missing Codex config / git-credentials / Claude paths are not critical
+  ❌ FAIL: the workspace row does not point to --root
+  ❌ FAIL: override did not replace the default .codex/config.toml entry
+  ❌ FAIL: a mandatory override source is not reported as missing
+  ❌ FAIL: workspace entry duplicated or lost after override
+  ❌ FAIL: backup-run did not pass the workspace to restic (rc=1):   File "<stdin>", line 2, in <module> ModuleNotFoundError: No module named 'yaml' ❌ [backup-run] не найдено ни одного существующего источника (или сбой разбора /tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/scripts/iwe-backup-sources.yaml) — снимок не снят 
+FAIL: issue #1351 has 5 violation(s)
+❌ test_issue_1351_tier0.sh: упал
+=== test_issue_1352_bleed.sh ===
+  ✅ PASS: CLAUDE.md, AGENTS.md and MEMORY.md are not reported
+  ✅ PASS: a memory file without frontmatter is still reported, instruction files are not
+PASS: issue #1352 memory-bleed exclusions
+=== test_issue_1362_strategy_day_carryover.sh ===
+OK: #1362 strategy-day carry-over
+=== test_issue_1367_sessions.sh ===
+OK: #1367 session consolidation
+=== test_issue_1398_week_draft_append.sh ===
+== --date picks the closed day, not the clock ==
+  ok: past day: row Ср 28, CLI not used for a past day -> —
+== Monday's folder for a week across a month boundary ==
+  ok: Sunday 01.11 uses the October draft of W44
+  ok: row label Вс 1
+== wakatime-cli --today parsing (today only) ==
+  ok: «21 mins» -> 21min
+  ok: «4 hrs 22 mins» -> 4h 22min
+  ok: «1 hr 5 mins» -> 1h 05min
+  ok: «2 hrs» -> 2h 00min
+  ok: «Today: 4 hrs 22 mins» -> 4h 22min
+  ok: «» -> —
+  ok: «0 secs» -> —
+  ok: empty value is logged on stderr
+== bad --date is rejected ==
+  ok: 28.10.2026 -> exit 2
+
+test_issue_1398_week_draft_append: all checks passed
+=== test_issue_1401_memory_divergence.sh ===
+  ✅ PASS: T1: first publish sends both files, nothing flagged
+  ✅ PASS: T2: another machine's edit of notes.md kept on origin, our MEMORY.md published, status warns (rc 3)
+  ✅ PASS: T3: copies match again — flag cleared without accept
+  ✅ PASS: T4: both sides changed MEMORY.md — origin keeps theirs, ours untouched locally, flagged as both
+  ✅ PASS: T5: second publish still keeps theirs and still flags MEMORY.md
+  ✅ PASS: T6: accept + publish sends the merged MEMORY.md, status clean
+  ✅ PASS: T7: accept of an unknown file fails with a message
+  ✅ PASS: T8: after a failed attempt the next publish still protects the other machine's edit
+  ✅ PASS: T9: no base file — rebuilt from our last published commit; other machine's edit kept across two publishes
+  ✅ PASS: T10: corrupt base — other machine's edit still kept and flagged
+  ✅ PASS: T11: published manifest records origin's notes.md hash, not ours
+  ✅ PASS: T12: never-published machine — differing MEMORY.md kept on origin, flagged as both
+  ✅ PASS: T13: accept of ../README.md refused, base untouched
+
+test_issue_1401_memory_divergence: all checks passed
+=== test_issue_1401_memory_source.sh ===
+== link and slug folder disagree: the link wins, with a warning ==
+  ok: snapshot holds the fresh memory/ file
+  ok: disagreement is reported
+== explicit IWE_MEMORY_SRC still overrides the link ==
+  ok: override respected
+== link and slug folder are the same directory: no warning ==
+  ok: no warning
+  ok: fresh file copied
+
+test_issue_1401_memory_source: all checks passed
+=== test_issue_1410_timezone_param.sh ===
+== iwe_timezone: resolution from params.yaml ==
+  ok: missing file -> empty (system zone)
+  ok: key absent -> empty
+  ok: empty value -> empty
+  ok: quoted value with comment -> Asia/Vladivostok
+  ok: unknown zone -> empty
+  ok: unknown zone warns on stderr
+== no author time zone left in shipped platform files ==
+  ok: no hardcoded Nicosia
+  ok: params.yaml.example documents timezone
+
+test_issue_1410_timezone_param: all checks passed
+=== test_issue_1419_hk_reopen.sh ===
+ok: full
+ok: crash recovery
+ok: own-full
+ok: gitbash
+ok: own-gitbash
+ok: legacy state
+WARN: MC-sessions не найден (/tmp/rt-rc12.TMCaKc/suite/tmp.cxgpPneCbo/quarantine/MC-sessions) -- использую legacy-путь $GOV_REPO/sessions (обычное поведение немигрированной установки шаблона)
+housekeeping: previous kimi-housekeeping-day-open.open.closed archived as kimi-housekeeping-day-open.open.closed.20261112T140417Z.627b461c4254
+WARNING: orphaned semaphore kimi-housekeeping-day-open.open quarantined: pid 306696 is dead
+session-guard: internal quarantine: identity changed or close already staged
+WARNING: dead-pid semaphore kimi-renamed.open changed or could not be locked; kept for review
+session-guard: internal quarantine: identity changed or close already staged
+WARNING: dead-pid semaphore kimi-2026-11-03-01-regular.open changed or could not be locked; kept for review
+Semaphore sweep: quarantined=1 ambiguous=2
+
+=== Session Guard Audit (since 2026-11-05) ===
+
+⚠️ Активные сессии без close:
+  kimi-renamed.open  ⏳ права на коммит истекли (renew или close)
+    ---
+    agent: kimi
+    session_id: housekeeping-day-close
+    created_at: 2026-11-03T08:00:00Z
+    pid: 306954
+    ---
+  kimi-2026-11-03-01-regular.open  ⏳ права на коммит истекли (renew или close)
+    ---
+    agent: kimi
+    session_id: 2026-11-03-01-regular
+    created_at: 2026-11-03T08:00:00Z
+    pid: 306951
+    ---
+
+ORZ-файлы с дефектами (после 2026-11-05):
+ok: quarantine sweep
+PASS: issue #1419 housekeeping reopen
+=== test_issue_1425_bleed_fields.sh ===
+  ✅ PASS: complete files: green summary, no lifecycle warning
+  ✅ PASS: auto-memory project file is a demotion candidate with the default horizon
+  ✅ PASS: file without type is not given a guessed horizon
+  ✅ PASS: both files listed in the lifecycle-fields warning
+  ✅ PASS: summary reports the warning instead of 'no violations', exit 0
+PASS: issue #1425 memory-bleed lifecycle fields
+=== test_issue_1431_resolve_root_library_depth.sh ===
+=== 1. template copy <root>/FMT-exocortex-template/scripts/lib ===
+  ✅ PASS: template copy resolves to the workspace root
+=== 2. governance copy <root>/<governance>/scripts/lib (#427/#455) ===
+  ✅ PASS: governance copy resolves to the workspace root
+=== 3. workspace copy <root>/scripts/lib, decoy markers in the parent ===
+  ✅ PASS: workspace copy resolves to itself, not its parent
+=== 4. symlinked library, layout of test-route-task.sh T18 ===
+  ✅ PASS: symlinked template copy resolves to the link's workspace
+=== 4b. lib/ itself is a symlink to a directory outside the workspace ===
+  ✅ PASS: symlinked lib/ directory resolves to the sourcing workspace
+=== 5. three-level candidate keeps reading .exocortex.env ===
+  ✅ PASS: configured WORKSPACE_DIR still wins without markers
+=== 6. no markers and no configuration ===
+  ✅ PASS: unresolvable layout fails with empty stdout
+=== 7. precedence: explicit > IWE_WORKSPACE > IWE_ROOT > location ===
+  ✅ PASS: explicit argument wins over both variables
+  ✅ PASS: IWE_WORKSPACE wins over IWE_ROOT
+  ✅ PASS: IWE_ROOT wins over the library location
+=== 8. route-task.sh: explicit IWE_DIR and --help ===
+  ✅ PASS: missing IWE_DIR fails before the catalog lookup
+  ✅ PASS: --help prints the header only
+
+OK: issue #1431 regression passed
+=== test_issue_1433_gov_branch.sh ===
+  ✅ PASS: worktree without origin/HEAD resolves to its upstream
+  ✅ PASS: throwaway extractor/* branch is never returned
+  ✅ PASS: remote name with a slash still yields the branch
+  ✅ PASS: ordinary current branch still honoured
+  ✅ PASS: canonical publish gate is preferred
+  ✅ PASS: worktree gate is the fallback
+  ✅ PASS: no gate anywhere yields empty (caller falls back to the governance branch)
+PASS: issue #1433 governance branch and publish gate
+=== test_issue_1457_staged_scan_cost.sh ===
+Примечание: переключение на «edbe1e7e758b43ca19d4fd8a30ae66eff6388a84».
+
+Вы сейчас в состоянии «отсоединённого указателя HEAD». Можете осмотреться,
+внести экспериментальные изменения и зафиксировать их, также можете
+отменить любые коммиты, созданные в этом состоянии, не затрагивая другие
+ветки, переключившись обратно на любую ветку.
+
+Если хотите создать новую ветку для сохранения созданных коммитов, можете
+сделать это (сейчас или позже), используя команду switch с параметром -c.
+Например:
+
+  git switch -c <новая-ветка>
+
+Или отмените эту операцию с помощью:
+
+  git switch -
+
+Отключите этот совет, установив переменную конфигурации
+advice.detachedHead в значение false
+
+  PASS: staged token found once, with a repo-relative path containing a space
+  PASS: excluded_paths stay excluded in staged mode
+  PASS: unstaged-only token warns instead of failing
+  PASS: index exported once for 201 staged files (git show: 0, checkout-index: 1)
+  PASS: staged scan finished in 7s
+  PASS: staged snapshot removed on exit
+  PASS: checks 2/3 scan the staged snapshot and report repo-relative paths
+  PASS: a staged rename out of an excluded path is scanned at its new path
+PASS: issue 1457 staged scan cost (8 checks)
+=== test_issue_1458_extractor_config_lock.sh ===
+PASS: held config lock: run refused
+PASS: held config lock: no orphan extractor/* branch
+PASS: held config lock: run directory removed
+/tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/scripts/tests/test_issue_1458_extractor_config_lock.sh: строка 48: cd: /tmp/rt-rc12.TMCaKc/suite/tmp.7k0fIkAb11/runs/iwe-extractor-feed.AtoYLj: No such file or directory
+PASS: held config lock: no worktree registered
+PASS: held config lock: lock error logged
+PASS: no lock: worktree created
+PASS: no lock: worktree registered
+PASS: no lock: upstream is origin/main
+PASS: no lock: worktree starts at origin/main
+PASS: pre-existing branch: run refused
+PASS: pre-existing branch: kept at its tip
+PASS: pre-existing branch: run directory removed
+PASS: own empty branch is deleted
+PASS: branch with a commit on top is kept
+PASS: branch outside the isolation pattern is kept
+PASS: branch that existed before the attempt is kept
+=== test_issue_1470_isolate_range_delivered.sh ===
+PASS: delivered chain: exit 0
+PASS: delivered chain: reported as already on origin
+PASS: delivered chain: origin untouched
+PASS: delivered chain: no temp worktree left
+PASS: fresh chain: exit 0
+PASS: fresh chain: not reported as delivered
+PASS: fresh chain: pushed on top of origin
+PASS: partial chain: not reported as delivered
+PASS: per-commit publish: fixture replayed 3 commits
+PASS: per-commit publish: nothing pushed, exit 0
+PASS: stuck range: first run stops on the conflict
+PASS: stuck range: delivered later -> exit 0, saved conflict not resumed
+OK: all checks passed
+=== test_issue_1471_1474_synchronizer.sh ===
+PASS: #1471 empty set: exit 0
+PASS: #1471 empty set: said in the log
+PASS: #1471 empty set: no phantom repo, no unbound error
+PASS: #1474 installer block found
+PASS: #1474 com.strategist.morning renamed to .plist.disabled
+PASS: #1474 com.strategist.weekreview renamed to .plist.disabled
+PASS: #1474 loaded agent unloaded
+PASS: #1474 not-loaded agent not unloaded
+PASS: #1474 strategist installer honours the marker
+OK: all checks passed
+=== test_issue_1475_pull_on_touch_lib.sh ===
+PASS: IWE_SCRIPTS: exit 0
+PASS: IWE_SCRIPTS: stale clean clone fast-forwarded
+PASS: no library: exit 0
+PASS: no library: clone left as is
+PASS: no library: stale note in additionalContext
+OK: all checks passed
+=== test_issue_1488_dayplan_contract.sh ===
+PASS: issue 1488 (5 checks)
+=== test_issue_1503_no_weekplan.sh ===
+PASS: issue 1503 (7 scenarios)
+=== test_issue_1513_skill_paths.sh ===
+PASS: issue 1513 (guard + 6 behaviour checks)
+=== test_issue_1514_pack_duplicates.sh ===
+PASS: issue 1514 (6 groups)
+=== test_issue_434_pipeline_scaffold_only.sh ===
+PASS (1/2): --scaffold-only пропускает healthcheck целиком, curl не вызывается, abort не срабатывает
+PASS (2/2): обычный режим (без флага) по-прежнему абортит при недоступном прокси — поведение не ослаблено
+=== test_issue_453_calendar_private_visibility.sh ===
+PASS (1/2): непубличное событие по-прежнему показывается
+PASS (2/2): пропуск приватного события зафиксирован явно, не молча
+=== test_issue_455_scaffold_missing_lib_fatal.sh ===
+PASS: отсутствие lib/common.sh — явная фатальная ошибка, не тихая деградация
+=== test_issue_463_pyyaml_explicit_diagnostics.sh ===
+PASS (1/2): requirements.txt декларирует pyyaml
+PASS (2/2): memory-drift-scan.py даёт понятную диагностику без pyyaml
+=== test_issue_463_setup_reuses_resolved_python3.sh ===
+--- find-python3.sh alone: falls through the no-yaml stub to a real interpreter ---
+  ✅ PASS: resolver succeeds despite the no-yaml stub being PATH's first python3
+  ✅ PASS: resolver actually tried the no-yaml stub first (candidate order respected)
+--- setup.sh's executor-catalog step: must reuse the resolved path, not re-call bare python3 ---
+  ✅ PASS: the no-yaml stub was never invoked with generate-executor-catalog.py — the resolved interpreter was reused, not re-derived from bare python3
+  ✅ PASS: snippet completed successfully (exit 0)
+--- generator defaults: actual IWE_ROOT and governance repo, not HOME/IWE literals ---
+  ✅ PASS: generator writes to the configured workspace/governance path
+  ✅ PASS: generated catalog contains no shell-expansion path literal
+  ✅ PASS: route-task validates the generator taxonomy
+  ✅ PASS: compound executor entries are executable by route-task
+  ✅ PASS: fresh catalog contains empty reflexes and detailed skip records
+  ✅ PASS: unchanged executor input keeps catalog byte-stable across reruns
+--- generator state boundary: preserve only reflexes and fail closed on bad output ---
+  ✅ PASS: regeneration preserves only reflexes and rebuilds every derived field
+  ✅ PASS: invalid existing catalog (yaml) is rejected without byte changes
+  ✅ PASS: invalid existing catalog (nonmapping) is rejected without byte changes
+  ✅ PASS: invalid existing catalog (missing-reflexes) is rejected without byte changes
+  ✅ PASS: invalid existing catalog (nonlist-reflexes) is rejected without byte changes
+  ✅ PASS: --repair-add-reflexes adds an empty reflexes section, keeps the rest
+  ✅ PASS: generator no longer rejects a catalog repaired by --repair-add-reflexes
+  ✅ PASS: --repair-add-reflexes refuses a catalog that already has reflexes
+  ✅ PASS: --validate checks input only and leaves an invalid output path untouched
+--- update.sh backfill: same resolved Python and explicit installed paths ---
+  ✅ PASS: update backfills executor catalog at the installed governance path
+  ✅ PASS: update reuses the resolver-selected Python for catalog generation
+  ✅ PASS: update backfills the executed governance snapshot updater from release bytes
+  ✅ PASS: setup source, seed payload, and update-backfilled generator are byte-identical
+  ✅ PASS: fresh setup and update backfill generate the same semantic catalog
+  ✅ PASS: update manifest delivers the seed generator required by backfill
+  ✅ PASS: .exocortex governance value wins without exported IWE_GOVERNANCE_REPO
+  ✅ PASS: second update backfill is byte-stable and leaves governance clean
+---
+setup.sh python3-reuse contract: all checks passed
+=== test_issue_473_wp_sync_bundle_status.sh ===
+PASS: WP-47 -> 47:✅ done
+PASS: WP-49 -> 49:⏳ pending
+PASS: WP-26 -> 26:⏹ снят
+PASS: WP-25 -> 25:🔁 свёрнут в спринт
+PASS: WP-999 -> 999:_не в реестре_
+PASS: WP-WPPREFIX -> WPPREFIX:✅ done
+PASS: WP-BOGUS -> BOGUS:_некорректный номер РП: abc_
+=== test_issue_496_heading_style.sh ===
+== iwe_heading_style: resolution from params.yaml ==
+  ok: missing file -> details
+  ok: explicit markdown -> markdown
+  ok: key absent -> details
+  ok: unknown value -> details (with warning on stderr)
+  ok: unknown value warns on stderr
+== iwe_render_heading_style: details passes through unchanged ==
+  ok: details is a no-op
+  ok: no argument defaults to details
+== iwe_render_heading_style: markdown converts both summary forms ==
+  ok: markdown strips wrappers and renders ##
+== validator still accepts a markdown-style DayPlan (no format migration) ==
+  ok: markdown-headed DayPlan validates OK
+
+OK: все проверки прошли.
+=== test_issue_511_day_close_commit_guard.sh ===
+  ✅ PASS: directory path is rejected as broad staging
+  ✅ PASS: directory refusal leaves the index untouched
+  ✅ PASS: directory refusal leaves HEAD unchanged
+  ✅ PASS: guard explains that directory scope is forbidden
+  ✅ PASS: deleted directory with tracked descendants is rejected
+  ✅ PASS: deleted-directory refusal leaves the index untouched
+  ✅ PASS: deleted-directory refusal leaves HEAD unchanged
+  ✅ PASS: guard explains the deleted-directory pathspec risk
+  ✅ PASS: stale old-path add fails closed
+  ✅ PASS: commit is unreachable after failed git add
+  ✅ PASS: guard reports the causal stop, not an empty-index approximation
+  ✅ PASS: every explicit path must have staged content of its own
+  ✅ PASS: non-empty unrelated index still cannot bypass the path guard
+  ✅ PASS: guard names the path whose intended content is absent
+  ✅ PASS: current path reaches commit
+  ✅ PASS: committed blob contains the post-move edit
+  ✅ PASS: post-commit content containment remains satisfied
+  ✅ PASS: multi-path call rejects an unchanged path before commit
+  ✅ PASS: multi-path preflight leaves HEAD unchanged
+  ✅ PASS: multi-path preflight creates no partial staged mutation
+  ✅ PASS: multi-path preflight names the unchanged path
+  ✅ PASS: unrelated staged path blocks the whole commit
+  ✅ PASS: shared-index refusal leaves HEAD unchanged
+  ✅ PASS: pre-existing staged evidence remains intact
+  ✅ PASS: intended path was not partially staged before scope refusal
+  ✅ PASS: guard names the unrelated staged path
+issue-511 commit guard: все сценарии прошли
+=== test_issue_529_owner_integrity.sh ===
+✅ issue-529: авторитетный носитель, производная копия и пересказ различены
+=== test_issue_530_staged_self_scan.sh ===
+--- staged standard Homebrew documentation exceptions ---
+Примечание: переключение на «edbe1e7e758b43ca19d4fd8a30ae66eff6388a84».
+
+Вы сейчас в состоянии «отсоединённого указателя HEAD». Можете осмотреться,
+внести экспериментальные изменения и зафиксировать их, также можете
+отменить любые коммиты, созданные в этом состоянии, не затрагивая другие
+ветки, переключившись обратно на любую ветку.
+
+Если хотите создать новую ветку для сохранения созданных коммитов, можете
+сделать это (сейчас или позже), используя команду switch с параметром -c.
+Например:
+
+  git switch -c <новая-ветка>
+
+Или отмените эту операцию с помощью:
+
+  git switch -
+
+Отключите этот совет, установив переменную конфигурации
+advice.detachedHead в значение false
+
+  ✅ PASS: README, PLATFORM-COMPAT and workflow are path-scoped exceptions
+Примечание: переключение на «edbe1e7e758b43ca19d4fd8a30ae66eff6388a84».
+
+Вы сейчас в состоянии «отсоединённого указателя HEAD». Можете осмотреться,
+внести экспериментальные изменения и зафиксировать их, также можете
+отменить любые коммиты, созданные в этом состоянии, не затрагивая другие
+ветки, переключившись обратно на любую ветку.
+
+Если хотите создать новую ветку для сохранения созданных коммитов, можете
+сделать это (сейчас или позже), используя команду switch с параметром -c.
+Например:
+
+  git switch -c <новая-ветка>
+
+Или отмените эту операцию с помощью:
+
+  git switch -
+
+Отключите этот совет, установив переменную конфигурации
+advice.detachedHead в значение false
+
+  ✅ PASS: ordinary staged document remains blocked
+--- pre-commit portability checker self-exclusion ---
+Примечание: переключение на «edbe1e7e758b43ca19d4fd8a30ae66eff6388a84».
+
+Вы сейчас в состоянии «отсоединённого указателя HEAD». Можете осмотреться,
+внести экспериментальные изменения и зафиксировать их, также можете
+отменить любые коммиты, созданные в этом состоянии, не затрагивая другие
+ветки, переключившись обратно на любую ветку.
+
+Если хотите создать новую ветку для сохранения созданных коммитов, можете
+сделать это (сейчас или позже), используя команду switch с параметром -c.
+Например:
+
+  git switch -c <новая-ветка>
+
+Или отмените эту операцию с помощью:
+
+  git switch -
+
+Отключите этот совет, установив переменную конфигурации
+advice.detachedHead в значение false
+
+  ✅ PASS: canonical checker does not scan its own rule literals
+Примечание: переключение на «edbe1e7e758b43ca19d4fd8a30ae66eff6388a84».
+
+Вы сейчас в состоянии «отсоединённого указателя HEAD». Можете осмотреться,
+внести экспериментальные изменения и зафиксировать их, также можете
+отменить любые коммиты, созданные в этом состоянии, не затрагивая другие
+ветки, переключившись обратно на любую ветку.
+
+Если хотите создать новую ветку для сохранения созданных коммитов, можете
+сделать это (сейчас или позже), используя команду switch с параметром -c.
+Например:
+
+  git switch -c <новая-ветка>
+
+Или отмените эту операцию с помощью:
+
+  git switch -
+
+Отключите этот совет, установив переменную конфигурации
+advice.detachedHead в значение false
+
+  ✅ PASS: ordinary shell file remains blocked by exact-path guard
+issue-530 staged self-scan: 4 checks passed
+=== test_issue_532_dayplan_strategy_gate.sh ===
+PASS: DayPlan Gate вычисляет strategy_day до поиска или создания DayPlan
+=== test_issue_536_day_close_backup.sh ===
+=== Backup ownership and byte preservation ===
+  ✅ PASS: first real day-close --backup run succeeds
+  ✅ PASS: first day-rhythm backup is byte-identical
+  ✅ PASS: workspace params.yaml is backed up byte-for-byte
+  ✅ PASS: foreign root Markdown/YAML survive the first sync
+  ✅ PASS: unowned legacy exocortex/memory subtree survives backup
+  ✅ PASS: backup writes a non-empty ownership manifest
+  ✅ PASS: manifest contains only owned memory paths with sha256 values
+  ✅ PASS: second real day-close --backup run succeeds
+  ✅ PASS: second day-rhythm backup preserves comments and key order byte-for-byte
+  ✅ PASS: params.yaml survives repeated backup
+  ✅ PASS: foreign root Markdown/YAML survive repeated backup
+  ✅ PASS: unowned legacy exocortex/memory subtree survives repeated backup
+  ✅ PASS: removed upstream file is pruned when receiver hash still matches the manifest
+  ✅ PASS: modified formerly-owned receiver file survives
+=== Empty source config is fail-closed and observable ===
+  ✅ PASS: empty source cannot erase a non-empty legacy destination
+  ✅ PASS: empty day-rhythm source refusal/warning is observable
+  ✅ PASS: calendar conflict is reflected in the final backup status
+  ✅ PASS: calendar guard does not abort the rest of backup
+=== Backup remains functional without PyYAML ===
+  ✅ PASS: stdlib ownership backup works when PyYAML is unavailable
+  ✅ PASS: ambiguous rhythm is preserved and reported without PyYAML
+  ✅ PASS: backup with zero special targets is safe under Bash 3.2 nounset
+=== Ownership manifest is path-safe and fail-closed ===
+  ✅ PASS: traversal entry cannot delete outside exocortex
+  ✅ PASS: unsafe manifest path refusal/warning is observable
+  ✅ PASS: invalid manifest cannot delete outside exocortex
+  ✅ PASS: invalid manifest refusal/warning is observable
+  ✅ PASS: invalid manifest disables deletion but still allows current source copies
+=== Manifest version and receiver symlink boundaries ===
+  ✅ PASS: schema-version mismatch disables stale deletion
+  ✅ PASS: schema-version mismatch still allows current source copies
+  ✅ PASS: manifest schema-version mismatch is observable
+  ✅ PASS: final receiver symlink is replaced by a regular copied file
+  ✅ PASS: final receiver symlink target remains untouched
+  ✅ PASS: intermediate receiver symlink fails preflight and is never traversed
+  ✅ PASS: intermediate receiver symlink refusal is observable
+  ✅ PASS: destination preflight fails before copy, prune, manifest, or quarantine
+=== Component-wise collision preflight is conservative ===
+  ✅ PASS: case alias to a protected path fails before the first copy
+  ✅ PASS: NFKC-equivalent source files fail before copy
+  ✅ PASS: NFKC file/directory type collision fails before copy
+  ✅ PASS: destination Unicode alias to foreign data blocks all copies
+  ✅ PASS: source root .git is excluded completely
+  ✅ PASS: source stat failure aborts before copy and quarantine
+  ✅ PASS: copy path revalidates opened source identity against preflight
+  ✅ PASS: stdlib resolver rejects a possible Python 2 fallback
+=== Descriptor-bound destination race handling ===
+  ✅ PASS: parent swap during copy cannot redirect bytes outside the bound directory
+  ✅ PASS: params backup stays on the bound root and reports a root-path swap
+  ✅ PASS: parent swap during stale move retains exact bytes without touching outside
+=== Durable incomplete-run quarantine ===
+  ✅ PASS: first successful run after a crash skips prune, publishes current manifest, and clears marker
+  ✅ PASS: backup resumes pruning by retaining hash-owned stale bytes in quarantine
+=== Planned transaction recovery is durable and idempotent ===
+  ✅ PASS: two consecutive recovery failures retain the same journal and exact bytes
+  ✅ PASS: committed planned journal finishes every stale move and clears the journal
+  ✅ PASS: partially quarantined planned transaction resumes idempotently with exact bytes
+=== Invalid recovery journals fail before mutation ===
+  ✅ PASS: malformed journal returns nonzero without receiver mutation
+  ✅ PASS: symlink journal returns nonzero without following or mutating its target
+=== Mid-day hook leaves day-rhythm to conflict-aware backup ===
+  ✅ PASS: direct hook skips day-rhythm but still mirrors ordinary memory
+  ✅ PASS: Bash hook reconcile skips day-rhythm but mirrors ordinary memory
+=== Missing memory source is a real failure ===
+  ✅ PASS: missing memory source returns nonzero and reports backup=fail
+=== Restore routes params.yaml to workspace root ===
+  ✅ PASS: fresh restore succeeds
+  ✅ PASS: fresh restore writes params.yaml to workspace root
+  ✅ PASS: fresh restore keeps params.yaml out of auto-memory
+  ✅ PASS: fresh restore routes canonical day-rhythm to auto-memory
+  ✅ PASS: restore keeps exact, case, and NFKC private roots out of auto-memory
+  ✅ PASS: restore handles quotes, dollars, spaces, and newlines as argv-only filenames
+  ✅ PASS: every variable-filename restore branch treats dash-prefixed names as operands
+  ✅ PASS: restore excludes case and NFKC aliases of day-rhythm
+  ✅ PASS: restore --dry-run creates neither params nor auto-memory
+  ✅ PASS: params source symlink fails before restore writes or leaks bytes
+  ✅ PASS: CLAUDE restore atomically replaces only the final symlink
+  ✅ PASS: restore contains no eval-based command execution
+  ✅ PASS: restore without --force does not overwrite existing workspace params
+  ✅ PASS: no-force restore still keeps params out of auto-memory
+  ✅ PASS: existing params no-overwrite decision is observable
+  ✅ PASS: forced restore succeeds
+  ✅ PASS: --force restores backup params to workspace root
+  ✅ PASS: forced restore keeps params.yaml out of auto-memory
+---
+PASS: issue #536 backup/restore contracts
+=== test_issue_541_workspace_base.sh ===
+=== case 1: modern layout, template copy without local edits ===
+  ❌ FAIL: 1 update.sh --yes exits 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 1 no .update-incomplete is left
+  ❌ FAIL: 1 the template copy is upstream's CLAUDE.md byte for byte (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 1 no merge base is written into the template repo
+  ❌ FAIL: 1 the run names the reason it took upstream as is (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 1 the workspace copy is merged: upstream change plus the pilot line, nothing else (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 1 the pilot line in section 9 survives
+  ❌ FAIL: 1 the workspace base advances to the substituted upstream copy (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+=== case 2: an install stuck by the refusal heals on the next run ===
+  ❌ FAIL: 2 stuck run: exit 49 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 2 stuck run: marker left behind (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 2 stuck run: the installed manifest is already the new one (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 2 stuck run: the template copy is still the old one
+  ✅ PASS: 2 stuck state: the workspace copy was not touched
+  ❌ FAIL: 2 next run: exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 2 next run: the marker is removed
+  ❌ FAIL: 2 next run: the run reports the removed marker (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 2 next run: the template copy is upstream's CLAUDE.md (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 2 next run: no merge base in the template repo
+  ❌ FAIL: 2 next run: the workspace copy is merged with the pilot line kept (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 2 rerun: exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 2 rerun: reports that nothing is left to update (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 2 rerun: no file in the workspace changes
+  ✅ PASS: 2 rerun: no marker
+=== case 3: edited template copy without a base in the template repo ===
+  ❌ FAIL: 3 exit 49 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 3 the edited template copy is untouched
+  ✅ PASS: 3 no base is invented in the template repo
+  ❌ FAIL: 3 the marker stays (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 3 the refusal is reported (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 3 upstream is not taken as is
+=== case 4: no merge base anywhere ===
+  ❌ FAIL: 4 exit 49 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 4 the template copy is untouched
+  ✅ PASS: 4 no base is invented in the template repo
+  ✅ PASS: 4 no base is invented in the workspace
+  ✅ PASS: 4 the workspace copy is untouched
+  ❌ FAIL: 4 the marker stays (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 4 the refusal is reported (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 4 upstream is not taken as is
+=== case 5: old layout, base in the template repo ===
+  ❌ FAIL: 5 exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 5 the template copy goes through the 3-way merge (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 5 the new shortcut is not used when a template base exists
+  ❌ FAIL: 5 the template copy is upstream's CLAUDE.md (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 5 the template base advances to upstream (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 5 the workspace copy is merged with the pilot line kept (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 5 no marker
+=== case 6: the pilot edited a line upstream also changed ===
+  ❌ FAIL: 6 exit 49 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 6 conflict markers in the workspace copy (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 6 the pilot's version of the line is kept inside the conflict
+  ❌ FAIL: 6 upstream's version of the line is offered inside the conflict (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 6 the workspace base does not advance past an unresolved conflict
+  ❌ FAIL: 6 the marker stays (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 6 no merge base in the template repo
+=== case 7: author_mode, unpromoted edit of the template copy ===
+  ❌ FAIL: 7 exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 7 the author guard reports the skip (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 7 the shortcut does not run
+  ✅ PASS: 7 the template copy with the author's edit is untouched
+  ✅ PASS: 7 no merge base in the template repo
+=== case 8: the refusal must not arm the shortcut for an edited template copy ===
+  ❌ FAIL: 8 run 1: exit 49 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 8 run 1: the edited template copy is untouched
+  ❌ FAIL: 8 run 1: the refusal says the copy looks edited by hand (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 8 run 2: exit 49 again (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 8 run 2: the edited template copy is still untouched
+  ✅ PASS: 8 run 2: the edit is still in the template copy
+  ❌ FAIL: 8 run 2: the edit is still in the workspace copy (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 8 run 2: upstream is not taken as is
+  ✅ PASS: 8 run 2: no merge base in the template repo
+=== case 9: the second update on a healed install ===
+  ❌ FAIL: 9 first update: exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 9 first update: the shortcut ran (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 9 the copy is no longer the committed one (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 9 second update: exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 9 second update: no marker
+  ❌ FAIL: 9 second update: the shortcut ran, not the refusal (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 9 second update: the template copy is upstream's v3 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 9 second update: the workspace copy is merged with the pilot line kept (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+=== case 10: a broken git must not empty the workspace copy ===
+  ❌ FAIL: 10 broken git: exit 49 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 10 broken git: the workspace copy is byte for byte what it was
+  ✅ PASS: 10 broken git: the workspace copy is not empty
+  ✅ PASS: 10 broken git: the workspace base does not advance
+  ❌ FAIL: 10 broken git: the failure is reported as a git failure (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 10 broken git: the summary points at git (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 10 broken git: the marker stays (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 10 git repaired: exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 10 git repaired: the marker is removed
+  ❌ FAIL: 10 git repaired: the workspace copy is merged with the pilot line kept (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+=== case 11: a broken git must not empty the template copy either (old layout) ===
+  ❌ FAIL: 11 broken git: exit 49 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 11 broken git: the template copy is untouched
+  ✅ PASS: 11 broken git: the template copy is not empty
+  ✅ PASS: 11 broken git: the template base does not advance
+  ❌ FAIL: 11 broken git: the failure is reported as a git failure (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+=== case 12: an empty template copy equal to an empty base is not unedited ===
+  ❌ FAIL: 12 exit 49 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 12 the shortcut does not run
+  ✅ PASS: 12 the workspace copy is untouched
+=== case 13: the heal run ends in a workspace conflict, the pilot resolves it, the next release changes CLAUDE.md again ===
+  ❌ FAIL: 13 run 1: exit 49 (the workspace conflict) (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 13 run 1: the shortcut ran (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 13 run 1: the template copy took upstream's v2 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 13 run 1: conflict markers in the workspace copy (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 13 run 1: the delivered copy is on record (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 13 run 2: the shortcut ran, not the refusal (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 13 run 2: no refusal
+  ❌ FAIL: 13 run 2: the template copy is upstream's v3 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 13 run 2: exit 49 (a real conflict to resolve, not a refusal) (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 13 run 2: conflict markers in the workspace copy (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 13 run 3: exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 13 run 3: no marker
+  ✅ PASS: 13 run 3: the workspace copy is the resolved one
+  ❌ FAIL: 13 run 3: the workspace base advanced to v3 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 13 run 4: exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 13 run 4: nothing changed
+=== case 14: the record never vouches for a template copy edited after update.sh wrote it ===
+  ❌ FAIL: 14 run 1: exit 49 (the workspace conflict) (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 14 run 1: the delivered copy is on record (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 14 run 2: exit 49 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 14 run 2: the refusal, not the shortcut (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 14 run 2: upstream is not taken as is
+  ✅ PASS: 14 run 2: the edited template copy is untouched
+  ✅ PASS: 14 run 2: the edit is still there
+=== case 15: a run that replaced the copy but stopped before the manifest was replaced, then the next release ===
+  ❌ FAIL: 15 run 1: exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 15 run 1: the shortcut ran (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 15 run 1: the delivered copy is on record (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 15 run 2: exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 15 run 2: the shortcut ran, not the refusal (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 15 run 2: the template copy is upstream's v3 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 15 run 2: the workspace copy is merged with the pilot line kept (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+=== case 16: a failed copy stops the run, it is not reported as an update ===
+  ✅ PASS: 16 the run does not report success
+  ✅ PASS: 16 no false 'updated' line
+  ✅ PASS: 16 the workspace copy is untouched
+=== case 17: the proof for the copy in place survives a copy that fails ===
+  ❌ FAIL: 17 run 1: exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 17 run 2: the failed copy stops the run
+  ✅ PASS: 17 run 2: the copy in place is still v2
+grep: /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/failedcopy/ws/.claude.md.delivered: No such file or directory
+  ❌ FAIL: 17 run 2: the record vouches for the copy in place (v2) (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+grep: /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/failedcopy/ws/.claude.md.delivered: No such file or directory
+  ❌ FAIL: 17 run 2: the record already holds the new file (v3) (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 17 run 3: exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 17 run 3: the shortcut ran, not the refusal (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 17 run 3: the template copy is upstream's v3 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 17 run 3: the workspace copy is merged with the pilot line kept (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+=== case 18: several failed deliveries in a row do not lose the proof for the copy in place ===
+  ❌ FAIL: 18 run 1: exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 18 failed delivery 'three': the run stops
+  ✅ PASS: 18 failed delivery 'four': the run stops
+  ✅ PASS: 18 failed delivery 'five': the run stops
+  ✅ PASS: 18 failed delivery 'six': the run stops
+  ✅ PASS: 18 the copy in place is still v2
+  ❌ FAIL: 18 retry: exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 18 retry: the shortcut ran, not the refusal (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 18 retry: the template copy is upstream's latest (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+=== case 19: a FIFO standing where the record belongs does not hang the update ===
+  ✅ PASS: 19 run 1: finished in time
+  ❌ FAIL: 19 run 1: exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 19 run 1: the shortcut ran (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 19 run 1: the template copy is upstream's v2 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 19 run 1: a regular file stands where the FIFO was (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 19 run 1: it holds the delivered copy (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+=== case 20: a symlink in place of the record vouches for nothing ===
+  ❌ FAIL: 20 exit 49 (the refusal) (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 20 the refusal line is printed (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 20 upstream is not taken as is
+  ✅ PASS: 20 the edited template copy is untouched
+  ✅ PASS: 20 the link was not rewritten
+=== case 21: a record far bigger than four hashes vouches for nothing ===
+  ❌ FAIL: 21 exit 49 (the refusal) (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 21 upstream is not taken as is
+  ✅ PASS: 21 the edited template copy is untouched
+=== case 22: a record with junk in it is ignored and rewritten clean ===
+  ❌ FAIL: 22 exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 22 the shortcut ran (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 22 every line of the record is a sha256 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 22 at most four lines
+  ❌ FAIL: 22 the junk text is gone (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 22 so is the earlier well-formed line (the whole record was ignored) (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 22 the delivered copy is on record (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+=== case 23: a directory standing at the record's path is left alone ===
+  ❌ FAIL: 23 exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 23 the shortcut ran (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 23 the template copy is upstream's v2 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 23 the directory is still there
+  ✅ PASS: 23 and nothing was moved into it
+=== case 24: hex lines of a wrong length are not carried, a well-formed foreign one is ===
+  ❌ FAIL: 24 exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 24 every line of the record is a sha256 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 24 the short line is gone (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 24 the well-formed earlier line is kept
+  ❌ FAIL: 24 the delivered copy is on record (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+=== case 25: a NUL byte in the record is not dropped on the way in ===
+  ❌ FAIL: 25 exit 49 (the refusal) (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 25 upstream is not taken as is
+  ✅ PASS: 25 the edited template copy is untouched
+=== case 26: a record saved with CRLF line ends is replaced by a clean one ===
+  ❌ FAIL: 26 exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 26 the shortcut ran (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 26 every line of the record is a sha256 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 26 the delivered copy is on record (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+=== case 27: a failing filter in the record check means the record is not usable ===
+  ❌ FAIL: 27 exit 49 (the refusal) (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 27 upstream is not taken as is
+  ✅ PASS: 27 the edited template copy is untouched
+=== case 28: an edit committed in the clone is replaced by the release, the commit stays ===
+  ❌ FAIL: 28 exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 28 the shortcut ran (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 28 the message tells the edit stays in the clone's history (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 28 the template copy is upstream's v2 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 28 the pilot's commit is untouched: HEAD still holds the edit
+=== case 29: an untouched template copy with install-time paths does not trip the install-path guard (#1493) ===
+  ❌ FAIL: 29 exit 49 (the refusal, not the guard abort) (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 29 the refusal is reported (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/rt-rc12.TMCaKc/suite/iwe-claude-md-workspace-base.SB1hEe/shim/mktemp: строка 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 29 the template copy is untouched
+  ✅ PASS: 29 the install-path guard does not stop the update
+
+Result: 74 PASS, 118 FAIL
+❌ test_issue_541_workspace_base.sh: упал
+=== test_issue_544_staged_precommit.sh ===
+PASS: слитная форма с невалидным WeekPlan заблокирована
+PASS: блок с человекочитаемым разбором
+PASS: валидный staged + сломанное рабочее дерево → коммит проходит
+PASS: невалидный staged + починенное дерево без re-add → блок
+PASS: валидная слитная форма проходит
+PASS: seed pre-commit вызывает валидатор
+PASS: валидатор читает staged blob (git show :path), не рабочее дерево
+PASS: два WeekPlan одним коммитом: невалидный заблокирован
+PASS: разбор называет именно невалидный файл
+PASS: битый day-rhythm-config.yaml блокирует коммит DayPlan (fail-closed)
+PASS: fail-closed называет причину (конфиг не читается)
+PASS: без IWE_SCRIPTS невалидный WeekPlan блокируется (template-fallback)
+PASS: repo-local fallback: невалидный WeekPlan блокируется
+PASS: repo-local fallback помечен WARNом о деградации
+PASS: пустой day-rhythm-config.yaml блокирует коммит DayPlan (fail-closed)
+PASS: нестандартный rc интерпретатора (126) блокирует коммит (fail-closed)
+PASS: резолвер find-python3.sh отсутствует → блокирует коммит (fail-closed, не тихий пропуск)
+PASS: fail-closed без резолвера называет причину
+PASS: real pre-commit validates staged artifacts regardless of add/commit form (issue #544)
+=== test_issue_545_sessions_root.sh ===
+PASS: legacy: без MC-sessions — $GOV_REPO/sessions
+PASS: migrated: есть MC-sessions — он и есть корень
+PASS: explicit: IWE_SESSIONS_ROOT побеждает
+PASS: сломанный явный IWE_SESSIONS_ROOT → ошибка (не молчаливый откат)
+PASS: legacy: GOVERNANCE_REPO=MyStrategy без IWE_GOVERNANCE_REPO
+PASS: пустой root (нет IWE_ROOT/IWE_WORKSPACE) → ошибка
+PASS: scaffold: нет безусловного хардкода legacy-пути
+PASS: scaffold: читатели через iwe_sessions_dir
+PASS: scaffold: WARN не ссылается на несуществующий $GOV_REPO
+PASS: scaffold: плоская раскладка — запасной путь carry-over
+PASS: day-close: подключает lib/common.sh
+PASS: day-close: консолидация через iwe_sessions_dir
+PASS: day-close: пропуск называет фактический путь
+PASS: интеграция: сессия из MC-sessions попала в сводку
+PASS: интеграция: сломанный IWE_SESSIONS_ROOT → WARN виден
+PASS: интеграция: нет падения на unbound variable
+PASS: интеграция: fallback читает legacy-каталог custom-репо
+PASS: интеграция: WARN про сломанный override виден
+PASS: интеграция: scaffold находит carry-over в MC-sessions
+PASS: интеграция: scaffold работает без IWE_SCRIPTS (нет unbound variable)
+PASS: интеграция: carry-over находится и без IWE_SCRIPTS
+PASS: sessions readers resolve the writer's root contract (issue #545)
+=== test_issue_549_dryrun_redesign.sh ===
+PASS: чистая установка: write разрешён
+PASS: активная репетиция: write заблокирован
+PASS: активная репетиция: read-only разрешён
+PASS: helper: завершение без token отклонено
+PASS: helper: неверный token отклонён
+PASS: helper: после отказов state остался active
+PASS: helper: завершение с верным token
+PASS: helper: sentinel снят после completed
+PASS: после completed: write разрешён
+PASS: helper: повторное завершение идемпотентно
+PASS: sentinel+completed: самолечение, write разрешён
+PASS: sentinel+completed: stale sentinel снят
+PASS: нет sentinel+active+живой владелец: блок
+PASS: блок называет команду восстановления с gate_id
+PASS: мёртвый pid + живой pgid: блок (дерево живо)
+PASS: доказуемое сиротство: sweep, write разрешён
+PASS: sweep записал reason=orphan-sweep
+PASS: legacy owner-token: вечный блок
+PASS: два active-state: corruption блок
+PASS: битый state без sentinel: fail-closed
+PASS: filename/gate_id mismatch: corruption блок
+PASS: sentinel-симлинк: fail-closed
+PASS: Stop-hook: fallback завершил свою репетицию
+PASS: Stop-hook: чужую репетицию не тронул
+PASS: helper: --trusted-stop отклонён (флаг упразднён)
+PASS: после --trusted-stop state остался active
+PASS: override без маркера: гейт на production-путях
+PASS: override с маркером: гейт видит тестовую репетицию
+PASS: begin: репетиция создана
+PASS: begin: gate_id и token выданы
+PASS: begin: в state нет token-preimage
+PASS: begin: вторая активная репетиция отклонена
+PASS: begin: write под репетицией заблокирован
+PASS: end-to-end: завершение с token
+PASS: end-to-end: после цикла write разрешён
+SKIP 17: шаблон лежит под /tmp и скрылся бы под личным tmpfs
+PASS: begin: отказ при существующем sentinel
+PASS: begin: после отказа не осталось state-файлов
+PASS: dry-run state machine — locked exclusive begin, capability completion, provable orphan sweep, locked self-heal (issue #549 stage 2)
+=== test_issue_555_claude_silent_loss.sh ===
+--- pilot line silently dropped by the merge (no conflict markers) ---
+  ✅ PASS: lossy merge detected: count=1, warning names the exact pilot line
+--- clean merge that genuinely preserved the pilot line ---
+  ✅ PASS: genuinely clean merge reports zero loss and stays silent
+--- pilot never customized the file (before == base) — nothing to lose ---
+  ✅ PASS: no pilot customization → nothing flagged even though merged differs from base
+issue-555 CLAUDE.md silent-loss guard: 3 checks passed
+=== test_issue_557_zsh_special_vars.sh ===
+  ✅ PASS: guard avoids zsh special parameter names (path/status/…)
+  SKIP: zsh not installed — behavioral leg not run (static check done)
+=== test_issue_581_calendar_single_source.sh ===
+PASS: scaffold: нет mcp__ext-google-calendar
+PASS: seed scaffold: нет mcp__ext-google-calendar
+PASS: SKILL 4c: коннектор первичен
+PASS: SKILL 4c: регистр имени коннектора оговорён
+PASS: SKILL 4c: скрипт — фоллбэк
+PASS: details 4c: скрипт помечен фоллбэком
+PASS: details 4c: «credentials не настроены» честно атрибутировано скрипту
+PASS: scaffold PENDING: коннектор первичен
+PASS: scaffold PENDING: фоллбэк назван
+PASS: day-plan.md: шаг календаря через коннектор
+PASS: day-plan.md: регистр имени коннектора оговорён
+PASS: day-plan.md: «credentials не настроены» — факт о скрипте
+PASS: day-plan.md: честный маркер недоступности
+PASS: strategist: календарный коннектор в --allowedTools
+PASS: strategist: имя сервера конфигурируемо (IWE_CALENDAR_MCP_SERVERS)
+PASS: calendar section has a single connector-first source with a documented fallback (issue #581)
+=== test_issue_582_audit_promoted_layout.sh ===
+PASS: A: scaffold зелёный
+PASS: A: pipeline зелёный
+PASS: A: common зелёный
+PASS: A: нет предупреждений 3b
+PASS: A: нет критичных ❌ в 3b
+PASS: A: нет ложного «конвейер неполный»
+PASS: A: нет ссылки на governance-репо
+PASS: B: честный «конвейер неполный» в промотированной раскладке
+PASS: B2: scaffold зелёный
+PASS: B2: pipeline зелёный
+PASS: B2: common зелёный
+PASS: B2: нет предупреждений 3b
+PASS: B2: нет критичных ❌ в 3b
+PASS: E: отставшая исполняемая копия названа
+PASS: E: совет ведёт к канону scripts/ шаблона
+PASS: F: отставший снимок назван
+PASS: F: совет — штатный check-seed-drift --fix
+PASS: F: исполняемая копия не обвиняется (она и есть канон)
+PASS: G: отставший seed назван
+PASS: G: совет — check-seed-drift --fix
+PASS: G: исполняемая копия НЕ обвиняется — она совпадает с каноном
+PASS: H: расхождение без канона — ручная сверка
+PASS: H: отсутствие канона само названо регрессией
+PASS: I: отсутствие seed названо
+PASS: I: отставшая исполняемая копия тоже названа
+PASS: C: несуществующий каталог исполнения назван критичным
+PASS: C: текст честно говорит «не запустится»
+PASS: C: нет ложного «неполный» про отсутствующий каталог
+PASS: D: исполнение из seed → N/A
+PASS: D: нет предупреждений
+PASS: iwe-audit section 3b follows the actual $IWE_SCRIPTS execution layout (issue #582)
+=== test_issue_583_dayopen_yaml.sh ===
+--- YAML-frontmatter DayPlan, date matches filename (real scaffold shape) ---
+  ✅ PASS: YAML-frontmatter DayPlan with matching date passes all default checks
+--- YAML-frontmatter DayPlan, H1 date mismatched (negative control) ---
+  ✅ PASS: date mismatch between filename and H1 is still caught (fix did not remove the real check)
+--- YAML-frontmatter DayPlan with no '# '-heading anywhere (must fail loudly, not silently) ---
+  ✅ PASS: DayPlan without any H1 heading is blocked with a visible failure, not a silent set -e death
+issue-583 day-open.checks.md YAML fix: 3 checks passed
+=== test_issue_584_build_version.sh ===
+--- Unreleased section present above the latest real version (real repo shape) ---
+  ✅ PASS: parses the real latest version (0.39.1), not Unreleased
+--- No Unreleased section (older CHANGELOG shape, must still work) ---
+  ✅ PASS: still parses the version when there is no Unreleased section at all
+--- Nothing released yet (Unreleased only) — must not crash, empty is acceptable ---
+  ✅ PASS: no released version yet → empty FMT_VERSION, no crash (honest 'nothing shipped' state)
+issue-584 build-runtime.sh version fix: 3 checks passed
+=== test_issue_596_weekreport_filename.sh ===
+PASS: воскресенье 30.08.2026 -> W35, понедельник 24.08
+PASS: воскресенье 06.09.2026 -> W36, понедельник 31.08
+PASS: воскресенье 01.02.2026 -> W5 (без ведущего нуля), понедельник 26.01
+PASS: pipeline строит корректное имя файла
+PASS: pipeline больше не использует ISO-год-неделю в имени файла
+PASS: pipeline вычисляет номер недели без ведущего нуля
+issue #596 weekreport filename: все проверки пройдены
+=== test_issue_633_resolve_governance_branch.sh ===
+PASS: resolves 'master' from origin/HEAD when no override is set
+PASS: IWE_GOVERNANCE_BRANCH override takes precedence
+PASS: falls back to the checked-out branch when there is no origin/HEAD
+=== test_issue_657.sh ===
+✅ issue #1030 signal, stale-retry, and owner-only cleanup: OK
+✅ test_issue_657: OK
+=== test_issue_660.sh ===
+✅ test_issue_660: OK
+=== test_issue_665.sh ===
+✅ test_issue_665: OK
+=== test_issue_711_conflict_base.sh ===
+--- run 1: first install, no base/current yet ---
+  ✅ PASS: first install seeds workspace CLAUDE.md and base
+--- run 2: pilot and upstream both change line2 -> genuine conflict ---
+  (conflict files: /tmp/rt-rc12.TMCaKc/suite/tmp.E97YbhOQsX/workspace/CLAUDE.md)
+  ✅ PASS: genuine conflict detected, markers written to workspace CLAUDE.md
+--- run 3 (issue #711 core case): repeat run WITHOUT resolving markers ---
+  (conflict files: /tmp/rt-rc12.TMCaKc/suite/tmp.E97YbhOQsX/workspace/CLAUDE.md)
+  ✅ PASS: repeat run on an unresolved conflict still reports a conflict, not 'всё актуально'
+  ✅ PASS: markers from run 2 are still intact after the unresolved repeat run
+  ✅ PASS: base was NOT advanced while the conflict stayed unresolved
+--- run 4: pilot manually resolves by accepting the upstream line ---
+  ✅ PASS: manual resolution converges cleanly once markers are gone
+--- run 5: idempotent rerun with nothing changed ---
+  ✅ PASS: converged state is idempotent — no spurious re-sync on an unchanged tree
+issue-711 CLAUDE.md base-advance guard: 7 checks passed
+=== test_issue_713_registry_status.sh ===
+--- #713: paused status resolves instead of an empty line ---
+  ✅ PASS: WP-57 (⏸️) reports paused, not empty (got: ⏸ paused)
+--- #714: own status column outranks a strikethrough elsewhere in the row ---
+  ✅ PASS: WP-39 (struck-through title, active 📦 cell) reports archived, not done (got: 📦 archived)
+--- #715: leading zero in the query number is normalized ---
+  ✅ PASS: WP-038 matches the bare '38' row (got: 🔄 in_progress)
+  ✅ PASS: WP-38 sanity (same row, no leading zero) (got: 🔄 in_progress)
+--- #716: a marker glued to the number does not divert to a different row ---
+  ✅ PASS: WP-13★ resolves to the active row, not the struck-through '~~13~~' row
+  ✅ PASS: ambiguous match (13★ + ~~13~~) is flagged on stderr instead of failing silently
+--- #717: locale-independent status classification ---
+  ✅ PASS: LC_ALL='<ambient>': status resolves correctly
+  ✅ PASS: LC_ALL='C': status resolves correctly
+  ✅ PASS: LC_ALL='C.UTF-8': status resolves correctly
+  ✅ PASS: LC_ALL='en_US.UTF-8': status resolves correctly
+  ✅ PASS: LC_ALL='ru_RU.UTF-8': status resolves correctly
+--- sanity: unknown number still reports 'not in registry' ---
+  ✅ PASS: WP-999 (absent) reports not-in-registry (got: _не в реестре_)
+wp-sync-bundle registry_status guard: 12 checks passed
+=== test_issue_718_sync_canary.sh ===
+  ✅ PASS: self-test WP-10 (file + registry row present) exits 0
+  ✅ PASS: self-test WP-11 (file present, registry row missing) exits non-zero — old self-test would have reported OK here
+  ✅ PASS: run_sync_canary SKIPs (exit 0) when no governance repo is configured
+  ✅ PASS: run_sync_canary returns EXIT_CANARY_FAILED when the self-test canary fails
+  ✅ PASS: run_sync_canary passes with the bundle and digest copied into the governance repo (library only in the template)
+  ✅ PASS: run_sync_canary passes with the template's own bundle when the governance repo has no copy
+✅ test_issue_718_sync_canary: 6 checks passed
+=== test_issue_720_decision_log_sot.sh ===
+  ✅ PASS: seed Strategy.md 'Ключевые решения' points to the decision-log journal as SoT
+  ✅ PASS: day-rhythm-config.yaml defines daily_decision_points (nudge threshold in protocol-work.md § 2a can resolve)
+  ℹ SKIP: PyYAML not available locally — structural nesting check runs on CI only
+✅ test_issue_720_decision_log_sot: all checks passed
+=== test_issue_728_agentigore_dirslash.sh ===
+PASS: фильтр отработал без ошибки
+PASS: __pycache__/ директория исключена из проекции (issue #728)
+PASS: соседний исходник не задет исключением
+PASS: не связанный с паттерном файл скопирован как есть
+PASS: .agentigore trailing-slash directory patterns exclude matching dirs (issue #728)
+=== test_issue_729_strategy_day.sh ===
+PASS: governance-копия найдена
+PASS: fallback slug содержит и '.' и '_' корректно
+PASS: корректный slug отличается от наивного (regression на #729 cold-review)
+--- все проверки пройдены ---
+=== test_issue_810_scan_selfexcl.sh ===
+Примечание: переключение на «edbe1e7e758b43ca19d4fd8a30ae66eff6388a84».
+
+Вы сейчас в состоянии «отсоединённого указателя HEAD». Можете осмотреться,
+внести экспериментальные изменения и зафиксировать их, также можете
+отменить любые коммиты, созданные в этом состоянии, не затрагивая другие
+ветки, переключившись обратно на любую ветку.
+
+Если хотите создать новую ветку для сохранения созданных коммитов, можете
+сделать это (сейчас или позже), используя команду switch с параметром -c.
+Например:
+
+  git switch -c <новая-ветка>
+
+Или отмените эту операцию с помощью:
+
+  git switch -
+
+Отключите этот совет, установив переменную конфигурации
+advice.detachedHead в значение false
+
+PASS: editing secret-bypass-lib.sh does not self-block on its own rule literals
+PASS: editing secret-bypass-analyzer.py does not self-block on its own rule literals
+PASS: ordinary staged file with a private-key header still blocked (exclusion is exact-path)
+PASS: pre-commit-secret-scan.sh self-exclusion is exact-path, not a blanket bypass (issue #810)
+=== test_issue_823_linked_wt.sh ===
+  ✅ PASS: semaphore names the linked worktree the session was opened in
+  ✅ PASS: close warns about the unpushed commit in the linked worktree
+  ✅ PASS: the unpushed warning is printed once, not per path of the same repo
+  ✅ PASS: open from the canonical checkout still records the canonical path
+PASS: issue #823 linked worktree
+=== test_issue_836_reflection.sh ===
+PASS: issue #836 reflection save path
+=== test_issue_850_fork_guard.sh ===
+Traceback (most recent call last):
+  File "<stdin>", line 2, in <module>
+ModuleNotFoundError: No module named 'yaml'
+
+  FAIL: T1: parser found 0 jobs referencing excluded_paths -- manifest/workflow drifted or parser broke, test can't assert anything
+  PASS: T2: every job referencing excluded_paths carries the canon-only guard
+Traceback (most recent call last):
+  File "<stdin>", line 2, in <module>
+ModuleNotFoundError: No module named 'yaml'
+  FAIL: T3: stripping the guard from 'validate' was NOT flagged -- parser/assertion logic is broken
+TESTS FAILED
+❌ test_issue_850_fork_guard.sh: упал
+=== test_issue_851_cyrillic_slug.sh ===
+PASS: Cyrillic title transliterates to the expected slug
+PASS: malformed bytes do not crash the slug generator and still yield a non-empty slug ('test-title')
+PASS: whitespace-only title falls back to the bash slug generator ('wp----')
+PASS: explicit --slug is not overwritten by the title-derived one
+PASS: create-wp.sh slug generator handles Cyrillic input safely (issue #851)
+=== test_issue_869_claude_slug.sh ===
+PASS: the function body is identical in setup.sh, update.sh and scripts/day-close.sh
+PASS: '/Users/alice/IWE' -> '-Users-alice-IWE'
+PASS: '/home/u/IWE_custom' -> '-home-u-IWE-custom'
+PASS: '/Users/a/.iwe-workdir/x' -> '-Users-a--iwe-workdir-x'
+PASS: '/tmp/my ws/IWE' -> '-tmp-my-ws-IWE'
+PASS: '/srv/IWE.v2' -> '-srv-IWE-v2'
+PASS: Cyrillic path under LC_ALL=C: one dash per character (-Users------IWE)
+PASS: Cyrillic path gives the same slug in a UTF-8 locale
+PASS: Git Bash path /f/notes is slugged from its native form F:\notes -> F--notes
+PASS: a path cygpath leaves alone is unchanged (-home-u-IWE)
+PASS: no symlink was made -> setup.sh warns instead of reporting success
+PASS: no false 'Symlink:' success line
+PASS: the copy made instead of a link is set aside, workspace/memory is free again
+PASS: the real memory directory is untouched
+PASS: rerun after the set-aside creates the real symlink
+PASS: a real symlink is reported as before, without a warning
+PASS: a dangling link is not reported as a successful symlink
+PASS: the real ln error is shown
+PASS: legacy link (older slug rule, path with a space): accepted with a note, updater not stopped
+PASS: a genuine conflict still stops with the ambiguity error
+PASS: link named by the current rule: accepted silently
+Result: 0 FAIL
+=== test_issue_870_dayplan_validator.sh ===
+PASS: comma budget '~7,5h РП' accepted
+PASS: comma multiplier '~1,2x' accepted
+PASS: dot decimals and 'ч' unit still accepted
+PASS: budget line without a number is still rejected
+PASS: missing multiplier is still rejected
+PASS: oldest staged plan has no predecessor, no carry-over demand
+PASS: middle staged plan is compared with its older neighbour (2026-09-15)
+PASS: newest staged plan is compared with the previous plan (2026-09-17)
+PASS: non-canonical staged name is compared with the newest canonical plan
+Result: 0 FAIL
+=== test_issue_871_registry_prefix.sh ===
+--- #871: 'WP-' prefix in the number column ---
+  ✅ PASS: '| **WP-117** |' (prefix + bold) resolves (got: 🔄 in_progress)
+  ✅ PASS: '| WP-118 |' (prefix, no bold) resolves (got: 📦 archived)
+  ✅ PASS: '| ~~WP-119~~ |' (prefix + strikethrough) classified like the bare '~~130~~' row (got: ↗️ merged)
+  ✅ PASS: '| wp-121 |' (lowercase prefix) resolves (got: ⏸ paused)
+  ✅ PASS: the query form 'WP-117' resolves the same row (got: 🔄 in_progress)
+--- prefix accepted only right before the number ---
+  ✅ PASS: WP-1170 does not answer for 117 (117 keeps its own row) (got: 🔄 in_progress)
+  ✅ PASS: WP-1170 resolves to its own row (got: 📦 archived)
+--- unchanged behaviour ---
+  ✅ PASS: bare-number canonical row still resolves (got: 🔄 in_progress)
+  ✅ PASS: absent number still reports 'not in registry' (got: _не в реестре_)
+registry_status prefix guard (#871): 9 checks passed
+=== test_issue_872_skill_user_space.sh ===
+PASS: Edit inserts text between the markers (markers kept in old/new)
+PASS: Edit rewrites text inside a non-empty block
+PASS: Edit deletes block text without a trailing newline in old_string (tool newline quirk)
+PASS: Edit deletes a whole block line
+PASS: Edit whose old_string spans the closing marker but keeps it byte-identical
+PASS: Edit replace_all touching only in-block occurrences
+PASS: Write of the full file changing only the block
+PASS: Write that empties the block
+PASS: CRLF file: Edit inside the block with CRLF text
+PASS: CRLF file: Write keeps CRLF outside the block
+PASS: Edit outside the block (platform text) is denied with the USER-SPACE hint
+PASS: Edit of the platform tail after the block is denied
+PASS: Edit of the front matter is denied
+PASS: Edit that changes the opening marker is denied
+PASS: Edit that changes the closing marker is denied
+PASS: Edit that removes the opening marker line is denied
+PASS: Edit that removes both markers (block dissolved) is denied
+PASS: Edit that moves the closing marker down is denied
+PASS: Edit that duplicates the closing marker is denied
+PASS: Edit that duplicates the opening marker is denied
+PASS: Edit that writes a marker text inline inside the block is denied
+PASS: Write that drops the markers is denied
+PASS: Write that changes text before the block is denied
+PASS: Write that changes the tail after the block is denied
+PASS: Write that swaps the markers is denied
+PASS: Edit with no matching old_string (0 occurrences) is denied
+PASS: Edit with an empty old_string is denied
+PASS: Non-Edit/Write tool (MultiEdit) is denied
+PASS: Edit with old_string found more than once (no replace_all) is denied
+PASS: Edit replace_all touching text outside the block is denied
+PASS: Edit with a unique in-block old_string is still allowed in the same file
+PASS: Original without markers: no exception
+PASS: Original with only the opening marker: no exception
+PASS: Original with duplicated marker pairs: no exception (edit inside first block)
+PASS: Original with nested markers: no exception
+PASS: Original with reordered markers (closing first): no exception
+PASS: Original mentioning a marker text elsewhere on a non-marker line: no exception
+PASS: Original that is not valid UTF-8: no exception (fail closed on a parse error)
+PASS: Symlinked SKILL.md pointing at another platform SKILL.md is denied
+PASS: Symlinked SKILL.md pointing at memory/protocol-*.md (even with a pair) is denied
+PASS: Symlinked skill directory pointing at a platform skill is denied
+PASS: Hard-linked SKILL.md is denied
+PASS: Path with .. is denied even when it resolves to the same SKILL.md
+PASS: file_path with a trailing newline (shell would strip it) is denied, not judged as SKILL.md
+SKIP: case-variant file name case (file system is case-sensitive: the variant names another file)
+PASS: Creating a NEW SKILL.md of a platform skill via Write is denied
+PASS: Recreating a deleted platform SKILL.md via Write is denied
+PASS: Sibling helper file inside a platform skill with a pair is denied
+PASS: SKILL.md nested one level deeper than .claude/skills/<name>/ is denied
+PASS: SKILL.md directly in .claude/skills/ is denied
+PASS: memory/protocol-*.md with a pair is denied
+PASS: update-manifest.json with a pair is denied
+PASS: Other hook file: behaviour unchanged (this gate never covered .claude/hooks/*)
+PASS: Relative file_path is denied
+PASS: CRLF file: Write that normalises CRLF to LF outside the block is denied
+PASS: CRLF file: Edit turning one CRLF into LF outside the block is denied
+PASS: CRLF file: Edit with LF-only old_string matching nothing is denied
+PASS: Multi-step: first call adds a rule inside the block
+PASS: Multi-step: second call moves the closing marker down to widen the block
+PASS: Multi-step: second call moves the closing marker up (block text becomes suffix)
+PASS: Multi-step: second call moves the opening marker down
+PASS: Multi-step: second call moves the opening marker up over platform text
+PASS: Multi-step: after the block grew, platform text outside it is still protected
+PASS: Multi-step: another in-block edit against the new on-disk file is allowed
+PASS: author_mode: true - an edit outside the block stays allowed
+PASS: author_mode: false - an edit outside the block stays denied
+PASS: Own skill absent from the manifest (issue #311) stays editable
+PASS: Ordinary file outside gated paths stays editable
+---
+PASS: Envelope without tool_name is denied (no guessing Edit vs Write)
+PASS: Envelope with tool_name null is denied
+PASS: CRLF file: deleting the LAST line of the block (also its CR LF) stays inside the block
+PASS: CRLF file: deleting the text right before the opening marker (its CR LF is prefix) is denied
+issue-872: PASS=71 FAIL=0 (hook: /tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/.claude/hooks/extensions-gate.sh)
+=== test_issue_874_here_string.sh ===
+PASS: double-quoted here-string: exit 0, no parser error on stderr
+PASS: here-string with a variable: exit 0, no parser error on stderr
+PASS: here-string with '<<' inside single quotes: exit 0, no parser error on stderr
+PASS: unquoted here-string word: exit 0, no parser error on stderr
+PASS: ordinary here-document: exit 0, no parser error on stderr
+PASS: here-string + here-document: shell model stays complete
+PASS: here-string word glued to a real here-document: parsed, body scanned, no error
+PASS: secret in a heredoc body after a here-string is still detected
+PASS: analyzer self-test passes and includes here_string_operator
+Result: 0 FAIL
+=== test_issue_875_workspace_paths.sh ===
+PASS: IWE_WORKSPACE is honoured (got: /srv/custom_ws)
+PASS: default install path unchanged (got: /home/someone/IWE)
+PASS: MEMORY_FILE is built from the workspace (    local MEMORY_FILE="$WORKSPACE/memory/MEMORY.md")
+PASS: no live workspace-folder-name path in roles/ scripts/ setup/ .claude/
+Result: 0 FAIL
+=== test_issue_876_workspace_paths.sh ===
+  ✅ PASS: parameterized form and explanatory lines are accepted
+  ✅ PASS: literal ~/IWE in a skill is reported with file and line
+  ✅ PASS: docs/ is out of scope
+  ✅ PASS: real tree has no hardcoded workspace path in instructions
+=== test_issue_877_llm_proxy_default.sh ===
+PASS: nothing configured -> empty (no private default) (got: '')
+PASS: explicit LLM_PROXY_URL wins over the platform value (got: 'https://explicit.example')
+PASS: PLATFORM_LLM_PROXY_URL from the environment, '/v1' stripped (got: 'https://platform.example')
+PASS: PLATFORM_LLM_PROXY_URL from the workspace env file (quoted, trailing slash) (got: 'https://file.example')
+PASS: commented placeholder (what setup.sh writes now) resolves to empty (got: '')
+PASS: legacy dead platform address in the environment is ignored (got: '')
+PASS: the legacy value is ignored WITH a note on stderr
+PASS: legacy dead platform address in the workspace env file is ignored (got: '')
+PASS: a different user-supplied platform URL is NOT swallowed by the legacy rule (got: 'https://my.gateway.example')
+PASS: explicit LLM_PROXY_URL with '/v1/' suffix is normalised (no /v1/v1) (got: 'https://host.example')
+PASS: explicit local URL is untouched (got: 'http://localhost:18765')
+PASS: the pipeline's own tg_notify() survives the resolution block (probe mode keeps suppressing Telegram)
+PASS: empty gateway -> abort with a direct message naming LLM_PROXY_URL, no probe
+PASS: the message says explicitly that this is not a key problem
+PASS: configured gateway passes the guard
+PASS: no private gateway address in scripts/day-open-pipeline.sh
+PASS: no private gateway address in seed/strategy/scripts/day-open-pipeline.sh
+PASS: setup.sh writes no active PLATFORM_LLM_PROXY_URL (commented placeholder only)
+Result: 0 FAIL
+=== test_issue_881_nudge_default.sh ===
+  ✅ PASS: nudge paragraph names its own default for a missing key: 15
+  ✅ PASS: reader default (15) equals the shipped config value (15)
+✅ test_issue_881_nudge_default: all checks passed
+=== test_issue_882_archgate_scale.sh ===
+  ✅ PASS: no retired ArchGate scale (56/70, '>=8', six-letter ЭМОГСС) left in the shipped tree
+  ✅ PASS: MEMORY.md ArchGate rule points at /archgate, seven characteristics (ЭМОГССБ), no aggregate score
+  ✅ PASS: MEMORY.md ArchGate rule has no numeric threshold (matches CLAUDE.md §5)
+  ✅ PASS: checklists.md stop rule defers to the /archgate verdict, no count of weak characteristics
+  ✅ PASS: protocol-work.md auto-trigger keys on the 'проходит АрхГейт' verdict, not a score
+✅ test_issue_882_archgate_scale: all checks passed
+=== test_issue_884_ds_publish_missing.sh ===
+  ✅ PASS: missing script: function reports failure (rc=1)
+  ✅ PASS: missing script: log says the script is not installed
+  ✅ PASS: missing script: log names the commit and says it stayed local
+  ✅ PASS: missing script: no false success and no bare 'No such file or directory'
+  ✅ PASS: present+ok: function reports success (rc=0)
+  ✅ PASS: present+ok: publisher got workspace, 'normal', --reason and the exact --from-commit SHA
+  ✅ PASS: present+ok: success message logged
+  ✅ PASS: present+failing: failure reported and logged, no success claim
+  ✅ PASS: all publish sites (main push, notes cleanup, isolated copy) use publish_commit_or_explain
+  ✅ PASS: the isolated site is a checked condition (set -e safe)
+  ✅ PASS: both call sites are guarded with '|| true' (set -e safe)
+  ✅ PASS: no direct ds-publish.sh call bypasses the missing-script check
+✅ test_issue_884_ds_publish_missing: all checks passed
+=== test_issue_884_ext.sh ===
+  ✅ PASS: /tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/roles/strategist/prompts/day-plan.md calls load-extensions.sh day-open before
+  ✅ PASS: /tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/roles/strategist/prompts/day-plan.md calls load-extensions.sh day-open after
+  ✅ PASS: /tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/roles/strategist/prompts/month-close.md calls load-extensions.sh month-close before
+  ✅ PASS: /tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/roles/strategist/prompts/month-close.md calls load-extensions.sh month-close after
+  ✅ PASS: week-review.md still calls load-extensions.sh week-close before (#1195, no regression)
+=== test_issue_886_weekreport_skeleton.sh ===
+  ✅ PASS: no WeekPlan: skipped, exit 0
+  ✅ PASS: skeleton created next to the newest WeekPlan (paired name)
+  ✅ PASS: frontmatter and «Итоги» section present
+  ✅ PASS: existing WeekReport is not touched
+  ✅ PASS: a report of the same week (other date) is reused, no duplicate
+  ✅ PASS: day-close skill calls week-report-ensure.sh
+=== test_issue_888_pull_on_touch_sync.sh ===
+  ✅ PASS: CLAUDE.md and blocking-rules-full.md carry the identical Pull-on-Touch wording
+  ✅ PASS: expanded rule names the PreToolUse hook (not manual git pull)
+✅ test_issue_888_pull_on_touch_sync: all checks passed
+=== test_issue_891_loose_claude_files_delivery.sh ===
+PASS: setup.sh --core exit 0
+PASS: setup.sh delivers .claude/runtime-overlay.yaml byte-identical
+PASS: setup.sh delivers .claude/process-pattern-catalog.yaml byte-identical
+PASS: setup.sh delivers .claude/rules-registry.yaml byte-identical
+PASS: setup.sh delivers .claude/parity-contract.yaml byte-identical
+PASS: setup.sh delivers .claude/skills-catalog.yaml byte-identical
+PASS: setup.sh delivers .claude/capture-config.sh.example byte-identical
+PASS: setup.sh delivers .claude/sync-manifest.yaml byte-identical
+PASS: update.sh has the loose .claude/*.yaml|*.yml|*.example arm in both case statements
+PASS: the loose-file arm shares one case label (and so one body) with the subdir arms, in both statements
+Result: 0 FAIL
+=== test_issue_893_scaffold_only_fallback.sh ===
+  ✅ PASS: day-open-pipeline.sh: no-gateway abort passes exit code 9
+  ✅ PASS: exit 9: no --scaffold-only retry
+  ✅ PASS: exit 9: gives up for the day with one no-gateway alarm, free-form prompt NOT called
+  ✅ PASS: exit 9 with the message on record: quiet give-up, no alarm, free-form prompt NOT called
+  ✅ PASS: exit 1 (non-gateway): no --scaffold-only retry attempted
+  ✅ PASS: exit 1 (non-gateway): the code goes out with an alarm, free-form prompt NOT called
+✅ All checks passed (issue #893)
+=== test_issue_894_routing.sh ===
+  ✅ valid-script: --validate-catalog → pass (got pass)
+  ✅ valid-script: --validate-skill agrees with --validate-catalog (pass)
+  ✅ valid-script: route-task.sh --validate → pass (got pass)
+  ✅ no-script-path: --validate-catalog → fail (got fail)
+  ✅ no-script-path: --validate-skill agrees with --validate-catalog (fail)
+  ✅ no-script-path: route-task.sh --validate → fail (got fail)
+  ✅ missing-file: --validate-catalog → fail (got fail)
+  ✅ missing-file: --validate-skill agrees with --validate-catalog (fail)
+  ✅ missing-file: route-task.sh --validate → fail (got fail)
+Terminated

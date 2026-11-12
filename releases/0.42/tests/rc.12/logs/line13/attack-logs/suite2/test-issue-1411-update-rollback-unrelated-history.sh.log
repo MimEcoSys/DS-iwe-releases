@@ -1,0 +1,15 @@
+== fixture ==
+  ok: release commit is neither local nor fetchable from origin
+== unrelated history (no template commits in origin) ==
+  ok: installed 0.38.2 < release 0.41.10 -> no rollback (1), --yes proceeds
+  ok: equal versions -> cannot determine (2), --yes blocked
+  ok: installed 0.42.0 > release 0.41.10 -> rollback (0), --yes blocked
+  ok: unreadable installed version -> cannot determine (2)
+  ok: no installed manifest -> cannot determine (2)
+  ok: shallow clone, installed older -> cannot determine (2)
+== shared history (a newer installed manifest is a rollback; otherwise ancestry decides) ==
+  ok: local ahead of release -> rollback (0) despite older version
+  ok: release fetched from origin and ahead, installed older -> no rollback (1)
+  ok: release ahead of HEAD but installed manifest newer -> rollback (0)
+
+test-issue-1411-update-rollback-unrelated-history: all checks passed

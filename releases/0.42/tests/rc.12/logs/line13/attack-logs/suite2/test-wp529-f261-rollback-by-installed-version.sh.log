@@ -1,0 +1,17 @@
+== folder at the release commit, manifest of a newer version ==
+  ok: HEAD == release, installed 0.42.0 > release 0.41.11 -> rollback (0)
+== folder at the release commit, manifest of the same version ==
+  ok: equal versions, HEAD == release -> no rollback (1)
+== release is newer than the installed manifest ==
+  ok: installed 0.41.10 < release 0.41.11 -> no rollback (1)
+== local commits ahead of the release keep the ancestry signal (#863) ==
+  ok: equal versions, HEAD ahead of the release -> rollback (0)
+== unreadable installed version falls through to ancestry ==
+  ok: unreadable version, HEAD == release -> ancestry decides (1)
+== main and rc channels compare versions too (Ф270, RT2-4 of the rc.2 red team) ==
+  ok: main channel, installed 0.42.0 > main 0.41.11 -> rollback (0)
+  ok: rc channel, installed 0.42.0 > delivered 0.41.11 -> rollback (0)
+  ok: main channel, equal versions -> no rollback (1)
+  ok: rc channel, newer candidate -> no rollback (1)
+
+PASS

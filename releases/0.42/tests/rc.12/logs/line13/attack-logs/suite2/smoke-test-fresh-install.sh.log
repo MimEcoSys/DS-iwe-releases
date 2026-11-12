@@ -1,0 +1,88 @@
+==========================================
+  Smoke Test: Fresh Install (WP-273 F)
+==========================================
+  Template: /tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template
+  Test workspace: /tmp/rt-rc12.TMCaKc/suite/smoke-480810
+  GOVERNANCE_REPO: DS-strategy
+
+[setup] Test .exocortex.env создан
+
+[1/6] build-runtime.sh fresh build...
+  ✅ PASS: build-runtime exit 0
+[2/6] build-runtime --diff (idempotency)...
+  ✅ PASS: diff показывает 'in sync' (idempotent)
+[3/6] substituted runner clean от плейсхолдеров...
+  ✅ PASS: runner /tmp/rt-rc12.TMCaKc/suite/smoke-480810/.iwe-runtime/roles/strategist/scripts/strategist.sh без leftover {{...}}
+[4/6] runner резолвит PROMPTS_DIR в FMT (R5.1 regression)...
+  ✅ PASS: runner показал usage (PROMPTS_DIR резолвится корректно)
+[5/6] install.sh fail-fast без env (R5.2 regression)...
+  ✅ PASS: install.sh fail-fast с понятной ошибкой (env -i)
+[6a] GOVERNANCE_REPO в substituted-файлах (R6.1 regression)...
+  ✅ PASS: GOVERNANCE_REPO=DS-pilot-strategy подставлен в .iwe-runtime/
+  ✅ PASS: no literal /DS-strategy/ в runtime
+  ✅ PASS: no literal /DS-strategy/ в template roles/*/scripts/
+[6b] no leftover placeholders в .iwe-runtime/ после build-runtime...
+  ✅ PASS: 0 leftover placeholders в runtime
+[6d] все .claude/*/ каталоги в update.sh:609 паттерне...
+  ✅ PASS: все .claude/*/ каталоги учтены в update.sh:609 паттерне
+  ✅ PASS: .claude/scripts/load-extensions.sh попадает в workspace при update.sh
+[6c] runtime runner реально подставляет prompts (R6.1** regression)...
+  ✅ PASS: runtime runner sed-выражения корректны
+  ✅ PASS: end-to-end: prompt substitution работает с DS-pilot-strategy
+[6e] cleanup-processed-notes.py резолвит GOVERNANCE_REPO из env (R6.1* regression)...
+  ✅ PASS: Python script резолвит GOVERNANCE_REPO=DS-pilot-strategy
+[6/7] install.sh с env проходит fail-fast (positive case)...
+  ✅ PASS: install.sh проходит fail-fast check с env
+[7/7] load-extensions.sh wildcard suffix contract...
+  ✅ PASS: Test 7a: 3 файла alphabetic (health → linear → manifest)
+  ✅ PASS: Test 7b: пустой hook → exit 1
+  ✅ PASS: Test 7c: только suffix без manifest → exit 0
+  ✅ PASS: Test 7d: отсутствующий extensions/ → typed loader error
+[9] e2e setup.sh delivery (SETUP_CI=1 --core)...
+  ✅ PASS: e2e setup.sh --core exit 0
+  ✅ PASS: e2e workspace: .claude/scripts/load-extensions.sh доставлен
+  ✅ PASS: e2e workspace: .claude/agents доставлен
+  ✅ PASS: e2e workspace: .claude/skills доставлен
+  ✅ PASS: e2e workspace: .claude/hooks доставлен
+  ✅ PASS: e2e workspace: .claude/lib/find-python3.sh доставлен
+  ✅ PASS: e2e workspace: .claude/lib/residency-gate-run.sh доставлен
+  ✅ PASS: e2e workspace: .claude/rules доставлен
+  ✅ PASS: e2e workspace: .claude/rules-lazy/role-prefixes-full.md доставлен
+  ✅ PASS: e2e workspace: .claude/rules-lazy/state-transition-gate.md доставлен
+  ✅ PASS: e2e workspace: CLAUDE.md доставлен
+  ✅ PASS: e2e workspace: AGENTS.md доставлен
+  ✅ PASS: e2e workspace: State-Transition Gate stays lazy without a governance registry
+  ✅ PASS: e2e memory: day-rhythm-config.yaml доставлен
+  ✅ PASS: e2e memory: все memory/* пути манифеста доставлены, включая вложенные
+  ✅ PASS: e2e memory: memory/reference/agent-core.md (вложенный путь) доставлен
+  ✅ PASS: e2e workspace: installed ResidencyGate blocks declared need as policy_denied
+  ✅ PASS: e2e workspace: ResidencyGate state is local and outside the IWE workspace
+  ✅ PASS: e2e workspace: ResidencyGate state permissions are private
+  ✅ PASS: e2e workspace: installed role hook distinguishes ordinary and role-prefixed prompts
+[9b] setup.sh rerun reuses workspace governance config...
+  ✅ PASS: e2e rerun: configured arbitrary governance is preserved without env replay
+  ✅ PASS: e2e rerun: installed navigation keeps the explained governance marker, not the default path
+[9c] setup.sh rejects governance root symlink...
+  ✅ PASS: e2e symlink: setup fails before writing through governance root
+[10] e2e setup.sh full mode (no --core, SETUP_CI=1)...
+  ✅ PASS: e2e setup.sh full mode exit 0
+  ✅ PASS: e2e full mode: step [5/6] Installing roles executed
+  ⚠️  WARN: e2e full mode: LaunchAgents dir не создан (возможно, ни одна auto-role не установлена)
+  ✅ PASS: e2e full mode: governance git repository created
+  ✅ PASS: e2e full mode: executor catalog is present in the initial governance commit
+  ✅ PASS: e2e full mode: installed catalog generator matches the template source
+  ✅ PASS: e2e full mode: fresh catalog has detailed skips and empty reflexes
+  ✅ PASS: e2e full mode: route-task validates the freshly generated catalog
+[8a] setup.sh step 4b копирует все .claude/*/ субдиректории...
+  ✅ PASS: setup.sh step 4b: все .claude/*/ субдиректории включены
+[8b] setup.sh step 3 копирует memory/*.yaml и *.yml...
+  ✅ PASS: setup.sh step 3: memory/*.yaml/.yml копируются
+[8c] setup.sh step 5: source ~/.iwe-paths перед role install.sh...
+  ✅ PASS: setup.sh step 5: env для install.sh подготовлен (source .iwe-paths или export IWE_RUNTIME)
+[8d] setup.sh --validate проверяет WORKSPACE_DIR/.exocortex.env...
+  ✅ PASS: setup.sh --validate: .exocortex.env ищется в WORKSPACE_DIR (WP-273)
+
+==========================================
+  PASS: 53  /  FAIL: 0
+==========================================
+  ✅ Smoke test ALL PASS

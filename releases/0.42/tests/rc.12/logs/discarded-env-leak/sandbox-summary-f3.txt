@@ -1,0 +1,20 @@
+warning: refs/tags/v0.41.11 e1b7b67a1520e0a002499d1974dce1f100744b6a is not a commit!
+Note: switching to '46a864ee30075de5ce4ad4722285683e674abe09'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by switching back to a branch.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -c with the switch command. Example:
+
+  git switch -c <new-branch-name>
+
+Or undo this operation with:
+
+  git switch -
+
+Turn off this advice by setting config variable advice.detachedHead to false
+
+установка v0.41.11 код 0
+манифест: 0.41.11; режим: нет

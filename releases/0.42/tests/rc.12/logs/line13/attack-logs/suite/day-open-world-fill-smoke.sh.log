@@ -1,0 +1,8 @@
+Testing scripts/day-open-llm-fill.py
+Traceback (most recent call last):
+  File "<stdin>", line 12, in <module>
+  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/scripts/day-open-llm-fill.py", line 33, in <module>
+    import yaml
+ModuleNotFoundError: No module named 'yaml'

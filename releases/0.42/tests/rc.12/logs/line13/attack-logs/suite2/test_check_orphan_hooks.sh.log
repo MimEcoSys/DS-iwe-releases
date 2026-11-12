@@ -1,0 +1,1 @@
+OK: check-orphan-hooks recognizes marker + allowlist and still fails a real orphan

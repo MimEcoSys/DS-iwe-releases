@@ -1,0 +1,37 @@
+== success at once
+  ✅ PASS: one attempt, valid manifest in place
+  ✅ PASS: no temp files left
+== transient errors are retried
+  ✅ PASS: timeout twice, then success on attempt 3
+== three failures keep the old manifest and say why
+  ✅ PASS: gives up after 3 attempts
+  ✅ PASS: previous manifest untouched
+  ✅ PASS: diagnostic names curl exit code 28
+  ✅ PASS: stderr line of the failing attempt is shown
+== HTTP 404 is not retried
+  ✅ PASS: one attempt only
+  ✅ PASS: diagnostic carries HTTP 404
+== HTTP 503 and 429 are retried
+  ✅ PASS: 503 then success
+  ✅ PASS: 429 then success
+== a 200 that is not JSON never replaces the manifest
+  ✅ PASS: HTML page rejected, old manifest kept
+  ✅ PASS: diagnostic explains it
+== write failure (curl 23) switches to the redirect experiment
+  ✅ PASS: second attempt succeeded
+  ✅ PASS: second attempt wrote through the redirect
+  ✅ PASS: the experiment is labelled in the output
+== an empty file after a clean exit counts as a write failure
+  ✅ PASS: empty file → redirect attempt
+== the redirect experiment cannot see the HTTP status: a 22 there is retried, not given up
+  ✅ PASS: 23, then a 22 in redirect mode, then success
+== a failed move into place is reported, not hidden
+  ✅ PASS: returns a failure
+  ✅ PASS: the diagnostic says the manifest was not written
+  ✅ PASS: no half-written manifest
+== a path with spaces
+  ✅ PASS: works
+== a certificate error (60) stops at once
+  ✅ PASS: no retry on a non-transient error
+
+PASS: update manifest fetch (#943)

@@ -1,0 +1,12 @@
+==========================================
+  Exocortex Update v2.4.1
+==========================================
+  Репо: /tmp/rt-rc13-full.zpl00v/IWE/FMT-exocortex-template
+
+/home/iwe-test/.local/bin/gh: строка 5: /tmp/rt-rc13-full.zpl00v/iwe-rc13-linux/logs/gh-calls.log: No such file or directory
+curl: (22) The requested URL returned error: 403
+ОШИБКА: authenticated GitHub API request via gh failed; fallback disabled.
+ОШИБКА: не удалось определить последний релиз (нет релизов или API недоступен).
+  Release-канал работает только от опубликованного релиза (fail-closed, #501).
+  Повторите позже, либо осознанно выберите подвижную ветку:
+    IWE_UPDATE_CHANNEL=main bash update.sh

@@ -1,0 +1,386 @@
+  ✅ PASS: fixtures: the old seed copy does not mention --branch at all
+  ✅ PASS: fixtures: the own publisher always targets main and names --branch in a comment, git status, git log and the usage text
+== A1: enable flag parsing ==
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: flag parsing: empty=off, listed (comma/space)=on, near-miss names=off
+== A1b: a publisher knows --branch when its text has an argument-parsing branch for it, not the word alone (C1 compat) ==
+  ✅ PASS: knows --branch: --branch), -b|--branch), --branch|-b) and --branch=*) get --branch main
+  ✅ PASS: knows --branch: a comment, git status --branch, git log --branches and a usage text do not
+== A2: allowed change is published from the copy ==
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: allowed change: rc 0 and published
+  ✅ PASS: allowed change: origin got exactly one commit
+  ✅ PASS: allowed change: commit touches exactly the allowlisted paths
+  ✅ PASS: allowed change: publisher was called from the copy, not the canon
+  ✅ PASS: allowed change: the copy publishes to the branch it was created from (--branch main)
+  ✅ PASS: allowed change: the wrapper's --branch parse branch read main
+  ✅ PASS: allowed change: no branch named after the copy on origin
+  ✅ PASS: allowed change: copy removed after publication
+  ✅ PASS: allowed change: copy branch removed
+  ✅ PASS: allowed change: canon HEAD unchanged
+  ✅ PASS: allowed change: canon working tree clean
+== A2r: the seed publisher itself (no wrapper) publishes from the copy to origin/main (C1) ==
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: the governance repo carries ds-publish.sh byte for byte
+  ✅ PASS: seed publisher: rc 0 and published
+  ✅ PASS: seed publisher: origin/main got exactly one commit, the runner's
+  ✅ PASS: seed publisher: only main on origin
+  ✅ PASS: seed publisher: copy and its branch removed
+  ✅ PASS: seed publisher: canon HEAD unchanged
+  ✅ PASS: seed publisher: canon working tree clean
+== A2c: seed publisher, origin moved with a conflicting change: 3 passes through, the result stays in the copy ==
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: the governance repo carries ds-publish.sh byte for byte
+  ✅ PASS: conflict: the publisher's 3 goes out, nothing published
+  ✅ PASS: conflict: origin/main holds only the racer's commit
+  ✅ PASS: conflict: only main on origin
+  ✅ PASS: conflict: copy preserved, the runner's commit stays on its local branch
+  ✅ PASS: conflict: canon HEAD unchanged
+  ✅ PASS: conflict: canon working tree clean
+== A3: nothing changed ==
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: no changes: rc 0, no_changes
+  ✅ PASS: no changes: origin unchanged
+  ✅ PASS: no changes: copy removed
+  ✅ PASS: no changes: canon HEAD unchanged
+  ✅ PASS: no changes: canon working tree clean
+== A4: path outside the allowlist blocks and keeps the copy ==
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: untracked outside path: blocked rc 72
+  ✅ PASS: untracked outside path: origin unchanged
+  ✅ PASS: untracked outside path: copy preserved
+  ✅ PASS: untracked outside path: nothing published at all
+  ✅ PASS: untracked outside path: canon HEAD unchanged
+  ✅ PASS: untracked outside path: canon working tree clean
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: modified tracked outside path: blocked
+  ✅ PASS: modified tracked outside path: copy preserved, origin unchanged
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: deleted outside path: blocked
+== A4b: an allowed path turned into a symlink blocks ==
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: symlink on an allowed path: blocked
+  ✅ PASS: symlink on an allowed path: origin unchanged, copy preserved
+  ✅ PASS: symlink: canon HEAD unchanged
+  ✅ PASS: symlink: canon working tree clean
+== A5: a model commit is normalised, not trusted ==
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: model committed an outside path: blocked
+  ✅ PASS: model committed an outside path: origin unchanged, copy preserved
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: model committed an allowed path: still published
+  ✅ PASS: model committed an allowed path: origin got exactly one commit (the runner's, not the model's)
+  ✅ PASS: model committed an allowed path: commit message is the runner's
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: copy left its branch: blocked
+  ✅ PASS: copy left its branch: origin unchanged, copy preserved
+== A6: git status failure blocks ==
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: git status fails: blocked
+  ✅ PASS: git status fails: origin unchanged, copy preserved
+== A7: publication failure keeps the copy ==
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: publisher fails (exit 1): its own status passes through, not 72
+  ✅ PASS: publisher fails: origin unchanged, copy preserved
+  ✅ PASS: publisher fails: canon HEAD unchanged
+  ✅ PASS: publisher fails: canon working tree clean
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: publisher exits 70: 70 goes out unchanged
+  ✅ PASS: publisher exits 70: origin unchanged, copy preserved
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: publisher exits 71: 71 goes out unchanged
+  ✅ PASS: publisher exits 71: origin unchanged, copy preserved
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: publisher missing in the copy and the canon: blocked, copy preserved
+  ✅ PASS: publisher missing everywhere: the log says to run update.sh
+  ✅ PASS: publisher missing everywhere: nothing published
+== A7u: upgraded install, the publisher only in the canon (untracked): the copy publishes with it ==
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: upgraded fixture: origin/main has no publisher, the canon has it untracked
+  ✅ PASS: upgraded install: rc 0 and published
+  ✅ PASS: upgraded install: origin/main got the runner's commit, only main on origin
+  ✅ PASS: upgraded install: copy removed after publication
+  ✅ PASS: upgraded install: canon HEAD unchanged
+  ✅ PASS: upgraded install: canon working tree holds only the untracked publisher
+== A7c: control, fresh install: the copy's own (committed) publisher wins over the canon's file ==
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: copy wins: rc 0 and published
+  ✅ PASS: copy wins: the canon's file never ran
+== A7o: the installation's own publisher names --branch but has no parse branch for it (main always): called without it, it publishes (C1 compat) ==
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: the governance repo carries own-ds-publish.sh byte for byte
+  ✅ PASS: own publisher: rc 0 and published
+  ✅ PASS: own publisher: origin/main got the runner's commit, only main on origin
+  ✅ PASS: own publisher: --branch was not passed (no usage line)
+  ✅ PASS: own publisher: a successful publication leaves no replacement advice in the log
+  ✅ PASS: own publisher: copy removed
+  ✅ PASS: own publisher: canon HEAD unchanged
+  ✅ PASS: own publisher: canon working tree clean
+== A7m: the copy holds the old seed copy (no --branch), the canon the current one: the canon's publishes with --branch main ==
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: the governance repo carries ds-publish-637a526.sh byte for byte
+  ✅ PASS: old copy, current canon: rc 0 and published
+  ✅ PASS: old copy, current canon: origin/main got the runner's commit, only main on origin
+  ✅ PASS: old copy, current canon: the canon's publisher published to origin/main, no warning
+  ✅ PASS: old copy, current canon: canon HEAD unchanged, only its publisher file differs
+== A7x: no publisher knows --branch (the old seed copy everywhere): called without it, its refusal goes out, the log says what to replace ==
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: the governance repo carries ds-publish-637a526.sh byte for byte
+  ✅ PASS: old seed everywhere: the publisher's own status (1) goes out, nothing published
+  ✅ PASS: old seed everywhere: called without --branch, it tried the copy's own branch (no usage line)
+  ✅ PASS: old seed everywhere: the refusal message says to replace scripts/ds-publish.sh with the template's version
+  ✅ PASS: old seed everywhere: the advice is part of the refusal line
+  ✅ PASS: old seed everywhere: origin unchanged, copy preserved
+  ✅ PASS: old seed everywhere: canon HEAD unchanged
+  ✅ PASS: old seed everywhere: canon working tree clean
+== A7b: commit failure blocks ==
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: git commit fails: blocked
+  ✅ PASS: git commit fails: origin unchanged, copy preserved
+== A8: begin refuses when it cannot start clean ==
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: origin unreachable: not started
+  ✅ PASS: origin unreachable: no copy left
+  ✅ PASS: origin unreachable: canon HEAD unchanged
+  ✅ PASS: origin unreachable: canon working tree clean
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: scenario without allowlist: begin refuses
+== B1: isolated note-review, happy path ==
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: runner exits 0
+  ✅ PASS: model ran in the copy, not in the canon
+  ✅ PASS: origin got exactly one commit
+  ✅ PASS: the commit touches exactly the two allowlisted files
+  ✅ PASS: cleanup archived the plain note on origin
+  ✅ PASS: cleanup left the already proposed note (bold + ✅предложено) on origin, it is not the script's to archive
+  ✅ PASS: cleanup script edited the copy: canon still holds the plain note
+  ✅ PASS: prompt points the model at the copy's workspace
+  ✅ PASS: prompt never mentions the canonical path
+  ✅ PASS: the model is told this is a run without a chat (isolated)
+  ✅ PASS: isolated happy path: canon HEAD unchanged
+  ✅ PASS: isolated happy path: canon working tree clean
+  ✅ PASS: copy removed after publication
+== B1r: isolated note-review end to end with the seed publisher itself, origin has only main (C1) ==
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: the governance repo carries ds-publish.sh byte for byte
+  ✅ PASS: seed publisher: runner exits 0
+  ✅ PASS: seed publisher: origin/main got exactly one commit with the two allowlisted files
+  ✅ PASS: seed publisher: only main on origin
+  ✅ PASS: seed publisher: copy removed, no strategist/* branch left
+  ✅ PASS: seed publisher: the log shows the publication to origin/main
+  ✅ PASS: seed publisher end to end: canon HEAD unchanged
+  ✅ PASS: seed publisher end to end: canon working tree clean
+== B1u: upgraded install end to end: note-review in the copy, the publisher from the canon ==
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: upgraded fixture: origin/main has no publisher, the canon has it untracked
+  ✅ PASS: upgraded install: runner exits 0
+  ✅ PASS: upgraded install: origin/main got one commit with the two allowlisted files, only main on origin
+  ✅ PASS: upgraded install: copy removed
+  ✅ PASS: upgraded install end to end: canon HEAD unchanged
+  ✅ PASS: upgraded install end to end: canon working tree holds only the untracked publisher
+== B1o: end to end with the installation's own publisher that names --branch without parsing it (main always): the runner publishes (C1 compat) ==
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: the governance repo carries own-ds-publish.sh byte for byte
+  ✅ PASS: own publisher end to end: runner exits 0
+  ✅ PASS: own publisher end to end: origin/main got one commit with the two allowlisted files, only main on origin
+  ✅ PASS: own publisher end to end: --branch was not passed, no replacement advice on success
+  ✅ PASS: own publisher end to end: copy removed
+  ✅ PASS: own publisher end to end: canon HEAD unchanged
+  ✅ PASS: own publisher end to end: canon working tree clean
+== B2: isolated note-review, model writes outside the allowlist ==
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: runner exits 72
+  ✅ PASS: origin unchanged
+  ✅ PASS: copy preserved with the offending file
+  ✅ PASS: outside-allowlist run: canon HEAD unchanged
+  ✅ PASS: outside-allowlist run: canon working tree clean
+== B3: isolated note-review, model commits an outside path itself ==
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: runner exits 72
+  ✅ PASS: the model's own commit was not published unverified
+  ✅ PASS: copy preserved
+  ✅ PASS: model-commit run: canon HEAD unchanged
+  ✅ PASS: model-commit run: canon working tree clean
+== B4: isolated note-review, model CLI fails ==
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: runner exits with the CLI's code
+  ✅ PASS: origin unchanged even though cleanup could have run
+  ✅ PASS: copy preserved
+  ✅ PASS: CLI failure: canon HEAD unchanged
+  ✅ PASS: CLI failure: canon working tree clean
+== B5: isolated note-review, publisher fails ==
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: publisher exit 1: runner exits with it
+  ✅ PASS: origin unchanged, copy preserved
+  ✅ PASS: publisher failure: canon HEAD unchanged
+  ✅ PASS: publisher failure: canon working tree clean
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: publisher exit 70: runner exits 70
+  ✅ PASS: publisher exit 70: origin unchanged, copy preserved
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: publisher exit 71: runner exits 71
+  ✅ PASS: publisher exit 71: origin unchanged, copy preserved
+== B6: flag off keeps the legacy path ==
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: runner exits 0
+  ✅ PASS: no isolated copy was created
+  ✅ PASS: legacy: the cleanup commit is made in the canon
+  ✅ PASS: legacy: the publisher got the canon path
+  ✅ PASS: legacy: no --branch, the publisher keeps its default (the canon's own branch)
+  ✅ PASS: legacy: origin got one commit with the two files
+  ✅ PASS: legacy: the model ran in the canon
+  ✅ PASS: legacy: the model is told this is a run without a chat
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: legacy: an outside file is NOT blocked (behaviour unchanged)
+  ✅ PASS: legacy: no isolation lines in the log
+== B7: listing a scenario that has no isolated setup is refused ==
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: week-review listed: runner exits 72
+  ✅ PASS: week-review listed: the model never ran
+  ✅ PASS: week-review listed: canon HEAD unchanged
+  ✅ PASS: week-review listed: canon working tree clean
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: morning listed (no isolated setup, no run_claude name match): refused up front, exits 72
+  ✅ PASS: morning listed: the model never ran
+  ✅ PASS: notifier double takes precedence
+  ❌ FAIL: morning->session-prep listed: refused inside run_claude, exits 72 (expected '72', got '1')
+  ✅ PASS: morning->session-prep listed: the model never ran
+  ✅ PASS: session-prep listed: canon HEAD unchanged
+  ✅ PASS: session-prep listed: canon working tree clean
+== B7b: the other scenarios have no allowlist (WP-530 Ф72 V-D): each is refused, none runs un-isolated ==
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: day-plan listed: runner exits 72
+  ✅ PASS: day-plan listed: the model never ran
+  ✅ PASS: day-plan listed: refused up front for the missing allowlist (not only later inside run_claude)
+  ✅ PASS: day-plan listed: canon HEAD unchanged
+  ✅ PASS: day-plan listed: canon working tree clean
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: day-close listed: runner exits 72
+  ✅ PASS: day-close listed: the model never ran
+  ✅ PASS: day-close listed: refused up front for the missing allowlist (not only later inside run_claude)
+  ✅ PASS: day-close listed: canon HEAD unchanged
+  ✅ PASS: day-close listed: canon working tree clean
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: evening listed: runner exits 72
+  ✅ PASS: evening listed: the model never ran
+  ✅ PASS: evening listed: refused up front for the missing allowlist (not only later inside run_claude)
+  ✅ PASS: evening listed: canon HEAD unchanged
+  ✅ PASS: evening listed: canon working tree clean
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: strategy-session listed: runner exits 72
+  ✅ PASS: strategy-session listed: the model never ran
+  ✅ PASS: strategy-session listed: refused up front for the missing allowlist (not only later inside run_claude)
+  ✅ PASS: strategy-session listed: canon HEAD unchanged
+  ✅ PASS: strategy-session listed: canon working tree clean
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: control, flag off: morning runs the canonical pipeline (fixture reaches it)
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: control, unrelated listing (note-review): the pipeline still runs
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: morning->day-plan listed: refused up front, exits 72
+  ✅ PASS: morning->day-plan listed: the pipeline never ran
+  ✅ PASS: morning->day-plan listed: the model never ran
+  ✅ PASS: morning->day-plan listed: canon HEAD unchanged
+  ✅ PASS: morning->day-plan listed: canon working tree clean
+== B7c: week-review keeps its own contract: listed = refused before the guard session, flag off = codes 70/71 ==
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: week-review listed: runner exits 72
+  ✅ PASS: week-review listed: refused up front for the missing allowlist
+  ✅ PASS: week-review listed: no guard session was opened
+  ✅ PASS: week-review listed: the model never ran
+  ✅ PASS: week-review listed: canon HEAD unchanged
+  ✅ PASS: week-review listed: canon working tree clean
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: flag off: nothing delivered, the delivery proof still reports 70
+  ✅ PASS: flag off: the guard session was opened and closed by the runner
+  ✅ PASS: flag off: the model ran in the canon (legacy path)
+  ✅ PASS: control: another scenario (week-review) does not get the no-chat line
+  ✅ PASS: flag off: no isolated copy was created
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: flag off, guard refuses the session: exit 71, the model never ran
+== C1: cleanup script in isolated mode has no silent canon fallback ==
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: isolated, no IWE_CLEANUP_REPO_DIR: refused (non-zero)
+  ✅ PASS: isolated, no dir: the canon was not touched
+  ✅ PASS: isolated, dir = the canon checkout: refused
+  ✅ PASS: isolated, dir = canon: the canon was not touched
+  ✅ PASS: isolated, dir = an ordinary clone (not a linked worktree): refused
+  ✅ PASS: isolated, dir missing: refused
+  ✅ PASS: isolated, dir = a linked worktree: runs
+  ✅ PASS: isolated worktree run archived the note in the copy only
+  ✅ PASS: isolated worktree run kept the proposed note in the copy
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: not isolated, no dir: legacy default still edits the canon path
+== B8: a failing cleanup script blocks the isolated run ==
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: cleanup script fails: runner exits 72
+  ✅ PASS: cleanup script fails: origin unchanged, copy preserved
+  ✅ PASS: cleanup failure: canon HEAD unchanged
+  ✅ PASS: cleanup failure: canon working tree clean
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: flag off: the same failing cleanup script is still ignored as before (exit 0)
+== B9: errexit is off inside run_claude when called with || : failures must still stop it ==
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: python3 (date context) fails: runner exits non-zero
+  ✅ PASS: python3 fails: the model never ran
+  ✅ PASS: python3 fails: origin unchanged, copy preserved
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: cd into the copy fails: runner exits non-zero
+  ✅ PASS: cd fails: the model never ran
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: sed (prompt read) fails: runner exits non-zero
+  ✅ PASS: sed fails: the model never ran
+  ✅ PASS: sed fails: origin unchanged, copy preserved
+== B10: the canary and the safety net understand ✅предложено (#961): a healthy run is silent, a run that processed nothing still alarms ==
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: flag off, healthy run (mark-proposed): runner exits 0
+  ✅ PASS: flag off, healthy run (mark-proposed): the canary logged no warning
+  ✅ PASS: flag off, healthy run (mark-proposed): no canary alert was sent
+  ✅ PASS: flag off, healthy run (mark-proposed): the marked note is published and nothing is archived on its own
+  ✅ PASS: flag off, healthy run (mark-proposed): the earlier proposed note is still in the box
+  ✅ PASS: flag off, healthy run (mark-proposed): the plain old note was archived by the safety net, as before
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: flag off, healthy run (mark-variant): runner exits 0
+  ✅ PASS: flag off, healthy run (mark-variant): the canary logged no warning
+  ✅ PASS: flag off, healthy run (mark-variant): no canary alert was sent
+  ✅ PASS: flag off, healthy run (mark-variant): the marked note is published and nothing is archived on its own
+  ✅ PASS: flag off, healthy run (mark-variant): the earlier proposed note is still in the box
+  ✅ PASS: flag off, healthy run (mark-variant): the plain old note was archived by the safety net, as before
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: flag off, healthy run (mark-nobold): runner exits 0
+  ✅ PASS: flag off, healthy run (mark-nobold): the canary logged no warning
+  ✅ PASS: flag off, healthy run (mark-nobold): no canary alert was sent
+  ✅ PASS: flag off, healthy run (mark-nobold): the marked note is published and nothing is archived on its own
+  ✅ PASS: flag off, healthy run (mark-nobold): the earlier proposed note is still in the box
+  ✅ PASS: flag off, healthy run (mark-nobold): the plain old note was archived by the safety net, as before
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: flag off, control, the model processed nothing: runner exits 0
+  ✅ PASS: flag off, control: the canary logged its warning
+  ✅ PASS: flag off, control: the canary alert was sent (the recording double is wired in)
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: isolated, healthy run (mark-proposed): runner exits 0
+  ✅ PASS: isolated, healthy run (mark-proposed): the canary logged no warning
+  ✅ PASS: isolated, healthy run (mark-proposed): no canary alert was sent
+  ✅ PASS: isolated, healthy run (mark-proposed): the marked note is published and nothing is archived on its own
+  ✅ PASS: isolated, healthy run (mark-proposed): the earlier proposed note is still in the box
+  ✅ PASS: isolated, healthy run (mark-proposed): the plain old note was archived by the safety net, as before
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: isolated, healthy run (mark-variant): runner exits 0
+  ✅ PASS: isolated, healthy run (mark-variant): the canary logged no warning
+  ✅ PASS: isolated, healthy run (mark-variant): no canary alert was sent
+  ✅ PASS: isolated, healthy run (mark-variant): the marked note is published and nothing is archived on its own
+  ✅ PASS: isolated, healthy run (mark-variant): the earlier proposed note is still in the box
+  ✅ PASS: isolated, healthy run (mark-variant): the plain old note was archived by the safety net, as before
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: isolated, healthy run (mark-nobold): runner exits 0
+  ✅ PASS: isolated, healthy run (mark-nobold): the canary logged no warning
+  ✅ PASS: isolated, healthy run (mark-nobold): no canary alert was sent
+  ✅ PASS: isolated, healthy run (mark-nobold): the marked note is published and nothing is archived on its own
+  ✅ PASS: isolated, healthy run (mark-nobold): the earlier proposed note is still in the box
+  ✅ PASS: isolated, healthy run (mark-nobold): the plain old note was archived by the safety net, as before
+  ✅ PASS: notifier double takes precedence
+  ✅ PASS: isolated, control, the model processed nothing: runner exits 0
+  ✅ PASS: isolated, control: the canary logged its warning
+  ✅ PASS: isolated, control: the canary alert was sent (the recording double is wired in)
+
+Passed: 349, failed: 1
