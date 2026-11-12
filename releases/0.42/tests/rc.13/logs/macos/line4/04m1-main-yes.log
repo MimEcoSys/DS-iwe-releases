@@ -1,0 +1,8 @@
+==========================================
+  Exocortex Update v2.4.1
+==========================================
+  Репо: /Users/iwe-test/IWE/FMT-exocortex-template
+
+curl: (56) The requested URL returned error: 403
+ОШИБКА: authenticated GitHub API request via gh failed; fallback disabled.
+ОШИБКА: authenticated branch lookup failed; refusing anonymous or moving-branch fallback.

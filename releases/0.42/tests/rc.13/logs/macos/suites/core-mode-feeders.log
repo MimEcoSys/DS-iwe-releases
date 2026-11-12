@@ -1,0 +1,14 @@
+== update.sh honours the recorded install mode ==
+  ok: core install: feeders not scheduled
+  ok: core install: the skip is explained
+  ok: full install: feeders scheduled
+== an install without the recorded mode (made by 0.41.11) ==
+  ok: no file, no schedule: nothing is added
+  ok: no file, no schedule: the skip names the command to enable
+  ok: no file, no schedule: the mode file is not invented
+  ok: no file, schedule exists: it is refreshed as before
+== setup.sh records the mode ==
+  ok: setup.sh writes core/full into .iwe-install-mode
+
+PASS
+rc=0 secs=0

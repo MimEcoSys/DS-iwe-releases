@@ -1,0 +1,38 @@
+лимит GitHub без входа: 60
+### 4b ROLLBACK
+  код: 0
+8:  ⚠ update.sh выпуска старше установленного — не заменяю его: сначала решение об откате.
+25:   Применение этого обновления ОТКАТИТ установку на более старый снимок.
+28:   Любой канал, который вернёт установку назад, тоже спросит ROLLBACK.
+135:  • ~/IWE/.memory-deployed.tsv — запись версий памяти, которые установлены и не менялись (по ней update.sh отличает нетронутую копию от изменённой)
+152:🔴 Это ОТКАТ на более старый релиз. Чтобы продолжить, введите ROLLBACK явно.
+248:  - .claude/hooks/dry-run-cmd-parse.pl (устарел, перенесён в резервную копию: ~/IWE/.backups/deprecated/20261112T192713Z-26068)
+249:    - ~/IWE/.claude/hooks/dry-run-cmd-parse.pl (устарел, перенесён в резервную копию: ~/IWE/.backups/deprecated/20261112T192713Z-26068)
+250:  - .claude/hooks/tests/test-destructive-guard-file-writers.sh (устарел, перенесён в резервную копию: ~/IWE/.backups/deprecated/20261112T192713Z-26068)
+251:    - ~/IWE/.claude/hooks/tests/test-destructive-guard-file-writers.sh (устарел, перенесён в резервную копию: ~/IWE/.backups/deprecated/20261112T192713Z-26068)
+252:  - .claude/hooks/tests/test-destructive-guard-find-chain.sh (устарел, перенесён в резервную копию: ~/IWE/.backups/deprecated/20261112T192713Z-26068)
+253:    - ~/IWE/.claude/hooks/tests/test-destructive-guard-find-chain.sh (устарел, перенесён в резервную копию: ~/IWE/.backups/deprecated/20261112T192713Z-26068)
+254:  - .claude/hooks/tests/test-destructive-guard-find-delete.sh (устарел, перенесён в резервную копию: ~/IWE/.backups/deprecated/20261112T192713Z-26068)
+255:    - ~/IWE/.claude/hooks/tests/test-destructive-guard-find-delete.sh (устарел, перенесён в резервную копию: ~/IWE/.backups/deprecated/20261112T192713Z-26068)
+256:  - .claude/hooks/tests/test-destructive-guard-git-branch-remote.sh (устарел, перенесён в резервную копию: ~/IWE/.backups/deprecated/20261112T192713Z-26068)
+  манифест: 0.41.11
+  правки: <!-- маркер тестировщика: своё расширение --> / test_marker: keep-me
+  update.sh = 0.41.11 по хешу
+  остался в папке шаблона: docs/onboarding/light-onboarding.md
+  файлов только из 0.42 в папке шаблона: 1
+  в .backups/deprecated: 38 (из папки шаблона 0)
+  изменённый файл: <!-- правка тестировщика до отката -->
+v0.42.0-rc.13 в установке: программ (755 в git) из манифеста: 398, нет файла: 0, без права на запуск: 0
+из 37 вне манифеста: 305 программ кандидата не входят в список доставки
+### 4c повтор после отката
+  код: 0
+  ✓ Маркер незавершённого обновления снят.
+✓ Всё актуально. Обновлений нет. (853 файлов проверено)
+### 4r снова на кандидата
+  код: 0
+  Канал поставки: кандидат v0.42.0-rc.13 (снимок 75b1d96c67f6)
+  Канал поставки: кандидат v0.42.0-rc.13 (снимок 75b1d96c67f6)
+  Обновление завершено (113 файлов)
+  манифест: 0.42.0; правки: 1/1
+  агентов стратега: 2
+лимит GitHub после: 50

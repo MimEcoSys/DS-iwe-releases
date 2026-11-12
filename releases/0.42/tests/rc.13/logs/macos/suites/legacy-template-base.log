@@ -1,0 +1,23 @@
+--- Scenario L: delivered template copy, legacy substituted base ---
+  ok: L: update.sh exit 0
+  ok: L: no conflict markers in the template copy
+  ok: L: template copy equals the release
+  ok: L: workspace CLAUDE.md carries the new wording with the install's governance repo
+  ok: L: no incomplete-update marker
+--- Scenario E: pilot's edit to the template copy, committed by update.sh 0.36 ---
+  ok: E: the edited copy was not replaced
+  ok: E: the pilot's line is still there
+  ok: E: no «не правилась» claim for an edited copy
+--- Scenario M: template copy left with conflict markers, nothing new published ---
+  ok: M: update.sh exits 49 (conflict)
+  ok: M: no false «Всё актуально»
+  ok: M: the conflicted file is named
+  ok: M: workspace CLAUDE.md and its base untouched
+  ok: M: incomplete-update marker kept
+  ok: M: the incomplete update is reported
+--- Scenario T: top-level refusal, a download fails ---
+  ok: T: refusal keeps its code (2)
+  ok: T: no crash line after the deliberate refusal (RT8-3)
+
+PASS: legacy template base, edited copy, conflicted retry, top-level refusal
+rc=0 secs=4
