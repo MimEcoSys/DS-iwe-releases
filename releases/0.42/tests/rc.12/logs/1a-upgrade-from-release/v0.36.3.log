@@ -1,0 +1,36 @@
+== clean install of v0.36.3 ==
+warning: refs/tags/v0.36.3 af51a758b7e5adfc60d51e7489ba6d198c03545a is not a commit!
+Note: switching to '8cca208538d792aecc3c3ff9d1da57f8c1103f30'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by switching back to a branch.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -c with the switch command. Example:
+
+  git switch -c <new-branch-name>
+
+Or undo this operation with:
+
+  git switch -
+
+Turn off this advice by setting config variable advice.detachedHead to false
+
+  ok: setup.sh --core of v0.36.3
+== update to v0.42.0-rc.12 through the rc channel ==
+  ok: update.sh --yes exit 0
+  ok: delivered from v0.42.0-rc.12
+== installed files equal the candidate ==
+  ok: installed manifest is the candidate's
+  ok: MISSING: 0 of 878
+  ok: DIFFERS: 0 of 878
+  ok: NOEXEC: 0 of 878
+== user edits survive ==
+  ok: own extension kept
+  ok: own parameter kept
+== second run changes nothing ==
+  ok: second run: nothing to update
+
+PASS: upgrade v0.36.3 -> v0.42.0-rc.12
+rc=0 secs=399

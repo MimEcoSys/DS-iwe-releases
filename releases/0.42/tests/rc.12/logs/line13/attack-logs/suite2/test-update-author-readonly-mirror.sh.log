@@ -1,0 +1,44 @@
+== A: author_mode, read-only mirror, clone at upstream
+  ❌ FAIL: A: update.sh exit 2; tail: 
+/home/iwe-test/.local/bin/gh: строка 5: /tmp/rt-rc12.TMCaKc/suite/iwe-author-ro-test.ub3zh6/a/fake-home/iwe-rc12-linux/logs/gh-calls.log: No such file or directory
+curl: (22) The requested URL returned error: 404
+ОШИБКА: authenticated GitHub API request via gh failed; fallback disabled.
+ОШИБКА: authenticated branch lookup failed; refusing anonymous or moving-branch fallback.
+  ❌ FAIL: A: marker still present
+  ✅ PASS: A: .claude/hooks/new-template-hook.sh not created in the read-only mirror
+  ❌ FAIL: A: 0 warnings for .claude/hooks/new-template-hook.sh, expected 1
+  ✅ PASS: A: .claude/skills/new-template-skill/SKILL.md not created in the read-only mirror
+  ❌ FAIL: A: 0 warnings for .claude/skills/new-template-skill/SKILL.md, expected 1
+  ❌ FAIL: A: summary line: none
+  ✅ PASS: A: no Permission denied in the log
+== B: author_mode, writable dirs
+  ❌ FAIL: B: exit 2, hook: no, skill: no
+== C: ordinary user, read-only mirror
+  ❌ FAIL: C: exit 2, marker present: yes
+== D: author_mode, read-only mirror, clone behind upstream
+  ❌ FAIL: D: update.sh exit 2; tail: 
+/home/iwe-test/.local/bin/gh: строка 5: /tmp/rt-rc12.TMCaKc/suite/iwe-author-ro-test.ub3zh6/d/fake-home/iwe-rc12-linux/logs/gh-calls.log: No such file or directory
+curl: (22) The requested URL returned error: 404
+ОШИБКА: authenticated GitHub API request via gh failed; fallback disabled.
+ОШИБКА: authenticated branch lookup failed; refusing anonymous or moving-branch fallback.
+  ❌ FAIL: D: marker still present
+  ✅ PASS: D: .claude/hooks/new-template-hook.sh not created in the read-only mirror
+  ❌ FAIL: D: 0 warnings for .claude/hooks/new-template-hook.sh, expected 1
+  ✅ PASS: D: .claude/skills/new-template-skill/SKILL.md not created in the read-only mirror
+  ❌ FAIL: D: 0 warnings for .claude/skills/new-template-skill/SKILL.md, expected 1
+  ❌ FAIL: D: summary line: none
+  ✅ PASS: D: no Permission denied in the log
+  ❌ FAIL: D: the new hook did not reach the template clone (Step 6 path not exercised)
+== E: author_mode, own workspace CLAUDE.md without a merge base
+  ❌ FAIL: E: update.sh exit 2; tail: 
+/home/iwe-test/.local/bin/gh: строка 5: /tmp/rt-rc12.TMCaKc/suite/iwe-author-ro-test.ub3zh6/e/fake-home/iwe-rc12-linux/logs/gh-calls.log: No such file or directory
+curl: (22) The requested URL returned error: 404
+ОШИБКА: authenticated GitHub API request via gh failed; fallback disabled.
+ОШИБКА: authenticated branch lookup failed; refusing anonymous or moving-branch fallback.
+  ❌ FAIL: E: marker still present
+  ✅ PASS: E: author CLAUDE.md untouched
+  ❌ FAIL: E: no author_mode line for CLAUDE.md
+== F: ordinary user, same CLAUDE.md state
+  ✅ PASS: F: CLAUDE.md untouched, run asks for manual reconciliation and keeps the marker
+
+Итого: 8 прошло, 16 провалено

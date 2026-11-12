@@ -1,0 +1,16 @@
+2026-11-12T18:23:21+02:00 gh auth status
+2026-11-12T18:23:28+02:00 gh repo view your-username/DS-strategy --json name
+2026-11-12T18:23:28+02:00 gh repo create your-username/DS-strategy --private --source=. --push
+BLOCKED repo create your-username/DS-strategy --private --source=. --push
+2026-11-12T18:23:28+02:00 gh repo view your-username/DS-strategy --json name
+2026-11-12T18:23:28+02:00 gh repo clone TserenTserenov/ZP /home/iwe-test/IWE/ZP -- --depth=1 --quiet
+2026-11-12T18:23:29+02:00 gh repo clone ailev/FPF /home/iwe-test/IWE/FPF -- --depth=1 --quiet
+2026-11-12T18:23:33+02:00 gh repo clone TserenTserenov/SPF /home/iwe-test/IWE/SPF -- --depth=1 --quiet
+2026-11-12T18:23:34+02:00 gh auth status --hostname github.com
+2026-11-12T18:23:34+02:00 gh api --hostname github.com --method GET repos/TserenTserenov/FMT-exocortex-template/git/matching-refs/tags/v?per_page=100&page=1
+2026-11-12T18:23:34+02:00 gh auth status --hostname github.com
+2026-11-12T18:23:34+02:00 gh api --hostname github.com --method GET repos/TserenTserenov/FMT-exocortex-template/commits/v0.42.0-rc.13
+2026-11-12T18:23:35+02:00 gh auth status --hostname github.com
+2026-11-12T18:23:35+02:00 gh api --hostname github.com --method GET repos/TserenTserenov/FMT-exocortex-template/releases/latest
+2026-11-12T18:24:36+02:00 gh release view v0.42.0-rc.13 -R TserenTserenov/FMT-exocortex-template --json tagName,isPrerelease,publishedAt,targetCommitish,assets
+BLOCKED release view v0.42.0-rc.13 -R TserenTserenov/FMT-exocortex-template --json tagName,isPrerelease,publishedAt,targetCommitish,assets

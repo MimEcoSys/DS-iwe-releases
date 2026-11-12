@@ -1,0 +1,86 @@
+=== #538 nine-case authenticated GitHub API matrix ===
+  ✅ PASS: 1 GH_TOKEN has first precedence
+  ✅ PASS: 1 no lower-priority fallback
+  ✅ PASS: 1 token stays out of curl argv
+  ✅ PASS: 1 safe curl transport options survive
+  ✅ PASS: 1 authenticated curl disables curlrc first
+  ✅ PASS: 1 curl -q is statically first
+  ✅ PASS: 1 release pinned to tag commit
+  ✅ PASS: 2 empty GH_TOKEN yields to GITHUB_TOKEN
+  ✅ PASS: 2 explicit token beats gh
+  ✅ PASS: 2 token stays out of curl argv
+  ✅ PASS: 3 authenticated gh is third
+  ✅ PASS: 3 gh endpoint has no leading slash
+  ✅ PASS: 3 gh route pins the release commit
+  ✅ PASS: 3 no curl fallback
+  ✅ PASS: 3 gh debug and prompts are neutralized
+  ✅ PASS: 3 hostile gh debug value absent
+  ✅ PASS: 4 anonymous curl is final fallback
+  ✅ PASS: 4 anonymous release still pins SHA
+  ✅ PASS: 5 GH_TOKEN request failure is fail-closed
+  ✅ PASS: 5 no fallback after GH_TOKEN failure
+  ✅ PASS: 6 GITHUB_TOKEN branch failure is fail-closed
+  ✅ PASS: 6 no moving/anonymous fallback
+  ✅ PASS: 7 authenticated gh failure is fail-closed
+  ✅ PASS: 7 no curl fallback after gh failure
+  ✅ PASS: 8 unsafe token is rejected
+  ✅ PASS: 8 xtrace state restored
+  ✅ PASS: 8 token absent from output
+  ✅ PASS: 8 invalid token stopped before transport
+  ✅ PASS: 8 unsafe authenticated curl options are rejected
+  ✅ PASS: 8 unsafe curl options have no fallback
+  ✅ PASS: 8 unsafe trace target was not created
+  ✅ PASS: 8 rejected curl options leak no token
+  ✅ PASS: 9 no-python release pins immutable tag
+  ✅ PASS: 9 only latest-release GET used
+  ✅ PASS: 9b detector flags the old endpoint assignment
+  ✅ PASS: 9b detector flags a literal /repos argument
+  ✅ PASS: 9b detector accepts bare endpoints
+  ✅ PASS: 9b update.sh still calls gh api (scan is not vacuous)
+  ✅ PASS: 9b no gh api call in update.sh passes a leading-slash endpoint
+  ✅ PASS: 10 rollback detected when local ahead of release
+  ✅ PASS: 11 equal HEAD is not a rollback
+  ✅ PASS: 12 main channel skips rollback detection
+  ✅ PASS: 13 unresolved tag returns uncertain (2) without abort
+  ✅ PASS: 20 version_compare '0.9.0' '0.10.0' = -1
+  ✅ PASS: 20 version_compare '0.10.0' '0.9.0' = 1
+  ✅ PASS: 20 version_compare '1.2.3' '1.2.3' = 0
+  ✅ PASS: 20 version_compare '1.2.9' '1.3.0' = -1
+  ✅ PASS: 20 version_compare '2.0.0' '1.99.99' = 1
+  ✅ PASS: 20 version_compare '1.10.0' '1.9.9' = 1
+  ✅ PASS: 20 version_compare '01.02.03' '1.2.3' = 0
+  ✅ PASS: 20 version_compare '08.0.0' '7.0.0' = 1
+  ✅ PASS: 20 version_compare '' '1.2.3' is refused
+  ✅ PASS: 20 version_compare '1.2.3' '' is refused
+  ✅ PASS: 20 version_compare '1.2' '1.2.3' is refused
+  ✅ PASS: 20 version_compare '1.2.3.4' '1.2.3' is refused
+  ✅ PASS: 20 version_compare '1.2.x' '1.2.3' is refused
+  ✅ PASS: 20 version_compare 'v1.2.3' '1.2.3' is refused
+  ✅ PASS: 20 version_compare '1.2.3-rc1' '1.2.3' is refused
+  ✅ PASS: 20 version_compare 'dev' '1.2.3' is refused
+  ✅ PASS: 20 version_compare '1234567890.0.0' '1.0.0' is refused
+  ✅ PASS: 20 manifest_version reads the top-level version, not schema_version
+  ✅ PASS: 14 unrelated histories, release newer: --yes applies the release
+  ✅ PASS: 14 unrelated histories, release newer: no stop message
+  ✅ PASS: 15 unrelated histories, release older: --yes stops with exit 1
+  ✅ PASS: 15 unrelated histories, release older: the target file is untouched
+  ✅ PASS: 15 unrelated histories, release older: the stop names its reason (обнаружен откат)
+  ✅ PASS: 16 unrelated histories, equal versions (not proof of a rollback): --yes applies the release
+  ✅ PASS: 16 unrelated histories, equal versions (not proof of a rollback): no stop message
+  ✅ PASS: 17a unrelated histories, no local manifest: --yes stops with exit 1
+  ✅ PASS: 17a unrelated histories, no local manifest: the target file is untouched
+  ✅ PASS: 17a unrelated histories, no local manifest: the stop names its reason (не удалось проверить историю релиза)
+  ✅ PASS: 17b unrelated histories, unreadable local version: --yes stops with exit 1
+  ✅ PASS: 17b unrelated histories, unreadable local version: the target file is untouched
+  ✅ PASS: 17b unrelated histories, unreadable local version: the stop names its reason (не удалось проверить историю релиза)
+  ✅ PASS: 17c unrelated histories, unreadable release version: --yes stops with exit 1
+  ✅ PASS: 17c unrelated histories, unreadable release version: the target file is untouched
+  ✅ PASS: 17c unrelated histories, unreadable release version: the stop names its reason (не удалось проверить историю релиза)
+  ✅ PASS: 18 shallow clone, release object present: --yes stops with exit 1
+  ✅ PASS: 18 shallow clone, release object present: the target file is untouched
+  ✅ PASS: 18 shallow clone, release object present: the stop names its reason (не удалось проверить историю релиза)
+  ✅ PASS: 19 git merge-base fails with 128: --yes stops with exit 1
+  ✅ PASS: 19 git merge-base fails with 128: the target file is untouched
+  ✅ PASS: 19 git merge-base fails with 128: the stop names its reason (не удалось проверить историю релиза)
+
+Result: 83 PASS, 0 FAIL (21 cases)

@@ -1,0 +1,30 @@
+--- Scenario A: modified hook, template already up to date ---
+  ❌ FAIL: A: first run exit 2
+  ❌ FAIL: A: expected the 'всё актуально' path
+  ❌ FAIL: A: progress line missing; hook lines: 
+  ❌ FAIL: A: hook bytes differ from upstream
+  ✅ PASS: A: executable bit kept on the hook
+  ❌ FAIL: A: expected exactly one copy of the pilot's version, found: none
+  ❌ FAIL: A: no warning about the replaced hook; hook lines: 
+  ❌ FAIL: A: final summary does not report the replaced hook
+  ❌ FAIL: A: second run exit 2
+  ✅ PASS: A: second run changes no file (sha256 + mode of the whole install tree)
+  ✅ PASS: A: second run does not mention the hook
+--- Scenario B: modified hook, upstream ships a new version ---
+  ❌ FAIL: B: first run exit 2
+  ❌ FAIL: B: progress line missing; hook lines: 
+  ❌ FAIL: B: hook bytes differ from upstream
+  ✅ PASS: B: executable bit kept on the hook
+  ❌ FAIL: B: expected exactly one copy of the pilot's version, found: none
+  ❌ FAIL: B: no warning about the replaced hook; hook lines: 
+  ❌ FAIL: B: final summary does not report the replaced hook
+  ❌ FAIL: B: second run exit 2
+  ✅ PASS: B: second run changes no file (sha256 + mode of the whole install tree)
+--- Scenario C: untouched hook, upstream ships a new version ---
+  ❌ FAIL: C: run exit 2
+  ❌ FAIL: C: hook not updated to the new upstream version
+  ✅ PASS: C: no copy kept for an untouched hook
+  ✅ PASS: C: no warning for an untouched hook
+
+  Итог: 7 PASS, 17 FAIL
+  (KEEP=1 оставит /tmp/rt-rc12.TMCaKc/suite/iwe-modified-hook-test.fYR7rN для разбора)

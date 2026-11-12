@@ -1,0 +1,225 @@
+=== case 1: modern layout, template copy without local edits ===
+  ❌ FAIL: 1 update.sh --yes exits 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 1 no .update-incomplete is left
+  ❌ FAIL: 1 the template copy is upstream's CLAUDE.md byte for byte (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 1 no merge base is written into the template repo
+  ❌ FAIL: 1 the run names the reason it took upstream as is (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 1 the workspace copy is merged: upstream change plus the pilot line, nothing else (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 1 the pilot line in section 9 survives
+  ❌ FAIL: 1 the workspace base advances to the substituted upstream copy (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+=== case 2: an install stuck by the refusal heals on the next run ===
+  ❌ FAIL: 2 stuck run: exit 49 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 2 stuck run: marker left behind (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 2 stuck run: the installed manifest is already the new one (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 2 stuck run: the template copy is still the old one
+  ✅ PASS: 2 stuck state: the workspace copy was not touched
+  ❌ FAIL: 2 next run: exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 2 next run: the marker is removed
+  ❌ FAIL: 2 next run: the run reports the removed marker (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 2 next run: the template copy is upstream's CLAUDE.md (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 2 next run: no merge base in the template repo
+  ❌ FAIL: 2 next run: the workspace copy is merged with the pilot line kept (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 2 rerun: exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 2 rerun: reports that nothing is left to update (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 2 rerun: no file in the workspace changes
+  ✅ PASS: 2 rerun: no marker
+=== case 3: edited template copy without a base in the template repo ===
+  ❌ FAIL: 3 exit 49 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 3 the edited template copy is untouched
+  ✅ PASS: 3 no base is invented in the template repo
+  ❌ FAIL: 3 the marker stays (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 3 the refusal is reported (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 3 upstream is not taken as is
+=== case 4: no merge base anywhere ===
+  ❌ FAIL: 4 exit 49 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 4 the template copy is untouched
+  ✅ PASS: 4 no base is invented in the template repo
+  ✅ PASS: 4 no base is invented in the workspace
+  ✅ PASS: 4 the workspace copy is untouched
+  ❌ FAIL: 4 the marker stays (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 4 the refusal is reported (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 4 upstream is not taken as is
+=== case 5: old layout, base in the template repo ===
+  ❌ FAIL: 5 exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 5 the template copy goes through the 3-way merge (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 5 the new shortcut is not used when a template base exists
+  ❌ FAIL: 5 the template copy is upstream's CLAUDE.md (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 5 the template base advances to upstream (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 5 the workspace copy is merged with the pilot line kept (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 5 no marker
+=== case 6: the pilot edited a line upstream also changed ===
+  ❌ FAIL: 6 exit 49 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 6 conflict markers in the workspace copy (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 6 the pilot's version of the line is kept inside the conflict
+  ❌ FAIL: 6 upstream's version of the line is offered inside the conflict (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 6 the workspace base does not advance past an unresolved conflict
+  ❌ FAIL: 6 the marker stays (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 6 no merge base in the template repo
+=== case 7: author_mode, unpromoted edit of the template copy ===
+  ❌ FAIL: 7 exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 7 the author guard reports the skip (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 7 the shortcut does not run
+  ✅ PASS: 7 the template copy with the author's edit is untouched
+  ✅ PASS: 7 no merge base in the template repo
+=== case 8: the refusal must not arm the shortcut for an edited template copy ===
+  ❌ FAIL: 8 run 1: exit 49 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 8 run 1: the edited template copy is untouched
+  ❌ FAIL: 8 run 1: the refusal says the copy looks edited by hand (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 8 run 2: exit 49 again (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 8 run 2: the edited template copy is still untouched
+  ✅ PASS: 8 run 2: the edit is still in the template copy
+  ❌ FAIL: 8 run 2: the edit is still in the workspace copy (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 8 run 2: upstream is not taken as is
+  ✅ PASS: 8 run 2: no merge base in the template repo
+=== case 9: the second update on a healed install ===
+  ❌ FAIL: 9 first update: exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 9 first update: the shortcut ran (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 9 the copy is no longer the committed one (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 9 second update: exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 9 second update: no marker
+  ❌ FAIL: 9 second update: the shortcut ran, not the refusal (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 9 second update: the template copy is upstream's v3 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 9 second update: the workspace copy is merged with the pilot line kept (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+=== case 10: a broken git must not empty the workspace copy ===
+  ❌ FAIL: 10 broken git: exit 49 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 10 broken git: the workspace copy is byte for byte what it was
+  ✅ PASS: 10 broken git: the workspace copy is not empty
+  ✅ PASS: 10 broken git: the workspace base does not advance
+  ❌ FAIL: 10 broken git: the failure is reported as a git failure (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 10 broken git: the summary points at git (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 10 broken git: the marker stays (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 10 git repaired: exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 10 git repaired: the marker is removed
+  ❌ FAIL: 10 git repaired: the workspace copy is merged with the pilot line kept (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+=== case 11: a broken git must not empty the template copy either (old layout) ===
+  ❌ FAIL: 11 broken git: exit 49 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 11 broken git: the template copy is untouched
+  ✅ PASS: 11 broken git: the template copy is not empty
+  ✅ PASS: 11 broken git: the template base does not advance
+  ❌ FAIL: 11 broken git: the failure is reported as a git failure (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+=== case 12: an empty template copy equal to an empty base is not unedited ===
+  ❌ FAIL: 12 exit 49 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 12 the shortcut does not run
+  ✅ PASS: 12 the workspace copy is untouched
+=== case 13: the heal run ends in a workspace conflict, the pilot resolves it, the next release changes CLAUDE.md again ===
+  ❌ FAIL: 13 run 1: exit 49 (the workspace conflict) (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 13 run 1: the shortcut ran (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 13 run 1: the template copy took upstream's v2 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 13 run 1: conflict markers in the workspace copy (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 13 run 1: the delivered copy is on record (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 13 run 2: the shortcut ran, not the refusal (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 13 run 2: no refusal
+  ❌ FAIL: 13 run 2: the template copy is upstream's v3 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 13 run 2: exit 49 (a real conflict to resolve, not a refusal) (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 13 run 2: conflict markers in the workspace copy (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 13 run 3: exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 13 run 3: no marker
+  ✅ PASS: 13 run 3: the workspace copy is the resolved one
+  ❌ FAIL: 13 run 3: the workspace base advanced to v3 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 13 run 4: exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 13 run 4: nothing changed
+=== case 14: the record never vouches for a template copy edited after update.sh wrote it ===
+  ❌ FAIL: 14 run 1: exit 49 (the workspace conflict) (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 14 run 1: the delivered copy is on record (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 14 run 2: exit 49 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 14 run 2: the refusal, not the shortcut (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 14 run 2: upstream is not taken as is
+  ✅ PASS: 14 run 2: the edited template copy is untouched
+  ✅ PASS: 14 run 2: the edit is still there
+=== case 15: a run that replaced the copy but stopped before the manifest was replaced, then the next release ===
+  ❌ FAIL: 15 run 1: exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 15 run 1: the shortcut ran (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 15 run 1: the delivered copy is on record (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 15 run 2: exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 15 run 2: the shortcut ran, not the refusal (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 15 run 2: the template copy is upstream's v3 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 15 run 2: the workspace copy is merged with the pilot line kept (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+=== case 16: a failed copy stops the run, it is not reported as an update ===
+  ✅ PASS: 16 the run does not report success
+  ✅ PASS: 16 no false 'updated' line
+  ✅ PASS: 16 the workspace copy is untouched
+=== case 17: the proof for the copy in place survives a copy that fails ===
+  ❌ FAIL: 17 run 1: exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 17 run 2: the failed copy stops the run
+  ✅ PASS: 17 run 2: the copy in place is still v2
+grep: /tmp/iwe-claude-md-workspace-base.XpUqqh/failedcopy/ws/.claude.md.delivered: No such file or directory
+  ❌ FAIL: 17 run 2: the record vouches for the copy in place (v2) (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+grep: /tmp/iwe-claude-md-workspace-base.XpUqqh/failedcopy/ws/.claude.md.delivered: No such file or directory
+  ❌ FAIL: 17 run 2: the record already holds the new file (v3) (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 17 run 3: exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 17 run 3: the shortcut ran, not the refusal (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 17 run 3: the template copy is upstream's v3 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 17 run 3: the workspace copy is merged with the pilot line kept (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+=== case 18: several failed deliveries in a row do not lose the proof for the copy in place ===
+  ❌ FAIL: 18 run 1: exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 18 failed delivery 'three': the run stops
+  ✅ PASS: 18 failed delivery 'four': the run stops
+  ✅ PASS: 18 failed delivery 'five': the run stops
+  ✅ PASS: 18 failed delivery 'six': the run stops
+  ✅ PASS: 18 the copy in place is still v2
+  ❌ FAIL: 18 retry: exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 18 retry: the shortcut ran, not the refusal (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 18 retry: the template copy is upstream's latest (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+=== case 19: a FIFO standing where the record belongs does not hang the update ===
+  ✅ PASS: 19 run 1: finished in time
+  ❌ FAIL: 19 run 1: exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 19 run 1: the shortcut ran (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 19 run 1: the template copy is upstream's v2 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 19 run 1: a regular file stands where the FIFO was (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 19 run 1: it holds the delivered copy (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+=== case 20: a symlink in place of the record vouches for nothing ===
+  ❌ FAIL: 20 exit 49 (the refusal) (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 20 the refusal line is printed (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 20 upstream is not taken as is
+  ✅ PASS: 20 the edited template copy is untouched
+  ✅ PASS: 20 the link was not rewritten
+=== case 21: a record far bigger than four hashes vouches for nothing ===
+  ❌ FAIL: 21 exit 49 (the refusal) (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 21 upstream is not taken as is
+  ✅ PASS: 21 the edited template copy is untouched
+=== case 22: a record with junk in it is ignored and rewritten clean ===
+  ❌ FAIL: 22 exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 22 the shortcut ran (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 22 every line of the record is a sha256 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 22 at most four lines
+  ❌ FAIL: 22 the junk text is gone (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 22 so is the earlier well-formed line (the whole record was ignored) (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 22 the delivered copy is on record (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+=== case 23: a directory standing at the record's path is left alone ===
+  ❌ FAIL: 23 exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 23 the shortcut ran (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 23 the template copy is upstream's v2 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 23 the directory is still there
+  ✅ PASS: 23 and nothing was moved into it
+=== case 24: hex lines of a wrong length are not carried, a well-formed foreign one is ===
+  ❌ FAIL: 24 exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 24 every line of the record is a sha256 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 24 the short line is gone (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 24 the well-formed earlier line is kept
+  ❌ FAIL: 24 the delivered copy is on record (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+=== case 25: a NUL byte in the record is not dropped on the way in ===
+  ❌ FAIL: 25 exit 49 (the refusal) (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 25 upstream is not taken as is
+  ✅ PASS: 25 the edited template copy is untouched
+=== case 26: a record saved with CRLF line ends is replaced by a clean one ===
+  ❌ FAIL: 26 exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 26 the shortcut ran (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 26 every line of the record is a sha256 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 26 the delivered copy is on record (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+=== case 27: a failing filter in the record check means the record is not usable ===
+  ❌ FAIL: 27 exit 49 (the refusal) (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 27 upstream is not taken as is
+  ✅ PASS: 27 the edited template copy is untouched
+=== case 28: an edit committed in the clone is replaced by the release, the commit stays ===
+  ❌ FAIL: 28 exit 0 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 28 the shortcut ran (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 28 the message tells the edit stays in the clone's history (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 28 the template copy is upstream's v2 (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 28 the pilot's commit is untouched: HEAD still holds the edit
+=== case 29: an untouched template copy with install-time paths does not trip the install-path guard (#1493) ===
+  ❌ FAIL: 29 exit 49 (the refusal, not the guard abort) (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ❌ FAIL: 29 the refusal is reported (log tail: [2] Сравнение файлов...   Скачиваю 1 файлов (до 8 параллельно)... /tmp/iwe-claude-md-workspace-base.XpUqqh/shim/mktemp: line 3: /usr/bin/mktemp: No such file or directory )
+  ✅ PASS: 29 the template copy is untouched
+  ✅ PASS: 29 the install-path guard does not stop the update
+
+Result: 74 PASS, 118 FAIL

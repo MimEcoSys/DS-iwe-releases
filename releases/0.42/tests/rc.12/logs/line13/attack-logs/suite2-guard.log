@@ -1,0 +1,2 @@
+boundary-guard: BLOCKED: service-manager call attempted inside fixture (record: /tmp/rt-rc12.TMCaKc/suite/.iwe-redteam-service-bin.9wXpXNU9/blocked-calls)
+guard rc=3

@@ -1,0 +1,11 @@
+== an edit in the template clone is saved before Step 5 ==
+  ok: edited navigation.md saved with the edit
+  ok: the line names the saved copy
+  ok: unedited protocol.md not copied
+  ok: returns 0
+== author_mode copies nothing ==
+  ok: author_mode: no backup, no line
+== the copy cannot be saved: the update does not start ==
+  ok: refuses with rc=1 and says why
+
+PASS

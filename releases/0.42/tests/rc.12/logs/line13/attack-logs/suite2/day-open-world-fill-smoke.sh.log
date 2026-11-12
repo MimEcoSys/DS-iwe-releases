@@ -1,0 +1,30 @@
+Testing scripts/day-open-llm-fill.py
+test_ambiguous_world_lens_preserves_original (__main__.WorldTests.test_ambiguous_world_lens_preserves_original) ... ok
+test_empty_answer_preserves_pending (__main__.WorldTests.test_empty_answer_preserves_pending) ... ok
+test_multiline_or_html_answer_preserves_pending (__main__.WorldTests.test_multiline_or_html_answer_preserves_pending) ... ok
+test_no_news_does_not_call_model (__main__.WorldTests.test_no_news_does_not_call_model) ... ok
+test_proxy_failure_preserves_every_byte (__main__.WorldTests.test_proxy_failure_preserves_every_byte) ... ok
+test_success_changes_only_lens (__main__.WorldTests.test_success_changes_only_lens) ... ok
+test_world_keeps_inline_and_html_code_examples (__main__.WorldTests.test_world_keeps_inline_and_html_code_examples) ... ok
+test_world_preserves_fenced_examples_and_neighbour_sections (__main__.WorldTests.test_world_preserves_fenced_examples_and_neighbour_sections) ... ok
+test_world_stays_whole_across_layout_and_nested_content (__main__.WorldTests.test_world_stays_whole_across_layout_and_nested_content) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.075s
+
+OK
+Testing seed/strategy/scripts/day-open-llm-fill.py
+test_ambiguous_world_lens_preserves_original (__main__.WorldTests.test_ambiguous_world_lens_preserves_original) ... ok
+test_empty_answer_preserves_pending (__main__.WorldTests.test_empty_answer_preserves_pending) ... ok
+test_multiline_or_html_answer_preserves_pending (__main__.WorldTests.test_multiline_or_html_answer_preserves_pending) ... ok
+test_no_news_does_not_call_model (__main__.WorldTests.test_no_news_does_not_call_model) ... ok
+test_proxy_failure_preserves_every_byte (__main__.WorldTests.test_proxy_failure_preserves_every_byte) ... ok
+test_success_changes_only_lens (__main__.WorldTests.test_success_changes_only_lens) ... ok
+test_world_keeps_inline_and_html_code_examples (__main__.WorldTests.test_world_keeps_inline_and_html_code_examples) ... ok
+test_world_preserves_fenced_examples_and_neighbour_sections (__main__.WorldTests.test_world_preserves_fenced_examples_and_neighbour_sections) ... ok
+test_world_stays_whole_across_layout_and_nested_content (__main__.WorldTests.test_world_stays_whole_across_layout_and_nested_content) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.077s
+
+OK

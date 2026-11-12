@@ -1,0 +1,10 @@
+=== 1. Fixed call shape: poisoned env must NOT redirect the write ===
+  ✅ PASS: hot-files.list written into the TARGET workspace B
+  ✅ PASS: poisoned workspace A untouched
+=== 2. Discriminating control: the OLD call shape (no explicit IWE_RUNTIME) leaks ===
+  ✅ PASS: control: inherited IWE_RUNTIME redirects the old shape (test can tell the difference)
+=== 3. setup.sh call sites carry the explicit pin (policy is wired, not just documented) ===
+  ✅ PASS: step 4f passes IWE_RUNTIME explicitly
+  ✅ PASS: role-install loop pins IWE_RUNTIME explicitly
+
+Result: 5 PASS, 0 FAIL

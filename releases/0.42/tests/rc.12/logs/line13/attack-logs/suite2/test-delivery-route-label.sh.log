@@ -1,0 +1,12 @@
+--- Scenario A: no curated change → no label required ---
+  ✅ PASS: A: unchanged tree passes without requiring a label
+--- Scenario B: curated array changed, no Delivery-Route trailer ---
+  ✅ PASS: B: missing Delivery-Route trailer is a deterministic, named failure
+--- Scenario C: same change, wrong Delivery-Route label ---
+  ✅ PASS: C: a wrong (but present) label still fails deterministically, naming the real category
+--- Scenario D: same change, correct Delivery-Route label ---
+  ✅ PASS: D: the correct label makes the same change pass deterministically
+
+============================================
+  Results: 4 PASS, 0 FAIL
+============================================

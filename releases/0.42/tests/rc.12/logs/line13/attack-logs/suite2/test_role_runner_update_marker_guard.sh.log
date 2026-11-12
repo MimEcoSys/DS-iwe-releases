@@ -1,0 +1,7 @@
+--- with marker: runner must skip before any mutation ---
+✅ PASS: strategist.sh defers without mutation while .update-incomplete is present
+--- without marker: guard must NOT short-circuit the runner ---
+✅ PASS: without the marker the guard does not short-circuit (rc=127)
+--- scheduler: blocked morning must remain retryable ---
+/tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/roles/synchronizer/scripts/scheduler.sh: строка 28: dirname: команда не найдена
+/tmp/rt-rc12.TMCaKc/suite/FMT-exocortex-template/roles/synchronizer/scripts/scheduler.sh: строка 29: dirname: команда не найдена

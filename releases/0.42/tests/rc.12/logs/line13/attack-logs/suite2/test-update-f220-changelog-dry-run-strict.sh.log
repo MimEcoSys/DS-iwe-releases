@@ -1,0 +1,60 @@
+=== CHANGELOG diff+disclaimer ===
+  ✅ PASS: unchanged: вывод пуст (нет ложного срабатывания)
+  ✅ PASS: changed: ожидаемый маркер найден
+  ✅ PASS: new-file: ожидаемый маркер найден
+  ✅ PASS: removed: ожидаемый маркер найден
+  ✅ PASS: absent-both: вывод пуст (нет ложного срабатывания)
+  ✅ PASS: highlight-optional-only: заголовок отсутствует, как и ожидалось
+  ✅ PASS: highlight-behavior-tagged: заголовок и содержимое найдены
+  ✅ PASS: highlight-untagged: заголовок и содержимое найдены
+  ✅ PASS: pure-removal: нет паразитной строки при отсутствии добавленных строк
+
+=== --dry-run-strict structural check ===
+--dry-run-strict: план доставки (1 новых + 1 обновляемых) структурно корректен. Это не гарантирует отсутствие регрессий в поведении после apply.
+  ✅ PASS: strict-all-present: exit=0 (ожидалось 0)
+
+🔴 --dry-run-strict: план доставки не прошёл структурную проверку:
+  - scripts/missing.sh: отсутствует в загруженном плане доставки
+
+ВЕРДИКТ: нельзя ставить
+Причина: план доставки не прошёл структурную проверку (список выше).
+  ✅ PASS: strict-missing-source: exit=3 (ожидалось 3)
+
+🔴 --dry-run-strict: план доставки не прошёл структурную проверку:
+  - ../etc/passwd: путь выходит за пределы установки
+
+ВЕРДИКТ: нельзя ставить
+Причина: план доставки не прошёл структурную проверку (список выше).
+  ✅ PASS: strict-path-traversal: exit=3 (ожидалось 3)
+
+🔴 --dry-run-strict: план доставки не прошёл структурную проверку:
+  - /etc/passwd: путь выходит за пределы установки
+
+ВЕРДИКТ: нельзя ставить
+Причина: план доставки не прошёл структурную проверку (список выше).
+  ✅ PASS: strict-absolute-path: exit=3 (ожидалось 3)
+
+=== --check: сводка «Главное в этом обновлении» до установки ===
+  ✅ PASS: preview-behavior: блок не меняет код выхода (rc=0)
+  ✅ PASS: preview-behavior: найдено 'важная правка'
+  ✅ PASS: preview-untagged: блок не меняет код выхода (rc=0)
+  ✅ PASS: preview-untagged: найдено 'пункт без метки'
+  ✅ PASS: preview-optional-only: блок не меняет код выхода (rc=0)
+  ✅ PASS: preview-optional-only: найдено 'только необязательные пункты'
+  ✅ PASS: preview-optional-only: нет 'Главное в этом обновлении ('
+  ✅ PASS: preview-no-new-lines: блок не меняет код выхода (rc=0)
+  ✅ PASS: preview-no-new-lines: найдено 'в CHANGELOG.md нового выпуска нет добавленных пунктов'
+  ✅ PASS: preview-no-new-lines: нет 'Главное в этом обновлении ('
+  ✅ PASS: preview-not-shipped: блок не меняет код выхода (rc=0)
+  ✅ PASS: preview-not-shipped: найдено 'не скачался'
+  ✅ PASS: preview-not-shipped: нет 'Главное в этом обновлении ('
+  ✅ PASS: preview-first-sentence: блок не меняет код выхода (rc=0)
+  ✅ PASS: preview-first-sentence: найдено 'Первое предложение.'
+  ✅ PASS: preview-first-sentence: нет 'подробностями реализации'
+  ✅ PASS: preview-long-sentence: блок не меняет код выхода (rc=0)
+  ✅ PASS: preview-long-sentence: найдено '…'
+  ✅ PASS: preview-first-install: блок не меняет код выхода (rc=0)
+  ✅ PASS: preview-first-install: найдено 'первая установка'
+  ✅ PASS: preview-first-install: нет 'закрыта дыра'
+
+=== Итог: 34 passed, 0 failed ===

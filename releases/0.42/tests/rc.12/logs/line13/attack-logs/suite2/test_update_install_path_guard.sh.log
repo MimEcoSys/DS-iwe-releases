@@ -1,0 +1,13 @@
+scripts/tests/test_update_install_path_guard.sh: строка 59: manifest_sha256_of: команда не найдена
+  install-path guard: existing.md -- no manifest hash match, falling back to verified target-line provenance
+scripts/tests/test_update_install_path_guard.sh: строка 59: manifest_sha256_of: команда не найдена
+  install-path guard: existing.md -- no manifest hash match, falling back to verified target-line provenance
+scripts/tests/test_update_install_path_guard.sh: строка 59: manifest_sha256_of: команда не найдена
+  install-path guard: remove-leak.md -- no manifest hash match, falling back to verified target-line provenance
+scripts/tests/test_update_install_path_guard.sh: строка 59: manifest_sha256_of: команда не найдена
+  install-path guard: update-manifest.json -- no manifest hash match, falling back to verified target-line provenance
+scripts/tests/test_update_install_path_guard.sh: строка 59: manifest_sha256_of: команда не найдена
+  install-path guard: update-manifest.json -- no manifest hash match, falling back to verified target-line provenance
+scripts/tests/test_update_install_path_guard.sh: строка 59: manifest_sha256_of: команда не найдена
+  install-path guard: bare-claude.md -- no manifest hash match, falling back to verified target-line provenance
+PASS: install-path guard accepts only exact lines from verified update targets

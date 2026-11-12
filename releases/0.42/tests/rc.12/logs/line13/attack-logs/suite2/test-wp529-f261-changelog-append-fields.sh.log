@@ -1,0 +1,10 @@
+1. [Unreleased] with handoff fields is left untouched
+  ✓ exit 0, promote scripts keep going
+  ✓ CHANGELOG.md is byte for byte the same
+  ✓ the refusal is named in the output
+2. [Unreleased] without the fields is still rebuilt from commits
+  ✓ new block carries the commit subject
+  ✓ old block was replaced
+3. dry-run on a section with the fields prints no block
+  ✓ dry-run reports the refusal instead of a replacement
+PASS

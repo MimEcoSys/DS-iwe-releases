@@ -1,0 +1,13 @@
+== files only the newer installed release delivered ==
+  ok: untouched 0.42-only file queued, nothing else
+  ok: edited 0.42-only file kept and named
+  ok: git-tracked file kept by the shared guard
+  ok: reason names the rollback
+  ok: protected user file not queued
+== updater after a confirmed rollback ==
+  ok: no rollback -> updater untouched
+  ok: rollback -> updater of 0.41.11 in place, executable
+  ok: replacement reported
+  ok: no staged file left
+
+PASS

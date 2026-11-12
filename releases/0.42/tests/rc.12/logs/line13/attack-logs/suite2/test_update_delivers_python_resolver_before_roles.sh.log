@@ -1,0 +1,13 @@
+  ✅ PASS: resolver present in update-manifest.json files[]
+  ✅ PASS: template resolver is executable
+  ✅ PASS: installed-hook resolver is executable
+  ✅ PASS: template and installed-hook resolvers are byte-identical
+  ✅ PASS: scripts/server-calendar.sh uses the shared resolver
+  ✅ PASS: scripts/server-calendar.sh has no local resolver copy
+  ✅ PASS: scripts/server-news.sh uses the shared resolver
+  ✅ PASS: scripts/server-news.sh has no local resolver copy
+  ✅ PASS: scripts/active-wp-sweep.sh uses the shared resolver
+  ✅ PASS: scripts/active-wp-sweep.sh has no local resolver copy
+  ✅ PASS: update.sh order: apply (5941) < build-runtime (7144) < roles reinstall (7363)
+---
+resolver delivery-order invariant: all checks passed

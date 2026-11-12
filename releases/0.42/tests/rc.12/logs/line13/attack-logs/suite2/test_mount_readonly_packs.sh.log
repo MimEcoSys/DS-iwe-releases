@@ -1,0 +1,8 @@
+PASS: mounted Pack uses the published commit
+PASS: Pack content is readable in the isolated mount
+scripts/tests/test_mount_readonly_packs.sh: строка 77: /tmp/rt-rc12.TMCaKc/suite/tmp.LVKF5hgXax/isolated/PACK-test/00-pack-manifest.md: Permission denied
+PASS: writing into the mounted Pack fails at the filesystem level
+PASS: creating a new file inside the mounted Pack fails (directory itself is read-only)
+PASS: the live Pack checkout is untouched
+PASS: cleanup_isolated_inbox_worktree() removes the read-only Pack clone
+PASS: cleanup_isolated_inbox_worktree() removes the now-empty isolated workspace

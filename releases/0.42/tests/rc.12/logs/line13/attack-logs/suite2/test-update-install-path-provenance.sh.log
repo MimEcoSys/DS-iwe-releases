@@ -1,0 +1,17 @@
+=== 1. Positive: new target file, canonical line, hash matches manifest ===
+  PASS: S1: update.sh exits 0
+  PASS: S1: exempt path logged
+  PASS: S1: no incomplete marker
+=== 2. Negative control: exempt correctly abstains when hash mismatches AND a genuine leak is present ===
+  PASS: S2: guard function returns non-zero on hash-mismatched leak
+  PASS: S2: guard fired with its message
+=== 3. Merged file (CLAUDE.md, 3-way merge): hash mismatch by design, history check active ===
+  PASS: S3: CLAUDE.md fell back to history check (hash mismatch, as expected for a merge)
+  PASS: S3: update.sh still exits 0 (merged CLAUDE.md has no leaked install-value line)
+  PASS: S3: 3-way merge preserved the local custom section
+=== 4. No-python environment: positive scenario must exempt identically via shell fallback ===
+  PASS: S4 control: python3/python genuinely unreachable on the constructed PATH
+  PASS: S4: update.sh exits 4 (EXIT_TAINTED, expected without python)
+  PASS: S4: shell-fallback exempt fired (no python)
+
+Result: 11 PASS, 0 FAIL

@@ -1,0 +1,35 @@
+============================================
+  Plan-executor wiring: update.sh Step 5 (WP-529 F245)
+============================================
+--- static barriers ---
+  ✅ PASS: S1: Step 5 accepts and executes the frozen plan through apply_op
+  ✅ PASS: S2: no direct cp from download staging into the clone in the apply loops
+  ✅ PASS: S3: update.sh sources the delivered executor (TMPDIR copy, then the installed one)
+  ✅ PASS: S4: the plan is frozen by a single rename into its final name
+  ✅ PASS: S5: repair_pass writes only outside the clone root (barrier)
+  ✅ PASS: S6: deprecated moves stay direct (agreed increment boundary)
+--- end-to-end: synthetic install ---
+--- run 1: update through the frozen plan ---
+  ❌ FAIL: E1: update.sh exited rc=2 (log: /tmp/iwe-plan-executor-test-547443/out-1.log)
+  ❌ FAIL: E2: hook not replaced with an executable v2
+  ❌ FAIL: E3: memory file not replaced
+  ❌ FAIL: E4: new script missing or not executable
+  ❌ FAIL: E5: setup/lib/apply-op.sh not delivered into the clone
+  ❌ FAIL: E6: expected '  + '/'  ~ ' lines missing in the output
+  ✅ PASS: E7: no executor temp files left next to targets
+  ✅ PASS: E8a: journal checker self-check (accepts a good log, catches done-done, descending id, unclosed intent)
+  ❌ FAIL: E8: journal hook log broken (ops=0): 
+--- run 2: idempotent retry ---
+setup/test-update-plan-executor.sh: строка 361: /tmp/iwe-plan-executor-test-547443/journal-fake.log: No such file or directory
+  ❌ FAIL: E9: retry changed the tree or failed (rc=2)
+setup/test-update-plan-executor.sh: строка 374: /tmp/iwe-plan-executor-test-547443/journal-fake.log: No such file or directory
+  ✅ PASS: E10: nothing to apply -> no new plan ops (journal untouched)
+--- run 3: hook refusal ---
+  ✅ PASS: E11: update.sh exits non-zero when the journal hook refuses (red on pre-wiring code)
+  ❌ FAIL: E12: a write happened although the hook refused
+  ✅ PASS: E13: no temp file appeared next to the target on hook refusal
+  ❌ FAIL: E14: hook refusal not reported (log: /tmp/iwe-plan-executor-test-547443/out-3.log)
+
+============================================
+  Results: 11 PASS, 10 FAIL
+============================================

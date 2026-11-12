@@ -1,0 +1,15 @@
+== main did not move since the cut ==
+  ok: main tip is the base of the branch -> exit 0
+== main moved after the cut ==
+  ok: main moved -> exit 1
+  ok: recovery names next-rc
+== main brought into the branch ==
+  ok: branch contains the new main tip -> exit 0
+== --head pins the checkout to the remote tip ==
+  ok: HEAD is the remote tip -> exit 0
+  ok: local HEAD ahead of the remote tip -> exit 1
+== bad input ==
+  ok: non-numeric version -> exit 1
+  ok: missing release branch -> exit 1
+
+PASS

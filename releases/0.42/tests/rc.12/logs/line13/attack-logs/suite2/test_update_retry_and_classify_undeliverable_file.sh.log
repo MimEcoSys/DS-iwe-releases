@@ -1,0 +1,4 @@
+  Скачиваю 2 файлов (последовательно)...
+  ⚠ gone.txt: curl код 22; curl: (22) The requested URL returned error: 404
+  ⚠ gone.txt: curl код 22; curl: (22) The requested URL returned error: 404
+  (1/2) deliverable.txt  (2/2) gone.txtPASS: an undeliverable file lands in SKIPPED_DOWNLOAD (not NEW/UPDATED/UNCHANGED), a deliverable one lands in NEW_FILES, no set -e abort

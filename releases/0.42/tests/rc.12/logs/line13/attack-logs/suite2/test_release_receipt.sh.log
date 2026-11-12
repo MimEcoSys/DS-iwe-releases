@@ -1,0 +1,42 @@
+  пропущено (не проверялось на этом запуске): integration-contract-macos
+PASS: publishable=true — edbe1e7e758b43ca19d4fd8a30ae66eff6388a84
+  пропущено (не проверялось на этом запуске): integration-contract-macos
+FAIL: publishable=false — edbe1e7e758b43ca19d4fd8a30ae66eff6388a84
+  Обязательные проверки с недопустимым результатом: validate:failure
+  пропущено (не проверялось на этом запуске): integration-contract-macos
+FAIL: publishable=false — edbe1e7e758b43ca19d4fd8a30ae66eff6388a84
+  Обязательные проверки с недопустимым результатом: issue-1030-windows:failure
+  пропущено (не проверялось на этом запуске): integration-contract-macos
+FAIL: publishable=false — edbe1e7e758b43ca19d4fd8a30ae66eff6388a84
+  Обязательные проверки с недопустимым результатом: issue-1030-windows:skipped
+  пропущено (не проверялось на этом запуске): integration-contract-macos
+FAIL: publishable=false — edbe1e7e758b43ca19d4fd8a30ae66eff6388a84
+  Обязательные проверки с недопустимым результатом: guarded-rm-windows:failure
+  пропущено (не проверялось на этом запуске): integration-contract-macos
+FAIL: publishable=false — edbe1e7e758b43ca19d4fd8a30ae66eff6388a84
+  Обязательные проверки с недопустимым результатом: guarded-rm-windows:skipped
+  пропущено (не проверялось на этом запуске): integration-contract-macos
+FAIL: publishable=false — edbe1e7e758b43ca19d4fd8a30ae66eff6388a84
+  Обязательные проверки с недопустимым результатом: windows-session-guard:failure
+  пропущено (не проверялось на этом запуске): integration-contract-macos
+FAIL: publishable=false — edbe1e7e758b43ca19d4fd8a30ae66eff6388a84
+  Обязательные проверки с недопустимым результатом: windows-session-guard:skipped
+  пропущено (не проверялось на этом запуске): integration-contract-macos
+FAIL: publishable=false — edbe1e7e758b43ca19d4fd8a30ae66eff6388a84
+  Обязательные проверки с недопустимым результатом: upgrade-test:cancelled
+FAIL: publishable=false — edbe1e7e758b43ca19d4fd8a30ae66eff6388a84
+  Обязательные проверки с недопустимым результатом: release-sync:unknown integration-contract-ubuntu:unknown integration-contract-macos:unknown issue-1030-windows:unknown shellcheck:unknown platform-compat:unknown validate:unknown guarded-rm-windows:unknown upgrade-test:unknown guide-kit-drift:unknown windows-session-guard:unknown
+  пропущено (не проверялось на этом запуске): integration-contract-macos
+FAIL: publishable=false — edbe1e7e758b43ca19d4fd8a30ae66eff6388a84
+  Обязательные проверки с недопустимым результатом: validate:unknown
+  пропущено (не проверялось на этом запуске): integration-contract-macos
+FAIL: publishable=false — edbe1e7e758b43ca19d4fd8a30ae66eff6388a84
+  Обязательные проверки с недопустимым результатом: windows-session-guard:failure
+  пропущено (не проверялось на этом запуске): integration-contract-macos
+FAIL: publishable=false — edbe1e7e758b43ca19d4fd8a30ae66eff6388a84
+  Обязательные проверки с недопустимым результатом: windows-session-guard:skipped
+  пропущено (не проверялось на этом запуске): integration-contract-macos
+FAIL: publishable=false — edbe1e7e758b43ca19d4fd8a30ae66eff6388a84
+  Обязательные проверки с недопустимым результатом: windows-session-guard:unknown
+PASS: release receipt fails closed for Windows failure, skipped and unknown results
+PASS: macOS skip is reported as «пропущено» and blocks a release run

@@ -1,0 +1,2 @@
+scripts/tests/test-update-extractor-feeders.sh: строка 52: uname: команда не найдена
+PASS: update.sh backfills the Extractor feeders (install, opt-out, no-CLI, missing script, failure, foreign workspace)

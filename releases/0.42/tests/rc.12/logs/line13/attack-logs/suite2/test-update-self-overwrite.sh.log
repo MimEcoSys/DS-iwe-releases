@@ -1,0 +1,21 @@
+  ✅ PASS: resolve_delivery_ref runs before the Step 0 self-update (no main/release ping-pong)
+warning: remote HEAD refers to nonexistent ref, unable to checkout
+error: src refspec main ничему не соответствует
+error: не удалось отправить некоторые ссылки в «/tmp/iwe-self-overwrite-test-550576/remote.git»
+--- full run: manifest binds a different update.sh than the running one ---
+  ✅ PASS: update.sh finished cleanly (rc=0) while replacing itself
+  ✅ PASS: no mid-flight corruption in the output
+  ✅ PASS: no stale .update-incomplete marker
+  ✅ PASS: running update.sh untouched by Step 5 (self-update owns delivery)
+  ✅ PASS: skip is explicit in the output, not silent
+  ✅ PASS: no install-path leak into update.sh (substitution pass skips it)
+  ✅ PASS: no sandbox paths baked into update.sh's own sed templates
+--- Scenario 2: Step 0 self-update (inode + re-exec survival) ---
+  ✅ PASS: S2: self-updated run finishes cleanly (rc=0)
+  ✅ PASS: S2: Step 0 actually replaced and re-exec'ed the updater
+  ✅ PASS: S2: inode changed — staged rename semantics (a cp would keep it: #505 class)
+  ✅ PASS: S2: final update.sh is the manifest-bound (marked) version
+  ✅ PASS: S2: no mid-flight corruption
+  ✅ PASS: S2: no stale incomplete marker
+
+Result: 14 PASS, 0 FAIL

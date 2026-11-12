@@ -1,0 +1,6 @@
+FAIL: output does not validate against schema:
+Traceback (most recent call last):
+  File "<string>", line 3, in <module>
+ModuleNotFoundError: No module named 'jsonschema'
+
+attestation-build-statement.sh: 10 passed, 1 failed

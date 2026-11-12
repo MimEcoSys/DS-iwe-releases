@@ -1,0 +1,5 @@
+  ok: check-manifest-coverage.py full run
+  ok: check-manifest-coverage.py no-arg usage (exit 2, not a crash)
+  ok: wp-list.py --list-cards on empty temp workspace
+
+PASS: cp1251 smoke — no Unicode*Error in the covered scripts

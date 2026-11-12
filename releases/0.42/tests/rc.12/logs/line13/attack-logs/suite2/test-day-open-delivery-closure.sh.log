@@ -1,0 +1,139 @@
+=== 1. Pipeline references resolve inside the delivery root ===
+  ✅ PASS: delivered: scripts/day-open-bottleneck-patch.sh
+  ✅ PASS: executable bit: scripts/day-open-bottleneck-patch.sh
+  ✅ PASS: shebang: scripts/day-open-bottleneck-patch.sh
+  ✅ PASS: seed mirror: scripts/day-open-bottleneck-patch.sh
+  ✅ PASS: delivered: scripts/day-open-budget-patch.py
+  ✅ PASS: seed mirror: scripts/day-open-budget-patch.py
+  ✅ PASS: delivered: scripts/day-open-checks-runner.sh
+  ✅ PASS: executable bit: scripts/day-open-checks-runner.sh
+  ✅ PASS: shebang: scripts/day-open-checks-runner.sh
+  ✅ PASS: seed mirror: scripts/day-open-checks-runner.sh
+  ✅ PASS: delivered: scripts/day-open-close-error-patch.py
+  ✅ PASS: seed mirror: scripts/day-open-close-error-patch.py
+  ✅ PASS: delivered: scripts/day-open-hooks-runner.sh
+  ✅ PASS: executable bit: scripts/day-open-hooks-runner.sh
+  ✅ PASS: shebang: scripts/day-open-hooks-runner.sh
+  ✅ PASS: seed mirror: scripts/day-open-hooks-runner.sh
+  ✅ PASS: delivered: scripts/day-open-ledger-render-patch.py
+  ✅ PASS: seed mirror: scripts/day-open-ledger-render-patch.py
+  ✅ PASS: delivered: scripts/day-open-llm-fill.py
+  ✅ PASS: seed mirror: scripts/day-open-llm-fill.py
+  ✅ PASS: delivered: scripts/day-open-multiplier-backfill-patch.py
+  ✅ PASS: seed mirror: scripts/day-open-multiplier-backfill-patch.py
+  ✅ PASS: delivered: scripts/day-open-priorities-patch.py
+  ✅ PASS: seed mirror: scripts/day-open-priorities-patch.py
+  ✅ PASS: delivered: scripts/day-open-sync-banner-patch.py
+  ✅ PASS: seed mirror: scripts/day-open-sync-banner-patch.py
+  ✅ PASS: delivered: scripts/day-open-version-check-patch.py
+  ✅ PASS: seed mirror: scripts/day-open-version-check-patch.py
+  ✅ PASS: delivered: scripts/install-hooks.sh
+  ✅ PASS: executable bit: scripts/install-hooks.sh
+  ✅ PASS: shebang: scripts/install-hooks.sh
+  ✅ PASS: seed mirror: scripts/install-hooks.sh
+  ✅ PASS: delivered: scripts/ledger-append.sh
+  ✅ PASS: executable bit: scripts/ledger-append.sh
+  ✅ PASS: shebang: scripts/ledger-append.sh
+  ✅ PASS: seed mirror: scripts/ledger-append.sh
+  ✅ PASS: delivered: scripts/lib/common.sh
+  ✅ PASS: executable bit: scripts/lib/common.sh
+  ✅ PASS: shebang: scripts/lib/common.sh
+  ✅ PASS: seed mirror: scripts/lib/common.sh
+  ✅ PASS: delivered: scripts/lib/ledger-path.sh
+  ✅ PASS: executable bit: scripts/lib/ledger-path.sh
+  ✅ PASS: shebang: scripts/lib/ledger-path.sh
+  ✅ PASS: seed mirror: scripts/lib/ledger-path.sh
+  ✅ PASS: delivered: scripts/lib/telegram.sh
+  ✅ PASS: executable bit: scripts/lib/telegram.sh
+  ✅ PASS: shebang: scripts/lib/telegram.sh
+  ✅ PASS: seed mirror: scripts/lib/telegram.sh
+  ✅ PASS: delivered: scripts/llm-proxy-launcher.sh
+  ✅ PASS: executable bit: scripts/llm-proxy-launcher.sh
+  ✅ PASS: shebang: scripts/llm-proxy-launcher.sh
+  ✅ PASS: seed mirror: scripts/llm-proxy-launcher.sh
+  ✅ PASS: delivered: scripts/update-derived-snapshot.py
+  ✅ PASS: seed mirror: scripts/update-derived-snapshot.py
+=== 2. Transitive closure (imports / sources) ===
+  ✅ PASS: shell source satisfied: scripts/day-open-checks-runner.sh -> lib/day-open-hooks.sh
+  ✅ PASS: seed mirror: lib/day-open-hooks.sh
+  ✅ PASS: shell source satisfied: scripts/day-open-hooks-runner.sh -> lib/day-open-hooks.sh
+  ✅ PASS: seed mirror: lib/day-open-hooks.sh
+  ✅ PASS: local import satisfied: scripts/day-open-ledger-render-patch.py -> lib/ledger_path.py
+  ✅ PASS: seed mirror: lib/ledger_path.py
+  ✅ PASS: local import satisfied: scripts/day-open-llm-fill.py -> lib/wp_inbox.py
+  ✅ PASS: seed mirror: lib/wp_inbox.py
+  ✅ PASS: shell source satisfied: scripts/lib/telegram.sh -> lib/telegram.sh
+  ✅ PASS: seed mirror: lib/telegram.sh
+=== 2b. Resolver delivery (BASH_SOURCE-relative dependency) ===
+  ✅ PASS: delivered + executable: scripts/lib/find-python3.sh
+  ✅ PASS: seed mirror: lib/find-python3.sh
+  ✅ PASS: manifest exactly once: scripts/lib/find-python3.sh
+=== 2c. Default day-open.checks.md delivery ===
+  ✅ PASS: delivered: extensions/day-open.checks.md
+  ✅ PASS: default checks file carries executable bash block(s)
+  ✅ PASS: manifest exactly once: extensions/day-open.checks.md
+=== 2d. Derived snapshot path contract ===
+  ✅ PASS: template source uses the configured IWE_ROOT/governance path
+  ✅ PASS: installed updater derives custom governance from its physical location
+  ✅ PASS: no shell-literal governance path: scripts/update-derived-snapshot.py
+  ✅ PASS: no shell-literal governance path: seed/strategy/scripts/update-derived-snapshot.py
+  ✅ PASS: root and seed snapshot implementations are identical
+=== 2e. Governance identity reaches the first child process ===
+  ✅ PASS: minimal environment passes custom governance identity to snapshot updater
+  ✅ PASS: physical pipeline location overrides stale inherited workspace identity
+=== 2f. Content-cleanup archive boundaries ===
+  ✅ PASS: render_content_cleanup() extracted from the runtime script
+  ✅ PASS: content cleanup stops at the first ## Архив boundary
+  ✅ PASS: content cleanup stops at the first ## Разобрано boundary
+=== 2g. Missing priorities on a fresh install ===
+  ✅ PASS: missing priorities.yaml records a fallback finding without a traceback
+=== 3. Foreign-cwd smoke (clean PYTHONPATH) ===
+  ✅ PASS: runs from foreign cwd: scripts/day-open-budget-patch.py --help
+  ✅ PASS: runs from foreign cwd: scripts/day-open-close-error-patch.py --help
+  ✅ PASS: runs from foreign cwd: scripts/day-open-ledger-render-patch.py --help
+  ✅ PASS: runs from foreign cwd: scripts/day-open-llm-fill.py --help
+  ✅ PASS: runs from foreign cwd: scripts/day-open-multiplier-backfill-patch.py --help
+  ✅ PASS: runs from foreign cwd: scripts/day-open-priorities-patch.py --help
+  ✅ PASS: runs from foreign cwd: scripts/day-open-sync-banner-patch.py --help
+  ✅ PASS: runs from foreign cwd: scripts/day-open-version-check-patch.py --help
+=== 4. update-manifest.json coverage ===
+  ✅ PASS: manifest exactly once: scripts/day-open-bottleneck-patch.sh
+  ✅ PASS: manifest exactly once: scripts/day-open-budget-patch.py
+  ✅ PASS: manifest exactly once: scripts/day-open-checks-runner.sh
+  ✅ PASS: manifest exactly once: scripts/day-open-close-error-patch.py
+  ✅ PASS: manifest exactly once: scripts/day-open-hooks-runner.sh
+  ✅ PASS: manifest exactly once: scripts/day-open-ledger-render-patch.py
+  ✅ PASS: manifest exactly once: scripts/day-open-llm-fill.py
+  ✅ PASS: manifest exactly once: scripts/day-open-multiplier-backfill-patch.py
+  ✅ PASS: manifest exactly once: scripts/day-open-priorities-patch.py
+  ✅ PASS: manifest exactly once: scripts/day-open-sync-banner-patch.py
+  ✅ PASS: manifest exactly once: scripts/day-open-version-check-patch.py
+  ✅ PASS: manifest exactly once: scripts/install-hooks.sh
+  ✅ PASS: manifest exactly once: scripts/ledger-append.sh
+  ✅ PASS: manifest exactly once: scripts/lib/common.sh
+  ✅ PASS: manifest exactly once: scripts/lib/ledger-path.sh
+  ✅ PASS: manifest exactly once: scripts/lib/telegram.sh
+  ✅ PASS: manifest exactly once: scripts/llm-proxy-launcher.sh
+  ✅ PASS: manifest exactly once: scripts/update-derived-snapshot.py
+=== 5. Extension graph (WP-529 F11) ===
+  ✅ PASS: pipeline dispatches the 'before' hook
+  ✅ PASS: pipeline dispatches the 'after' hook
+  ✅ PASS: no hook files: silent no-op
+  ✅ PASS: passing before-hook: block executed, exit 0
+  ✅ PASS: failing after-hook: runner exits nonzero
+  ✅ PASS: failing command followed by a successful one is still caught (errexit-in-condition footgun)
+  ✅ PASS: day-open.beforeevil.md does not false-match the 'before' hook
+  ✅ PASS: split hook files run in sorted (a-first, b-second) order
+  ✅ PASS: hook file with zero bash blocks fails loudly (fencing-typo trap)
+  ✅ PASS: zero-block sibling file is not masked by a valid one
+  ✅ PASS: missing extensions/ directory fails, not treated as 'no hooks'
+=== 5j. Template checks plus user checks ===
+  ✅ PASS: bad DayPlan is blocked by template checks with no user file
+  ✅ PASS: bad DayPlan stays blocked and the user split check runs
+  ✅ PASS: valid DayPlan passes three template checks plus the user split check
+  ✅ PASS: shared template/workspace directory runs each check only once
+  ✅ PASS: template checks block a DayPlan damaged by a user check
+  ✅ PASS: agent-only user file cannot replace the template checks
+=== 6. $IWE-root references (out of contract until ArchGate Q2) ===
+
+Result: 124 PASS, 0 FAIL

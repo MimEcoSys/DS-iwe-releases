@@ -1,0 +1,19 @@
+--- Fresh candidate: max tuple wins (v0.43.0-rc.1 over v0.42.0-rc.10), SHA pinned ---
+  ✅ PASS: newest rc tag resolved and pinned to commit SHA
+  ✅ PASS: fresh candidate produces no stale warning
+--- Stale candidate: release v0.43.0 already published ---
+  ✅ PASS: stale candidate warns and points at the release channel
+--- No candidates: fail-closed, no fallback ---
+  ✅ PASS: empty candidate list exits 2 (network/fail-closed)
+  ✅ PASS: empty candidate list names the problem
+  ✅ PASS: empty candidate list delivers nothing
+--- Malformed refs JSON: fail-closed ---
+  ✅ PASS: malformed refs JSON fails closed
+--- Commit lookup fails: fail-closed, no tag-name fallback ---
+  ✅ PASS: failed commit lookup refuses the update
+  ✅ PASS: failed commit lookup delivers nothing
+--- More than 100 tags: the second page is read (RT5-5 of the rc.5 red team) ---
+  ✅ PASS: candidate on the second page of tags found
+
+Result: 10 PASS, 0 FAIL
+rc=0

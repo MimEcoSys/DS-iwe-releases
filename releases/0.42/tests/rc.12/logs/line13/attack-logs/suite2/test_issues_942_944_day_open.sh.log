@@ -1,0 +1,40 @@
+== #944 read_morning_priorities
+  ok: no file → silent
+  ok: today's date → list shown
+  ok: today's date → no warning
+  ok: tomorrow's date (Day Close convention) → list shown
+  ok: 3 days old (weekend) → still shown
+  ok: 4 days old → warning
+  ok: 4 days old → list NOT carried into the DayPlan
+  ok: 9 days old (the reported case) → no stale tasks
+  ok: PRIORITIES_STALE_DAYS=1 makes 2 days stale
+  ok: no last_updated → its own message
+  ok: no last_updated → no list
+  ok: unreadable date → its own message
+  ok: unreadable date → no list
+  ok: date in the future → its own message
+  ok: date in the future → no list
+  ok: fresh empty list → silent (fallback to yesterday's carry-over)
+  ok: DST: 2026-03-28 → 2026-04-01 is 4 days in Europe/Berlin
+  ok: DST: 2026-03-07 → 2026-03-11 is 4 days in America/New_York
+== #942 calendar_source
+  ok: no params file → connector
+  ok: key missing → connector (existing installs keep working)
+  ok: calendar_source: connector
+  ok: calendar_source: script
+  ok: calendar_source: none
+  ok: quoted value with a comment → none
+  ok: quoted none with trailing spaces, no comment → none
+  ok: single-quoted script with trailing spaces → script
+  ok: unknown value → connector
+  ok: unknown value → warning on stderr
+  ok: preflight: none → calendar disabled
+  ok: preflight: none → server-calendar.sh not called
+  ok: preflight: connector → script runs, status ok
+  ok: scaffold: disabled → no Календарь section
+  ok: scaffold: script mode names server-calendar.sh
+  ok: scaffold: script mode does not send the agent to the connector
+  ok: scaffold: connector mode still names the connector
+  ok: scaffold: ok → Календарь section present
+
+PASS: issues #942/#944

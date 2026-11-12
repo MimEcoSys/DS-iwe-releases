@@ -1,0 +1,6 @@
+/tmp/rt-rc12.TMCaKc/suite/tmp.7PtTXN6ZGV/no-resolver/.claude/hooks/protocol-artifact-validate.sh: строка 130: /tmp/rt-rc12.TMCaKc/suite/tmp.7PtTXN6ZGV/no-resolver/.claude/hooks/../lib/i18n.sh: No such file or directory
+PASS: резолвер отсутствует → хук блокирует коммит (fail-closed, не тихий пропуск)
+PASS: причина блокировки названа явно
+/tmp/rt-rc12.TMCaKc/suite/tmp.7PtTXN6ZGV/with-resolver/.claude/hooks/protocol-artifact-validate.sh: строка 130: /tmp/rt-rc12.TMCaKc/suite/tmp.7PtTXN6ZGV/with-resolver/.claude/hooks/../lib/i18n.sh: No such file or directory
+PASS: резолвер присутствует, mandatory сконфигурирован, DayPlan без упоминания mandatory → блок с содержательной причиной
+PASS=3 FAIL=0

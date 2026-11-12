@@ -1,0 +1,26 @@
+--- Scenario A: build-runtime fails during a real update ---
+  ❌ FAIL: A: expected exit 3, got 2
+  ❌ FAIL: A: marker removed despite the runtime failure
+  ❌ FAIL: A: no explicit build-runtime failure message
+  ❌ FAIL: A: build-runtime never invoked
+--- Scenario A2: --check must not clear the marker left by the failed run ---
+  ❌ FAIL: A2: --check exited 2
+  ❌ FAIL: A2: --check cleared the marker — contract disarmed by a read-only preview
+--- Scenario B: rerun after fixing the cause (TOTAL_CHANGES=0 recovery) ---
+  ❌ FAIL: B: expected exit 0, got 2 — no issue-#459-style convergence
+  ✅ PASS: B: marker removed after successful recovery
+  ❌ FAIL: B: recovery path still skips build-runtime
+--- Scenario C: build-runtime fails with NO pre-existing marker (TOTAL_CHANGES=0 from the start) ---
+  ❌ FAIL: C: expected exit 3, got 2
+  ❌ FAIL: C: no marker at all — the TOTAL_CHANGES=0 branch never opens a transaction
+--- Scenario D: post-backfill failure then zero-diff recovery on configured governance ---
+  ❌ FAIL: D1: expected symlink refusal/exit 3, got rc=2
+  ❌ FAIL: D1: post-backfill failure cleared the transaction marker
+  ✅ PASS: D1: external symlink target bytes remain untouched
+  ❌ FAIL: D2: fixed zero-diff rerun exited 2
+  ✅ PASS: D2: marker removed only after all post-backfills succeeded
+  ❌ FAIL: D2: one or more installed governance backfills are stale or missing
+  ✅ PASS: D2: config-only governance resolution created no default DS-strategy
+  ❌ FAIL: D2: old caller routed updater to '/tmp/rt-rc12.TMCaKc/suite/IWE/DS-strategy/inbox/WP-425/cache/derived_snapshot.json' or was overwritten
+  ❌ FAIL: D2: installed route-task rejects generated catalog: ERROR: executor-catalog.yaml not found: /tmp/iwe-wp529-brt-test-479246/repo/custom-governance/scripts/executor-catalog.yaml
+shasum: /tmp/iwe-wp529-brt-test-479246/repo/custom-governance/scripts/executor-catalog.yaml: No such file or directory

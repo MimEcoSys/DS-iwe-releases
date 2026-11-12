@@ -1,0 +1,103 @@
+warning: remote HEAD refers to nonexistent ref, unable to checkout
+error: src refspec main ничему не соответствует
+error: не удалось отправить некоторые ссылки в «/tmp/rt-rc12.TMCaKc/suite/iwe-step0-rename-test.Rg8F6n/remote.git»
+--- --check: a newer update.sh is reported once, as a warning ---
+  ✅ PASS: --check reports that a new update.sh is available
+  ✅ PASS: --check does not claim update.sh is up to date
+  ✅ PASS: --check left the local update.sh byte-identical
+--- --check: a failed update.sh download is not reported as up to date ---
+  ✅ PASS: a failed Step 0 download is reported as a failed check
+  ✅ PASS: the report carries curl's exit code and its last stderr line
+  ✅ PASS: a failed download is not reported as up to date
+  ✅ PASS: a failed download left the local update.sh untouched
+--- --check: a empty update.sh answer is a failed check, not a new version ---
+  ✅ PASS: --check reports a empty answer as a failed check (пустой ответ)
+  ✅ PASS: --check does not announce a new version for a empty answer
+  ✅ PASS: a empty answer is not reported as up to date
+  ✅ PASS: --check left the local update.sh untouched after a empty answer
+--- normal run: a empty update.sh answer must not replace update.sh ---
+  ✅ PASS: the local update.sh is neither replaced nor emptied by a empty answer
+  ✅ PASS: the run says that the update.sh check failed (пустой ответ)
+  ✅ PASS: no re-exec after a empty answer
+  ✅ PASS: the run goes on with the update after the failed self-check (empty answer)
+--- --check: a html update.sh answer is a failed check, not a new version ---
+  ✅ PASS: --check reports a html answer as a failed check (ответ не похож на скрипт)
+  ✅ PASS: --check does not announce a new version for a html answer
+  ✅ PASS: a html answer is not reported as up to date
+  ✅ PASS: --check left the local update.sh untouched after a html answer
+--- normal run: a html update.sh answer must not replace update.sh ---
+  ✅ PASS: the local update.sh is neither replaced nor emptied by a html answer
+  ✅ PASS: the run says that the update.sh check failed (ответ не похож на скрипт)
+  ✅ PASS: no re-exec after a html answer
+  ✅ PASS: the run goes on with the update after the failed self-check (html answer)
+--- --check: a truncated update.sh answer is a failed check, not a new version ---
+  ✅ PASS: --check reports a truncated answer as a failed check (ответ не похож на рабочий скрипт)
+  ✅ PASS: --check does not announce a new version for a truncated answer
+  ✅ PASS: a truncated answer is not reported as up to date
+  ✅ PASS: --check left the local update.sh untouched after a truncated answer
+--- normal run: a truncated update.sh answer must not replace update.sh ---
+  ✅ PASS: the local update.sh is neither replaced nor emptied by a truncated answer
+  ✅ PASS: the run says that the update.sh check failed (ответ не похож на рабочий скрипт)
+  ✅ PASS: no re-exec after a truncated answer
+  ✅ PASS: the run goes on with the update after the failed self-check (truncated answer)
+--- --check: a stub update.sh answer is a failed check, not a new version ---
+  ✅ PASS: --check reports a stub answer as a failed check (ответ неполон)
+  ✅ PASS: --check does not announce a new version for a stub answer
+  ✅ PASS: a stub answer is not reported as up to date
+  ✅ PASS: --check left the local update.sh untouched after a stub answer
+--- normal run: a stub update.sh answer must not replace update.sh ---
+  ✅ PASS: the local update.sh is neither replaced nor emptied by a stub answer
+  ✅ PASS: the run says that the update.sh check failed (ответ неполон)
+  ✅ PASS: no re-exec after a stub answer
+  ✅ PASS: the run goes on with the update after the failed self-check (stub answer)
+--- --check: a midmarker update.sh answer is a failed check, not a new version ---
+  ✅ PASS: --check reports a midmarker answer as a failed check (ответ неполон)
+  ✅ PASS: --check does not announce a new version for a midmarker answer
+  ✅ PASS: a midmarker answer is not reported as up to date
+  ✅ PASS: --check left the local update.sh untouched after a midmarker answer
+--- normal run: a midmarker update.sh answer must not replace update.sh ---
+  ✅ PASS: the local update.sh is neither replaced nor emptied by a midmarker answer
+  ✅ PASS: the run says that the update.sh check failed (ответ неполон)
+  ✅ PASS: no re-exec after a midmarker answer
+  ✅ PASS: the run goes on with the update after the failed self-check (midmarker answer)
+--- --check: a tiny update.sh answer is a failed check, not a new version ---
+  ✅ PASS: --check reports a tiny answer as a failed check (ответ неполон)
+  ✅ PASS: --check does not announce a new version for a tiny answer
+  ✅ PASS: a tiny answer is not reported as up to date
+  ✅ PASS: --check left the local update.sh untouched after a tiny answer
+--- normal run: a tiny update.sh answer must not replace update.sh ---
+  ✅ PASS: the local update.sh is neither replaced nor emptied by a tiny answer
+  ✅ PASS: the run says that the update.sh check failed (ответ неполон)
+  ✅ PASS: no re-exec after a tiny answer
+  ✅ PASS: the run goes on with the update after the failed self-check (tiny answer)
+--- --check: a nomarker update.sh answer is a failed check, not a new version ---
+  ✅ PASS: --check reports a nomarker answer as a failed check (ответ неполон)
+  ✅ PASS: --check does not announce a new version for a nomarker answer
+  ✅ PASS: a nomarker answer is not reported as up to date
+  ✅ PASS: --check left the local update.sh untouched after a nomarker answer
+--- normal run: a nomarker update.sh answer must not replace update.sh ---
+  ✅ PASS: the local update.sh is neither replaced nor emptied by a nomarker answer
+  ✅ PASS: the run says that the update.sh check failed (ответ неполон)
+  ✅ PASS: no re-exec after a nomarker answer
+  ✅ PASS: the run goes on with the update after the failed self-check (nomarker answer)
+--- control: an old release without the integrity tag is still accepted ---
+  ✅ PASS: an update.sh without tag and marker (older release) is accepted
+--- control: a manifest fetch failure does not affect Step 0 ---
+  ✅ PASS: a whole new update.sh is accepted while the manifest cannot be fetched
+--- control: a script with an env shebang is still accepted as a newer update.sh ---
+  ✅ PASS: a script that starts with #!/usr/bin/env bash is reported as a newer update.sh
+  ✅ PASS: a script with an env shebang is not refused
+--- full run: Step 0 self-update replaces the running script ---
+  ✅ PASS: update.sh finished cleanly (rc=0) through the Step 0 replace+re-exec
+  ✅ PASS: running update.sh was replaced by the upstream copy
+  ✅ PASS: re-exec happened after the replacement
+  ✅ PASS: no mid-flight corruption in the output
+  ✅ PASS: no stale .update-incomplete marker
+  ✅ PASS: no staged tmp files left behind
+  ✅ PASS: no temp directory left behind by the Step 0 re-exec
+--- update.sh changes again right after the re-exec: stop, no loop ---
+  ✅ PASS: second change after the re-exec stops the run (exit 2)
+  ✅ PASS: update.sh fetched exactly twice (one replacement, one re-check)
+  ✅ PASS: the first replacement stays; the second one was not applied
+
+Result: 77 PASS, 0 FAIL

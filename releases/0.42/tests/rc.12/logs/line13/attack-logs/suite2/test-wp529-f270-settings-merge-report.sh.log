@@ -1,0 +1,7 @@
+== merge adds nothing ==
+  ok: unchanged file reported as unchanged
+  ok: no «обновлён» for an unchanged file
+== merge changes the file ==
+  ok: changed file reported as updated
+
+PASS

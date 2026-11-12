@@ -1,0 +1,14 @@
+== Невалидный DayPlan: связка add+commit обязана блокироваться ==
+  ok   add+commit одной командой, путь в кавычках -> BLOCK
+  ok   add+commit, абсолютный путь -> BLOCK
+  ok   git add . && commit (массовый стейджинг) -> BLOCK
+  ok   add+commit через точку с запятой -> BLOCK
+== Отсутствие ложных срабатываний (принцип WP-273) ==
+  ok   commit без add, индекс пуст -> PASS-THROUGH
+  ok   сообщение упоминает DayPlan, стейджится другой файл -> PASS-THROUGH
+  ok   git add без commit -> PASS-THROUGH
+  ok   посторонняя команда -> PASS-THROUGH
+== Валидный DayPlan проходит ==
+  ok   add+commit одной командой, валидный DayPlan -> VALIDATED-OK
+
+OK: все 9 проверок прошли.

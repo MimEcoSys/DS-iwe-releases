@@ -1,0 +1,64 @@
+bash: /run/current-system/sw/bin/bash (5.2.37(1)-release)
+== language selection ==
+  ok   both catalogs, IWE_LANG unset -> ru
+  ok   IWE_LANG=en
+  ok   unknown IWE_LANG is an error
+  ok   IWE_LANG cannot leave the locale dir
+  ok   the only shipped catalog wins
+  ok   several catalogs without ru is an error
+  ok   no catalogs is an error
+  ok   a corrupt catalog is an error, not a missing one
+== formatting ==
+  ok   positional %s
+  ok   %% and %%s are literal
+  ok   an argument is not formatted again
+  ok   fewer arguments than %s is an error
+  ok   more arguments than %s is an error
+  ok   a specifier other than %s is an error
+  ok   a missing key is an error
+  ok   a non-string value is an error
+  ok   trailing newlines are kept
+  ok   a pattern key is refused by i18n_msg
+== recognition ==
+  ok   union over all catalogs, in catalog file order
+  ok   match
+  ok   no match
+  ok   an early match in long multi-line text under pipefail
+  ok   an invalid expression is an error, not a no-match
+== close-gate-reminder.sh against the pre-catalog reference ==
+  ok   fixture 01: итоги дня
+  ok   fixture 03: закрывай день
+  ok   fixture 04: закрывай
+  ok   fixture 05: Заливай и закрывай
+  ok   fixture 06: запуши
+  ok   fixture 08: не закрывай пока
+  ok   fixture 09: закрытие сессии обсудим позже
+  ok   fixture 10: привет, продолжаем
+  ok   fixture 11: итоги дня и заливай
+  ok   fixture 12: первая строка
+  ok   fixture 13: оставляй, имя подходит, заливай
+  ok   fixture 14: ты сейчас закрыл сессию? я не писал "закрывай"
+  ok   fixture 15: я не просил «закрывай», только «заливай»
+  ok   fixture 16: закрывай?
+  ok   fixture 17: я не писал „закрывай“
+  ok   English day phrase -> day instruction
+  ok   English session phrase -> session instruction
+  ok   day wins over session in one prompt
+  ok   unrelated English stays silent
+  ok   English-only install answers in English
+  ok   broken catalog: non-zero exit, diagnostic, no JSON
+== DayPlan validators accept the yesterday heading in both languages ==
+  ok   ru heading [Итоги вчера (2 ноября)] is recognised
+  ok   en heading [Yesterday (2 November)] is recognised
+  ok   Russian heading text
+== validate-staged-artifacts.sh promoted into the governance repo ==
+  ok   promoted copy finds the workspace library
+== scripts/check-locale-catalogs.py ==
+  ok   the shipped catalogs are clean
+  ok   a key missing in one catalog
+  ok   a different %s count
+  ok   an empty pattern
+  ok   a pattern matching anything
+  ok   shipped code using an absent key
+
+OK: all checks passed.

@@ -1,0 +1,12 @@
+== the script is part of the delivered payload
+  ✅ PASS: seed/strategy/scripts/lib/publish-gate.sh exists and is executable
+  ✅ PASS: update-manifest.json lists it (with a checksum)
+  ✅ PASS: the upgrade chain calls backfill_governance_seed_script for it
+== absent → delivered, executable, identical to the seed
+  ✅ PASS: exit 0
+  ✅ PASS: delivered as an executable copy of the seed
+== no governance repo → skipped without an error
+  ✅ PASS: exit 0, nothing created
+  ✅ PASS: no directory invented
+
+PASS: publish-gate.sh delivery (#1102)

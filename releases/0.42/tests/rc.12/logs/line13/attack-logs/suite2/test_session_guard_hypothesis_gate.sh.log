@@ -1,0 +1,7 @@
+WARN: MC-sessions не найден (/tmp/rt-rc12.TMCaKc/suite/tmp.vqF9K85fKj/MC-sessions) -- использую legacy-путь $GOV_REPO/sessions (обычное поведение немигрированной установки шаблона)
+WARN: MC-sessions не найден (/tmp/rt-rc12.TMCaKc/suite/tmp.vqF9K85fKj/MC-sessions) -- использую legacy-путь $GOV_REPO/sessions (обычное поведение немигрированной установки шаблона)
+PASS: session-scoped retry dedup preserves bytes, publisher and legacy events
+WARN: MC-sessions не найден (/tmp/rt-rc12.TMCaKc/suite/tmp.vqF9K85fKj/MC-sessions) -- использую legacy-путь $GOV_REPO/sessions (обычное поведение немигрированной установки шаблона)
+WARN: MC-sessions не найден (/tmp/rt-rc12.TMCaKc/suite/tmp.vqF9K85fKj/MC-sessions) -- использую legacy-путь $GOV_REPO/sessions (обычное поведение немигрированной установки шаблона)
+PASS: terminal replay restores a failed ledger projection without reopening the session
+PASS: hypothesis, exact-id, no-create heartbeat and durable close contracts hold

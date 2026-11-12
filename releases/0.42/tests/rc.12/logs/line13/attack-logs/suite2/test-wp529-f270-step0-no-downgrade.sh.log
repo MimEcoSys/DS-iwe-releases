@@ -1,0 +1,12 @@
+== decision ==
+  ok: installed 0.42.0, release 0.41.11 -> keep the running updater (0)
+  ok: installed 0.41.11, release 0.42.0 -> self-update as before (1)
+  ok: equal versions -> self-update as before (1)
+  ok: no installed manifest (old install) -> self-update as before (1)
+  ok: release manifest not fetched -> self-update as before (1)
+  ok: unreadable release version -> self-update as before (1)
+== wiring: Step 0 asks before it replaces and re-executes itself ==
+  ok: guard (line 54) precedes replace (68) and exec (84) in Step 0
+  ok: --check reports the kept updater instead of 'a newer update.sh is available'
+
+PASS
