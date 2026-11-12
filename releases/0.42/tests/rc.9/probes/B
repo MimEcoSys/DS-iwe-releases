@@ -1,0 +1,16 @@
+#!/run/current-system/sw/bin/bash
+# Run a command inside a bwrap sandbox whose HOME is a disposable copy mounted at /home/iwe-test.
+# The real home, the user's systemd/dbus runtime dir and other users' homes are not visible.
+SB=${SB:?SB must point at the sandbox root}
+TOKEN_FILE=${CLAUDE_TOKEN_FILE:?set CLAUDE_TOKEN_FILE}
+CLAUDE_CODE_OAUTH_TOKEN="$(cat "$TOKEN_FILE")" exec bwrap \
+  --ro-bind /nix /nix --ro-bind /run/current-system /run/current-system --ro-bind /etc /etc \
+  --ro-bind /bin /bin --ro-bind /usr /usr --ro-bind-try /lib64 /lib64 --ro-bind-try /lib /lib --dev /dev --proc /proc --bind "$SB/tmp" /tmp --tmpfs /run/user \
+  --ro-bind-try /run/wrappers /run/wrappers --ro-bind-try /run/nscd /run/nscd --ro-bind-try /run/systemd/resolve /run/systemd/resolve --tmpfs /home --bind "$SB/home" /home/iwe-test \
+  --unshare-pid --unshare-ipc --die-with-parent --chdir /home/iwe-test \
+  --unsetenv DBUS_SESSION_BUS_ADDRESS --unsetenv XDG_RUNTIME_DIR --unsetenv SSH_AUTH_SOCK \
+  --unsetenv GH_TOKEN --unsetenv GITHUB_TOKEN --unsetenv CLAUDE_PROJECT_DIR --unsetenv CLAUDECODE \
+  --setenv HOME /home/iwe-test --setenv USER iwe-test --setenv LOGNAME iwe-test \
+  --setenv PATH /home/iwe-test/.npm-global/bin:/home/iwe-test/.local/bin:/run/wrappers/bin:/run/current-system/sw/bin \
+  --setenv RC v0.42.0-rc.9 --setenv PREV v0.41.11 \
+  /run/current-system/sw/bin/bash -c "cd ~ && $*"

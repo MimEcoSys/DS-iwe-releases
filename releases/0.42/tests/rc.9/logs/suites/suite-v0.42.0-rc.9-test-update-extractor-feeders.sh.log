@@ -1,0 +1,2 @@
+scripts/tests/test-update-extractor-feeders.sh: line 52: uname: command not found
+PASS: update.sh backfills the Extractor feeders (install, opt-out, no-CLI, missing script, failure, foreign workspace)

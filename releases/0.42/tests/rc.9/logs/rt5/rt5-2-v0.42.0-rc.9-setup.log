@@ -1,0 +1,186 @@
+==========================================
+  Exocortex Setup v0.7.0 (core)
+==========================================
+
+Template: /home/iwe-test/IWE/FMT-exocortex-template
+
+Checking prerequisites...
+  ✓ Git: /run/current-system/sw/bin/git
+  ✓ Git identity: задана
+  ✓ jq: /run/current-system/sw/bin/jq
+
+  Режим --core: проверяются только обязательные зависимости (git).
+  GitHub CLI, Node.js, Claude Code — не требуются.
+
+
+Configuration:
+  GitHub user:    your-username
+  Workspace:      /home/iwe-test/IWE
+  Mode:           core (offline)
+  Home dir:       /home/iwe-test
+  Project slug:   -home-iwe-test-IWE
+
+Data Policy
+  IWE collects and processes data as described in docs/DATA-POLICY.md
+  Summary: profile, sessions, and learning data are stored on the platform (Neon DB).
+  Your personal/ files stay local. Claude API receives prompts + profile context.
+  You can view your data (/mydata) and delete it at any time.
+
+  Full policy: docs/DATA-POLICY.md
+
+
+
+
+setup.sh: line 588: source: filename argument required
+source: usage: source filename [arguments]
+  Configuration saved to /home/iwe-test/IWE/.exocortex.env
+
+[1/6] Building generated runtime...
+  === build-runtime ===
+    Template: /home/iwe-test/IWE/FMT-exocortex-template
+    Workspace: /home/iwe-test/IWE
+    Env file: /home/iwe-test/IWE/.exocortex.env
+    Runtime: /home/iwe-test/IWE/.iwe-runtime
+  
+    ⚠ params.yaml отсутствовал в /home/iwe-test/IWE — засеян значениями шаблона. Ваши прежние настройки в нём НЕ восстановлены.
+  ✓ runtime: 27 файлов в /home/iwe-test/IWE/.iwe-runtime/
+  ✓ workspace: 2 файлов обновлено / 2 проверено
+    Build hash: 5ad07c36faa2b546...
+    FMT version: 0.42.0
+  Pre-commit hook enabled (.githooks/)
+[2/6] Installing CLAUDE.md + AGENTS.md...
+  Copied CLAUDE.md (+ merge base) and AGENTS.md (substituted)
+[3/6] Installing memory...
+  Copied to /home/iwe-test/.claude/projects/-home-iwe-test-IWE/memory
+  Symlink: /home/iwe-test/IWE/memory → /home/iwe-test/.claude/projects/-home-iwe-test-IWE/memory
+[4/6] Claude settings... пропущено (core mode)
+[4b] Installing skills, hooks, rules, rules-lazy, lib, bin, config, detectors, scripts, styles...
+  ✓ .claude/skills/ → /home/iwe-test/IWE/.claude/skills/
+  ✓ .claude/hooks/ → /home/iwe-test/IWE/.claude/hooks/
+  ✓ .claude/rules/ → /home/iwe-test/IWE/.claude/rules/
+  ✓ .claude/rules-lazy/ → /home/iwe-test/IWE/.claude/rules-lazy/
+  ✓ .claude/lib/ → /home/iwe-test/IWE/.claude/lib/
+  ✓ .claude/bin/ → /home/iwe-test/IWE/.claude/bin/
+  ✓ .claude/config/ → /home/iwe-test/IWE/.claude/config/
+  ✓ .claude/detectors/ → /home/iwe-test/IWE/.claude/detectors/
+  ✓ .claude/scripts/ → /home/iwe-test/IWE/.claude/scripts/
+  ✓ .claude/agents/ → /home/iwe-test/IWE/.claude/agents/
+  ✓ .claude/styles/ → /home/iwe-test/IWE/.claude/styles/
+  ✓ .claude/templates/ → /home/iwe-test/IWE/.claude/templates/
+  ✓ .claude/settings.json
+  ✓ .claude/capture-config.sh.example
+  ✓ .claude/parity-contract.yaml
+  ✓ .claude/process-pattern-catalog.yaml
+  ✓ .claude/rules-registry.yaml
+  ✓ .claude/runtime-overlay.yaml
+  ✓ .claude/skills-catalog.yaml
+  ✓ .claude/sync-manifest.yaml
+[4c] Configuring .mcp.json...
+  ✓ /home/iwe-test/IWE/.mcp.json → iwe-knowledge (браузерный OAuth, tier=T1)
+[4d] Installing IWE environment variables...
+    ✓ /home/iwe-test/IWE/.iwe-paths written (workspace=/home/iwe-test/IWE)
+    ✓ /home/iwe-test/.zshenv → sources $WORKSPACE_DIR/.iwe-paths
+    ✓ /home/iwe-test/.bashrc → sources $WORKSPACE_DIR/.iwe-paths
+  ℹ  Restart shell or run: source /home/iwe-test/.zshenv
+[4f] Regenerating hot-files.list...
+  generate-hot-files-list: wrote 5 file(s) to /home/iwe-test/IWE/.iwe-runtime/hot-files.list (governance repo: "DS-my-strategy")
+[5/6] Автоматизация... пропущена (core mode)
+[6/6] Setting up DS-my-strategy...
+[6a] executor-catalog.yaml... пропущено (core mode, нет агента для маршрутизации)
+Initialized empty Git repository in /home/iwe-test/IWE/DS-my-strategy/.git/
+[main (root-commit) e6fe808] Initial exocortex: DS-my-strategy governance hub
+ 61 files changed, 12243 insertions(+)
+ create mode 100755 .githooks/pre-commit
+ create mode 100755 .githooks/pre-commit-deny-legacy-sessions.sh
+ create mode 100755 .githooks/pre-push
+ create mode 100644 .gitignore
+ create mode 100644 CLAUDE.md
+ create mode 100644 REPO-TYPE.md
+ create mode 100644 archive/.gitkeep
+ create mode 100644 archive/day-plans/.gitkeep
+ create mode 100644 archive/notes/.gitkeep
+ create mode 100644 archive/week-plans/.gitkeep
+ create mode 100644 archive/week-reports/.gitkeep
+ create mode 100644 archive/wp-contexts/.gitkeep
+ create mode 100644 current/.gitkeep
+ create mode 100644 current/WeekPlan W1.md
+ create mode 100644 decisions/.gitkeep
+ create mode 100644 docs/Dissatisfactions.md
+ create mode 100644 docs/Session Agenda.md
+ create mode 100644 docs/Strategy.md
+ create mode 100644 docs/WP-REGISTRY.md
+ create mode 100644 drafts/README.md
+ create mode 100644 drafts/draft-list.md
+ create mode 100644 exocortex/.gitkeep
+ create mode 100644 exocortex/agent-fault-profile/.gitignore
+ create mode 100644 inbox/.gitkeep
+ create mode 100644 inbox/fleeting-notes.md
+ create mode 100644 personal/.gitkeep
+ create mode 100755 scripts/agent_fault_remind.py
+ create mode 100755 scripts/agent_fault_remind.sh
+ create mode 100755 scripts/day-open-bottleneck-patch.sh
+ create mode 100755 scripts/day-open-budget-patch.py
+ create mode 100755 scripts/day-open-checks-runner.sh
+ create mode 100755 scripts/day-open-close-error-patch.py
+ create mode 100755 scripts/day-open-hooks-runner.sh
+ create mode 100755 scripts/day-open-ledger-render-patch.py
+ create mode 100755 scripts/day-open-llm-fill.py
+ create mode 100755 scripts/day-open-multiplier-backfill-patch.py
+ create mode 100755 scripts/day-open-pipeline.sh
+ create mode 100755 scripts/day-open-priorities-patch.py
+ create mode 100755 scripts/day-open-scaffold.sh
+ create mode 100755 scripts/day-open-sync-banner-patch.py
+ create mode 100755 scripts/day-open-version-check-patch.py
+ create mode 100755 scripts/ds-publish.sh
+ create mode 100755 scripts/generate-executor-catalog.py
+ create mode 100755 scripts/install-hooks.sh
+ create mode 100755 scripts/isolate-push.sh
+ create mode 100755 scripts/iwe_checklist_memory.py
+ create mode 100755 scripts/ledger-append.sh
+ create mode 100755 scripts/lib/common.sh
+ create mode 100755 scripts/lib/day-open-hooks.sh
+ create mode 100755 scripts/lib/find-python3.sh
+ create mode 100755 scripts/lib/ledger-path.sh
+ create mode 100755 scripts/lib/ledger-publish-kick.sh
+ create mode 100644 scripts/lib/ledger_path.py
+ create mode 100755 scripts/lib/network-wait.sh
+ create mode 100755 scripts/lib/notification-render.sh
+ create mode 100755 scripts/lib/publish-gate.sh
+ create mode 100755 scripts/lib/telegram.sh
+ create mode 100644 scripts/lib/wp_inbox.py
+ create mode 100755 scripts/llm-proxy-launcher.sh
+ create mode 100755 scripts/sync_feedback_to_memory.py
+ create mode 100755 scripts/update-derived-snapshot.py
+  Pre-commit hook enabled (.githooks/)
+  Локальный репозиторий создан. Для публикации на GitHub:
+    cd /home/iwe-test/IWE/DS-my-strategy && gh repo create your-username/DS-my-strategy --private --source=. --push
+[7/7] Installing Base repos (ZP, FPF, SPF)...
+  пропущено (core mode)
+[8/8] Enabling Knowledge Extractor feeders...
+  пропущено (core mode)
+
+==========================================
+  Setup Complete! (core)
+==========================================
+
+Verify installation:
+  ✓ CLAUDE.md:   /home/iwe-test/IWE/CLAUDE.md
+  ✓ Memory:      /home/iwe-test/.claude/projects/-home-iwe-test-IWE/memory/ (33 files)
+  ✓ Symlink:     /home/iwe-test/IWE/memory → /home/iwe-test/.claude/projects/-home-iwe-test-IWE/memory
+  ✓ DS-my-strategy: /home/iwe-test/IWE/DS-my-strategy/
+  ✓ Template:    /home/iwe-test/IWE/FMT-exocortex-template/
+
+Next steps:
+  1. cd /home/iwe-test/IWE
+  2. Запустите ваш AI CLI (Claude Code, Codex, Aider, Continue.dev и др.)
+  3. Скажите: «Проведём первую стратегическую сессию»
+
+Developer onboarding (T4+) — single entry point:
+  cat docs/developer/README.md
+
+Update from upstream:
+  cd /home/iwe-test/IWE/FMT-exocortex-template && bash update.sh
+
+Личные (PD-*) и служебные (MC-*) репозитории (WP-526/WP-527):
+  создаются по запросу, не при установке — см. README.md § «5 семей репозиториев»
+
