@@ -1,0 +1,6 @@
+NEXT                          LEFT LAST PASSED UNIT                            ACTIVATES
+Thu 2026-11-12 09:00:00 EET  59min -         - extractor-git-diff-feed.timer   extractor-git-diff-feed.service
+Fri 2026-11-13 04:00:00 EET    19h -         - iwe-strategist-morning.timer    iwe-strategist-morning.service
+Mon 2026-11-16 00:00:00 EET 3 days -         - iwe-strategist-weekreview.timer iwe-strategist-weekreview.service
+
+3 timers listed.

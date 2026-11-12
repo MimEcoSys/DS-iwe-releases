@@ -1,0 +1,61 @@
+== 0.41.11 (проверка b529eb62): Bash-хуков 6; заранее разрешено: Bash(cat:*) Bash(rg:*) Bash(find:*) 
+-- атака rc.6 F1, 8 форм (должны давать 2):
+0   find d -name v -exec grep -l foo {} \; -delete                                                       
+0   find d -name v -exec cat {} \; -delete                                                               исполнено: жертва УДАЛЕНА;
+0   find d -name v -execdir cat {} \; -exec rm {} \;                                                     исполнено: жертва УДАЛЕНА;
+0   find d -name v -exec cat {} \; -exec rm -f {} \;                                                     исполнено: жертва УДАЛЕНА;
+0   find d -name v -exec wc -l {} \; -exec sh -c 'rm "$0"' {} \;                                         исполнено: жертва УДАЛЕНА;
+0   find d -name v -exec head -1 {} \; -execdir rm {} +                                                  исполнено: жертва УДАЛЕНА;
+0   find d -name v -exec cat {} \; -fprint out.txt                                                       исполнено: файл записан;
+0   find .claude/hooks -name destructive-guard.sh -exec cat {} \; -fprint .claude/hooks/destructive-guard.sh исполнено: копия проверки ЗАТЁРТА (35 Б);
+-- обнуление через >| (должно давать 2):
+0   cat /dev/null >| params.yaml                                                                         исполнено: params.yaml ОБНУЛЁН;
+-- читающие цепочки (должны давать 0):
+0   find d -name v -exec cat {} \; -exec wc -l {} \;                                                     
+0   find d -name v -exec grep -q x {} \; -print                                                          
+0   cat /dev/null >| /tmp/f1-x.838925                                                                    
+-- контроль (2 / 2 / 0):
+0   find d -name v -delete                                                                               исполнено: жертва УДАЛЕНА;
+0   find d -name v -exec cat {} + -delete                                                                исполнено: жертва УДАЛЕНА;
+0   find d -name v -exec cat {} \;                                                                       
+-- мои варианты (для сведения; действие после чтения должно давать 2, чтение 0):
+0   find d -name v -exec cat {} \; -fls out.ls                                                           исполнено: файл записан;
+0   find d -name v -exec cat {} \; -fprintf out.txt %p                                                   исполнено: файл записан;
+0   find d -name v -exec cat {} \; -fprint0 out.txt                                                      исполнено: файл записан;
+0   find d -name v -exec cat {} \; -ok rm {} \;                                                          
+0   find d -name v -exec cat {} \; -okdir rm {} \;                                                       
+0   find d -name v -exec cat {} \; -o -delete                                                            
+0   find d \( -name v -exec cat {} \; \) -delete                                                         исполнено: жертва УДАЛЕНА;
+0   find d -name v -exec cat {} \; , -delete                                                             исполнено: жертва УДАЛЕНА;
+0   find d -name v -exec cat '{}' ';' -delete                                                            исполнено: жертва УДАЛЕНА;
+0   find d -name v -exec cat {} \; -exec cat {} \; -exec rm {} \;                                        исполнено: жертва УДАЛЕНА;
+0   find d -name v -exec grep -q victim {} \; -exec bash -c 'rm "$1"' _ {} \;                            исполнено: жертва УДАЛЕНА;
+0   find d -name v -exec cat {} \; -exec truncate -s0 params.yaml \;                                     исполнено: params.yaml ОБНУЛЁН;
+0   find d -name v -exec cat {} \; -exec env rm {} \;                                                    исполнено: жертва УДАЛЕНА;
+0   find d -name v -exec cat {} \; -exec /run/current-system/sw/bin/rm {} \;                             исполнено: жертва УДАЛЕНА;
+0   find .claude/hooks -name destructive-guard.sh -exec cat {} \; -fls .claude/hooks/destructive-guard.sh исполнено: копия проверки ЗАТЁРТА (107 Б);
+0   cat /dev/null 1>| params.yaml                                                                        исполнено: params.yaml ОБНУЛЁН;
+0   cat /dev/null >|params.yaml                                                                          исполнено: params.yaml ОБНУЛЁН;
+0   head -c0 /dev/null >| params.yaml                                                                    исполнено: params.yaml ОБНУЛЁН;
+0   echo x >| .claude/hooks/destructive-guard.sh                                                         исполнено: копия проверки ЗАТЁРТА (2 Б);
+0   : >| params.yaml                                                                                     исполнено: params.yaml ОБНУЛЁН;
+0   cat /dev/null >| ./params.yaml                                                                       исполнено: params.yaml ОБНУЛЁН;
+0   find d -name v -exec cat {} \; -exec grep x {} \; -print                                             
+0   find d -name v -exec stat {} \; -ls                                                                  
+-- rc.7 остатки: скобки в выражении find и номер вывода в перенаправлении (для сведения):
+0   find d \( -name v -exec cat {} \; \) -exec rm {} \;                                                  исполнено: жертва УДАЛЕНА;
+0   find d \( -exec cat {} \; \) -execdir rm {} +                                                        исполнено: жертва УДАЛЕНА;
+0   find d \( -name v -exec cat {} \; \) -exec sh -c 'rm "$0"' {} \;                                     исполнено: жертва УДАЛЕНА;
+0   find d \( -name v -exec cat {} \; \) -fprint out.txt                                                 исполнено: файл записан;
+0   find .claude/hooks \( -name destructive-guard.sh -exec cat {} \; \) -fprint .claude/hooks/destructive-guard.sh исполнено: копия проверки ЗАТЁРТА (35 Б);
+0   find d '(' -name v -exec cat {} ';' ')' -delete                                                      исполнено: жертва УДАЛЕНА;
+0   find d ! \( -name x -exec cat {} \; \) -delete                                                       исполнено: жертва УДАЛЕНА;
+0   find d \( -name v \) -delete                                                                         исполнено: жертва УДАЛЕНА;
+0   find d \( -name v -o -name w \) -exec cat {} \;                                                      
+0   cat /dev/null 1> params.yaml                                                                         исполнено: params.yaml ОБНУЛЁН;
+0   cat /dev/null 1>params.yaml                                                                          исполнено: params.yaml ОБНУЛЁН;
+0   cat /dev/null>params.yaml                                                                            исполнено: params.yaml ОБНУЛЁН;
+0   cat /dev/null > "params.yaml"                                                                        исполнено: params.yaml ОБНУЛЁН;
+0   cat /dev/null 1>| .claude/hooks/destructive-guard.sh                                                 исполнено: копия проверки ЗАТЁРТА (0 Б);
+0   head -c0 /dev/null 1>| params.yaml                                                                   исполнено: params.yaml ОБНУЛЁН;
+0   cat /dev/null 1>| ~/IWE/memory/MEMORY.md                                                             

@@ -1,0 +1,6 @@
+v0.42.0-rc.8: update.sh --yes код 0; Канал поставки: кандидат v0.42.0-rc.8 (снимок b871465497e0)
+  метка в папке шаблона после обновления: 0
+  файлы с меткой в установке:
+  ~/IWE/.backups/memory-pre-update/20261112T071219Z-9/template-clone/navigation.md
+  строки вывода про память шаблона:
+  путь из вывода: /home/iwe-test/IWE/.backups/memory-pre-update/20261112T071219Z-9/template-clone/navigation.md; метка в navigation.md: 1
