@@ -1,0 +1,87 @@
+warning: refs/tags/v0.42.0-rc.9 4e39d3e8473c1a5e5be59ed1066768f584f49eac is not a commit!
+Note: switching to '267a281a1982c23eafe37e0c98101cb7534f7780'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by switching back to a branch.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -c with the switch command. Example:
+
+  git switch -c <new-branch-name>
+
+Or undo this operation with:
+
+  git switch -
+
+Turn off this advice by setting config variable advice.detachedHead to false
+
+267a281a1982c23eafe37e0c98101cb7534f7780
+ed064623b40c60804dfe92ff4c629163bb55ba64
+af51a758b7e5adfc60d51e7489ba6d198c03545a	refs/tags/v0.36.3
+== clean install of v0.36.3 ==
+warning: refs/tags/v0.36.3 af51a758b7e5adfc60d51e7489ba6d198c03545a is not a commit!
+Note: switching to '8cca208538d792aecc3c3ff9d1da57f8c1103f30'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by switching back to a branch.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -c with the switch command. Example:
+
+  git switch -c <new-branch-name>
+
+Or undo this operation with:
+
+  git switch -
+
+Turn off this advice by setting config variable advice.detachedHead to false
+
+  ok: setup.sh --core of v0.36.3
+== update to v0.42.0-rc.9 through the rc channel ==
+  + - `80c4a25` fix(#348): образец params.yaml.example признан пользовательским пространством
+  + - `21d82ad` fix(#348,#310,#323): params.yaml перестал быть файлом шаблона; сторож неподключённых хуков
+  + - `f1a0798` fix(#343,#347,#350,#348): зелёный CI, бэкап памяти, четыре состояния планировщика, честное превью
+  + - `b804fb3` fix(peer): remove --add-dir from peer-session-finalize.sh synthesis call
+  + - `58a1fb0` fix(peer): portable mkdir-lock for kimi OAuth serialization, no lockf
+  + - `9233e65` fix(peer): drop kimi log-tail heuristic, add claude auth-failure detection
+  + - `d8dfacf` fix(peer): document sandbox setup for peer adapters
+  + - `e65e942` fix(session): quarantine dead-pid semaphores
+  + - `5b2fd66` fix(strategy-session-weekly): gate status:confirmed on strategy-session-checks-runner.sh (WP-484 Ф47)
+  + - `f457907` fix(wp7): deliver canonical protocol scripts
+  + - `1748a6f` fix(WP-7 Этап 2): фикстуры независимы от update.sh, откат сверяется побайтово
+  + - `945b7f8` fix(day-open): preserve extension hook diagnostics
+  + - `bb9656d` fix(#346): day-close calendar day follows install timezone, not global UTC
+  + - `14b4010` fix(#345): explicit non-hook classification for 4 orphan-warning files in .claude/hooks
+  + - `90d887f` fix(#344): preserve HEAD form across upgrade-simulation smoke rollback
+  + - `58666a7` fix(WP-7 Этап 2): доставка тестов гейта в манифест + честный smoke-тест setup.sh
+  + - `3280bef` fix(hindsight): убрать ключ из автозапуска, резолвить docker динамически, curl-healthcheck
+  + - `7e04b0b` fix(day-close): изоляция кодов возврата реиндексации + различение частичного отказа
+  + - `8a2e9da` fix(peer): restrict Claude adapter to text-only review
+  + Триггер: пользовательский запрос (пользовательский запрос 24 апр) — шаблон требовал NEON_URL/DT_USER_ID, что является L3-утечкой секретов автора. Системная замена psycopg2-writer → REST endpoint (`POST /hub/events`) через Activity Hub запланирована фазой P2b в `DP.ROADMAP.001-neon-migration.md` (WP-253), активация после P2 (создание #2 journal, ориентир июнь 2026).
+
+⚠ Чистый --check/--dry-run не гарантирует отсутствие регрессий после этого обновления — он проверяет совпадение файлов, не поведение. Для структурной проверки плана доставки используйте --dry-run-strict.
+
+ОШИБКА: обнаружены неразрешённые конфликты слияния (вложенные маркеры):
+  - /home/iwe-test/rc9-row3/iwe-rc-upgrade.6rFs43/ws/FMT-exocortex-template/CLAUDE.md
+  Разрешите их вручную и перезапустите update.sh.
+⚠ Обновление завершилось не полностью; маркер сохранён: /home/iwe-test/rc9-row3/iwe-rc-upgrade.6rFs43/ws/FMT-exocortex-template/.update-incomplete
+  Применено файлов шаблона: 733 из 733; рабочие копии могли обновиться частично.
+  Исправьте причину и перезапустите update.sh.
+ОШИБКА: update.sh прервался на строке 1: exit "$EXIT_CONFLICT"
+  FAIL: update.sh --yes exit 49
+  ok: delivered from v0.42.0-rc.9
+== installed files equal the candidate ==
+  FAIL: installed manifest version differs
+  ok: MISSING: 0 of 878
+  FAIL: DIFFERS: 3 — CLAUDE.md memory/MEMORY.md sessions/00-index.md 
+  FAIL: NOEXEC: 1 — .claude/hooks/secret-bypass-analyzer.py 
+== user edits survive ==
+  ok: own extension kept
+  ok: own parameter kept
+== second run changes nothing ==
+  ok: second run: nothing to update
+
+FAILED: 4 check(s) — upgrade v0.36.3 -> v0.42.0-rc.9
+EXIT=1

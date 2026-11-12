@@ -1,0 +1,69 @@
+warning: refs/tags/v0.42.0-rc.9 4e39d3e8473c1a5e5be59ed1066768f584f49eac is not a commit!
+Note: switching to '267a281a1982c23eafe37e0c98101cb7534f7780'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by switching back to a branch.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -c with the switch command. Example:
+
+  git switch -c <new-branch-name>
+
+Or undo this operation with:
+
+  git switch -
+
+Turn off this advice by setting config variable advice.detachedHead to false
+
+ed064623b40c60804dfe92ff4c629163bb55ba64
+### bash setup/test-apply-op.sh
+apply-op: 132 проверок прошли, 0 не прошли
+RC=0
+### python3 -m pytest -q scripts/tests/test_dry_run_gate.py
+/run/current-system/sw/bin/python3: No module named pytest
+RC=1
+### bash scripts/tests/dryrun-gate-knowledge-namespace-regression.sh
+PASS: legacy personal_write тоже заблокирован
+PASS: legacy search тоже разрешён
+
+OK: все проверки прошли.
+RC=0
+### python3 -m pytest -q scripts/tests/test_glossary_source.py
+/run/current-system/sw/bin/python3: No module named pytest
+RC=1
+### bash setup/test-i18n.sh
+  ok   a pattern matching anything
+  ok   shipped code using an absent key
+
+OK: all checks passed.
+RC=0
+### bash scripts/tests/test_issue_1433_gov_branch.sh
+  ✅ PASS: canonical publish gate is preferred
+  ✅ PASS: worktree gate is the fallback
+  ✅ PASS: no gate anywhere yields empty (caller falls back to the governance branch)
+PASS: issue #1433 governance branch and publish gate
+RC=0
+ls: cannot access 'translation/glossary-v0.1.csv': No such file or directory
+translation/glossary-local.csv
+/run/current-system/sw/bin/perl
+### scripts/tests/test_dry_run_gate.py
+........................................................................ [ 65%]
+........................................................................ [ 87%]
+...........................................                              [100%]
+331 passed in 35.05s
+RC=0
+### scripts/tests/test_glossary_source.py
+=========================== short test summary info ============================
+ERROR scripts/tests/test_glossary_source.py
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 0.18s
+RC=2
+### test_glossary_source.py (pytest+pyyaml)
+.......................                                                  [100%]
+23 passed in 0.30s
+complete gate=dry-1794480047-3f1b3cfe904c2c6d rc=0
+begin (no hold) rc=0
+complete gate=dry-1794480077-cbc4570f71b68426 rc=0
+begin (hold) rc=0
+complete gate=dry-1794480077-f08c1ab5df46c95a rc=0
