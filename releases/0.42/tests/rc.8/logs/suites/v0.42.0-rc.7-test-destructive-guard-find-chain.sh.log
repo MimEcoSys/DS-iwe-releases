@@ -1,0 +1,183 @@
+FAIL: find d \( -name v \) + -delete (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d \( -name v \) + -exec rm {} + (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d \( -name v \) + -exec rm -f {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d \( -name v \) + -execdir unlink {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d \( -name v \) + -ok rm {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d \( -name v \) + -exec sh -c 'echo x > "$0"' {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d \( -name v \) + -exec cp /dev/null {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d \( -name v \) + -fprint .claude/hooks/destructive-guard.sh (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d \( -name v \) + -fprintf out.txt %p (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d \( -name v \) + -fls out.txt (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d \( -name v -o -name w \) + -delete (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d \( -name v -o -name w \) + -exec rm {} + (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d \( -name v -o -name w \) + -exec rm -f {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d \( -name v -o -name w \) + -execdir unlink {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d \( -name v -o -name w \) + -ok rm {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d \( -name v -o -name w \) + -exec sh -c 'echo x > "$0"' {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d \( -name v -o -name w \) + -exec cp /dev/null {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d \( -name v -o -name w \) + -fprint .claude/hooks/destructive-guard.sh (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d \( -name v -o -name w \) + -fprintf out.txt %p (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d \( -name v -o -name w \) + -fls out.txt (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d -name a\&b + -delete (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d -name a\&b + -exec rm {} + (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d -name a\&b + -exec rm -f {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d -name a\&b + -execdir unlink {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d -name a\&b + -ok rm {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d -name a\&b + -exec sh -c 'echo x > "$0"' {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d -name a\&b + -exec cp /dev/null {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d -name a\&b + -fprint .claude/hooks/destructive-guard.sh (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d -name a\&b + -fprintf out.txt %p (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d -name a\&b + -fls out.txt (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d -name a\|b + -delete (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d -name a\|b + -exec rm {} + (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d -name a\|b + -exec rm -f {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d -name a\|b + -execdir unlink {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d -name a\|b + -ok rm {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d -name a\|b + -exec sh -c 'echo x > "$0"' {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d -name a\|b + -exec cp /dev/null {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d -name a\|b + -fprint .claude/hooks/destructive-guard.sh (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d -name a\|b + -fprintf out.txt %p (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d -name a\|b + -fls out.txt (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d \( -name v \) -exec cat {} \; + -delete (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d \( -name v \) -exec cat {} \; + -exec rm {} + (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d \( -name v \) -exec cat {} \; + -exec rm -f {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d \( -name v \) -exec cat {} \; + -execdir unlink {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d \( -name v \) -exec cat {} \; + -ok rm {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d \( -name v \) -exec cat {} \; + -exec sh -c 'echo x > "$0"' {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d \( -name v \) -exec cat {} \; + -exec cp /dev/null {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d \( -name v \) -exec cat {} \; + -fprint .claude/hooks/destructive-guard.sh (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d \( -name v \) -exec cat {} \; + -fprintf out.txt %p (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: find d \( -name v \) -exec cat {} \; + -fls out.txt (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: command find d \( -name v \) + -delete (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: command find d \( -name v \) + -exec rm {} + (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: command find d \( -name v \) + -exec rm -f {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: command find d \( -name v \) + -execdir unlink {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: command find d \( -name v \) + -ok rm {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: command find d \( -name v \) + -exec sh -c 'echo x > "$0"' {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: command find d \( -name v \) + -exec cp /dev/null {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: command find d \( -name v \) + -fprint .claude/hooks/destructive-guard.sh (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: command find d \( -name v \) + -fprintf out.txt %p (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: command find d \( -name v \) + -fls out.txt (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: "find" d \( -name v \) + -delete (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: "find" d \( -name v \) + -exec rm {} + (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: "find" d \( -name v \) + -exec rm -f {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: "find" d \( -name v \) + -execdir unlink {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: "find" d \( -name v \) + -ok rm {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: "find" d \( -name v \) + -exec sh -c 'echo x > "$0"' {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: "find" d \( -name v \) + -exec cp /dev/null {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: "find" d \( -name v \) + -fprint .claude/hooks/destructive-guard.sh (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: "find" d \( -name v \) + -fprintf out.txt %p (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: "find" d \( -name v \) + -fls out.txt (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: /usr/bin/find d \( -name v \) + -delete (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: /usr/bin/find d \( -name v \) + -exec rm {} + (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: /usr/bin/find d \( -name v \) + -exec rm -f {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: /usr/bin/find d \( -name v \) + -execdir unlink {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: /usr/bin/find d \( -name v \) + -ok rm {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: /usr/bin/find d \( -name v \) + -exec sh -c 'echo x > "$0"' {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: /usr/bin/find d \( -name v \) + -exec cp /dev/null {} \; (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: /usr/bin/find d \( -name v \) + -fprint .claude/hooks/destructive-guard.sh (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: /usr/bin/find d \( -name v \) + -fprintf out.txt %p (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: /usr/bin/find d \( -name v \) + -fls out.txt (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: git add a\;b -A (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: git add a\&b -A (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: echo of an escaped ; (ожидалось pass, получено block, exit=2)
+  stderr: BLOCKED: git add -A/--all/-u/--update запрещён — подхватывает файлы других агентов (CLAUDE.md §Git Staging). Стейдж конкретные пути: git add <path>.
+FAIL: 1> file (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: 1>file (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: /dev/null>file (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: 1>| file (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: head -c0 1>| file (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: 2> file (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: &> file (ожидалось block, получено pass, exit=0)
+  stderr: 
+FAIL: head -c0>file (ожидалось block, получено pass, exit=0)
+  stderr: 
+PASS=69 FAIL=91

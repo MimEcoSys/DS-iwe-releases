@@ -1,0 +1,49 @@
+==========================================
+  Exocortex Update v2.4.1
+==========================================
+  Репо: /home/iwe-test/IWE/FMT-exocortex-template
+
+/home/iwe-test/.local/bin/gh: line 5: /home/iwe-test/iwe-rc8-linux/logs/gh-calls.log: No such file or directory
+/home/iwe-test/.local/bin/gh: line 5: /home/iwe-test/iwe-rc8-linux/logs/gh-calls.log: No such file or directory
+  Канал поставки: кандидат v0.42.0-rc.8 (снимок b871465497e0)
+/home/iwe-test/.local/bin/gh: line 5: /home/iwe-test/iwe-rc8-linux/logs/gh-calls.log: No such file or directory
+[0] Проверка update.sh...
+  Найдена новая версия update.sh — обновляю...
+  Перезапуск...
+==========================================
+  Exocortex Update v2.4.1
+==========================================
+  Репо: /home/iwe-test/IWE/FMT-exocortex-template
+
+/home/iwe-test/.local/bin/gh: line 5: /home/iwe-test/iwe-rc8-linux/logs/gh-calls.log: No such file or directory
+/home/iwe-test/.local/bin/gh: line 5: /home/iwe-test/iwe-rc8-linux/logs/gh-calls.log: No such file or directory
+  Канал поставки: кандидат v0.42.0-rc.9 (снимок 48dd21520fb5)
+/home/iwe-test/.local/bin/gh: line 5: /home/iwe-test/iwe-rc8-linux/logs/gh-calls.log: No such file or directory
+[0] Проверка update.sh...
+  Найдена новая версия update.sh — обновляю...
+  Перезапуск...
+==========================================
+  Exocortex Update v2.4.1
+==========================================
+  Репо: /home/iwe-test/IWE/FMT-exocortex-template
+
+/home/iwe-test/.local/bin/gh: line 5: /home/iwe-test/iwe-rc8-linux/logs/gh-calls.log: No such file or directory
+/home/iwe-test/.local/bin/gh: line 5: /home/iwe-test/iwe-rc8-linux/logs/gh-calls.log: No such file or directory
+  Канал поставки: кандидат v0.42.0-rc.8 (снимок b871465497e0)
+/home/iwe-test/.local/bin/gh: line 5: /home/iwe-test/iwe-rc8-linux/logs/gh-calls.log: No such file or directory
+[0] Проверка update.sh...
+  Найдена новая версия update.sh — обновляю...
+  Перезапуск...
+==========================================
+  Exocortex Update v2.4.1
+==========================================
+  Репо: /home/iwe-test/IWE/FMT-exocortex-template
+
+/home/iwe-test/.local/bin/gh: line 5: /home/iwe-test/iwe-rc8-linux/logs/gh-calls.log: No such file or directory
+/home/iwe-test/.local/bin/gh: line 5: /home/iwe-test/iwe-rc8-linux/logs/gh-calls.log: No such file or directory
+  Канал поставки: кандидат v0.42.0-rc.9 (снимок 48dd21520fb5)
+/home/iwe-test/.local/bin/gh: line 5: /home/iwe-test/iwe-rc8-linux/logs/gh-calls.log: No such file or directory
+[0] Проверка update.sh...
+ОШИБКА: update.sh на сервере снова изменился сразу после перезапуска — версия меняется прямо сейчас.
+  Обновление остановлено, файлы не тронуты. Повторите через несколько минут.
+ОШИБКА: update.sh прервался на строке 1: exit "$EXIT_NETWORK"

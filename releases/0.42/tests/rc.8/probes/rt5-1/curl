@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# Red-team curl shim: API calls -> apimock.py; raw downloads -> real curl, then optional
+# fault injection (RT_CORRUPT=<path-substring> appends a byte; RT_FAIL=<path-substring> fails).
+# Hides --parallel from help so update.sh takes the sequential path we can intercept.
+REAL=/run/current-system/sw/bin/curl
+D="${RT_SHIM_DIR:?}"
+LOG="$D/calls.log"
+url="" out=""
+prev=""
+for a in "$@"; do
+  case "$prev" in -o|--output) out="$a" ;; esac
+  case "$a" in https://*|http://*) url="$a" ;; --output=*) out="${a#--output=}" ;; esac
+  prev="$a"
+done
+case " $* " in
+  *" --help"*|*" -h "*) "$REAL" "$@" | grep -v -- '--parallel'; exit 0 ;;
+esac
+echo "$(date +%T) ${RT_TAG:-} $url" >> "$LOG"
+case "$url" in
+  https://api.github.com/*)
+    body=$(python3 -I "$D/apimock.py" "$D/../api/lsremote.txt" "$url" "${RT_LATEST:-v0.41.11}") || { echo "curl: (22) mock 404" >&2; exit 22; }
+    if [ -n "$out" ]; then printf '%s\n' "$body" > "$out"; else printf '%s\n' "$body"; fi
+    exit 0 ;;
+esac
+if [ -n "${RT_FAIL:-}" ] && [[ "$url" == *"$RT_FAIL"* ]]; then
+  echo "FAULT-FAIL $url" >> "$LOG"; echo "curl: (56) injected failure" >&2; exit 56
+fi
+"$REAL" "$@"; rc=$?
+if [ "$rc" -eq 0 ] && [ -n "${RT_CORRUPT:-}" ] && [[ "$url" == *"$RT_CORRUPT"* ]] && [ -n "$out" ] && [ -f "$out" ]; then
+  printf '\n# injected\n' >> "$out"; echo "FAULT-CORRUPT $url" >> "$LOG"
+fi
+exit $rc

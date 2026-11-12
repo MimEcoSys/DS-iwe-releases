@@ -1,0 +1,3 @@
+2026-11-12T09:15:39+02:00 gh auth status
+2026-11-12T09:15:39+02:00 gh release view v0.42.0-rc.8 -R TserenTserenov/FMT-exocortex-template --json tagName,isPrerelease,targetCommitish,publishedAt,assets
+BLOCKED release view v0.42.0-rc.8 -R TserenTserenov/FMT-exocortex-template --json tagName,isPrerelease,targetCommitish,publishedAt,assets
