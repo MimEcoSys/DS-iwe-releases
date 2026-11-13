@@ -1,0 +1,20 @@
+  ✅ PASS: a: loop did not abort (exit 0)
+  ✅ PASS: a: install.sh was called (plist already installed, auto:false)
+  ✅ PASS: a: IWE_SKIP_LOAD is empty (role was loaded, must not skip load)
+  ✅ PASS: b: install.sh was called (plist refreshed even though role was unloaded)
+  ✅ PASS: b: IWE_SKIP_LOAD=1 (role was unloaded by the user, load must be skipped)
+  ✅ PASS: c: install.sh was correctly skipped (role not installed, not auto)
+  ✅ PASS: d: loop did not abort when a role has no PLIST_DST= line (set -e regression guard)
+  ✅ PASS: d: the no-PLIST_DST= auto:true role was still reached and reinstalled
+  ✅ PASS: e: loop did not abort on a core install
+  ✅ PASS: e: core install: no auto:true installer ran
+  ✅ PASS: f: loop did not abort on a core install
+  ✅ PASS: f: core install: no auto:true installer ran
+  ✅ PASS: e: core install: the skip names the command to enable the role
+  ✅ PASS: g: core install: an installed auto:false role is refreshed as before
+  ✅ PASS: h: full install: auto:true roles installed
+  ✅ PASS: i: a failing installer does not abort the loop
+  ✅ PASS: i: the failure shows the exit code, the retry command and the last stderr line
+  ✅ PASS: update.sh no longer prints the vague 'переустановите вручную'
+
+Passed: 18, failed: 0

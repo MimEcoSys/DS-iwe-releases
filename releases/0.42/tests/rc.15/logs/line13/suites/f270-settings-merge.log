@@ -1,0 +1,12 @@
+== merge adds nothing ==
+  ok: unchanged file reported as unchanged
+  ok: no «обновлён» for an unchanged file
+== merge changes the file ==
+  ok: changed file reported as updated
+== merge replaces the withdrawn acceptEdits mode ==
+  ok: mode change explained
+  ok: explanation names where to keep the mode
+  ok: no mode line when nothing was replaced
+
+PASS
+rc=0 secs=1

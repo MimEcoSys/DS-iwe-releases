@@ -1,0 +1,33 @@
+--- Scenario A: CLAUDE.md conflict + non-default branch ---
+  ❌ FAIL: A: expected exit 49, got 2
+  ❌ FAIL: A: hook file was NOT delivered — defect 1 regression
+  ❌ FAIL: A: memory file propagation never attempted
+  ❌ FAIL: A: no conflict message found in output
+  ❌ FAIL: A: conflicted file path missing from final summary
+  ❌ FAIL: A: updater did not explain the no-autocommit contract
+  ✅ PASS: A: updater created no commit and changed no staged entries
+  ❌ FAIL: A: conflict did not preserve/report incomplete update state
+  ❌ FAIL: A: default Day Open checks missing from updated template
+  ✅ PASS: A: existing user day-open.before.md preserved byte-for-byte
+  ✅ PASS: A: existing user day-open.checks.md preserved byte-for-byte
+  ✅ PASS: A: existing user day-open.after.md preserved byte-for-byte
+--- Scenario B: repair-pass on the 'всё актуально' path ---
+  ❌ FAIL: B: expected 'всё актуально' branch, output was:
+==========================================
+  Exocortex Update v2.4.1
+==========================================
+  Репо: /tmp/iwe-issue-226-test-1422/repo/FMT-exocortex-template
+
+/home/iwe-test/.local/bin/gh: line 5: /tmp/iwe-issue-226-test-1422/fake-home/iwe-rc15-linux/logs/gh-calls.log: No such file or directory
+curl: (22) The requested URL returned error: 404
+ОШИБКА: authenticated GitHub API request via gh failed; fallback disabled.
+ОШИБКА: authenticated branch lookup failed; refusing anonymous or moving-branch fallback.
+  ❌ FAIL: B: hook file was NOT repaired — defect 2 regression (repair-pass unreachable)
+grep: /tmp/iwe-issue-226-test-1422/repo/AGENTS.md: No such file or directory
+  ❌ FAIL: B: workspace AGENTS.md was not repaired/substituted on TOTAL_CHANGES=0
+  ❌ FAIL: B: expected exit 0, got 2
+  ✅ PASS: B: successful recovery removes the incomplete-update marker
+--- Scenario B2: repair-pass on incomplete zero-change verification ---
+  ❌ FAIL: B2: skipped download suppressed AGENTS recovery (rc=2)
+--- Scenario C: manifest content hashes (#378) ---
+rc=2 secs=1

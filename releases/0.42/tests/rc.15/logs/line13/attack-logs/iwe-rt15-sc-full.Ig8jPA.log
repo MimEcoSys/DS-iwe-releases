@@ -1,0 +1,103 @@
+## clone rc.15
+warning: refs/tags/v0.42.0-rc.15 428733f654c48dfadb5b6703a35b56714f6c2530 не является коммитом!
+Примечание: переключение на «aaed1384ef772640288f08da3bd43332eeaecc18».
+
+Вы сейчас в состоянии «отсоединённого указателя HEAD». Можете осмотреться,
+внести экспериментальные изменения и зафиксировать их, также можете
+отменить любые коммиты, созданные в этом состоянии, не затрагивая другие
+ветки, переключившись обратно на любую ветку.
+
+Если хотите создать новую ветку для сохранения созданных коммитов, можете
+сделать это (сейчас или позже), используя команду switch с параметром -c.
+Например:
+
+  git switch -c <новая-ветка>
+
+Или отмените эту операцию с помощью:
+
+  git switch -
+
+Отключите этот совет, установив переменную конфигурации
+advice.detachedHead в значение false
+
+aaed1384ef772640288f08da3bd43332eeaecc18
+## setup (full)
+setup rc=0
+  extensions, доступность MCP, структурные инварианты.
+
+
+Пропущено. Запустить позже: cd /tmp/iwe-rt15-sc-full.Ig8jPA/ws/FMT-exocortex-template && bash setup.sh --validate
+
+unresolved-placeholder: /tmp/iwe-rt15-sc-full.Ig8jPA/ws/.claude/parity-contract.yaml
+unresolved-placeholder: /tmp/iwe-rt15-sc-full.Ig8jPA/ws/.claude/skills/repo-new/SKILL.md
+unresolved-placeholder: /tmp/iwe-rt15-sc-full.Ig8jPA/ws/.claude/skills/author-mode/SKILL.md
+unresolved-placeholder: /tmp/iwe-rt15-sc-full.Ig8jPA/ws/.claude/skills/iwe-restore/SKILL.md
+unresolved-placeholder: /tmp/iwe-rt15-sc-full.Ig8jPA/ws/.claude/skills/verify-hypotheses/SKILL.md
+## sentinels
+gov=/tmp/iwe-rt15-sc-full.Ig8jPA/ws/DS-strategy
+## repeat update (rc channel, second run after install)
+rerun: channel=rc args=--yes rc=0 changed_lines=18
+     Канал поставки: кандидат v0.42.0-rc.15 (снимок aaed1384ef77)
+   ✓ Всё актуально. Обновлений нет. (878 файлов проверено)
+   diff 1711c1711
+   diff < da5808c253a6962fe0455dba3eae4c089d58c9670d271e664d5ad330e80e3c1d  ./.iwe-runtime/.build-hash
+   diff ---
+   diff > b0f903db0913deada016ec03ab801344d56e8058f808243410e9953a76c1abaf  ./.iwe-runtime/.build-hash
+   diff 1742,1748c1742,1748
+   diff < 0ea9e5ab1d7ebc9d9977f6a629eeb803f104d864bc4fe3b5694abd84f4682cc0  ./.iwe-runtime/state/capabilities/backup
+   diff < 8c24b63534de8a54ac4ccb35fa418c0037944a57a92febd972d5ba7e202bbac4  ./.iwe-runtime/state/capabilities/claude_cli
+   diff < 73ab3692809cf574153c7d664e3317c43e0f5e17ed8e7d7f12903d46c0202de4  ./.iwe-runtime/state/capabilities/gateway
+rerun2: channel=rc args=--yes rc=0 changed_lines=18
+     Канал поставки: кандидат v0.42.0-rc.15 (снимок aaed1384ef77)
+   ✓ Всё актуально. Обновлений нет. (878 файлов проверено)
+   diff 1711c1711
+   diff < da5808c253a6962fe0455dba3eae4c089d58c9670d271e664d5ad330e80e3c1d  ./.iwe-runtime/.build-hash
+   diff ---
+   diff > 6c716e414ded79563ae714611da141ab0f8d61912ab885bfa7039f617f1e2edc  ./.iwe-runtime/.build-hash
+   diff 1742,1748c1742,1748
+   diff < 0ea9e5ab1d7ebc9d9977f6a629eeb803f104d864bc4fe3b5694abd84f4682cc0  ./.iwe-runtime/state/capabilities/backup
+   diff < 8c24b63534de8a54ac4ccb35fa418c0037944a57a92febd972d5ba7e202bbac4  ./.iwe-runtime/state/capabilities/claude_cli
+   diff < 73ab3692809cf574153c7d664e3317c43e0f5e17ed8e7d7f12903d46c0202de4  ./.iwe-runtime/state/capabilities/gateway
+## rollback attempts
+rel: channel=release args=--yes rc=1 changed_lines=18
+     Канал поставки: релиз v0.41.11 (снимок 46a864ee3007)
+     ⚠ update.sh выпуска старше установленного — не заменяю его: сначала решение об откате.
+      Любой канал, который вернёт установку назад, тоже спросит ROLLBACK.
+   diff 1711c1711
+   diff < da5808c253a6962fe0455dba3eae4c089d58c9670d271e664d5ad330e80e3c1d  ./.iwe-runtime/.build-hash
+   diff ---
+   diff > 6c716e414ded79563ae714611da141ab0f8d61912ab885bfa7039f617f1e2edc  ./.iwe-runtime/.build-hash
+   diff 1742,1748c1742,1748
+   diff < 0ea9e5ab1d7ebc9d9977f6a629eeb803f104d864bc4fe3b5694abd84f4682cc0  ./.iwe-runtime/state/capabilities/backup
+   diff < 8c24b63534de8a54ac4ccb35fa418c0037944a57a92febd972d5ba7e202bbac4  ./.iwe-runtime/state/capabilities/claude_cli
+   diff < 73ab3692809cf574153c7d664e3317c43e0f5e17ed8e7d7f12903d46c0202de4  ./.iwe-runtime/state/capabilities/gateway
+mainch: channel=main args=--yes rc=1 changed_lines=18
+     ⚠ update.sh выпуска старше установленного — не заменяю его: сначала решение об откате.
+      Любой канал, который вернёт установку назад, тоже спросит ROLLBACK.
+   🔴 Остановлено: обнаружен откат на более старый релиз, а --yes запрещает интерактивное подтверждение.
+   diff 1711c1711
+   diff < da5808c253a6962fe0455dba3eae4c089d58c9670d271e664d5ad330e80e3c1d  ./.iwe-runtime/.build-hash
+   diff ---
+   diff > 6c716e414ded79563ae714611da141ab0f8d61912ab885bfa7039f617f1e2edc  ./.iwe-runtime/.build-hash
+   diff 1742,1748c1742,1748
+   diff < 0ea9e5ab1d7ebc9d9977f6a629eeb803f104d864bc4fe3b5694abd84f4682cc0  ./.iwe-runtime/state/capabilities/backup
+   diff < 8c24b63534de8a54ac4ccb35fa418c0037944a57a92febd972d5ba7e202bbac4  ./.iwe-runtime/state/capabilities/claude_cli
+   diff < 73ab3692809cf574153c7d664e3317c43e0f5e17ed8e7d7f12903d46c0202de4  ./.iwe-runtime/state/capabilities/gateway
+rel-interactive: channel=release args= rc=0 changed_lines=18
+     Канал поставки: релиз v0.41.11 (снимок 46a864ee3007)
+     ⚠ update.sh выпуска старше установленного — не заменяю его: сначала решение об откате.
+      Любой канал, который вернёт установку назад, тоже спросит ROLLBACK.
+   diff 1711c1711
+   diff < da5808c253a6962fe0455dba3eae4c089d58c9670d271e664d5ad330e80e3c1d  ./.iwe-runtime/.build-hash
+   diff ---
+   diff > 6c716e414ded79563ae714611da141ab0f8d61912ab885bfa7039f617f1e2edc  ./.iwe-runtime/.build-hash
+   diff 1742,1748c1742,1748
+   diff < 0ea9e5ab1d7ebc9d9977f6a629eeb803f104d864bc4fe3b5694abd84f4682cc0  ./.iwe-runtime/state/capabilities/backup
+   diff < 8c24b63534de8a54ac4ccb35fa418c0037944a57a92febd972d5ba7e202bbac4  ./.iwe-runtime/state/capabilities/claude_cli
+   diff < 73ab3692809cf574153c7d664e3317c43e0f5e17ed8e7d7f12903d46c0202de4  ./.iwe-runtime/state/capabilities/gateway
+## sentinels intact?
+sentinels ok
+## git status of template
+?? extensions/rt-sentinel.md
+## leftovers
+guard rc=0

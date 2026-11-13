@@ -1,0 +1,176 @@
+==========================================
+  Exocortex Setup v0.7.0 (core)
+==========================================
+
+Template: /tmp/iwe-rt.lx0u3e/fx/fresh-core/FMT-exocortex-template
+
+Checking prerequisites...
+  ✓ Git: /run/current-system/sw/bin/git
+  ✓ Git identity: задана
+  ✓ jq: /run/current-system/sw/bin/jq
+
+  Режим --core: проверяются только обязательные зависимости (git).
+  GitHub CLI, Node.js, Claude Code — не требуются.
+
+  [CI] GITHUB_USER=rt-user WORKSPACE_DIR=/tmp/iwe-rt.lx0u3e/fx/fresh-core
+
+Configuration:
+  GitHub user:    rt-user
+  Workspace:      /tmp/iwe-rt.lx0u3e/fx/fresh-core
+  Mode:           core (offline)
+  Home dir:       /tmp/iwe-rt.lx0u3e/fx/fresh-core
+  Project slug:   -tmp-iwe-rt-lx0u3e-fx-fresh-core
+
+setup.sh: line 588: source: filename argument required
+source: usage: source filename [arguments]
+  Configuration saved to /tmp/iwe-rt.lx0u3e/fx/fresh-core/.exocortex.env
+
+[1/6] Building generated runtime...
+  === build-runtime ===
+    Template: /tmp/iwe-rt.lx0u3e/fx/fresh-core/FMT-exocortex-template
+    Workspace: /tmp/iwe-rt.lx0u3e/fx/fresh-core
+    Env file: /tmp/iwe-rt.lx0u3e/fx/fresh-core/.exocortex.env
+    Runtime: /tmp/iwe-rt.lx0u3e/fx/fresh-core/.iwe-runtime
+  
+    ⚠ params.yaml отсутствовал в /tmp/iwe-rt.lx0u3e/fx/fresh-core — засеян значениями шаблона. Ваши прежние настройки в нём НЕ восстановлены.
+  ✓ runtime: 27 файлов в /tmp/iwe-rt.lx0u3e/fx/fresh-core/.iwe-runtime/
+  ✓ workspace: 2 файлов обновлено / 2 проверено
+    Build hash: 6446244cff263a40...
+    FMT version: 0.42.0
+  Pre-commit hook enabled (.githooks/)
+[2/6] Installing CLAUDE.md + AGENTS.md...
+  Copied CLAUDE.md (+ merge base) and AGENTS.md (substituted)
+[3/6] Installing memory...
+  Copied to /tmp/iwe-rt.lx0u3e/fx/fresh-core/.claude/projects/-tmp-iwe-rt-lx0u3e-fx-fresh-core/memory
+  Symlink: /tmp/iwe-rt.lx0u3e/fx/fresh-core/memory → /tmp/iwe-rt.lx0u3e/fx/fresh-core/.claude/projects/-tmp-iwe-rt-lx0u3e-fx-fresh-core/memory
+[4/6] Claude settings... пропущено (core mode)
+[4b] Installing skills, hooks, rules, rules-lazy, lib, bin, config, detectors, scripts, styles...
+  ✓ .claude/skills/ → /tmp/iwe-rt.lx0u3e/fx/fresh-core/.claude/skills/
+  ✓ .claude/hooks/ → /tmp/iwe-rt.lx0u3e/fx/fresh-core/.claude/hooks/
+  ✓ .claude/rules/ → /tmp/iwe-rt.lx0u3e/fx/fresh-core/.claude/rules/
+  ✓ .claude/rules-lazy/ → /tmp/iwe-rt.lx0u3e/fx/fresh-core/.claude/rules-lazy/
+  ✓ .claude/lib/ → /tmp/iwe-rt.lx0u3e/fx/fresh-core/.claude/lib/
+  ✓ .claude/bin/ → /tmp/iwe-rt.lx0u3e/fx/fresh-core/.claude/bin/
+  ✓ .claude/config/ → /tmp/iwe-rt.lx0u3e/fx/fresh-core/.claude/config/
+  ✓ .claude/detectors/ → /tmp/iwe-rt.lx0u3e/fx/fresh-core/.claude/detectors/
+  ✓ .claude/scripts/ → /tmp/iwe-rt.lx0u3e/fx/fresh-core/.claude/scripts/
+  ✓ .claude/agents/ → /tmp/iwe-rt.lx0u3e/fx/fresh-core/.claude/agents/
+  ✓ .claude/styles/ → /tmp/iwe-rt.lx0u3e/fx/fresh-core/.claude/styles/
+  ✓ .claude/templates/ → /tmp/iwe-rt.lx0u3e/fx/fresh-core/.claude/templates/
+  ✓ .claude/settings.json
+  ✓ .claude/capture-config.sh.example
+  ✓ .claude/parity-contract.yaml
+  ✓ .claude/process-pattern-catalog.yaml
+  ✓ .claude/rules-registry.yaml
+  ✓ .claude/runtime-overlay.yaml
+  ✓ .claude/skills-catalog.yaml
+  ✓ .claude/sync-manifest.yaml
+[4c] Configuring .mcp.json...
+  ✓ /tmp/iwe-rt.lx0u3e/fx/fresh-core/.mcp.json → iwe-knowledge (браузерный OAuth, tier=T1)
+[4d] Installing IWE environment variables...
+    ✓ /tmp/iwe-rt.lx0u3e/fx/fresh-core/.iwe-paths written (workspace=/tmp/iwe-rt.lx0u3e/fx/fresh-core)
+    ✓ /tmp/iwe-rt.lx0u3e/fx/fresh-core/.zshenv → sources $WORKSPACE_DIR/.iwe-paths
+    ✓ /tmp/iwe-rt.lx0u3e/fx/fresh-core/.bashrc → sources $WORKSPACE_DIR/.iwe-paths
+  ℹ  Restart shell or run: source /tmp/iwe-rt.lx0u3e/fx/fresh-core/.zshenv
+[4f] Regenerating hot-files.list...
+  generate-hot-files-list: wrote 5 file(s) to /tmp/iwe-rt.lx0u3e/fx/fresh-core/.iwe-runtime/hot-files.list (governance repo: "DS-strategy")
+[5/6] Автоматизация... пропущена (core mode)
+[6/6] Setting up DS-strategy...
+[6a] executor-catalog.yaml... пропущено (core mode, нет агента для маршрутизации)
+Initialized empty Git repository in /tmp/iwe-rt.lx0u3e/fx/fresh-core/DS-strategy/.git/
+[main (root-commit) 1c0d566] Initial exocortex: DS-strategy governance hub
+ 61 files changed, 12243 insertions(+)
+ create mode 100755 .githooks/pre-commit
+ create mode 100755 .githooks/pre-commit-deny-legacy-sessions.sh
+ create mode 100755 .githooks/pre-push
+ create mode 100644 .gitignore
+ create mode 100644 CLAUDE.md
+ create mode 100644 REPO-TYPE.md
+ create mode 100644 archive/.gitkeep
+ create mode 100644 archive/day-plans/.gitkeep
+ create mode 100644 archive/notes/.gitkeep
+ create mode 100644 archive/week-plans/.gitkeep
+ create mode 100644 archive/week-reports/.gitkeep
+ create mode 100644 archive/wp-contexts/.gitkeep
+ create mode 100644 current/.gitkeep
+ create mode 100644 current/WeekPlan W1.md
+ create mode 100644 decisions/.gitkeep
+ create mode 100644 docs/Dissatisfactions.md
+ create mode 100644 docs/Session Agenda.md
+ create mode 100644 docs/Strategy.md
+ create mode 100644 docs/WP-REGISTRY.md
+ create mode 100644 drafts/README.md
+ create mode 100644 drafts/draft-list.md
+ create mode 100644 exocortex/.gitkeep
+ create mode 100644 exocortex/agent-fault-profile/.gitignore
+ create mode 100644 inbox/.gitkeep
+ create mode 100644 inbox/fleeting-notes.md
+ create mode 100644 personal/.gitkeep
+ create mode 100755 scripts/agent_fault_remind.py
+ create mode 100755 scripts/agent_fault_remind.sh
+ create mode 100755 scripts/day-open-bottleneck-patch.sh
+ create mode 100755 scripts/day-open-budget-patch.py
+ create mode 100755 scripts/day-open-checks-runner.sh
+ create mode 100755 scripts/day-open-close-error-patch.py
+ create mode 100755 scripts/day-open-hooks-runner.sh
+ create mode 100755 scripts/day-open-ledger-render-patch.py
+ create mode 100755 scripts/day-open-llm-fill.py
+ create mode 100755 scripts/day-open-multiplier-backfill-patch.py
+ create mode 100755 scripts/day-open-pipeline.sh
+ create mode 100755 scripts/day-open-priorities-patch.py
+ create mode 100755 scripts/day-open-scaffold.sh
+ create mode 100755 scripts/day-open-sync-banner-patch.py
+ create mode 100755 scripts/day-open-version-check-patch.py
+ create mode 100755 scripts/ds-publish.sh
+ create mode 100755 scripts/generate-executor-catalog.py
+ create mode 100755 scripts/install-hooks.sh
+ create mode 100755 scripts/isolate-push.sh
+ create mode 100755 scripts/iwe_checklist_memory.py
+ create mode 100755 scripts/ledger-append.sh
+ create mode 100755 scripts/lib/common.sh
+ create mode 100755 scripts/lib/day-open-hooks.sh
+ create mode 100755 scripts/lib/find-python3.sh
+ create mode 100755 scripts/lib/ledger-path.sh
+ create mode 100755 scripts/lib/ledger-publish-kick.sh
+ create mode 100644 scripts/lib/ledger_path.py
+ create mode 100755 scripts/lib/network-wait.sh
+ create mode 100755 scripts/lib/notification-render.sh
+ create mode 100755 scripts/lib/publish-gate.sh
+ create mode 100755 scripts/lib/telegram.sh
+ create mode 100644 scripts/lib/wp_inbox.py
+ create mode 100755 scripts/llm-proxy-launcher.sh
+ create mode 100755 scripts/sync_feedback_to_memory.py
+ create mode 100755 scripts/update-derived-snapshot.py
+  Pre-commit hook enabled (.githooks/)
+  Локальный репозиторий создан. Для публикации на GitHub:
+    cd /tmp/iwe-rt.lx0u3e/fx/fresh-core/DS-strategy && gh repo create rt-user/DS-strategy --private --source=. --push
+[7/7] Installing Base repos (ZP, FPF, SPF)...
+  пропущено (core mode)
+[8/8] Enabling Knowledge Extractor feeders...
+  пропущено (core mode)
+
+==========================================
+  Setup Complete! (core)
+==========================================
+
+Verify installation:
+  ✓ CLAUDE.md:   /tmp/iwe-rt.lx0u3e/fx/fresh-core/CLAUDE.md
+  ✓ Memory:      /tmp/iwe-rt.lx0u3e/fx/fresh-core/.claude/projects/-tmp-iwe-rt-lx0u3e-fx-fresh-core/memory/ (33 files)
+  ✓ Symlink:     /tmp/iwe-rt.lx0u3e/fx/fresh-core/memory → /tmp/iwe-rt.lx0u3e/fx/fresh-core/.claude/projects/-tmp-iwe-rt-lx0u3e-fx-fresh-core/memory
+  ✓ DS-strategy: /tmp/iwe-rt.lx0u3e/fx/fresh-core/DS-strategy/
+  ✓ Template:    /tmp/iwe-rt.lx0u3e/fx/fresh-core/FMT-exocortex-template/
+
+Next steps:
+  1. cd /tmp/iwe-rt.lx0u3e/fx/fresh-core
+  2. Запустите ваш AI CLI (Claude Code, Codex, Aider, Continue.dev и др.)
+  3. Скажите: «Проведём первую стратегическую сессию»
+
+Developer onboarding (T4+) — single entry point:
+  cat docs/developer/README.md
+
+Update from upstream:
+  cd /tmp/iwe-rt.lx0u3e/fx/fresh-core/FMT-exocortex-template && bash update.sh
+
+Личные (PD-*) и служебные (MC-*) репозитории (WP-526/WP-527):
+  создаются по запросу, не при установке — см. README.md § «5 семей репозиториев»
+

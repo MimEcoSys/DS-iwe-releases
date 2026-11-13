@@ -1,0 +1,182 @@
+==========================================
+  Exocortex Setup v0.7.0
+==========================================
+
+Template: /home/iwe-test/IWE/FMT-exocortex-template
+
+Checking prerequisites...
+  ✓ Git: /run/current-system/sw/bin/git
+  ✓ jq: /run/current-system/sw/bin/jq
+  ✓ GitHub CLI: /home/iwe-test/.local/bin/gh
+  ✓ Node.js: /run/current-system/sw/bin/node
+  ✓ npm: /run/current-system/sw/bin/npm
+  ✓ AI Agent: claude (/home/iwe-test/.npm-global/bin/claude)
+  ✓ GitHub CLI: authenticated
+
+
+Configuration:
+  GitHub user:    your-username
+  Workspace:      /home/iwe-test/IWE
+  Claude path:    /home/iwe-test/.npm-global/bin/claude
+  Schedule hour:  4 (UTC)
+  Time desc:      4:00 UTC
+  Home dir:       /home/iwe-test
+  Project slug:   -home-iwe-test-IWE
+
+Data Policy
+  IWE collects and processes data as described in docs/DATA-POLICY.md
+  Summary: profile, sessions, and learning data are stored on the platform (Neon DB).
+  Your personal/ files stay local. Claude API receives prompts + profile context.
+  You can view your data (/mydata) and delete it at any time.
+
+  Full policy: docs/DATA-POLICY.md
+
+
+
+
+setup.sh: строка 374: source: требуется аргумент с именем файла
+source: использование: source файл [аргументы]
+  Configuration saved to /home/iwe-test/IWE/.exocortex.env
+
+[1/6] Building generated runtime...
+  === build-runtime ===
+    Template: /home/iwe-test/IWE/FMT-exocortex-template
+    Workspace: /home/iwe-test/IWE
+    Env file: /home/iwe-test/IWE/.exocortex.env
+    Runtime: /home/iwe-test/IWE/.iwe-runtime
+  
+  ✓ runtime: 24 файлов в /home/iwe-test/IWE/.iwe-runtime/
+  ✓ workspace: 2 файлов обновлено / 2 проверено
+    Build hash: 7a275470d3a32598...
+    FMT version: 0.36.3
+  Pre-commit hook enabled (.githooks/)
+[2/6] Installing CLAUDE.md...
+  Copied to /home/iwe-test/IWE/CLAUDE.md (+ merge base, substituted)
+[3/6] Installing memory...
+  Copied to /home/iwe-test/.claude/projects/-home-iwe-test-IWE/memory
+  Symlink: /home/iwe-test/IWE/memory → /home/iwe-test/.claude/projects/-home-iwe-test-IWE/memory
+[4/6] Installing Claude settings...
+  WARN: settings.local.json not found in template, skipping.
+  Знаниевые MCP-серверы подключаются через Gateway (автоматически):
+
+  .mcp.json содержит iwe-knowledge → https://mcp.aisystant.com/mcp
+  T1-T2: при первом запуске откроется браузер (OAuth через Ory).
+  T3-T4: CLI-режим (IWE_TIER=T3 в env или tier: T3 в ~/.iwe/config.yaml).
+  Необходима подписка «Инженерия интеллекта» (ранее «Бесконечное развитие»).
+  После входа: /mcp в Claude Code.
+[4b] Installing skills, hooks, rules, rules-lazy, lib, config, detectors, scripts, styles...
+  ✓ .claude/skills/ → /home/iwe-test/IWE/.claude/skills/
+  ✓ .claude/hooks/ → /home/iwe-test/IWE/.claude/hooks/
+  ✓ .claude/rules/ → /home/iwe-test/IWE/.claude/rules/
+  ✓ .claude/rules-lazy/ → /home/iwe-test/IWE/.claude/rules-lazy/
+  ✓ .claude/lib/ → /home/iwe-test/IWE/.claude/lib/
+  ✓ .claude/config/ → /home/iwe-test/IWE/.claude/config/
+  ✓ .claude/detectors/ → /home/iwe-test/IWE/.claude/detectors/
+  ✓ .claude/scripts/ → /home/iwe-test/IWE/.claude/scripts/
+  ✓ .claude/agents/ → /home/iwe-test/IWE/.claude/agents/
+  ✓ .claude/styles/ → /home/iwe-test/IWE/.claude/styles/
+  ✓ .claude/templates/ → /home/iwe-test/IWE/.claude/templates/
+  ✓ .claude/settings.json
+[4c] Configuring .mcp.json...
+  ✓ /home/iwe-test/IWE/.mcp.json → iwe-knowledge (браузерный OAuth, tier=T1)
+[4d] Installing IWE environment variables...
+    ✓ /home/iwe-test/IWE/.iwe-paths written (workspace=/home/iwe-test/IWE)
+    ✓ /home/iwe-test/.zshenv → sources $WORKSPACE_DIR/.iwe-paths
+  ℹ  Restart shell or run: source /home/iwe-test/.zshenv
+[4e] Generating executor-catalog.yaml...
+  ⚠ executor-catalog.yaml не сгенерирован — не хватает библиотеки PyYAML для python3.
+    Установи: sudo apt install python3-yaml (или: pip3 install pyyaml, если pip3 уже стоит)
+    Потом выполни вручную:
+    python3 /home/iwe-test/IWE/FMT-exocortex-template/scripts/generate-executor-catalog.py
+[4f] Regenerating hot-files.list...
+  generate-hot-files-list: wrote 5 file(s) to /home/iwe-test/IWE/FMT-exocortex-template/scripts/hot-files.list (governance repo: "DS-strategy")
+[5/6] Автоматизация... пропущена (launchd не найден — не macOS)
+  Роли используют launchd (macOS). На Linux используйте cron/systemd вручную.
+  См. /home/iwe-test/IWE/FMT-exocortex-template/roles/ROLE-CONTRACT.md
+[6/6] Setting up DS-strategy...
+hint: Using 'master' as the name for the initial branch. This default branch name
+hint: is subject to change. To configure the initial branch name to use in all
+hint: of your new repositories, which will suppress this warning, call:
+hint:
+hint: 	git config --global init.defaultBranch <name>
+hint:
+hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+hint: 'development'. The just-created branch can be renamed via this command:
+hint:
+hint: 	git branch -m <name>
+hint:
+hint: Disable this message with "git config set advice.defaultBranchName false"
+Инициализирован пустой репозиторий Git в /home/iwe-test/IWE/DS-strategy/.git/
+[master (корневой коммит) 635392d] Initial exocortex: DS-strategy governance hub
+ 31 files changed, 3882 insertions(+)
+ create mode 100755 .githooks/pre-commit
+ create mode 100755 .githooks/pre-push
+ create mode 100644 CLAUDE.md
+ create mode 100644 REPO-TYPE.md
+ create mode 100644 archive/.gitkeep
+ create mode 100644 archive/day-plans/.gitkeep
+ create mode 100644 archive/notes/.gitkeep
+ create mode 100644 archive/week-plans/.gitkeep
+ create mode 100644 archive/week-reports/.gitkeep
+ create mode 100644 archive/wp-contexts/.gitkeep
+ create mode 100644 current/.gitkeep
+ create mode 100644 decisions/.gitkeep
+ create mode 100644 docs/Dissatisfactions.md
+ create mode 100644 docs/Session Agenda.md
+ create mode 100644 docs/Strategy.md
+ create mode 100644 docs/WP-REGISTRY.md
+ create mode 100644 drafts/README.md
+ create mode 100644 drafts/draft-list.md
+ create mode 100644 exocortex/.gitkeep
+ create mode 100644 inbox/.gitkeep
+ create mode 100644 inbox/fleeting-notes.md
+ create mode 100644 personal/.gitkeep
+ create mode 100755 scripts/day-open-budget-patch.py
+ create mode 100755 scripts/day-open-checks-runner.sh
+ create mode 100755 scripts/day-open-llm-fill.py
+ create mode 100755 scripts/day-open-pipeline.sh
+ create mode 100755 scripts/day-open-scaffold.sh
+ create mode 100755 scripts/install-hooks.sh
+ create mode 100755 scripts/lib/common.sh
+ create mode 100755 scripts/llm-proxy-launcher.sh
+ create mode 100755 scripts/update-derived-snapshot.py
+  Pre-commit hook enabled (.githooks/)
+  GitHub repo DS-strategy already exists or creation skipped.
+[7/7] Installing Base repos (ZP, FPF, SPF)...
+  ✓ ZP: клонирован (/home/iwe-test/IWE/ZP)
+  ✓ FPF: клонирован (/home/iwe-test/IWE/FPF)
+  ✓ SPF: клонирован (/home/iwe-test/IWE/SPF)
+
+==========================================
+  Setup Complete!
+==========================================
+
+Verify installation:
+  ✓ CLAUDE.md:   /home/iwe-test/IWE/CLAUDE.md
+  ✓ Memory:      /home/iwe-test/.claude/projects/-home-iwe-test-IWE/memory/ (30 files)
+  ✓ Symlink:     /home/iwe-test/IWE/memory → /home/iwe-test/.claude/projects/-home-iwe-test-IWE/memory
+  ✓ DS-strategy: /home/iwe-test/IWE/DS-strategy/
+  ✓ Template:    /home/iwe-test/IWE/FMT-exocortex-template/
+
+Next steps:
+  1. cd /home/iwe-test/IWE
+  2. claude
+  3. Ask Claude: «Проведём первую стратегическую сессию»
+
+Strategist will run automatically:
+  - Morning (4:00 UTC): strategy (Mon) / day-plan (Tue-Sun)
+  - Sunday night: week review
+
+Developer onboarding (T4+) — single entry point:
+  cat docs/developer/README.md
+
+Update from upstream:
+  cd /home/iwe-test/IWE/FMT-exocortex-template && bash update.sh
+
+Финальная проверка инсталляции (рекомендуется):
+  validate-режим setup.sh проверит: env-конфиг, обязательные файлы,
+  extensions, доступность MCP, структурные инварианты.
+
+
+Пропущено. Запустить позже: cd /home/iwe-test/IWE/FMT-exocortex-template && bash setup.sh --validate
+
