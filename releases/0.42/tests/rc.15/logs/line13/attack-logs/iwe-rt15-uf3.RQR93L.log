@@ -1,0 +1,16 @@
+setup(v0.36.3 full) rc=0
+up rc=2
+     Канал поставки: кандидат v0.42.0-rc.15 (снимок aaed1384ef77)
+installed version 0.36.3
+up2 rc=2
+back rc=2
+manifest unchanged after refused rollback
+== sentinels
+all 6 sentinels byte-identical (except CLAUDE.md user-space checked below)
+CLAUDE.md user-space: not planted or LOST
+== hooks resolve
+hooks 17 missing 0 allow 11 defaultMode acceptEdits
+wildcard allows: []
+== guard live check on installed hook
+benign command hook rc=0
+guard rc=0

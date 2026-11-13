@@ -1,0 +1,103 @@
+## clone rc.15
+warning: refs/tags/v0.42.0-rc.15 428733f654c48dfadb5b6703a35b56714f6c2530 не является коммитом!
+Примечание: переключение на «aaed1384ef772640288f08da3bd43332eeaecc18».
+
+Вы сейчас в состоянии «отсоединённого указателя HEAD». Можете осмотреться,
+внести экспериментальные изменения и зафиксировать их, также можете
+отменить любые коммиты, созданные в этом состоянии, не затрагивая другие
+ветки, переключившись обратно на любую ветку.
+
+Если хотите создать новую ветку для сохранения созданных коммитов, можете
+сделать это (сейчас или позже), используя команду switch с параметром -c.
+Например:
+
+  git switch -c <новая-ветка>
+
+Или отмените эту операцию с помощью:
+
+  git switch -
+
+Отключите этот совет, установив переменную конфигурации
+advice.detachedHead в значение false
+
+aaed1384ef772640288f08da3bd43332eeaecc18
+## setup (core)
+setup rc=0
+  cd /tmp/iwe-rt15-sc-core.8tBDdh/ws/FMT-exocortex-template && bash update.sh
+
+Личные (PD-*) и служебные (MC-*) репозитории (WP-526/WP-527):
+  создаются по запросу, не при установке — см. README.md § «5 семей репозиториев»
+
+unresolved-placeholder: /tmp/iwe-rt15-sc-core.8tBDdh/ws/.claude/runtime-overlay.yaml
+unresolved-placeholder: /tmp/iwe-rt15-sc-core.8tBDdh/ws/.claude/scripts/classify-workspace-copy.sh
+unresolved-placeholder: /tmp/iwe-rt15-sc-core.8tBDdh/ws/.claude/parity-contract.yaml
+unresolved-placeholder: /tmp/iwe-rt15-sc-core.8tBDdh/ws/.claude/skills/extend/SKILL.md
+unresolved-placeholder: /tmp/iwe-rt15-sc-core.8tBDdh/ws/.claude/skills/ke/SKILL.md
+## sentinels
+gov=/tmp/iwe-rt15-sc-core.8tBDdh/ws/DS-strategy
+## repeat update (rc channel, second run after install)
+rerun: channel=rc args=--yes rc=0 changed_lines=13
+     Канал поставки: кандидат v0.42.0-rc.15 (снимок aaed1384ef77)
+   ✓ Всё актуально. Обновлений нет. (878 файлов проверено)
+   diff 271a272
+   diff > 4c9025dd0297d2a0b6d8add2de7cff7100d6d9f225462122441dca8d6ec4612c  ./DS-strategy/scripts/executor-catalog.yaml
+   diff 1659c1660
+   diff < b6b8a1947325e7b03764603975a48a517563fc173470d7e71c034843ae5aac9f  ./.iwe-runtime/.build-hash
+   diff ---
+   diff > b31eb80b38d7a85fc96ebac709951bcbc6f525419419bed61572ed7184ecd056  ./.iwe-runtime/.build-hash
+   diff 1688a1690,1697
+   diff > e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  ./.iwe-runtime/state/backup-undecided.notified
+rerun2: channel=rc args=--yes rc=0 changed_lines=13
+     Канал поставки: кандидат v0.42.0-rc.15 (снимок aaed1384ef77)
+   ✓ Всё актуально. Обновлений нет. (878 файлов проверено)
+   diff 271a272
+   diff > 4c9025dd0297d2a0b6d8add2de7cff7100d6d9f225462122441dca8d6ec4612c  ./DS-strategy/scripts/executor-catalog.yaml
+   diff 1659c1660
+   diff < b6b8a1947325e7b03764603975a48a517563fc173470d7e71c034843ae5aac9f  ./.iwe-runtime/.build-hash
+   diff ---
+   diff > f5a4886bf65ff153deb68272c4dc1afe24692891bb485e9ac00a4c36951ebdf4  ./.iwe-runtime/.build-hash
+   diff 1688a1690,1697
+   diff > e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  ./.iwe-runtime/state/backup-undecided.notified
+## rollback attempts
+rel: channel=release args=--yes rc=1 changed_lines=13
+     Канал поставки: релиз v0.41.11 (снимок 46a864ee3007)
+     ⚠ update.sh выпуска старше установленного — не заменяю его: сначала решение об откате.
+      Любой канал, который вернёт установку назад, тоже спросит ROLLBACK.
+   diff 271a272
+   diff > 4c9025dd0297d2a0b6d8add2de7cff7100d6d9f225462122441dca8d6ec4612c  ./DS-strategy/scripts/executor-catalog.yaml
+   diff 1659c1660
+   diff < b6b8a1947325e7b03764603975a48a517563fc173470d7e71c034843ae5aac9f  ./.iwe-runtime/.build-hash
+   diff ---
+   diff > f5a4886bf65ff153deb68272c4dc1afe24692891bb485e9ac00a4c36951ebdf4  ./.iwe-runtime/.build-hash
+   diff 1688a1690,1697
+   diff > e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  ./.iwe-runtime/state/backup-undecided.notified
+mainch: channel=main args=--yes rc=1 changed_lines=13
+     ⚠ update.sh выпуска старше установленного — не заменяю его: сначала решение об откате.
+      Любой канал, который вернёт установку назад, тоже спросит ROLLBACK.
+   🔴 Остановлено: обнаружен откат на более старый релиз, а --yes запрещает интерактивное подтверждение.
+   diff 271a272
+   diff > 4c9025dd0297d2a0b6d8add2de7cff7100d6d9f225462122441dca8d6ec4612c  ./DS-strategy/scripts/executor-catalog.yaml
+   diff 1659c1660
+   diff < b6b8a1947325e7b03764603975a48a517563fc173470d7e71c034843ae5aac9f  ./.iwe-runtime/.build-hash
+   diff ---
+   diff > f5a4886bf65ff153deb68272c4dc1afe24692891bb485e9ac00a4c36951ebdf4  ./.iwe-runtime/.build-hash
+   diff 1688a1690,1697
+   diff > e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  ./.iwe-runtime/state/backup-undecided.notified
+rel-interactive: channel=release args= rc=0 changed_lines=13
+     Канал поставки: релиз v0.41.11 (снимок 46a864ee3007)
+     ⚠ update.sh выпуска старше установленного — не заменяю его: сначала решение об откате.
+      Любой канал, который вернёт установку назад, тоже спросит ROLLBACK.
+   diff 271a272
+   diff > 4c9025dd0297d2a0b6d8add2de7cff7100d6d9f225462122441dca8d6ec4612c  ./DS-strategy/scripts/executor-catalog.yaml
+   diff 1659c1660
+   diff < b6b8a1947325e7b03764603975a48a517563fc173470d7e71c034843ae5aac9f  ./.iwe-runtime/.build-hash
+   diff ---
+   diff > f5a4886bf65ff153deb68272c4dc1afe24692891bb485e9ac00a4c36951ebdf4  ./.iwe-runtime/.build-hash
+   diff 1688a1690,1697
+   diff > e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  ./.iwe-runtime/state/backup-undecided.notified
+## sentinels intact?
+sentinels ok
+## git status of template
+?? extensions/rt-sentinel.md
+## leftovers
+guard rc=0

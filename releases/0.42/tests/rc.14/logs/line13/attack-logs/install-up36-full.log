@@ -1,0 +1,160 @@
+==========================================
+  Exocortex Setup v0.7.0
+==========================================
+
+Template: /tmp/iwe-rt.lx0u3e/fx/up36-full/FMT-exocortex-template
+
+Checking prerequisites...
+  ✓ Git: /run/current-system/sw/bin/git
+  ✓ jq: /run/current-system/sw/bin/jq
+  ✓ GitHub CLI: /home/iwe-test/.local/bin/gh
+  ✓ Node.js: /run/current-system/sw/bin/node
+  ✓ npm: /run/current-system/sw/bin/npm
+  ✓ AI Agent: claude (/home/iwe-test/.npm-global/bin/claude)
+  ✓ GitHub CLI: authenticated
+
+  [CI] GITHUB_USER=rt-user WORKSPACE_DIR=/tmp/iwe-rt.lx0u3e/fx/up36-full
+
+Configuration:
+  GitHub user:    rt-user
+  Workspace:      /tmp/iwe-rt.lx0u3e/fx/up36-full
+  Claude path:    claude
+  Schedule hour:  4 (UTC)
+  Time desc:      4:00 UTC
+  Home dir:       /tmp/iwe-rt.lx0u3e/fx/up36-full
+  Project slug:   -tmp-iwe-rt.lx0u3e-fx-up36-full
+
+setup.sh: строка 374: source: требуется аргумент с именем файла
+source: использование: source файл [аргументы]
+  Configuration saved to /tmp/iwe-rt.lx0u3e/fx/up36-full/.exocortex.env
+
+[1/6] Building generated runtime...
+  === build-runtime ===
+    Template: /tmp/iwe-rt.lx0u3e/fx/up36-full/FMT-exocortex-template
+    Workspace: /tmp/iwe-rt.lx0u3e/fx/up36-full
+    Env file: /tmp/iwe-rt.lx0u3e/fx/up36-full/.exocortex.env
+    Runtime: /tmp/iwe-rt.lx0u3e/fx/up36-full/.iwe-runtime
+  
+  ✓ runtime: 24 файлов в /tmp/iwe-rt.lx0u3e/fx/up36-full/.iwe-runtime/
+  ✓ workspace: 2 файлов обновлено / 2 проверено
+    Build hash: a132542a4981df26...
+    FMT version: 0.36.3
+  Pre-commit hook enabled (.githooks/)
+[2/6] Installing CLAUDE.md...
+  Copied to /tmp/iwe-rt.lx0u3e/fx/up36-full/CLAUDE.md (+ merge base, substituted)
+[3/6] Installing memory...
+  Copied to /tmp/iwe-rt.lx0u3e/fx/up36-full/.claude/projects/-tmp-iwe-rt.lx0u3e-fx-up36-full/memory
+  Symlink: /tmp/iwe-rt.lx0u3e/fx/up36-full/memory → /tmp/iwe-rt.lx0u3e/fx/up36-full/.claude/projects/-tmp-iwe-rt.lx0u3e-fx-up36-full/memory
+[4/6] Installing Claude settings...
+  WARN: settings.local.json not found in template, skipping.
+  Знаниевые MCP-серверы подключаются через Gateway (автоматически):
+
+  .mcp.json содержит iwe-knowledge → https://mcp.aisystant.com/mcp
+  T1-T2: при первом запуске откроется браузер (OAuth через Ory).
+  T3-T4: CLI-режим (IWE_TIER=T3 в env или tier: T3 в ~/.iwe/config.yaml).
+  Необходима подписка «Инженерия интеллекта» (ранее «Бесконечное развитие»).
+  После входа: /mcp в Claude Code.
+[4b] Installing skills, hooks, rules, rules-lazy, lib, config, detectors, scripts, styles...
+  ✓ .claude/skills/ → /tmp/iwe-rt.lx0u3e/fx/up36-full/.claude/skills/
+  ✓ .claude/hooks/ → /tmp/iwe-rt.lx0u3e/fx/up36-full/.claude/hooks/
+  ✓ .claude/rules/ → /tmp/iwe-rt.lx0u3e/fx/up36-full/.claude/rules/
+  ✓ .claude/rules-lazy/ → /tmp/iwe-rt.lx0u3e/fx/up36-full/.claude/rules-lazy/
+  ✓ .claude/lib/ → /tmp/iwe-rt.lx0u3e/fx/up36-full/.claude/lib/
+  ✓ .claude/config/ → /tmp/iwe-rt.lx0u3e/fx/up36-full/.claude/config/
+  ✓ .claude/detectors/ → /tmp/iwe-rt.lx0u3e/fx/up36-full/.claude/detectors/
+  ✓ .claude/scripts/ → /tmp/iwe-rt.lx0u3e/fx/up36-full/.claude/scripts/
+  ✓ .claude/agents/ → /tmp/iwe-rt.lx0u3e/fx/up36-full/.claude/agents/
+  ✓ .claude/styles/ → /tmp/iwe-rt.lx0u3e/fx/up36-full/.claude/styles/
+  ✓ .claude/templates/ → /tmp/iwe-rt.lx0u3e/fx/up36-full/.claude/templates/
+  ✓ .claude/settings.json
+[4c] Configuring .mcp.json...
+  ✓ /tmp/iwe-rt.lx0u3e/fx/up36-full/.mcp.json → iwe-knowledge (браузерный OAuth, tier=T1)
+[4d] Installing IWE environment variables...
+    ✓ /tmp/iwe-rt.lx0u3e/fx/up36-full/.iwe-paths written (workspace=/tmp/iwe-rt.lx0u3e/fx/up36-full)
+    ✓ /tmp/iwe-rt.lx0u3e/fx/up36-full/.zshenv → sources $WORKSPACE_DIR/.iwe-paths
+  ℹ  Restart shell or run: source /tmp/iwe-rt.lx0u3e/fx/up36-full/.zshenv
+[4e] Generating executor-catalog.yaml...
+  ⚠ executor-catalog.yaml не сгенерирован — не хватает библиотеки PyYAML для python3.
+    Установи: sudo apt install python3-yaml (или: pip3 install pyyaml, если pip3 уже стоит)
+    Потом выполни вручную:
+    python3 /tmp/iwe-rt.lx0u3e/fx/up36-full/FMT-exocortex-template/scripts/generate-executor-catalog.py
+[4f] Regenerating hot-files.list...
+  generate-hot-files-list: wrote 5 file(s) to /tmp/iwe-rt.lx0u3e/fx/up36-full/FMT-exocortex-template/scripts/hot-files.list (governance repo: "DS-strategy")
+[5/6] Автоматизация... пропущена (launchd не найден — не macOS)
+  Роли используют launchd (macOS). На Linux используйте cron/systemd вручную.
+  См. /tmp/iwe-rt.lx0u3e/fx/up36-full/FMT-exocortex-template/roles/ROLE-CONTRACT.md
+[6/6] Setting up DS-strategy...
+Инициализирован пустой репозиторий Git в /tmp/iwe-rt.lx0u3e/fx/up36-full/DS-strategy/.git/
+[main (корневой коммит) a4bf4bc] Initial exocortex: DS-strategy governance hub
+ 31 files changed, 3882 insertions(+)
+ create mode 100755 .githooks/pre-commit
+ create mode 100755 .githooks/pre-push
+ create mode 100644 CLAUDE.md
+ create mode 100644 REPO-TYPE.md
+ create mode 100644 archive/.gitkeep
+ create mode 100644 archive/day-plans/.gitkeep
+ create mode 100644 archive/notes/.gitkeep
+ create mode 100644 archive/week-plans/.gitkeep
+ create mode 100644 archive/week-reports/.gitkeep
+ create mode 100644 archive/wp-contexts/.gitkeep
+ create mode 100644 current/.gitkeep
+ create mode 100644 decisions/.gitkeep
+ create mode 100644 docs/Dissatisfactions.md
+ create mode 100644 docs/Session Agenda.md
+ create mode 100644 docs/Strategy.md
+ create mode 100644 docs/WP-REGISTRY.md
+ create mode 100644 drafts/README.md
+ create mode 100644 drafts/draft-list.md
+ create mode 100644 exocortex/.gitkeep
+ create mode 100644 inbox/.gitkeep
+ create mode 100644 inbox/fleeting-notes.md
+ create mode 100644 personal/.gitkeep
+ create mode 100755 scripts/day-open-budget-patch.py
+ create mode 100755 scripts/day-open-checks-runner.sh
+ create mode 100755 scripts/day-open-llm-fill.py
+ create mode 100755 scripts/day-open-pipeline.sh
+ create mode 100755 scripts/day-open-scaffold.sh
+ create mode 100755 scripts/install-hooks.sh
+ create mode 100755 scripts/lib/common.sh
+ create mode 100755 scripts/llm-proxy-launcher.sh
+ create mode 100755 scripts/update-derived-snapshot.py
+  Pre-commit hook enabled (.githooks/)
+  GitHub repo DS-strategy already exists or creation skipped.
+[7/7] Installing Base repos (ZP, FPF, SPF)...
+  ✓ ZP: клонирован (/tmp/iwe-rt.lx0u3e/fx/up36-full/ZP)
+  ✓ FPF: клонирован (/tmp/iwe-rt.lx0u3e/fx/up36-full/FPF)
+  ✓ SPF: клонирован (/tmp/iwe-rt.lx0u3e/fx/up36-full/SPF)
+
+==========================================
+  Setup Complete!
+==========================================
+
+Verify installation:
+  ✓ CLAUDE.md:   /tmp/iwe-rt.lx0u3e/fx/up36-full/CLAUDE.md
+  ✓ Memory:      /tmp/iwe-rt.lx0u3e/fx/up36-full/.claude/projects/-tmp-iwe-rt.lx0u3e-fx-up36-full/memory/ (30 files)
+  ✓ Symlink:     /tmp/iwe-rt.lx0u3e/fx/up36-full/memory → /tmp/iwe-rt.lx0u3e/fx/up36-full/.claude/projects/-tmp-iwe-rt.lx0u3e-fx-up36-full/memory
+  ✓ DS-strategy: /tmp/iwe-rt.lx0u3e/fx/up36-full/DS-strategy/
+  ✓ Template:    /tmp/iwe-rt.lx0u3e/fx/up36-full/FMT-exocortex-template/
+
+Next steps:
+  1. cd /tmp/iwe-rt.lx0u3e/fx/up36-full
+  2. claude
+  3. Ask Claude: «Проведём первую стратегическую сессию»
+
+Strategist will run automatically:
+  - Morning (4:00 UTC): strategy (Mon) / day-plan (Tue-Sun)
+  - Sunday night: week review
+
+Developer onboarding (T4+) — single entry point:
+  cat docs/developer/README.md
+
+Update from upstream:
+  cd /tmp/iwe-rt.lx0u3e/fx/up36-full/FMT-exocortex-template && bash update.sh
+
+Финальная проверка инсталляции (рекомендуется):
+  validate-режим setup.sh проверит: env-конфиг, обязательные файлы,
+  extensions, доступность MCP, структурные инварианты.
+
+
+Пропущено. Запустить позже: cd /tmp/iwe-rt.lx0u3e/fx/up36-full/FMT-exocortex-template && bash setup.sh --validate
+

@@ -1,0 +1,255 @@
+==========================================
+  Exocortex Setup v0.7.0
+==========================================
+
+Template: /tmp/iwe-rt.lx0u3e/fx/up41-full/FMT-exocortex-template
+
+Checking prerequisites...
+  ✓ Git: /run/current-system/sw/bin/git
+  ✓ Git identity: задана
+  ✓ jq: /run/current-system/sw/bin/jq
+  ✓ GitHub CLI: /home/iwe-test/.local/bin/gh
+  ✓ Node.js: /run/current-system/sw/bin/node
+  ✓ npm: /run/current-system/sw/bin/npm
+  ✓ AI Agent: claude (/home/iwe-test/.npm-global/bin/claude)
+  ✓ GitHub CLI: authenticated
+
+  [CI] GITHUB_USER=rt-user WORKSPACE_DIR=/tmp/iwe-rt.lx0u3e/fx/up41-full
+
+Configuration:
+  GitHub user:    rt-user
+  Workspace:      /tmp/iwe-rt.lx0u3e/fx/up41-full
+  Claude path:    claude
+  Schedule hour:  4 (местное время)
+  Time desc:      4:00 (местное время)
+  Home dir:       /tmp/iwe-rt.lx0u3e/fx/up41-full
+  Project slug:   -tmp-iwe-rt-lx0u3e-fx-up41-full
+
+setup.sh: строка 588: source: требуется аргумент с именем файла
+source: использование: source файл [аргументы]
+  Configuration saved to /tmp/iwe-rt.lx0u3e/fx/up41-full/.exocortex.env
+
+[1/6] Building generated runtime...
+  === build-runtime ===
+    Template: /tmp/iwe-rt.lx0u3e/fx/up41-full/FMT-exocortex-template
+    Workspace: /tmp/iwe-rt.lx0u3e/fx/up41-full
+    Env file: /tmp/iwe-rt.lx0u3e/fx/up41-full/.exocortex.env
+    Runtime: /tmp/iwe-rt.lx0u3e/fx/up41-full/.iwe-runtime
+  
+    ⚠ params.yaml отсутствовал в /tmp/iwe-rt.lx0u3e/fx/up41-full — засеян значениями шаблона. Ваши прежние настройки в нём НЕ восстановлены.
+  ✓ runtime: 27 файлов в /tmp/iwe-rt.lx0u3e/fx/up41-full/.iwe-runtime/
+  ✓ workspace: 2 файлов обновлено / 2 проверено
+    Build hash: 1cf6e56c33707b35...
+    FMT version: 0.41.11
+  Pre-commit hook enabled (.githooks/)
+[2/6] Installing CLAUDE.md + AGENTS.md...
+  Copied CLAUDE.md (+ merge base) and AGENTS.md (substituted)
+[3/6] Installing memory...
+  Copied to /tmp/iwe-rt.lx0u3e/fx/up41-full/.claude/projects/-tmp-iwe-rt-lx0u3e-fx-up41-full/memory
+  Symlink: /tmp/iwe-rt.lx0u3e/fx/up41-full/memory → /tmp/iwe-rt.lx0u3e/fx/up41-full/.claude/projects/-tmp-iwe-rt-lx0u3e-fx-up41-full/memory
+[4/6] Installing Claude settings...
+  WARN: settings.local.json not found in template, skipping.
+  Знаниевые MCP-серверы подключаются через Gateway (автоматически):
+
+  .mcp.json содержит iwe-knowledge → https://mcp.aisystant.com/mcp
+  T1-T2: при первом запуске откроется браузер (OAuth через Ory).
+  T3-T4: CLI-режим (IWE_TIER=T3 в env или tier: T3 в ~/.iwe/config.yaml).
+  Необходима подписка «Инженерия интеллекта» (ранее «Бесконечное развитие»).
+  После входа: /mcp в Claude Code.
+[4b] Installing skills, hooks, rules, rules-lazy, lib, bin, config, detectors, scripts, styles...
+  ✓ .claude/skills/ → /tmp/iwe-rt.lx0u3e/fx/up41-full/.claude/skills/
+  ✓ .claude/hooks/ → /tmp/iwe-rt.lx0u3e/fx/up41-full/.claude/hooks/
+  ✓ .claude/rules/ → /tmp/iwe-rt.lx0u3e/fx/up41-full/.claude/rules/
+  ✓ .claude/rules-lazy/ → /tmp/iwe-rt.lx0u3e/fx/up41-full/.claude/rules-lazy/
+  ✓ .claude/lib/ → /tmp/iwe-rt.lx0u3e/fx/up41-full/.claude/lib/
+  ✓ .claude/bin/ → /tmp/iwe-rt.lx0u3e/fx/up41-full/.claude/bin/
+  ✓ .claude/config/ → /tmp/iwe-rt.lx0u3e/fx/up41-full/.claude/config/
+  ✓ .claude/detectors/ → /tmp/iwe-rt.lx0u3e/fx/up41-full/.claude/detectors/
+  ✓ .claude/scripts/ → /tmp/iwe-rt.lx0u3e/fx/up41-full/.claude/scripts/
+  ✓ .claude/agents/ → /tmp/iwe-rt.lx0u3e/fx/up41-full/.claude/agents/
+  ✓ .claude/styles/ → /tmp/iwe-rt.lx0u3e/fx/up41-full/.claude/styles/
+  ✓ .claude/templates/ → /tmp/iwe-rt.lx0u3e/fx/up41-full/.claude/templates/
+  ✓ .claude/settings.json
+  ✓ .claude/capture-config.sh.example
+  ✓ .claude/parity-contract.yaml
+  ✓ .claude/process-pattern-catalog.yaml
+  ✓ .claude/rules-registry.yaml
+  ✓ .claude/runtime-overlay.yaml
+  ✓ .claude/skills-catalog.yaml
+  ✓ .claude/sync-manifest.yaml
+[4c] Configuring .mcp.json...
+  ✓ /tmp/iwe-rt.lx0u3e/fx/up41-full/.mcp.json → iwe-knowledge (браузерный OAuth, tier=T1)
+[4d] Installing IWE environment variables...
+    ✓ /tmp/iwe-rt.lx0u3e/fx/up41-full/.iwe-paths written (workspace=/tmp/iwe-rt.lx0u3e/fx/up41-full)
+    ✓ /tmp/iwe-rt.lx0u3e/fx/up41-full/.zshenv → sources $WORKSPACE_DIR/.iwe-paths
+    ✓ /tmp/iwe-rt.lx0u3e/fx/up41-full/.bashrc → sources $WORKSPACE_DIR/.iwe-paths
+  ℹ  Restart shell or run: source /tmp/iwe-rt.lx0u3e/fx/up41-full/.zshenv
+[4f] Regenerating hot-files.list...
+  generate-hot-files-list: wrote 5 file(s) to /tmp/iwe-rt.lx0u3e/fx/up41-full/.iwe-runtime/hot-files.list (governance repo: "DS-strategy")
+[5/6] Автоматизация... пропущена (launchd не найден — не macOS)
+  Роли используют launchd (macOS). На Linux используйте cron/systemd вручную.
+  См. /tmp/iwe-rt.lx0u3e/fx/up41-full/FMT-exocortex-template/roles/ROLE-CONTRACT.md
+[6/6] Setting up DS-strategy...
+[6a] Generating executor-catalog.yaml...
+  OK: executor-catalog generated
+      total entries : 50
+      skipped       : 2 (not auto-routable)
+        - _template: template
+        - residency-gate: no-SKILL.md
+      by executor:
+        agent       : 1
+        haiku       : 6
+        opus        : 5
+        script      : 5
+        script+judgment: 2
+        sonnet      : 31
+      optimization candidates (5):
+        [1] consent → script
+        [1] w-reflection → script
+        [2] check-secret → script
+        [2] local-llm → script+judgment
+        [2] transcribe → script
+      output        : /tmp/iwe-rt.lx0u3e/fx/up41-full/DS-strategy/scripts/executor-catalog.yaml (updated)
+Инициализирован пустой репозиторий Git в /tmp/iwe-rt.lx0u3e/fx/up41-full/DS-strategy/.git/
+[main (корневой коммит) e917c89] Initial exocortex: DS-strategy governance hub
+ 62 files changed, 12692 insertions(+)
+ create mode 100755 .githooks/pre-commit
+ create mode 100755 .githooks/pre-commit-deny-legacy-sessions.sh
+ create mode 100755 .githooks/pre-push
+ create mode 100644 .gitignore
+ create mode 100644 CLAUDE.md
+ create mode 100644 REPO-TYPE.md
+ create mode 100644 archive/.gitkeep
+ create mode 100644 archive/day-plans/.gitkeep
+ create mode 100644 archive/notes/.gitkeep
+ create mode 100644 archive/week-plans/.gitkeep
+ create mode 100644 archive/week-reports/.gitkeep
+ create mode 100644 archive/wp-contexts/.gitkeep
+ create mode 100644 current/.gitkeep
+ create mode 100644 current/WeekPlan W1.md
+ create mode 100644 decisions/.gitkeep
+ create mode 100644 docs/Dissatisfactions.md
+ create mode 100644 docs/Session Agenda.md
+ create mode 100644 docs/Strategy.md
+ create mode 100644 docs/WP-REGISTRY.md
+ create mode 100644 drafts/README.md
+ create mode 100644 drafts/draft-list.md
+ create mode 100644 exocortex/.gitkeep
+ create mode 100644 exocortex/agent-fault-profile/.gitignore
+ create mode 100644 inbox/.gitkeep
+ create mode 100644 inbox/fleeting-notes.md
+ create mode 100644 personal/.gitkeep
+ create mode 100755 scripts/agent_fault_remind.py
+ create mode 100755 scripts/agent_fault_remind.sh
+ create mode 100755 scripts/day-open-bottleneck-patch.sh
+ create mode 100755 scripts/day-open-budget-patch.py
+ create mode 100755 scripts/day-open-checks-runner.sh
+ create mode 100755 scripts/day-open-close-error-patch.py
+ create mode 100755 scripts/day-open-hooks-runner.sh
+ create mode 100755 scripts/day-open-ledger-render-patch.py
+ create mode 100755 scripts/day-open-llm-fill.py
+ create mode 100755 scripts/day-open-multiplier-backfill-patch.py
+ create mode 100755 scripts/day-open-pipeline.sh
+ create mode 100755 scripts/day-open-priorities-patch.py
+ create mode 100755 scripts/day-open-scaffold.sh
+ create mode 100755 scripts/day-open-sync-banner-patch.py
+ create mode 100755 scripts/day-open-version-check-patch.py
+ create mode 100755 scripts/ds-publish.sh
+ create mode 100644 scripts/executor-catalog.yaml
+ create mode 100755 scripts/generate-executor-catalog.py
+ create mode 100755 scripts/install-hooks.sh
+ create mode 100755 scripts/isolate-push.sh
+ create mode 100755 scripts/iwe_checklist_memory.py
+ create mode 100755 scripts/ledger-append.sh
+ create mode 100755 scripts/lib/common.sh
+ create mode 100755 scripts/lib/day-open-hooks.sh
+ create mode 100755 scripts/lib/find-python3.sh
+ create mode 100755 scripts/lib/ledger-path.sh
+ create mode 100755 scripts/lib/ledger-publish-kick.sh
+ create mode 100644 scripts/lib/ledger_path.py
+ create mode 100755 scripts/lib/network-wait.sh
+ create mode 100755 scripts/lib/notification-render.sh
+ create mode 100755 scripts/lib/publish-gate.sh
+ create mode 100755 scripts/lib/telegram.sh
+ create mode 100644 scripts/lib/wp_inbox.py
+ create mode 100755 scripts/llm-proxy-launcher.sh
+ create mode 100755 scripts/sync_feedback_to_memory.py
+ create mode 100755 scripts/update-derived-snapshot.py
+  Pre-commit hook enabled (.githooks/)
+  ERROR: gh repo create failed for DS-strategy:
+    /home/iwe-test/.local/bin/gh: строка 5: /tmp/iwe-rt.lx0u3e/fx/up41-full/iwe-rc14-linux/logs/gh-calls.log: No such file or directory
+    gh-shim: 'repo create' запрещено в тестовом окружении
+    /home/iwe-test/.local/bin/gh: строка 9: /tmp/iwe-rt.lx0u3e/fx/up41-full/iwe-rc14-linux/logs/gh-calls.log: No such file or directory
+[7/7] Installing Base repos (ZP, FPF, SPF)...
+  ✓ ZP: клонирован (/tmp/iwe-rt.lx0u3e/fx/up41-full/ZP)
+  ✓ FPF: клонирован (/tmp/iwe-rt.lx0u3e/fx/up41-full/FPF)
+  ✓ SPF: клонирован (/tmp/iwe-rt.lx0u3e/fx/up41-full/SPF)
+[8/8] Enabling Knowledge Extractor feeders...
+[setup-extractor] 1/4 Проверка зависимостей
+  ✅ extractor.sh найден
+  ✅ claude CLI: /home/iwe-test/.npm-global/bin/claude
+[setup-extractor] Платформа: Linux (используем systemd --user)
+[setup-extractor] 2/4 Git-templates для post-commit hook
+  ✅ post-commit hook установлен в /tmp/iwe-rt.lx0u3e/fx/up41-full/.git-templates/hooks/post-commit
+[setup-extractor]   Применить к существующим репо: cd <repo> && git init
+[setup-extractor] 3/4 Cron для git-diff-feed
+  ✅ SETUP_CI: units записаны в /tmp/iwe-rt.lx0u3e/fx/up41-full/.config/systemd/user, активация systemd пропущена
+[setup-extractor] 4/4 Fleeting-notes inbox
+  ✅ fleeting-notes.md уже существует
+
+[setup-extractor] Готово.
+[setup-extractor] Что включено (по результатам):
+[setup-extractor]  - post-commit hook на изменения captures/fleeting-notes (для нового clone — git init)
+[setup-extractor]  - cron 09:00 + 21:00 для git-diff-feed (на этой машине)
+[setup-extractor]  - fleeting-notes.md inbox создан
+[setup-extractor] 
+[setup-extractor] Что НЕ требует настройки (работает автоматически после update.sh):
+[setup-extractor]  - regex fix в pending counter (WP-7 Ф-EXTRACTOR-FP)
+[setup-extractor]  - inbox-check читает fleeting-notes как 2-й inbox (Ф-MULTI-SOURCE.3)
+[setup-extractor]  - session-close-feed вызывается из Quick Close шаг 2.6 (Ф-MULTI-SOURCE.1)
+[setup-extractor] 
+[setup-extractor] Проверка: /tmp/iwe-rt.lx0u3e/fx/up41-full/FMT-exocortex-template/scripts/setup-extractor-feeders.sh --check
+[setup-extractor] Удалить:  /tmp/iwe-rt.lx0u3e/fx/up41-full/FMT-exocortex-template/scripts/setup-extractor-feeders.sh --uninstall
+[8b] Настройка VS Code (режим Auto по умолчанию)...
+[8c] Определение возможностей установки...
+ℹ Бэкап IWE не настроен: в params.yaml нет backup_dir, а iCloud по умолчанию есть только на macOS.
+  Это не ошибка, тревоги не будет. Включить: укажите backup_dir в params.yaml.
+  Отказаться явно: backup_enabled: false. Это сообщение показывается один раз.
+
+==========================================
+  Setup Complete — with a warning (see above).
+  DS-strategy is local-only: not pushed to GitHub.
+==========================================
+
+Verify installation:
+  ✓ CLAUDE.md:   /tmp/iwe-rt.lx0u3e/fx/up41-full/CLAUDE.md
+  ✓ Memory:      /tmp/iwe-rt.lx0u3e/fx/up41-full/.claude/projects/-tmp-iwe-rt-lx0u3e-fx-up41-full/memory/ (33 files)
+  ✓ Symlink:     /tmp/iwe-rt.lx0u3e/fx/up41-full/memory → /tmp/iwe-rt.lx0u3e/fx/up41-full/.claude/projects/-tmp-iwe-rt-lx0u3e-fx-up41-full/memory
+  ✓ DS-strategy: /tmp/iwe-rt.lx0u3e/fx/up41-full/DS-strategy/
+  ✓ Template:    /tmp/iwe-rt.lx0u3e/fx/up41-full/FMT-exocortex-template/
+
+Next steps:
+  1. cd /tmp/iwe-rt.lx0u3e/fx/up41-full
+  2. claude
+  3. Ask Claude: «Проведём первую стратегическую сессию»
+
+Strategist will run automatically:
+  - Morning at 4:00 (местное время): strategy (Mon) / day-plan (Tue-Sun)
+  - Sunday night: week review
+
+Developer onboarding (T4+) — single entry point:
+  cat docs/developer/README.md
+
+Update from upstream:
+  cd /tmp/iwe-rt.lx0u3e/fx/up41-full/FMT-exocortex-template && bash update.sh
+
+Личные (PD-*) и служебные (MC-*) репозитории (WP-526/WP-527):
+  создаются по запросу, не при установке — см. README.md § «5 семей репозиториев»
+
+Финальная проверка инсталляции (рекомендуется):
+  validate-режим setup.sh проверит: env-конфиг, обязательные файлы,
+  extensions, доступность MCP, структурные инварианты.
+
+
+Пропущено. Запустить позже: cd /tmp/iwe-rt.lx0u3e/fx/up41-full/FMT-exocortex-template && bash setup.sh --validate
+

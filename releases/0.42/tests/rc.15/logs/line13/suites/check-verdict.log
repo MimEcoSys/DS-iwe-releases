@@ -1,0 +1,185 @@
+--- R1-backups-live-symlink ---
+  ✅ PASS: R1-backups-live-symlink: exit 3
+  ✅ PASS: R1-backups-live-symlink: line «ВЕРДИКТ: нельзя ставить»
+  ✅ PASS: R1-backups-live-symlink: installation unchanged (contents, types, modes, symlink targets)
+  ✅ PASS: R1-backups-live-symlink: no env draft and no write probe left
+--- R2-backups-broken-symlink ---
+  ✅ PASS: R2-backups-broken-symlink: exit 3
+  ✅ PASS: R2-backups-broken-symlink: line «ВЕРДИКТ: нельзя ставить»
+  ✅ PASS: R2-backups-broken-symlink: installation unchanged (contents, types, modes, symlink targets)
+  ✅ PASS: R2-backups-broken-symlink: no env draft and no write probe left
+--- R3-backups-regular-file ---
+  ✅ PASS: R3-backups-regular-file: exit 3
+  ✅ PASS: R3-backups-regular-file: line «ВЕРДИКТ: нельзя ставить»
+  ✅ PASS: R3-backups-regular-file: installation unchanged (contents, types, modes, symlink targets)
+  ✅ PASS: R3-backups-regular-file: no env draft and no write probe left
+--- R4-env-symlink ---
+  ✅ PASS: R4-env-symlink: exit 3
+  ✅ PASS: R4-env-symlink: line «ВЕРДИКТ: нельзя ставить»
+  ✅ PASS: R4-env-symlink: installation unchanged (contents, types, modes, symlink targets)
+  ✅ PASS: R4-env-symlink: no env draft and no write probe left
+--- R5-env-directory ---
+  ✅ PASS: R5-env-directory: exit 3
+  ✅ PASS: R5-env-directory: line «ВЕРДИКТ: нельзя ставить»
+  ✅ PASS: R5-env-directory: installation unchanged (contents, types, modes, symlink targets)
+  ✅ PASS: R5-env-directory: no env draft and no write probe left
+--- R6-legacy-env-symlink ---
+  ✅ PASS: R6-legacy-env-symlink: exit 3
+  ✅ PASS: R6-legacy-env-symlink: line «ВЕРДИКТ: нельзя ставить»
+  ✅ PASS: R6-legacy-env-symlink: installation unchanged (contents, types, modes, symlink targets)
+  ✅ PASS: R6-legacy-env-symlink: no env draft and no write probe left
+--- R7-both-env-missing ---
+  ✅ PASS: R7-both-env-missing: exit 3
+  ✅ PASS: R7-both-env-missing: line «ВЕРДИКТ: нельзя ставить»
+  ✅ PASS: R7-both-env-missing: installation unchanged (contents, types, modes, symlink targets)
+  ✅ PASS: R7-both-env-missing: no env draft and no write probe left
+  ✅ PASS: R7-both-env-missing: --check created no .exocortex.env
+--- R8-backups-no-write ---
+  ✅ PASS: R8-backups-no-write: exit 3
+  ✅ PASS: R8-backups-no-write: line «ВЕРДИКТ: нельзя ставить»
+  ✅ PASS: R8-backups-no-write: installation unchanged (contents, types, modes, symlink targets)
+  ✅ PASS: R8-backups-no-write: no env draft and no write probe left
+--- R9-backups-no-search ---
+  ✅ PASS: R9-backups-no-search: exit 3
+  ✅ PASS: R9-backups-no-search: line «ВЕРДИКТ: нельзя ставить»
+  ✅ PASS: R9-backups-no-search: installation unchanged (contents, types, modes, symlink targets)
+  ✅ PASS: R9-backups-no-search: no env draft and no write probe left
+--- R10-backups-parent-readonly ---
+  ✅ PASS: R10-backups-parent-readonly: exit 3
+  ✅ PASS: R10-backups-parent-readonly: line «ВЕРДИКТ: нельзя ставить»
+  ✅ PASS: R10-backups-parent-readonly: installation unchanged (contents, types, modes, symlink targets)
+  ✅ PASS: R10-backups-parent-readonly: no env draft and no write probe left
+--- R11-env-and-backups ---
+  ✅ PASS: R11-env-and-backups: exit 3
+  ✅ PASS: R11-env-and-backups: line «ВЕРДИКТ: нельзя ставить»
+  ✅ PASS: R11-env-and-backups: installation unchanged (contents, types, modes, symlink targets)
+  ✅ PASS: R11-env-and-backups: no env draft and no write probe left
+  ✅ PASS: R11-env-and-backups: both reasons are listed
+--- A1-healthy-update-available ---
+  ✅ PASS: A1-healthy-update-available: exit 0
+  ✅ PASS: A1-healthy-update-available: line «ВЕРДИКТ: можно ставить»
+  ✅ PASS: A1-healthy-update-available: installation unchanged (contents, types, modes, symlink targets)
+  ✅ PASS: A1-healthy-update-available: no env draft and no write probe left
+--- A2-legacy-env-only ---
+  ✅ PASS: A2-legacy-env-only: exit 0
+  ✅ PASS: A2-legacy-env-only: line «ВЕРДИКТ: можно ставить»
+  ✅ PASS: A2-legacy-env-only: installation unchanged (contents, types, modes, symlink targets)
+  ✅ PASS: A2-legacy-env-only: no env draft and no write probe left
+--- A3-incomplete-marker ---
+  ✅ PASS: A3-incomplete-marker: exit 0
+  ✅ PASS: A3-incomplete-marker: line «ВЕРДИКТ: можно ставить»
+  ✅ PASS: A3-incomplete-marker: installation unchanged (contents, types, modes, symlink targets)
+  ✅ PASS: A3-incomplete-marker: no env draft and no write probe left
+  ✅ PASS: A3-incomplete-marker: caveat on its own line
+--- B-rollback-detected ---
+  ✅ PASS: B-rollback-detected: exit 0
+  ✅ PASS: B-rollback-detected: line «ВЕРДИКТ: можно ставить»
+  ✅ PASS: B-rollback-detected: installation unchanged (contents, types, modes, symlink targets)
+  ✅ PASS: B-rollback-detected: no env draft and no write probe left
+  ✅ PASS: B-rollback-detected: «^Оговорка: вердикт относится к ручному запуску; …» on 1 line(s)
+  ✅ PASS: B-rollback-detected: «^Оговорка: вердикт вынесен текущей версией updat…» on 0 line(s)
+  ✅ PASS: B-rollback-detected: exactly one verdict line
+--- B-rollback-detected-yes ---
+  ✅ PASS: B-rollback-detected-yes: exit 1
+  ✅ PASS: B-rollback-detected-yes: line «ВЕРДИКТ: нельзя ставить»
+  ✅ PASS: B-rollback-detected-yes: installation unchanged (contents, types, modes, symlink targets)
+  ✅ PASS: B-rollback-detected-yes: no env draft and no write probe left
+  ✅ PASS: B-rollback-detected-yes: «^Оговорка: вердикт относится к ручному запуску; …» on 0 line(s)
+  ✅ PASS: B-rollback-detected-yes: exactly one verdict line
+  ✅ PASS: B-rollback-detected (B-rollback-detected.log): «^🔴 ВНИМАНИЕ: локальная установка новее того, что…» on 1 line(s)
+  ✅ PASS: B-rollback-detected (B-rollback-detected.log): «^⚠️ ВНИМАНИЕ: не удалось проверить историю релиз…» on 0 line(s)
+  ✅ PASS: B-rollback-detected (B-rollback-detected-yes.log): «^🔴 ВНИМАНИЕ: локальная установка новее того, что…» on 1 line(s)
+  ✅ PASS: B-rollback-detected (B-rollback-detected-yes.log): «^⚠️ ВНИМАНИЕ: не удалось проверить историю релиз…» on 0 line(s)
+--- B-rollback-uncertain ---
+  ✅ PASS: B-rollback-uncertain: exit 0
+  ✅ PASS: B-rollback-uncertain: line «ВЕРДИКТ: можно ставить»
+  ✅ PASS: B-rollback-uncertain: installation unchanged (contents, types, modes, symlink targets)
+  ✅ PASS: B-rollback-uncertain: no env draft and no write probe left
+  ✅ PASS: B-rollback-uncertain: «^Оговорка: вердикт относится к ручному запуску; …» on 1 line(s)
+  ✅ PASS: B-rollback-uncertain: «^Оговорка: вердикт вынесен текущей версией updat…» on 0 line(s)
+  ✅ PASS: B-rollback-uncertain: exactly one verdict line
+--- B-rollback-uncertain-yes ---
+  ✅ PASS: B-rollback-uncertain-yes: exit 1
+  ✅ PASS: B-rollback-uncertain-yes: line «ВЕРДИКТ: нельзя ставить»
+  ✅ PASS: B-rollback-uncertain-yes: installation unchanged (contents, types, modes, symlink targets)
+  ✅ PASS: B-rollback-uncertain-yes: no env draft and no write probe left
+  ✅ PASS: B-rollback-uncertain-yes: «^Оговорка: вердикт относится к ручному запуску; …» on 0 line(s)
+  ✅ PASS: B-rollback-uncertain-yes: exactly one verdict line
+  ✅ PASS: B-rollback-uncertain (B-rollback-uncertain.log): «^⚠️ ВНИМАНИЕ: не удалось проверить историю релиз…» on 1 line(s)
+  ✅ PASS: B-rollback-uncertain (B-rollback-uncertain.log): «^🔴 ВНИМАНИЕ: локальная установка новее того, что…» on 0 line(s)
+  ✅ PASS: B-rollback-uncertain (B-rollback-uncertain-yes.log): «^⚠️ ВНИМАНИЕ: не удалось проверить историю релиз…» on 1 line(s)
+  ✅ PASS: B-rollback-uncertain (B-rollback-uncertain-yes.log): «^🔴 ВНИМАНИЕ: локальная установка новее того, что…» on 0 line(s)
+--- B-no-rollback-release-newer ---
+  ✅ PASS: B-no-rollback-release-newer: exit 0
+  ✅ PASS: B-no-rollback-release-newer: line «ВЕРДИКТ: можно ставить»
+  ✅ PASS: B-no-rollback-release-newer: installation unchanged (contents, types, modes, symlink targets)
+  ✅ PASS: B-no-rollback-release-newer: no env draft and no write probe left
+  ✅ PASS: B-no-rollback-release-newer: «^Оговорка:…» on 0 line(s)
+  ✅ PASS: B-no-rollback-release-newer: «^🔴 ВНИМАНИЕ: локальная установка новее того, что…» on 0 line(s)
+  ✅ PASS: B-no-rollback-release-newer: «^⚠️ ВНИМАНИЕ: не удалось проверить историю релиз…» on 0 line(s)
+--- B-no-rollback-release-equal ---
+  ✅ PASS: B-no-rollback-release-equal: exit 0
+  ✅ PASS: B-no-rollback-release-equal: line «ВЕРДИКТ: можно ставить»
+  ✅ PASS: B-no-rollback-release-equal: installation unchanged (contents, types, modes, symlink targets)
+  ✅ PASS: B-no-rollback-release-equal: no env draft and no write probe left
+  ✅ PASS: B-no-rollback-release-equal: «^Оговорка:…» on 0 line(s)
+  ✅ PASS: B-no-rollback-release-equal: «^🔴 ВНИМАНИЕ: локальная установка новее того, что…» on 0 line(s)
+  ✅ PASS: B-no-rollback-release-equal: «^⚠️ ВНИМАНИЕ: не удалось проверить историю релиз…» on 0 line(s)
+--- B-apply-rollback-detected-yes ---
+  ✅ PASS: B-apply-rollback-detected-yes: exit 1
+  ✅ PASS: B-apply-rollback-detected-yes: «^🔴 ВНИМАНИЕ: локальная установка новее того, что…» on 1 line(s)
+  ✅ PASS: B-apply-rollback-detected-yes: installation unchanged (contents, types, modes, symlink targets)
+  ✅ PASS: B-apply-rollback-detected-yes: no env draft and no write probe left
+--- B-apply-rollback-uncertain-yes ---
+  ✅ PASS: B-apply-rollback-uncertain-yes: exit 1
+  ✅ PASS: B-apply-rollback-uncertain-yes: «^⚠️ ВНИМАНИЕ: не удалось проверить историю релиз…» on 1 line(s)
+  ✅ PASS: B-apply-rollback-uncertain-yes: installation unchanged (contents, types, modes, symlink targets)
+  ✅ PASS: B-apply-rollback-uncertain-yes: no env draft and no write probe left
+--- B-updater-outdated ---
+  ✅ PASS: B-updater-outdated: exit 0
+  ✅ PASS: B-updater-outdated: line «ВЕРДИКТ: можно ставить»
+  ✅ PASS: B-updater-outdated: installation unchanged (contents, types, modes, symlink targets)
+  ✅ PASS: B-updater-outdated: no env draft and no write probe left
+  ✅ PASS: B-updater-outdated: «^Оговорка: вердикт вынесен текущей версией updat…» on 1 line(s)
+  ✅ PASS: B-updater-outdated: «^Оговорка: вердикт относится к ручному запуску; …» on 0 line(s)
+  ✅ PASS: B-updater-outdated: exactly one verdict line
+  ✅ PASS: A1-healthy-update-available: «^Оговорка:…» on 0 line(s)
+--- A4-up-to-date ---
+  ✅ PASS: A4-up-to-date: exit 0
+  ✅ PASS: A4-up-to-date: line «ВЕРДИКТ: можно ставить»
+  ✅ PASS: A4-up-to-date: installation unchanged (contents, types, modes, symlink targets)
+  ✅ PASS: A4-up-to-date: no env draft and no write probe left
+--- U1-incomplete-download ---
+  ✅ PASS: U1-incomplete-download: exit 2
+  ✅ PASS: U1-incomplete-download: line «ВЕРДИКТ: нельзя подтвердить»
+  ✅ PASS: U1-incomplete-download: installation unchanged (contents, types, modes, symlink targets)
+  ✅ PASS: U1-incomplete-download: no env draft and no write probe left
+--- U2-no-python-tainted ---
+  ✅ PASS: U2-no-python-tainted: exit 4
+  ✅ PASS: U2-no-python-tainted: line «ВЕРДИКТ: нельзя подтвердить»
+  ✅ PASS: U2-no-python-tainted: installation unchanged (contents, types, modes, symlink targets)
+  ✅ PASS: U2-no-python-tainted: no env draft and no write probe left
+--- U3-canary-failed ---
+  ✅ PASS: U3-canary-failed: exit 5
+  ✅ PASS: U3-canary-failed: line «ВЕРДИКТ: нельзя ставить»
+  ✅ PASS: U3-canary-failed: installation unchanged (contents, types, modes, symlink targets)
+  ✅ PASS: U3-canary-failed: no env draft and no write probe left
+--- U4-incomplete-download-with-changes ---
+  ✅ PASS: U4-incomplete-download-with-changes: exit 2
+  ✅ PASS: U4-incomplete-download-with-changes: line «ВЕРДИКТ: нельзя подтвердить»
+  ✅ PASS: U4-incomplete-download-with-changes: installation unchanged (contents, types, modes, symlink targets)
+  ✅ PASS: U4-incomplete-download-with-changes: no env draft and no write probe left
+--- U5-canary-failed-up-to-date ---
+  ✅ PASS: U5-canary-failed-up-to-date: exit 5
+  ✅ PASS: U5-canary-failed-up-to-date: line «ВЕРДИКТ: нельзя ставить»
+  ✅ PASS: U5-canary-failed-up-to-date: installation unchanged (contents, types, modes, symlink targets)
+  ✅ PASS: U5-canary-failed-up-to-date: no env draft and no write probe left
+--- F1-fast-no-verdict ---
+  ✅ PASS: F1-fast-no-verdict: exit 0
+  ✅ PASS: F1-fast-no-verdict: no verdict line
+  ✅ PASS: F1-fast-no-verdict: says why there is no verdict
+  ✅ PASS: F1-fast-no-verdict: installation unchanged (contents, types, modes, symlink targets)
+  ✅ PASS: F1-fast-no-verdict: no env draft and no write probe left
+
+  Итог: 152 PASS, 0 FAIL
+rc=0 secs=14

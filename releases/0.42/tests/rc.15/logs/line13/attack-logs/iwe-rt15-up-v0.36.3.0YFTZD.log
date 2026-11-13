@@ -1,0 +1,39 @@
+== clean install of v0.36.3 ==
+warning: refs/tags/v0.36.3 af51a758b7e5adfc60d51e7489ba6d198c03545a не является коммитом!
+Примечание: переключение на «8cca208538d792aecc3c3ff9d1da57f8c1103f30».
+
+Вы сейчас в состоянии «отсоединённого указателя HEAD». Можете осмотреться,
+внести экспериментальные изменения и зафиксировать их, также можете
+отменить любые коммиты, созданные в этом состоянии, не затрагивая другие
+ветки, переключившись обратно на любую ветку.
+
+Если хотите создать новую ветку для сохранения созданных коммитов, можете
+сделать это (сейчас или позже), используя команду switch с параметром -c.
+Например:
+
+  git switch -c <новая-ветка>
+
+Или отмените эту операцию с помощью:
+
+  git switch -
+
+Отключите этот совет, установив переменную конфигурации
+advice.detachedHead в значение false
+
+  ok: setup.sh --core of v0.36.3
+== update to v0.42.0-rc.15 through the rc channel ==
+  ok: update.sh --yes exit 0
+  ok: delivered from v0.42.0-rc.15
+== installed files equal the candidate ==
+  ok: installed manifest is the candidate's
+  ok: MISSING: 0 of 878
+  ok: DIFFERS: 0 of 878
+  ok: NOEXEC: 0 of 878
+== user edits survive ==
+  ok: own extension kept
+  ok: own parameter kept
+== second run changes nothing ==
+  ok: second run: nothing to update
+
+PASS: upgrade v0.36.3 -> v0.42.0-rc.15
+rc=0

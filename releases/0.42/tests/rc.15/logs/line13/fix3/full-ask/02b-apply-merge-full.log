@@ -1,0 +1,99 @@
+==========================================
+  Exocortex Update v2.4.1
+==========================================
+  Репо: /home/iwe-test/IWE/FMT-exocortex-template
+
+  Канал поставки: кандидат v0.42.0-rc.15 (снимок aaed1384ef77)
+[0] Проверка update.sh...
+  update.sh актуален.
+
+[1] Загрузка манифеста...
+  Установленная версия: 0.42.0
+  Версия upstream: 0.42.0
+
+[2] Сравнение файлов...
+
+  ○ Устаревшие по манифесту, но отслеживаются git этой копии шаблона — оставлены: sessions/2026-06/2026-06-17-01-kimi-setup/00-writer.md sessions/2026-06/2026-06-17-01-kimi-setup/01-peer.md sessions/2026-06/2026-06-17-01-kimi-setup/02-writer.md sessions/2026-06/2026-06-17-01-kimi-setup/03-peer.md sessions/2026-06/2026-06-17-01-kimi-setup/meta.yaml sessions/2026-06/2026-06-17-01-kimi-setup/report.md .claude/skills/lesson-close/SKILL.md scripts/lesson-close.sh .claude/skills/day-close/day-close/SKILL.md .claude/skills/week-close/week-close/SKILL.md docs/onboarding/web-onboarding.md translation/glossary-v0.1.csv
+    Удалить из своей копии: git -C "/home/iwe-test/IWE/FMT-exocortex-template" rm -- sessions/2026-06/2026-06-17-01-kimi-setup/00-writer.md sessions/2026-06/2026-06-17-01-kimi-setup/01-peer.md sessions/2026-06/2026-06-17-01-kimi-setup/02-writer.md sessions/2026-06/2026-06-17-01-kimi-setup/03-peer.md sessions/2026-06/2026-06-17-01-kimi-setup/meta.yaml sessions/2026-06/2026-06-17-01-kimi-setup/report.md .claude/skills/lesson-close/SKILL.md scripts/lesson-close.sh .claude/skills/day-close/day-close/SKILL.md .claude/skills/week-close/week-close/SKILL.md docs/onboarding/web-onboarding.md translation/glossary-v0.1.csv
+
+==========================================
+  Обновления экзокортекса (v0.42.0)
+==========================================
+
+Кроме перечисленного, обычный запуск (без --check) также пишет — это зоны возможной перезаписи, пофайлового прогноза для них превью не строит (issue #350):
+  • /home/iwe-test/IWE/.claude/ — рабочие копии скиллов, хуков, правил
+  • /home/iwe-test/.claude/projects/-home-iwe-test-IWE/memory — рабочие копии memory-файлов
+  • /home/iwe-test/IWE/.iwe-runtime/ — пересобирается целиком из шаблона
+  • /home/iwe-test/IWE/.exocortex.env, /home/iwe-test/IWE/FMT-exocortex-template/.claude.md.base, /home/iwe-test/IWE/FMT-exocortex-template/update-manifest.json
+  • /home/iwe-test/IWE/.claude.md.base и /home/iwe-test/IWE/.claude.md.delivered — база слияния CLAUDE.md и запись хешей доставленной копии
+  • /home/iwe-test/IWE/.memory-deployed.tsv — запись версий памяти, которые установлены и не менялись (по ней update.sh отличает нетронутую копию от изменённой)
+  • /home/iwe-test/IWE/.iwe-paths и /home/iwe-test/.zshenv — пересоздаваемое окружение путей
+  • local core.hooksPath в git-репозиториях с .githooks под /home/iwe-test/IWE
+  • /home/iwe-test/IWE/DS-strategy/scripts/install-hooks.sh — установщик platform hooks
+  • /home/iwe-test/IWE/DS-strategy/.githooks/pre-commit и pre-push — platform hooks
+  • /home/iwe-test/IWE/DS-strategy/scripts/update-derived-snapshot.py — обновлятор derived snapshot
+  • /home/iwe-test/IWE/DS-strategy/scripts/generate-executor-catalog.py — генератор каталога исполнителей
+  • /home/iwe-test/IWE/DS-strategy/scripts/executor-catalog.yaml — каталог исполнителей
+  • /home/iwe-test/IWE/DS-strategy/scripts/ds-publish.sh — публикатор коммитов ночных ролей (кладётся только если файла нет, существующий не трогается)
+  • /home/iwe-test/IWE/DS-strategy/exocortex/agent-fault-profile/ — только миграция/права существующей приватной БД; отсутствующий профиль не создаётся
+    scripts/day-open-llm-fill.py больше не доставляется сюда (WP-485 Ф17) — Day Open исполняет копию шаблона через $IWE_SCRIPTS.
+    Symlink-пути блокируют backfill. Отличающиеся installer/hooks сохраняются в .git/hook-backups/ и заменяются.
+    Snapshot updater/executor-catalog generator: решение по содержимому (как memory/*), не по git-статусу — локальная правка не блокирует остальное обновление, только эти файлы; executor-catalog.yaml — генерируемый файл и заменяется при смысловом расхождении.
+  Расхождение рабочей копии с шаблоном чинится независимо от списков выше.
+
+
+Generated runtime (.iwe-runtime/)...
+
+Agent fault profile (safe update hardening)...
+
+Agent fault legacy entrypoints (all-or-none upgrade)...
+  ✓ legacy agent-fault shims already match the release payload.
+
+Platform hooks (upgrade backfill)...
+⚠️  pre-commit отличается от канонического шаблона — оставляю локальную версию (не самолечу контент, см. WP-484 в комментарии выше).
+✅ Hooks wired: /home/iwe-test/IWE/DS-strategy/.githooks
+   core.hooksPath = .githooks
+
+Governance-скрипты (upgrade backfill)...
+
+Публикатор коммитов ds-publish.sh (upgrade backfill)...
+  ✓ scripts/ds-publish.sh уже совпадает с поставкой (версия 1).
+
+Гейт публикации publish-gate.sh (upgrade backfill)...
+  ✓ scripts/lib/publish-gate.sh уже совпадает с release payload.
+
+Executor catalog (upgrade backfill)...
+  OK: executor-catalog generated
+      total entries : 52
+      skipped       : 3 (not auto-routable)
+        - _template: template
+        - lesson-close: no-SKILL.md
+        - residency-gate: no-SKILL.md
+      by executor:
+        agent       : 1
+        haiku       : 6
+        opus        : 5
+        script      : 5
+        script+judgment: 2
+        sonnet      : 33
+      optimization candidates (5):
+        [1] consent → script
+        [1] w-reflection → script
+        [2] check-secret → script
+        [2] local-llm → script+judgment
+        [2] transcribe → script
+      output        : /home/iwe-test/IWE/DS-strategy/scripts/executor-catalog.yaml (unchanged)
+
+Knowledge Extractor feeders (upgrade backfill)...
+  ○ Экстрактор: расписания на этой установке нет, а режим установки не записан — расписание не заводим.
+    Включить: bash /home/iwe-test/IWE/FMT-exocortex-template/scripts/setup-extractor-feeders.sh
+
+FPF base copy (upgrade refresh)...
+  ✓ FPF: копия уже актуальна (1e57ccd).
+  ✓ Маркер незавершённого обновления снят.
+    {"keys_added_from_template": 1, "keys_kept_user_only": 0, "hooks_added_from_template": 14, "hooks_deduped": 16, "hooks_only_in_workspace": 0, "permissions_added_from_template": 24, "hooks_regrouped": 1, "retired_defaults_replaced": ["permissions.defaultMode: acceptEdits -> default"], "conflicts": [], "preview": "/home/iwe-test/IWE/.claude/settings.merged.preview.json"}
+    applied: /home/iwe-test/IWE/.claude/settings.json (backup: /home/iwe-test/IWE/.backups/settings-merge/settings.json.20261113T124946Z)
+  ✓ .claude/settings.json — обновлён слиянием (--apply-settings-merge)
+  ✓ Режим правок агента: агент снова спрашивает подтверждение перед изменением файлов. В общих настройках стоял режим правок без подтверждения — платформа ставила его сама до 0.38.4.
+    Если этот режим нужен вам, держите его в личных настройках .claude/settings.local.json (обновление их не трогает): "defaultMode": "acceptEdits" в разделе permissions.
+✓ Всё актуально. Обновлений нет. (878 файлов проверено)
