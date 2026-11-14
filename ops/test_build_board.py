@@ -412,28 +412,42 @@ def test_only_fully_ready_and_selected_results_move_to_taken():
     assert "mismatch" not in results[1]
 
 
-def test_general_board_summarizes_source_and_links_distinct_release_work():
+def test_work_detail_is_an_exhaustive_disjoint_subset_of_source_work():
     source_text = "\n".join(
         f"| Ц1-0{i} | 1 | гость | результат {i} | сайт | {stage} | фича | сайт | — | нет |"
-        for i, stage in enumerate(("план", "в работе", "сделано", "отложено"), 1)
+        for i, stage in enumerate(("план", "в работе", "сделано", "отложено", "в работе", "в работе", "в работе", "в работе"), 1)
     )
     results = [
         {"code": "Ц1-02", "status": "в работе"},
         {"code": "Ц1-03", "status": "у автора"},
+        {"code": "Ц1-05", "status": "у автора"},
+        {"code": "Ц1-06", "status": "готово для передачи"},
+        {"code": "Ц1-07", "status": "взято в 0.42"},
     ]
+    groups, work_lines = board.work_detail_groups(source_text, results)
+    expected = {"Ц1-02", "Ц1-05", "Ц1-06", "Ц1-07", "Ц1-08"}
+    listed = [code for group in groups for code in group["codes"]]
+    assert set(listed) == expected == set(work_lines)
+    assert len(listed) == len(set(listed)) == 5
+    assert [len(group["codes"]) for group in groups] == [1, 1, 1, 1, 1]
+    assert groups[-1]["codes"] == {"Ц1-08"}
     lines = board.board_lines("2026-11-11", source_text, results, "https://github.com/example/source/blob/sha/results.md")
     text = "\n".join(lines)
-    assert "# Табло результатов и подготовки выпуска" in text
-    assert "| **Всего** | **4** |" in text
-    assert "| 2. В работе | 1 |" in text
+    assert "| **Всего** | **8** |" in text
+    assert "| 2. В работе | 5 |" in text
+    assert "| 3. Сделано | 1 |" in text
     assert "| 4. Отложено | 1 |" in text
-    assert "<summary>Подготовка выпуска: этапы 2.1–2.4 — 2</summary>" in text
-    assert "| 2.1 Разрабатывается | [1](board/2.1-in-work.md) |" in text
-    assert "| 2.2 Проверяется Разработчиком | [1](board/2.2-at-developer.md) |" in text
-    assert "Исходная стадия «В работе»: всего 1; в этих этапах — 1, вне них — 0." in text
-    assert "другими исходными стадиями: 1 — «сделано»" in text
-    assert "Ц1-03" not in text
-    assert "225" not in text
+    assert "| **Итого пункт 2** | **5** |" in text
+    assert "**5 = 1 + 1 + 1 + 1 + 1**" in text
+    inventory = "\n".join(board.work_detail_inventory_lines(source_text, results, "https://github.com/example/source"))
+    for code in expected:
+        assert inventory.count(f"[{code}]") == 1
+    assert "Ц1-03" not in inventory
+    for group in groups:
+        assert f'board/completeness.md#{group["anchor"]}' in text
+        assert f'id="{group["anchor"]}"' in inventory
+    with pytest.raises(SystemExit, match="duplicate result codes"):
+        board.work_detail_groups(source_text + "\n" + source_text, results)
 
 
 def test_completeness_explains_separate_units_and_code_partition():
