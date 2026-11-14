@@ -47,6 +47,7 @@ FINAL_ROWS = (
 # The verdict words of the template skill iwe-platform-redteam (Verdict Contract), not a local scale.
 RED_TEAM_VERDICTS = ("GO", "CAUTION", "BLOCKED")
 SHA1 = re.compile(r"^[0-9a-f]{40}$")
+ALL_CUT_RECORDS = "всё, что влито в основную ветку шаблона после 0.41.11 и до снимка (решение 10.11.2026)"
 RC_DIR = re.compile(r"^rc\.(\d+)$")
 REQUIRED_TEXT = {
     "user_gets": "что получит пользователь",
@@ -106,9 +107,32 @@ def inseparable_groups(handoff: dict) -> dict[str, list[str]]:
     return members
 
 
-def decision_problems(handoff: dict, decisions: str) -> list[str]:
+def selected_record_keys(handoff: dict, decisions: str, snapshot_commit: str | None = None) -> tuple[set[str], int]:
+    """Resolve the Release Lead's explicit keys or the recorded all-at-cut decision."""
+    taken, rows = decision_keys(decisions, TAKEN_ROW)
+    if rows != 1:
+        return taken, rows
+    values = row_values(decisions)
+    wording = next(value for name, value in values.items() if name.startswith(TAKEN_ROW))
+    if wording == ALL_CUT_RECORDS:
+        if not snapshot_commit:
+            raise DecisionsFormError("для решения «всё до снимка» нужен снимок с версией шаблона")
+        cut = next((value for name, value in values.items() if name.startswith("Версия основной ветки шаблона")), "")
+        match = re.search(r"[0-9a-f]{40}", cut)
+        if not match or match.group() != snapshot_commit:
+            raise DecisionsFormError("снимок табло и версия в решении о составе выпуска различаются")
+        deferred = next((value for name, value in values.items() if name.startswith(DEFERRED_ROW)), "")
+        if deferred != "ничего":
+            raise DecisionsFormError("решение «всё до снимка» требует явного «ничего» в отложенном")
+        return set(handoff.get("records") or {}), rows
+    if wording and not taken and wording != "ничего":
+        raise DecisionsFormError("строка «Состав: что взято» не содержит кодов кандидатов")
+    return taken, rows
+
+
+def decision_problems(handoff: dict, decisions: str, snapshot_commit: str | None = None) -> list[str]:
     known = set((handoff.get("records") or {}).keys())
-    taken, taken_rows = decision_keys(decisions, TAKEN_ROW)
+    taken, taken_rows = selected_record_keys(handoff, decisions, snapshot_commit)
     deferred, deferred_rows = decision_keys(decisions, DEFERRED_ROW)
     problems = [
         f"строка «{row}» в decisions.md повторяется {count} раза — оставить одну"
@@ -218,7 +242,10 @@ def main(argv: list[str]) -> int:
         problems: list[str] = []
         for key, record in records.items():
             problems += record_problems(key, record or {})
-        problems += decision_problems(handoff, decisions)
+        snapshot_path = args.repo / "ops" / "snapshot.yaml"
+        snapshot = yaml.safe_load(snapshot_path.read_text()) if snapshot_path.exists() else {}
+        snapshot_commit = (snapshot or {}).get("snapshot", {}).get("template_commit")
+        problems += decision_problems(handoff, decisions, snapshot_commit)
         unfilled = unfilled_rows(decisions)
         if args.require_final:
             problems += [f"в decisions.md не заполнена строка «{row}»" for row in unfilled]

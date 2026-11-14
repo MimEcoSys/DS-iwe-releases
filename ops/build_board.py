@@ -33,6 +33,8 @@ from urllib.parse import quote, urlsplit
 
 import yaml
 
+from check_decisions import decision_problems, selected_record_keys
+
 TEMPLATE_PLACEMENTS = ("шаблон IWE", "Staging")
 OPEN_PLACEMENT = "Open"  # matches Open, Open Aisystant, Open МИМ
 OWN_IWE_BLOCK = "И"
@@ -483,7 +485,7 @@ def record_split(links: list[dict]) -> str:
     )
 
 
-def stage_notes(results, staging, unreleased_links, released, released_counts) -> dict[str, tuple[str, str]]:
+def stage_notes(results, staging, unreleased_links, released, released_counts, taken_records=0) -> dict[str, tuple[str, str]]:
     """Per board row: a one-line note for the board and a fuller explanation for the list page."""
     in_work = [r for r in results if r["status"] == "в работе"]
     testing = [s for s in staging if s["staging_status"] == "testing"]
@@ -537,7 +539,13 @@ def stage_notes(results, staging, unreleased_links, released, released_counts) -
             f"Сделано целиком и влито в шаблон после 0.41.11, но ещё не выпущено. Всего {len(unreleased_links)} "
             f"записей: {record_split(unreleased_links)}.",
         ),
-        "2.4 Взято Выпускающим": ("отобрано Выпускающим в 0.42", "Отобрано Выпускающим в выпуск 0.42."),
+        "2.4 Взято Выпускающим": (
+            f"принятых правок: {taken_records}; считаются только готовые результаты с прямой связью"
+            if taken_records else "отобрано Выпускающим в 0.42",
+            f"Правок в принятом составе: {taken_records}. Здесь только готовые результаты, все связанные правки "
+            "которых взяты; частично готовые остаются в 2.1. Готовые результаты без подтверждённой связи "
+            "остаются в 2.3.2." if taken_records else "Отобрано Выпускающим в выпуск 0.42.",
+        ),
         "**3. Сделано**": (
             "вышло в стабильном 0.36; пока только результаты открытых РП",
             f"Вышло в выпусках до 0.36 включительно ([состав](../releases/0.36/shipped.md), {rec_036} записей). "
@@ -718,11 +726,12 @@ def stage_extra(page, staging, unreleased, unreleased_links, author_ahead, fmt_s
 def write_views(
     repo: Path, stamp: str, results, staging, unreleased, unreleased_links, released, author_ahead, released_links, released_counts,
     fmt_sha: str,
+    taken_records: int = 0,
 ) -> None:
     lists = repo / "board"
     lists.mkdir(parents=True, exist_ok=True)
     testing = [s for s in staging if s["staging_status"] == "testing"]
-    notes = stage_notes(results, staging, unreleased_links, released, released_counts)
+    notes = stage_notes(results, staging, unreleased_links, released, released_counts, taken_records)
     proposed = sorted(
         {
             (link["proposed"]["goal"], link["proposed"]["what"])
@@ -1179,12 +1188,29 @@ def check_public_source_pages(repo: Path, snapshot: dict, declared: dict) -> Non
             public_error(f"{row['code']}: missing from source page {row['source_url']}")
 
 
+def apply_taken_results(results: list[dict], links: list[dict], taken: set[str]) -> None:
+    """Move only fully ready results whose every linked record was selected."""
+    records_by_code: dict[str, set[str]] = {}
+    for link in links:
+        for code in link.get("result", []):
+            records_by_code.setdefault(code, set()).add(link["key"])
+    for result in results:
+        if result["status"] != "готово для передачи":
+            continue
+        linked = records_by_code.get(result["code"], set())
+        if linked and linked <= taken:
+            result["status"] = "взято в 0.42"
+        elif not linked and taken:
+            result["mismatch"] = "нет прямой связи результата с принятой записью; сверить код"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     mode = ap.add_mutually_exclusive_group(required=True)
     mode.add_argument("--src", type=Path)
     mode.add_argument("--user-board-only", action="store_true")
     mode.add_argument("--check-user-board", action="store_true")
+    ap.add_argument("--source-date", help="date when the pinned inputs were collected (YYYY-MM-DD)")
     ap.add_argument("--repo", type=Path, required=True)
     args = ap.parse_args()
     if args.user_board_only or args.check_user_board:
@@ -1217,7 +1243,14 @@ def main() -> int:
             raise SystemExit(f"released version {ver} is newer than 0.41.11; extend the board ranges")
     author_ahead = load_author_ahead(src / "author-ahead.yaml")
 
-    today = dt.date.today().isoformat()
+    if args.source_date:
+        if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", args.source_date):
+            ap.error("--source-date must be YYYY-MM-DD")
+        try:
+            dt.date.fromisoformat(args.source_date)
+        except ValueError:
+            ap.error("--source-date is not a calendar date")
+    today = args.source_date or dt.date.today().isoformat()
     stamp = f"> Собрано {today} по шаблону {fmt_sha[:10]}."
     developer = {
         "snapshot": {
@@ -1248,6 +1281,17 @@ def main() -> int:
         declared["released_0_41_11"],
         declared["placement"],
     )
+    handoff = load_handoff(args.repo / "ops" / "developer-handoff.yaml", unreleased)
+    taken_records = 0
+    if handoff:
+        decisions_path = args.repo / "releases" / str(handoff["release"]) / "decisions.md"
+        decisions = decisions_path.read_text()
+        problems = decision_problems(handoff, decisions, fmt_sha)
+        if problems:
+            raise SystemExit("release decisions: " + "; ".join(problems))
+        taken, _ = selected_record_keys(handoff, decisions, fmt_sha)
+        taken_records = len(taken)
+        apply_taken_results(results, developer["unreleased_links"], taken)
     public_readme = (
         prepare_public_readme(args.repo, developer, declared) if "public_board" in declared else None
     )
@@ -1260,7 +1304,6 @@ def main() -> int:
     (ops / "snapshot.yaml").write_text(
         header + yaml.safe_dump(developer, allow_unicode=True, sort_keys=False, width=1000)
     )
-    handoff = load_handoff(args.repo / "ops" / "developer-handoff.yaml", unreleased)
     if handoff:
         write_candidates(args.repo, stamp, handoff, unreleased, developer["unreleased_links"])
     write_views(
@@ -1275,6 +1318,7 @@ def main() -> int:
         declared["released_0_41_11"],
         released_counts,
         fmt_sha,
+        taken_records,
     )
 
     # Completeness: every source item is on the board, linked or explicitly not linked.
