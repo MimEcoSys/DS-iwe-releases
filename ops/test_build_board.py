@@ -412,35 +412,28 @@ def test_only_fully_ready_and_selected_results_move_to_taken():
     assert "mismatch" not in results[1]
 
 
-def test_general_board_lists_every_result_once_in_its_source_stage():
-    rows = [
-        {"code": f"Ц1-0{i}", "stage": stage, "direction": "Знакомство", "system": "сайт", "what": f"результат {i}", "line": i + 10}
+def test_general_board_summarizes_source_and_links_distinct_release_work():
+    source_text = "\n".join(
+        f"| Ц1-0{i} | 1 | гость | результат {i} | сайт | {stage} | фича | сайт | — | нет |"
         for i, stage in enumerate(("план", "в работе", "сделано", "отложено"), 1)
-    ]
-    lines = board.board_lines("2026-11-11", rows, "https://github.com/example/source/blob/sha/results.md")
-    text = "\n".join(lines)
-    assert "# Табло всех результатов" in text
-    assert "| **Всего** | **4** |" in text
-    for code in ("Ц1-01", "Ц1-02", "Ц1-03", "Ц1-04"):
-        assert text.count(f"[{code}]") == 1
-    for name in ("1. План", "2. В работе", "3. Сделано", "4. Отложено"):
-        assert f"<summary>{name} — 1</summary>" in text
-    assert "225" not in text
-
-
-def test_source_rows_include_all_directions_and_reject_missing_goals():
-    map_text = "## А. Знакомство\n| 1 | гость | цель |\n## Б. Подписка\n| 2 | участник | цель |\n"
-    source_text = (
-        "| Ц1-01 | 1 | гость | первое | сайт | план | фича | сайт | — | нет |\n"
-        "| Ц2-01 | 2 | участник | второе | бот | сделано | фича | бот | — | нет |\n"
     )
-    rows = board.source_result_rows(source_text, board.goal_directions(map_text))
-    assert [(row["code"], row["direction"], row["system"], row["stage"]) for row in rows] == [
-        ("Ц1-01", "Знакомство", "сайт", "план"),
-        ("Ц2-01", "Подписка", "бот", "сделано"),
+    results = [
+        {"code": "Ц1-02", "status": "в работе"},
+        {"code": "Ц1-03", "status": "у автора"},
     ]
-    with pytest.raises(SystemExit, match="unknown goal or stage"):
-        board.source_result_rows(source_text, {1: "Знакомство"})
+    lines = board.board_lines("2026-11-11", source_text, results, "https://github.com/example/source/blob/sha/results.md")
+    text = "\n".join(lines)
+    assert "# Табло результатов и подготовки выпуска" in text
+    assert "| **Всего** | **4** |" in text
+    assert "| 2. В работе | 1 |" in text
+    assert "| 4. Отложено | 1 |" in text
+    assert "<summary>Подготовка выпуска: этапы 2.1–2.4 — 2</summary>" in text
+    assert "| 2.1 Разрабатывается | [1](board/2.1-in-work.md) |" in text
+    assert "| 2.2 Проверяется Разработчиком | [1](board/2.2-at-developer.md) |" in text
+    assert "Исходная стадия «В работе»: всего 1; в этих этапах — 1, вне них — 0." in text
+    assert "другими исходными стадиями: 1 — «сделано»" in text
+    assert "Ц1-03" not in text
+    assert "225" not in text
 
 
 def test_completeness_explains_separate_units_and_code_partition():

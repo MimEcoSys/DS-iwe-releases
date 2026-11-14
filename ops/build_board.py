@@ -115,20 +115,6 @@ def selected_goals(map005: str) -> dict[int, list[str]]:
     return {n: sorted(set(c), key=CONTOURS.index) for n, c in goals.items()}
 
 
-def goal_directions(map005: str) -> dict[int, str]:
-    """Map every numbered goal to its thematic section in the source map."""
-    directions = {}
-    section = ""
-    for line in map005.splitlines():
-        if match := re.match(r"^## [А-Я]\. (.+)", line):
-            section = match.group(1)
-        elif line.startswith("## "):
-            section = ""
-        if section and (match := re.match(r"^\| *([0-9]+) *\|", line)):
-            directions[int(match.group(1))] = section
-    return directions
-
-
 def results_for(sbg: str, goals: dict[int, list[str]]) -> list[dict]:
     rows = []
     for line in sbg.splitlines():
@@ -597,29 +583,6 @@ def source_result_codes(text: str) -> set[str]:
     return set(codes)
 
 
-def source_result_rows(source_text: str, directions: dict[int, str]) -> list[dict]:
-    """Read every source result once, retaining its original stage and line link."""
-    codes = source_result_codes(source_text)
-    rows = []
-    for line_number, line in enumerate(source_text.splitlines(), 1):
-        if not re.match(r"^\| Ц\d+-\d+ \|", line):
-            continue
-        cells = table_cells(line)
-        if len(cells) != 10:
-            raise SystemExit(f"source result row at line {line_number} has {len(cells)} columns, expected 10")
-        code, goal_text, _, what, _, stage, _, system, _, _ = cells
-        goal = int(goal_text)
-        if goal not in directions or stage not in STAGE_TO_STATUS or not code.startswith(f"Ц{goal}-"):
-            raise SystemExit(f"source result {code} has unknown goal or stage at line {line_number}")
-        rows.append({
-            "code": code, "direction": directions[goal], "what": what,
-            "system": system, "stage": stage, "line": line_number,
-        })
-    if len(rows) != len(codes):
-        raise SystemExit("source result rows are incomplete")
-    return rows
-
-
 def pinned_input_url(repo: Path, name: str, source_text: str) -> str | None:
     """Link to the exact source revision only when its recorded hash matches this build."""
     manifest = repo / "ops" / "developer-sources.yaml"
@@ -669,8 +632,8 @@ def result_inventory_lines(source_codes: set[str], source_text: str, source_url:
         f"| **Всего на общем табло** | **{len(source_codes)}** |",
         "",
         f"**{len(source_codes)} = " + " + ".join(str(stages[stage]) for _, stage in SOURCE_GROUPS) + "**. "
-        "Все слагаемые — результаты. В каждой строке общего табло указан один код; "
-        "«отложено» остаётся отдельной стадией.",
+        "Все слагаемые — результаты; каждый код источника учтён один раз. "
+        "«Отложено» остаётся отдельной стадией.",
         "",
         "</details>",
         "",
@@ -741,50 +704,59 @@ def code_inventory_lines(source_codes: set[str], result_codes_text: str) -> list
     ]
 
 
-def board_lines(source_date: str, source_rows: list[dict], source_url: str | None) -> list[str]:
-    """The complete source inventory, grouped by the four source stages."""
-    codes = [row["code"] for row in source_rows]
-    if len(codes) != len(set(codes)):
-        raise SystemExit("general board has duplicate result codes")
-    counts = {stage: sum(row["stage"] == stage for row in source_rows) for _, stage in SOURCE_GROUPS}
-    if sum(counts.values()) != len(source_rows):
-        raise SystemExit("general board stages do not cover all source results")
+def board_lines(source_date: str, source_text: str, results: list[dict], source_url: str | None) -> list[str]:
+    """Source totals plus the distinct workflow the release team manages here."""
+    source_codes = source_result_codes(source_text)
+    counts = source_stages_for_codes(source_text, source_codes)
+    work_statuses = next(statuses for name, _, statuses in STAGES if name == "**2. В работе**")
+    release_work = [result for result in results if result["status"] in work_statuses]
+    work_total = len(release_work)
+    release_source_stages = source_stages_for_codes(source_text, {result["code"] for result in release_work})
+    other_source_stages = ", ".join(
+        f"{count} — «{stage}»"
+        for stage, count in release_source_stages.items() if stage != "в работе" and count
+    ) or "нет"
+    work_rows = [(name, page, statuses) for name, page, statuses in STAGES if name.startswith("2.")]
+    top_level = [statuses for name, _, statuses in work_rows if name.startswith(("2.1 ", "2.2 ", "2.3 ", "2.4 "))]
+    if sum(count_statuses(results, statuses) for statuses in top_level) != work_total:
+        raise SystemExit("release work stages do not add up to their total")
     source_label = (
         f"[«Состояние по целям»]({source_url})" if source_url else "«Состояние по целям»"
     )
     out = [
         f"> Состояние результатов на {source_date}.",
         "",
-        "# Табло всех результатов",
+        "# Табло результатов и подготовки выпуска",
         "",
-        f"Здесь показаны все **{len(source_rows)}** результатов из документа {source_label} "
-        "по его четырём стадиям. Каждый код указан один раз; направление и система видны в списках ниже.",
+        f"Сводка всех **{len(source_codes)}** результатов из документа {source_label} по четырём исходным стадиям. "
+        "Подробные строки остаются в исходном документе; эти числа обновятся после получения нового снимка источника и пересборки табло.",
         "",
         "| Стадия | Результатов |",
         "|---|---:|",
         *[f"| {name} | {counts[stage]} |" for name, stage in SOURCE_GROUPS],
-        f"| **Всего** | **{len(source_rows)}** |",
+        f"| **Всего** | **{len(source_codes)}** |",
         "",
-        "«Отложено» показано отдельно: эти результаты не считаются планом или текущей работой. "
-        "Стадии описывают состояние результата на дату снимка, а не обещают дату его появления.",
+        "«Отложено» показано отдельно. Стадии описывают состояние результата на дату снимка, "
+        "а не обещают дату его появления.",
         "",
-        "**Выпуск** — публикация определённой версии шаблона IWE для пользователей, например 0.42. "
-        "Подготовку этой версии команда ведёт [отдельно](releases/0.42/README.md); "
-        "она не ограничивает состав общего табло.",
+        "<details>",
+        f"<summary>Подготовка выпуска: этапы 2.1–2.4 — {work_total}</summary>",
         "",
+        f"Эта таблица показывает шаги команды, которая готовит **выпуск** — публикацию версии шаблона, например [0.42](releases/0.42/README.md). "
+        f"Исходная стадия «В работе»: всего {counts['в работе']}; "
+        f"в этих этапах — {release_source_stages['в работе']}, "
+        f"вне них — {counts['в работе'] - release_source_stages['в работе']}. "
+        f"В этих этапах также есть результаты с другими исходными стадиями: {other_source_stages}. "
+        f"Поэтому итог этапов {work_total} не является разбивкой числа {counts['в работе']}.",
+        "",
+        "| Этап подготовки выпуска | Результатов |",
+        "|---|---:|",
     ]
-    for name, stage in SOURCE_GROUPS:
-        rows = [row for row in source_rows if row["stage"] == stage]
-        out += ["<details>", f"<summary>{name} — {len(rows)}</summary>", ""]
-        out += ["| Код | Направление | Система | Что получает человек |", "|---|---|---|---|"]
-        for row in rows:
-            code = row["code"]
-            code_label = f"[{code}]({source_url}#L{row['line']})" if source_url else code
-            out.append(
-                f"| {code_label} | {cell(row['direction'])} | {cell(row['system'])} | "
-                f"{cell(short(row['what'], 140))} |"
-            )
-        out += ["", "</details>", ""]
+    for name, page, statuses in work_rows:
+        count = count_statuses(results, statuses)
+        number = f"[{count}](board/{page})" if page else str(count)
+        out.append(f"| {name} | {number} |")
+    out += [f"| **Итого в подготовке выпуска** | **{work_total}** |", "", "</details>", ""]
     out += ["[Сверка полноты](board/completeness.md).", ""]
     return out
 
@@ -928,7 +900,7 @@ def write_views(
     repo: Path, stamp: str, results, staging, unreleased, unreleased_links, released, author_ahead, released_links, released_counts,
     fmt_sha: str,
     source_date: str,
-    source_rows: list[dict],
+    source_text: str,
     source_url: str | None,
     taken_records: int = 0,
 ) -> None:
@@ -943,7 +915,7 @@ def write_views(
             if link.get("proposed")
         }
     )
-    (repo / "BOARD.md").write_text("\n".join(board_lines(source_date, source_rows, source_url)))
+    (repo / "BOARD.md").write_text("\n".join(board_lines(source_date, source_text, results, source_url)))
 
     for name, page, statuses in (*STAGES, OUTSIDE):
         if not page:
@@ -1449,10 +1421,8 @@ def main() -> int:
 
     fmt_sha = (src / "fmt-sha").read_text().strip()
     fmt_files = (src / "fmt-files.txt").read_text().split()
-    map005_text = (src / "map005.md").read_text()
-    goals = selected_goals(map005_text)
+    goals = selected_goals((src / "map005.md").read_text())
     sbg_text = (src / "sbg.md").read_text()
-    source_rows = source_result_rows(sbg_text, goal_directions(map005_text))
     source_url = pinned_input_url(args.repo, "sbg.md", sbg_text)
     result_codes_text = (src / "result-codes.md").read_text()
     results = results_for(sbg_text, goals)
@@ -1547,14 +1517,15 @@ def main() -> int:
         released_counts,
         fmt_sha,
         today,
-        source_rows,
+        sbg_text,
         source_url,
         taken_records,
     )
 
     # Completeness: every source item is on the board, linked or explicitly not linked.
     # Each board count is compared with an independent raw count of the source text.
-    source_codes = {row["code"] for row in source_rows}
+    source_codes = source_result_codes(sbg_text)
+    source_raw = sum(1 for line in sbg_text.splitlines() if re.match(r"^\| Ц\d+-\d+ \|", line))
     sbg_raw = sum(
         1
         for line in sbg_text.splitlines()
@@ -1564,7 +1535,7 @@ def main() -> int:
     changelog_raw = sum(1 for line in (src / "changelog.md").read_text().splitlines() if line.startswith("- "))
     on_board_released = sum(len(e) for part in released.values() for e in part.values())
     checks = [
-        ("Все результаты исходного документа", len(source_codes), len(source_rows)),
+        ("Все результаты исходного документа", source_raw, len(source_codes)),
         ("Результаты выбранных целей (документ 4)", sbg_raw, len(results)),
         ("Записи обкатки STAGING.md", staging_raw, len(staging)),
         (
