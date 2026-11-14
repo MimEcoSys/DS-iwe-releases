@@ -390,3 +390,22 @@ def test_decision_link_cannot_break_table_cells(tmp_path, status, field, extra):
     assert row.count("|") == 4
     assert "#choice%7Cnext%5C%5Blink%5D)" in row
     assert row.endswith("| 2026-11-14 |")
+
+
+def test_only_fully_ready_and_selected_results_move_to_taken():
+    results = [
+        {"code": "Ц1-01", "status": "готово для передачи"},
+        {"code": "Ц1-02", "status": "готово для передачи"},
+        {"code": "Ц1-03", "status": "готово для передачи"},
+        {"code": "Ц1-04", "status": "в работе"},
+    ]
+    links = [
+        {"key": "U-000001", "result": ["Ц1-01", "Ц1-02", "Ц1-04"]},
+        {"key": "U-000002", "result": ["Ц1-02"]},
+    ]
+    board.apply_taken_results(results, links, {"U-000001"})
+    assert [result["status"] for result in results] == [
+        "взято в 0.42", "готово для передачи", "готово для передачи", "в работе",
+    ]
+    assert "нет прямой связи" in results[2]["mismatch"]
+    assert "mismatch" not in results[1]

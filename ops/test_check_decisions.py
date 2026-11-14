@@ -4,6 +4,7 @@ import sys
 from pathlib import Path
 
 import yaml
+import pytest
 
 spec = importlib.util.spec_from_file_location("check_decisions", Path(__file__).parent / "check_decisions.py")
 cd = importlib.util.module_from_spec(spec)
@@ -219,3 +220,34 @@ def test_newest_folder_is_chosen_by_number_not_by_name(tmp_path):
     files = {"rc.9/linux-tester.yaml": verdict(), "rc.10/linux-tester.yaml": verdict(verdict="BLOCKED")}
     problems = cd.red_team_problems(repo_with(tmp_path, FILLED, files) / "releases" / "0.42" / "tests", None)
     assert problems == ["rc.10/linux-tester.yaml: вердикт BLOCKED — не сливать"]
+
+
+CUT_SHA = "a" * 40
+ALL_CUT = (
+    "| Версия основной ветки шаблона в момент «режем» | `" + CUT_SHA + "` |\n"
+    "| Состав: что взято | " + cd.ALL_CUT_RECORDS + " |\n"
+    "| Состав: что отложено | ничего |\n"
+)
+
+
+def test_all_at_cut_means_every_record_not_an_empty_selection():
+    selected, rows = cd.selected_record_keys(HANDOFF, ALL_CUT, CUT_SHA)
+    assert rows == 1
+    assert selected == set(HANDOFF["records"])
+    assert cd.decision_problems(HANDOFF, ALL_CUT, CUT_SHA) == []
+
+
+def test_all_at_cut_rejects_wrong_snapshot_and_deferred_records():
+    for form, commit in (
+        (ALL_CUT, "b" * 40),
+        (ALL_CUT, None),
+        (ALL_CUT.replace("| ничего |", "| U-000001 |"), CUT_SHA),
+    ):
+        with pytest.raises(cd.DecisionsFormError):
+            cd.selected_record_keys(HANDOFF, form, commit)
+
+
+def test_unrecognized_take_all_wording_is_not_read_as_zero():
+    form = decisions(taken="все кандидаты", deferred="ничего")
+    with pytest.raises(cd.DecisionsFormError, match="не содержит кодов"):
+        cd.selected_record_keys(HANDOFF, form, CUT_SHA)
