@@ -554,10 +554,11 @@ def stage_notes(results, staging, unreleased_links, released, released_counts, t
         ),
         "**4. Отложено**": ("отложил Разработчик", "Разработчик отложил работу: в карточке РП фаза перенесена на потом."),
         OUTSIDE[0]: (
-            "сделано в сервисах платформы; вне стадий выпуска",
-            "Результат той же цели сделан не в шаблоне, а в сервисе платформы (сайт, бот, MCP-сервер). Через выпуск "
-            "шаблона он не проходит и в итог стадий выпуска не входит. Этот список нужен для сверки источника, "
-            "а не для подсчёта всех результатов платформы.",
+            "сделано вне выпуска шаблона",
+            "Результат выбранной цели сделан вне файлов шаблона: в плагине, сервисе или отдельном расширении. "
+            "Место реализации указано в подтверждении Разработчика; канал, где человек видит результат, "
+            "показан отдельно. Эти результаты не проходят выпуск шаблона и не входят в его итог. "
+            "Список служит для сверки отбора, а не для подсчёта всех результатов других систем.",
         ),
     }
 
@@ -712,6 +713,13 @@ def result_rows(rows: list[dict]) -> list[str]:
     ]
 
 
+def outside_result_rows(rows: list[dict]) -> list[str]:
+    return [
+        f"| {r['code']} | {cell(r['where'])} | {cell(r['evidence'])} | {cell(r['what'])} |"
+        for r in rows
+    ]
+
+
 RELEASED_LABELS = {
     "no_rp": "без номера РП",
     "rp_no_board_results": "у РП нет результатов на табло",
@@ -852,10 +860,15 @@ def write_views(
         return_to = "completeness.md" if page == OUTSIDE[1] else "../BOARD.md"
         return_label = "сверка полноты" if page == OUTSIDE[1] else "табло"
         out = [stamp, "", f"# {title}: {len(rows)}", "", f"[← {return_label}]({return_to})", "", notes[name][1], ""]
-        headers = RESULT_HEADER
         if page == OUTSIDE[1]:
-            headers = [RESULT_HEADER[0].replace("Часть выпуска", "Контур выбранной цели"), RESULT_HEADER[1]]
-        out += headers + result_rows(rows) + [""]
+            out += [
+                "| Код | Где пользователь видит | Реализация и подтверждение | Что получает |",
+                "|---|---|---|---|",
+                *outside_result_rows(rows),
+                "",
+            ]
+        else:
+            out += RESULT_HEADER + result_rows(rows) + [""]
         out += stage_extra(page, staging, unreleased, unreleased_links, author_ahead, fmt_sha)
         (lists / page).write_text("\n".join(out))
     out = [

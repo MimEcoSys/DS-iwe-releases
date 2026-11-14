@@ -463,3 +463,14 @@ def test_completeness_explains_separate_units_and_code_partition():
     assert "Уникальных кодов в указателе: **4 = 3 + 1**" in code_text
     assert "Слагаемые — коды результатов и сохранённые коды других записей" in code_text
     assert "Кодов результатов, отсутствующих в указателе: **0**" in code_text
+
+
+def test_outside_result_shows_implementation_evidence_separately_from_user_channel():
+    row = {
+        "code": "Ц82-05",
+        "where": "среда на компьютере",
+        "evidence": "DS-iwe-wp-panel — отдельное расширение VS Code",
+        "what": "колонки стадий рабочих продуктов",
+    }
+    line, = board.outside_result_rows([row])
+    assert "| среда на компьютере | DS-iwe-wp-panel — отдельное расширение VS Code |" in line
