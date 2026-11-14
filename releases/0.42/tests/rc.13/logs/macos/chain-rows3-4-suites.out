@@ -1,0 +1,152 @@
+
+######## строка 3, системная bash (20:34:13)
+com.strategist.morning.plist
+com.strategist.weekreview.plist
+ВНИМАНИЕ: остались агенты launchd
+убрано в /Users/iwe-test/iwe-rc13-macos/runs/finding-core-strategist
+bash в пути: /bin/bash — 3.2.57(1)-release
+установка v0.36.3 (core) код 0
+  Setup Complete! (core)
+манифест до: 0.36.3; режим: нет
+обновление код 0 за 263 с
+  Канал поставки: кандидат v0.42.0-rc.13 (снимок 75b1d96c67f6)
+  Канал поставки: кандидат v0.42.0-rc.13 (снимок 75b1d96c67f6)
+манифест после: 0.42.0; HEAD: 8cca2085 дерево 5170411b5d902d88a73b632324de9114decf598b
+правки: <!-- маркер тестировщика: своё расширение --> / test_marker: keep-me
+повтор код 0
+  ✓ Маркер незавершённого обновления снят.
+✓ Всё актуально. Обновлений нет. (878 файлов проверено)
+ИЗМЕНЕНО после повтора:
+< IWE/.iwe-runtime/.build-hash
+программ (100755): 703, без права на запуск: 270
+строк MISSING|DIFFERS|NOEXEC в журнале обновления: 0
+v0.42.0-rc.13 в установке: программ (755 в git) из манифеста: 414, нет файла: 0, без права на запуск: 0
+из 37 вне манифеста: 289 программ кандидата не входят в список доставки
+агентов стратега: 2
+
+######## строка 3, bash из Homebrew (20:39:28)
+com.strategist.morning.plist
+com.strategist.weekreview.plist
+ВНИМАНИЕ: остались агенты launchd
+убрано в /Users/iwe-test/iwe-rc13-macos/runs/line3-sysbash
+bash в пути: /opt/homebrew/bin/bash — 5.3.15(1)-release
+установка v0.36.3 (core) код 0
+  Setup Complete! (core)
+манифест до: 0.36.3; режим: нет
+обновление код 0 за 230 с
+  Канал поставки: кандидат v0.42.0-rc.13 (снимок 75b1d96c67f6)
+  Канал поставки: кандидат v0.42.0-rc.13 (снимок 75b1d96c67f6)
+манифест после: 0.42.0; HEAD: 8cca2085 дерево 5170411b5d902d88a73b632324de9114decf598b
+правки: <!-- маркер тестировщика: своё расширение --> / test_marker: keep-me
+повтор код 0
+  ✓ Маркер незавершённого обновления снят.
+✓ Всё актуально. Обновлений нет. (878 файлов проверено)
+ИЗМЕНЕНО после повтора:
+< IWE/.iwe-runtime/.build-hash
+программ (100755): 703, без права на запуск: 270
+строк MISSING|DIFFERS|NOEXEC в журнале обновления: 0
+v0.42.0-rc.13 в установке: программ (755 в git) из манифеста: 414, нет файла: 0, без права на запуск: 0
+из 37 вне манифеста: 289 программ кандидата не входят в список доставки
+агентов стратега: 2
+
+######## строка 2 заново (системная bash) + строка 4 (20:44:33)
+com.strategist.morning.plist
+com.strategist.weekreview.plist
+ВНИМАНИЕ: остались агенты launchd
+убрано в /Users/iwe-test/iwe-rc13-macos/runs/line3-brewbash
+bash в пути: /bin/bash — 3.2.57(1)-release
+установка v0.41.11 (core) код 0
+  Setup Complete! (core)
+манифест до: 0.41.11; режим: нет
+обновление код 0 за 53 с
+  Канал поставки: кандидат v0.42.0-rc.13 (снимок 75b1d96c67f6)
+  Канал поставки: кандидат v0.42.0-rc.13 (снимок 75b1d96c67f6)
+манифест после: 0.42.0; HEAD: 46a864ee дерево 52dcbb85a00aa32fc8dfcce37cb88938622c4f68
+### подготовка: правлю один файл только из 0.42 (docs/onboarding/light-onboarding.md)
+### 4a обычный update.sh, ответ y
+  код: 0
+  ⚠ update.sh выпуска старше установленного — не заменяю его: сначала решение об откате.
+   Применение этого обновления ОТКАТИТ установку на более старый снимок.
+   Любой канал, который вернёт установку назад, тоже спросит ROLLBACK.
+  • /Users/iwe-test/IWE/.memory-deployed.tsv — запись версий памяти, которые установлены и не менялись (по ней update.sh отличает нетронутую копию от изменённой)
+🔴 Это ОТКАТ на более старый релиз. Чтобы продолжить, введите ROLLBACK явно.
+  файлы не изменены
+### 4n обычный update.sh, ответ n
+  код: 0
+  ⚠ update.sh выпуска старше установленного — не заменяю его: сначала решение об откате.
+   Применение этого обновления ОТКАТИТ установку на более старый снимок.
+   Любой канал, который вернёт установку назад, тоже спросит ROLLBACK.
+  файлы не изменены
+### 4m1 канал main --yes
+  код: 2
+ОШИБКА: authenticated GitHub API request via gh failed; fallback disabled.
+ОШИБКА: authenticated branch lookup failed; refusing anonymous or moving-branch fallback.
+  файлы не изменены
+### 4m2 канал main без --yes, ответ y
+  код: 2
+ОШИБКА: authenticated GitHub API request via gh failed; fallback disabled.
+ОШИБКА: authenticated branch lookup failed; refusing anonymous or moving-branch fallback.
+  файлы не изменены
+### 4b ROLLBACK
+  код: 2
+7:ОШИБКА: authenticated GitHub API request via gh failed; fallback disabled.
+8:ОШИБКА: не удалось определить последний релиз (нет релизов или API недоступен).
+  манифест: 0.42.0
+  правки: <!-- маркер тестировщика: своё расширение --> / test_marker: keep-me
+  update.sh НЕ совпадает с 0.41.11
+  остался в папке шаблона: .claude/hooks/dry-run-cmd-parse.pl
+  остался в папке шаблона: .claude/hooks/tests/test-destructive-guard-file-writers.sh
+  остался в папке шаблона: .claude/hooks/tests/test-destructive-guard-find-chain.sh
+  остался в папке шаблона: .claude/hooks/tests/test-destructive-guard-find-delete.sh
+  остался в папке шаблона: .claude/hooks/tests/test-destructive-guard-git-branch-remote.sh
+  остался в папке шаблона: .claude/lib/dry-run-dir.sh
+  остался в папке шаблона: .claude/lib/i18n.sh
+  остался в папке шаблона: .claude/lib/locale/en.json
+  остался в папке шаблона: .claude/lib/locale/ru.json
+  остался в папке шаблона: .claude/scripts/light-onboarding-state.sh
+  остался в папке шаблона: .claude/skills/find-method/SKILL.md
+  остался в папке шаблона: .claude/skills/onboarding/SKILL.md
+  остался в папке шаблона: docs/onboarding/archive/web-onboarding-v2.md
+  остался в папке шаблона: docs/onboarding/light-onboarding.md
+  остался в папке шаблона: docs/releases/0.42/README.md
+  остался в папке шаблона: guide-kit/generator/recommendation_registry.py
+  остался в папке шаблона: guide-kit/generator/test_recommendation_registry.py
+  остался в папке шаблона: roles/extractor/scripts/extractor-branches-prune.sh
+  остался в папке шаблона: roles/extractor/tests/test_extractor_branches_prune.py
+  остался в папке шаблона: scripts/check-changelog-fields.py
+  остался в папке шаблона: scripts/check-locale-catalogs.py
+  остался в папке шаблона: scripts/check-release-branch-base.sh
+  остался в папке шаблона: scripts/iwe-notify
+  остался в папке шаблона: scripts/pack-duplicate-check.py
+  остался в папке шаблона: scripts/tag-release-candidate.sh
+  остался в папке шаблона: scripts/test-wp-inbox.sh
+  остался в папке шаблона: scripts/wp-inbox.sh
+  файлов только из 0.42 в папке шаблона: 27
+  всего в .backups/deprecated: 0
+  изменённый файл: <!-- правка тестировщика до отката -->
+### 4c повтор после отката
+  код: 2
+  Повторите позже, либо осознанно выберите подвижную ветку:
+    IWE_UPDATE_CHANNEL=main bash update.sh
+### 4r снова на кандидата
+  код: 2
+  манифест: 0.42.0; правки: 1/1
+v0.42.0-rc.13 в установке: программ (755 в git) из манифеста: 414, нет файла: 0, без права на запуск: 0
+из 37 вне манифеста: 289 программ кандидата не входят в список доставки
+
+######## наборы тестов кандидата (20:46:47)
+legacy-template-base               код 0  (4 с)  PASS: legacy template base, edited copy, conflicted retry, top-level refusal
+rc-channel                         код 0  (2 с)  Result: 10 PASS, 0 FAIL
+issue-226                          код 0  (35 с)    Results: 78 PASS, 0 FAIL
+check-verdict                      код 0  (21 с)    Итог: 152 PASS, 0 FAIL
+issue-1143-roles                   код 0  (1 с)  Passed: 8, failed: 0
+core-mode-feeders                  код 0  (0 с)  PASS
+exec-bit                           код 0  (0 с)  PASS: 406 executable manifest paths get +x on delivery
+rollback-cleanup                   код 0  (1 с)  PASS
+rollback-by-version                код 0  (0 с)  PASS
+step0-no-downgrade                 код 0  (0 с)  PASS
+guarded-rm-cases                   код 0  (2 с)  итог: 37 из 37 как ожидалось
+find-chain                         код 0  (21 с)  PASS=160 FAIL=0
+hook-cases                         код 0  (46 с)  ok  a failing printf inside matches -> 2: blocked as a failed check
+
+######## готово (20:49:00)

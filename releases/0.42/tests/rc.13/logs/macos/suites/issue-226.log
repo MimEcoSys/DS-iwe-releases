@@ -1,0 +1,102 @@
+--- Scenario A: CLAUDE.md conflict + non-default branch ---
+  ✅ PASS: A: update.sh exits with EXIT_CONFLICT(49), not a silent success
+  ✅ PASS: A: hook file still delivered to workspace despite CLAUDE.md conflict (defect 1)
+  ✅ PASS: A: memory file propagation attempted (dummy-memo.md referenced in output)
+  ✅ PASS: A: conflict is reported to the user
+  ✅ PASS: A: conflicted file path listed in final summary
+  ✅ PASS: A: updater explicitly leaves applied files uncommitted
+  ✅ PASS: A: updater created no commit and changed no staged entries
+  ✅ PASS: A: conflict leaves an explicit incomplete-update marker
+  ✅ PASS: A: default Day Open checks delivered into template
+  ✅ PASS: A: existing user day-open.before.md preserved byte-for-byte
+  ✅ PASS: A: existing user day-open.checks.md preserved byte-for-byte
+  ✅ PASS: A: existing user day-open.after.md preserved byte-for-byte
+--- Scenario B: repair-pass on the 'всё актуально' path ---
+  ✅ PASS: B: update.sh correctly reports 'всё актуально' (TOTAL_CHANGES=0)
+  ✅ PASS: B: missing hook file was repaired even on the early-exit path (defect 2)
+  ✅ PASS: B: missing workspace AGENTS.md was repaired with install placeholders resolved
+  ✅ PASS: B: exit code 0 (no conflicts in this scenario)
+  ✅ PASS: B: successful recovery removes the incomplete-update marker
+--- Scenario B2: repair-pass on incomplete zero-change verification ---
+  ✅ PASS: B2: incomplete remote verification still repairs workspace AGENTS.md
+--- Scenario C: manifest content hashes (#378) ---
+  ✅ PASS: C: --check --fast detects a content-only change at the same version/path
+  ✅ PASS: C: full check rejects a downloaded file that does not match manifest sha256
+--- Scenario D: differing memory copy on an unchanged run (#375 #965) ---
+  ✅ PASS: D: a differing copy nothing proves untouched is kept, with the reason and a ready command, on an unchanged run
+  ✅ PASS: D: without the classifier the report claims no verdict (unknown)
+--- Scenario D2: memory policy by the clone's history — committed version / no committed version / unknown (#965 #967) ---
+  ✅ PASS: D2: a copy that equals no committed version is kept, named with both possible causes and a ready command
+  ✅ PASS: D2: the report no longer says 'probably your edits' on its own
+  ✅ PASS: D2: an undecidable history (verdict unknown) keeps the copy and says it cannot be checked
+  ✅ PASS: D2: the closing summary counts every kept file
+  ✅ PASS: D2: the offered command saves the copy under a unique name and a second run keeps both copies
+  ✅ PASS: D2: a copy that equals an older committed version is refreshed, the line naming the proof and its caveat
+  ✅ PASS: D2: the refreshed copy is backed up first and the closing summary names it
+  ✅ PASS: D2: a copy that equals a committed version is not reported as equal to none
+--- Scenario D3: a committed version can be the pilot's own edit (cold review of #965/#967) ---
+  ✅ PASS: D3: the report does not promise 'no edits found'
+  ✅ PASS: D3: the line says the match may be the pilot's own committed edit, kept in the previous version
+  ✅ PASS: D3: the pilot's committed edit survives in the backup taken before the replacement
+--- Scenario D4: an earlier release update.sh installed is refreshed by the record (#965, review С2) ---
+  ✅ PASS: D4: an earlier release update.sh installed, unknown to the clone's history, is refreshed by the record
+  ✅ PASS: D4: the report does not say 'probably your edits'
+--- Scenario E: partial fetch failure must abort, not partially apply (WP-529) ---
+  ✅ PASS: E: update.sh exits with EXIT_NETWORK(2) on a partial fetch failure
+  ✅ PASS: E: abort is reported to the user with a clear reason
+  ✅ PASS: E: the file that WOULD have changed was left untouched (no partial apply)
+  ✅ PASS: E: local update-manifest.json was not stamped as updated
+  ✅ PASS: E: a failed batch download shows curl's exit code and its last stderr line
+--- Scenario E2: the sequential fallback names the file and curl's cause (#980) ---
+  ✅ PASS: E2: the sequential path also aborts with EXIT_NETWORK(2) on a failed fetch
+  ✅ PASS: E2: the failed file is named together with curl's exit code and stderr line
+--- Scenario E3: sequential diagnostics are capped at 5 per call (#980) ---
+  ✅ PASS: E3: 5 diagnostics per call are shown and the other 2 are counted (first pass and retry)
+--- Scenario F: capability-check reports supported -> parallel batch path used ---
+  ✅ PASS: F: update.sh exits 0 when curl supports the parallel batch options
+  ✅ PASS: F: the capability-check call (curl --help all) actually happened
+  ✅ PASS: F: the parallel batch transport (-K config mode) was actually used
+  ✅ PASS: F: the printed message matches the parallel path
+--- Scenario G: capability-check reports unsupported -> sequential fallback used ---
+  ✅ PASS: G: update.sh exits 0 on the sequential fallback path too
+  ✅ PASS: G: the capability-check call happened here too
+  ✅ PASS: G: the parallel batch transport was NOT used
+  ✅ PASS: G: individual sequential transfers were actually made
+  ✅ PASS: G: the printed message matches the sequential path
+--- Scenario I: Step 6 keeps an edited owner: platform memory file (#967) ---
+  ✅ PASS: I: update.sh exits 0 when it keeps an edited memory file
+  ✅ PASS: I: the pilot's edited owner: platform copy is left exactly as it was, nothing replaced or backed up
+  ✅ PASS: I: one line gives the reason, a diff and then the command; the summary counts the kept file and replaces none
+  ✅ PASS: I: Step 6 and the repair pass after it report the kept file once
+--- Scenario J: an untouched owner: user copy follows the release (#965) ---
+  ✅ PASS: J: the untouched owner: user copy carries the release now, the previous version is backed up
+  ✅ PASS: J: the line names the proof, the closing summary names the file and the backup directory
+  ✅ PASS: J: a second run of the same release changes nothing and backs up nothing
+--- Scenario K: a broken-off run (code 49 before Step 6), then the next run (review С1) ---
+  ✅ PASS: K: the run stops with code 49 after the clone took the release and before the memory copy did
+  ✅ PASS: K: the next run refreshes the untouched copy the broken-off run left behind
+  ✅ PASS: K: an edited copy stays through a broken-off run, its record line still naming the version installed before
+--- Scenario L: an installed copy two releases behind, its record started by a later run (review С2) ---
+  ✅ PASS: L: a run that finds the copy equal to the template starts its record line
+  ✅ PASS: L: a copy two releases behind, unknown to the clone's history, is refreshed by the record
+--- Scenario M: the first run of this version breaks off before Step 6, no record yet (review-12 С1) ---
+  ✅ PASS: M: the first run stops with code 49 after the clone took release three, before the memory copies did
+  ✅ PASS: M: the next run refreshes the untouched copies, owner: user and owner: platform
+  ✅ PASS: M: the edited copy stays, with its line, and gets no record line
+  ✅ PASS: M: release four reaches the untouched copies as well; the edited one stays out of it
+--- Scenario H: fallback parser fails closed on a compact/minified manifest (High 2) ---
+  ✅ PASS: H: update.sh exits with EXIT_RUNTIME(3) on a compact manifest without Python
+  ✅ PASS: H: the compact-format guard message is shown
+  ✅ PASS: H: the no-Python degradation is announced with a visible framed banner
+  ✅ PASS: H: the warning tells the user how to restore full verification
+  ✅ PASS: H: the warning explains that exit code 4 marks an unverified run
+  ✅ PASS: H: the fallback-specific guard fired, not the Python-parser error path
+  ✅ PASS: H: a normally-formatted manifest still parses without Python (exit EXIT_TAINTED=4, not blocked)
+  ✅ PASS: H: a compact single-file manifest is deliberately unsupported (exit EXIT_RUNTIME=3, not a silent pass)
+  ✅ PASS: H: a manifest with zero "path" keys fails closed with EXIT_RUNTIME(3), not a raw shell death
+  ✅ PASS: H: the read-error guard message is shown, not a silent bare exit
+
+============================================
+  Results: 78 PASS, 0 FAIL
+============================================
+rc=0 secs=35
