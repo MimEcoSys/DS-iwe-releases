@@ -1011,3 +1011,24 @@ files:
   scripts/canon-reconcile-published.sh: {result: [Ц96-05]}
   scripts/grok-peer-adapter.sh: {service: "язык комментариев; шаблон впереди (комментарии на английском)"}
   scripts/peer-session-finalize.sh: {service: "раскладка сессий Разработчика; шаблон впереди по блокировке индекса сессий"}
+
+# Редакторский отбор пользовательского вида; состояния берутся из snapshot.yaml.
+public_board:
+  schema_version: 1
+  entries:
+    - code: Ц77-04
+      show: true
+      title: Увидеть главные изменения перед обновлением
+      updated_at: '2026-11-14'
+    - code: Ц77-05
+      show: true
+      title: Получить предварительный вердикт готовности к обновлению
+      updated_at: '2026-11-14'
+    - code: Ц77-07
+      show: true
+      title: Сохранение личных настроек при обновлении
+      updated_at: '2026-11-14'
+    - code: Ц49-12
+      show: true
+      title: Подбор метода под задачу и помощь с применением
+      updated_at: '2026-11-14'

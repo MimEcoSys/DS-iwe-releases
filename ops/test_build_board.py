@@ -128,3 +128,265 @@ def test_proposed_link_is_labelled_as_proposal(tmp_path):
     aa = board.load_author_ahead(measurement(tmp_path))
     board.apply_file_links(aa, {"CLAUDE.md": {"proposed": {"goal": 34, "what": "w"}}}, BY_CODE)
     assert "| `CLAUDE.md` | в шаблоне есть свои правки; нужна сверка версий | новый результат цели 34 |" in lines_for(aa)
+
+
+
+
+def public_fixture(tmp_path, status="в работе"):
+    repo = tmp_path / "repo"
+    (repo / "ops").mkdir(parents=True)
+    (repo / "board").mkdir()
+    (repo / "README.md").write_text("# IWE\n\nРучная навигация и правила.\n")
+    (repo / "BOARD.md").write_text("Командное табло не менять.\n")
+    snapshot = {
+        "snapshot": {"collected_at": "2026-11-11"},
+        "results": [{"code": "Ц77-04", "status": status, "evidence": "release evidence"}],
+    }
+    declared = {
+        "placement": {"Ц77-04": {"place": "released-0.37-0.41.11", "version": "0.41.10", "evidence": "release evidence"}},
+        "public_board": {"schema_version": 1, "entries": [
+            {"code": "Ц77-04", "show": True, "title": "Увидеть изменения", "updated_at": "2026-11-14"},
+        ]},
+    }
+    for _, page, _ in board.STAGES:
+        if page:
+            (repo / "board" / page).write_text("| Ц77-04 | тестовый результат |\n")
+    write_public_fixture(repo, snapshot, declared)
+    return repo, snapshot, declared
+
+
+def write_public_fixture(repo, snapshot, declared):
+    for name, value in (("snapshot.yaml", snapshot), ("developer-links.yaml", declared)):
+        (repo / "ops" / name).write_text(yaml.safe_dump(value, allow_unicode=True))
+
+
+def run_public_cli(repo, option):
+    import subprocess
+
+    return subprocess.run(
+        [sys.executable, str(Path(board.__file__)), option, "--repo", str(repo)],
+        capture_output=True, text=True,
+    )
+
+
+def test_public_view_uses_source_state_date_and_preserves_other_files(tmp_path):
+    repo, _, _ = public_fixture(tmp_path, "в разнице 0.36–0.41.11")
+    original = {p.relative_to(repo): p.read_bytes() for p in repo.rglob("*") if p.is_file()}
+    assert run_public_cli(repo, "--user-board-only").returncode == 0
+    text = (repo / "README.md").read_text()
+    assert "Состояния по данным на 2026-11-11" in text
+    assert "Состояния по данным на 2026-11-14" not in text
+    assert "Доступно с 0.41.10" in text.split("### В работе")[0]
+    assert "[Ц77-04](board/2.3.1-released-0.37-0.41.11.md)" in text
+    assert text.endswith("\n\nРучная навигация и правила.\n")
+    assert "Голосование пока не запущено" in text
+    assert "0 голосов" not in text
+    assert run_public_cli(repo, "--user-board-only").returncode == 0
+    assert (repo / "README.md").read_text() == text
+    for path, content in original.items():
+        if str(path) != "README.md":
+            assert (repo / path).read_bytes() == content
+
+
+def test_placement_does_not_promote_incomplete_work_to_released(tmp_path):
+    repo, snapshot, declared = public_fixture(tmp_path)
+    text = board.prepare_public_readme(repo, snapshot, declared)
+    released, developing = text.split("### В работе")
+    assert "Увидеть изменения" not in released
+    assert "Увидеть изменения" in developing.split("### Рассматриваем")[0]
+    assert "Доступно с" not in text
+
+
+def test_hiding_last_entry_removes_stale_text(tmp_path):
+    repo, snapshot, declared = public_fixture(tmp_path)
+    board.write_public_readme(repo, board.prepare_public_readme(repo, snapshot, declared))
+    entry = declared["public_board"]["entries"][0]
+    entry.update(show=False, title="PRIVATE_UNIQUE_SENTINEL")
+    write_public_fixture(repo, snapshot, declared)
+    assert run_public_cli(repo, "--user-board-only").returncode == 0
+    text = (repo / "README.md").read_text()
+    assert "PRIVATE_UNIQUE_SENTINEL" not in text and "Увидеть изменения" not in text
+    assert text.count("Пока нет опубликованных записей.") == 4
+    assert run_public_cli(repo, "--check-user-board").returncode == 0
+
+
+@pytest.mark.parametrize("status", ["у автора", "готово для передачи", "взято в 0.42", "неизвестно", "2.1"])
+def test_ineligible_status_leaves_readme_unchanged(tmp_path, status):
+    repo, _, _ = public_fixture(tmp_path, status)
+    before = (repo / "README.md").read_bytes()
+    result = run_public_cli(repo, "--user-board-only")
+    assert result.returncode != 0 and "not eligible" in result.stderr
+    assert (repo / "README.md").read_bytes() == before
+
+
+@pytest.mark.parametrize("mutation, message", [
+    (lambda s, d: d["public_board"]["entries"].append(dict(d["public_board"]["entries"][0])), "duplicate public code"),
+    (lambda s, d: s["results"].append(dict(s["results"][0])), "duplicate source code"),
+    (lambda s, d: d["public_board"]["entries"][0].update(code="Ц99-99"), "unknown result code"),
+    (lambda s, d: d["public_board"]["entries"][0].update(show="false"), "expected boolean"),
+    (lambda s, d: d["public_board"]["entries"][0].update(updated_at="2026-02-30"), "invalid date"),
+    (lambda s, d: d["public_board"]["entries"][0].update(updated_at="2999-01-01"), "future date"),
+    (lambda s, d: d["public_board"]["entries"][0].update(owner="invented"), "unknown entry fields"),
+    (lambda s, d: s["results"][0].update(mismatch="расходится"), "unresolved mismatch"),
+])
+def test_invalid_public_entry_is_rejected_before_writing(tmp_path, mutation, message):
+    repo, snapshot, declared = public_fixture(tmp_path)
+    before = (repo / "README.md").read_bytes()
+    mutation(snapshot, declared)
+    write_public_fixture(repo, snapshot, declared)
+    result = run_public_cli(repo, "--user-board-only")
+    assert result.returncode != 0 and message in result.stderr
+    assert (repo / "README.md").read_bytes() == before
+
+
+@pytest.mark.parametrize("field, value", [
+    ("place", "author-only"), ("version", "0.42.0-rc.15"),
+    ("version", "0.42.0"), ("evidence", ""), ("evidence", "another release"),
+])
+def test_released_claim_needs_consistent_stable_evidence(tmp_path, field, value):
+    repo, snapshot, declared = public_fixture(tmp_path, "в разнице 0.36–0.41.11")
+    declared["placement"]["Ц77-04"][field] = value
+    with pytest.raises(SystemExit, match="public_board"):
+        board.prepare_public_readme(repo, snapshot, declared)
+    assert (repo / "README.md").read_text() == "# IWE\n\nРучная навигация и правила.\n"
+
+
+def test_plan_requires_recorded_selection_and_pause_requires_reason(tmp_path):
+    repo, snapshot, declared = public_fixture(tmp_path, "план")
+    entry = declared["public_board"]["entries"][0]
+    with pytest.raises(SystemExit, match="not been selected"):
+        board.prepare_public_readme(repo, snapshot, declared)
+    entry.update(vote_candidate=True, selection_url="https://github.com/MimEcoSys/DS-iwe-releases/pull/1")
+    assert "Отобрано для обсуждения" in board.prepare_public_readme(repo, snapshot, declared)
+    snapshot["results"][0]["status"] = "отложено"
+    entry.pop("vote_candidate")
+    entry.pop("selection_url")
+    with pytest.raises(SystemExit, match="pause_reason"):
+        board.prepare_public_readme(repo, snapshot, declared)
+    entry.update(pause_reason="Ждём проверку", pause_source_url="https://github.com/MimEcoSys/DS-iwe-releases/issues/1")
+    text = board.prepare_public_readme(repo, snapshot, declared)
+    assert "Ждём проверку" in text.split("### Приостановлено")[1]
+
+
+@pytest.mark.parametrize("url", ["javascript:alert(1)", "http://github.com/x", "https://user:secret" + "@" + "github.com/x", "https://github.com/x?token=secret"])
+def test_bad_decision_url_is_rejected(tmp_path, url):
+    repo, snapshot, declared = public_fixture(tmp_path, "план")
+    declared["public_board"]["entries"][0].update(vote_candidate=True, selection_url=url)
+    with pytest.raises(SystemExit, match="public GitHub URL"):
+        board.prepare_public_readme(repo, snapshot, declared)
+
+
+def test_missing_source_row_and_bad_markers_preserve_readme(tmp_path):
+    repo, snapshot, declared = public_fixture(tmp_path)
+    before = (repo / "README.md").read_bytes()
+    (repo / "board" / "2.1-in-work.md").write_text("| Ц77-05 | другая строка |\n")
+    result = run_public_cli(repo, "--user-board-only")
+    assert result.returncode != 0 and "missing from source page" in result.stderr
+    assert (repo / "README.md").read_bytes() == before
+    (repo / "README.md").write_text("# IWE\n" + board.PUBLIC_START)
+    with pytest.raises(SystemExit, match="public markers"):
+        board.prepare_public_readme(repo, snapshot, declared)
+
+
+def test_read_only_check_detects_stale_view_and_text_is_escaped(tmp_path):
+    repo, snapshot, declared = public_fixture(tmp_path)
+    before = (repo / "README.md").read_bytes()
+    assert run_public_cli(repo, "--check-user-board").returncode != 0
+    assert (repo / "README.md").read_bytes() == before
+    declared["public_board"]["entries"][0]["title"] = "Text | [link](bad) <script>\nnext"
+    write_public_fixture(repo, snapshot, declared)
+    assert run_public_cli(repo, "--user-board-only").returncode == 0
+    text = (repo / "README.md").read_text()
+    assert r"Text \| \[link\]\(bad\) &lt;script&gt; next" in text
+    assert run_public_cli(repo, "--check-user-board").returncode == 0
+
+
+def test_failed_atomic_replace_keeps_previous_readme(tmp_path, monkeypatch):
+    repo, snapshot, declared = public_fixture(tmp_path)
+    before = (repo / "README.md").read_bytes()
+
+    def fail_replace(self, target):
+        raise OSError("simulated write failure")
+
+    monkeypatch.setattr(Path, "replace", fail_replace)
+    with pytest.raises(OSError, match="simulated write failure"):
+        board.write_public_readme(repo, board.prepare_public_readme(repo, snapshot, declared))
+    assert (repo / "README.md").read_bytes() == before
+    assert not list(repo.glob(".user-board-*"))
+
+
+def test_full_build_updates_public_view_without_changing_team_outputs(tmp_path):
+    import subprocess
+
+    src = tmp_path / "source"
+    src.mkdir()
+    for name in ("sbg.md", "staging.md", "result-codes.md", "weekplan.md", "fmt-files.txt"):
+        (src / name).write_text("")
+    (src / "map005.md").write_text("| Библиотека методов | 49 |\n")
+    (src / "fmt-sha").write_text("a" * 40 + "\n")
+    (src / "changelog.md").write_text("## [Unreleased]\n")
+    outputs = []
+    for name in ("legacy", "public"):
+        repo = tmp_path / name
+        (repo / "ops").mkdir(parents=True)
+        for version in ("0.36", "0.41.11"):
+            (repo / "releases" / version).mkdir(parents=True)
+        declared = {key: {} for key in ("links", "staging", "placement", "released_0_41_11", "files")}
+        if name == "public":
+            declared["public_board"] = {"schema_version": 1, "entries": []}
+            (repo / "README.md").write_text("# IWE\n\nРучной текст.\n")
+        (repo / "ops" / "developer-links.yaml").write_text(yaml.safe_dump(declared))
+        result = subprocess.run(
+            [sys.executable, board.__file__, "--src", str(src), "--repo", str(repo)],
+            capture_output=True, text=True,
+        )
+        assert result.returncode == 0, result.stderr
+        outputs.append({
+            p.relative_to(repo): p.read_bytes() for p in repo.rglob("*")
+            if p.is_file() and p.name not in ("developer-links.yaml", "README.md")
+        })
+    assert outputs[0] == outputs[1]
+    assert "public_board" not in (tmp_path / "public/ops/snapshot.yaml").read_text()
+    assert (tmp_path / "public/README.md").read_text().count("Пока нет опубликованных записей.") == 4
+    assert run_public_cli(tmp_path / "public", "--check-user-board").returncode == 0
+    assert not (tmp_path / "legacy/README.md").exists()
+
+
+def test_invalid_later_entry_does_not_partially_publish_valid_rows(tmp_path):
+    repo, snapshot, declared = public_fixture(tmp_path)
+    declared["public_board"]["entries"].append({"code": "Ц99-99", "show": True})
+    write_public_fixture(repo, snapshot, declared)
+    before = (repo / "README.md").read_bytes()
+    result = run_public_cli(repo, "--user-board-only")
+    assert result.returncode != 0 and "unknown result code" in result.stderr
+    assert (repo / "README.md").read_bytes() == before
+
+
+
+def test_manual_readme_bytes_survive_generation(tmp_path):
+    repo, snapshot, declared = public_fixture(tmp_path)
+    prefix = "# IWE\r\n\r\nРучной ввод.\r\n".encode()
+    suffix = "\r\n\r\nРучной итог.\r\n".encode()
+    path = repo / "README.md"
+    path.write_bytes(prefix + board.PUBLIC_START.encode() + b"old" + board.PUBLIC_END.encode() + suffix)
+    board.write_public_readme(repo, board.prepare_public_readme(repo, snapshot, declared))
+    assert path.read_bytes().startswith(prefix)
+    assert path.read_bytes().endswith(suffix)
+    assert run_public_cli(repo, "--check-user-board").returncode == 0
+
+
+
+@pytest.mark.parametrize("status, field, extra", [
+    ("план", "selection_url", {"vote_candidate": True}),
+    ("отложено", "pause_source_url", {"pause_reason": "Ждём решение"}),
+])
+def test_decision_link_cannot_break_table_cells(tmp_path, status, field, extra):
+    repo, snapshot, declared = public_fixture(tmp_path, status)
+    entry = declared["public_board"]["entries"][0]
+    entry.update(extra)
+    entry[field] = r"https://github.com/MimEcoSys/DS-iwe-releases/issues/1#choice|next\[link]"
+    text = board.prepare_public_readme(repo, snapshot, declared)
+    row = next(line for line in text.splitlines() if line.startswith("| Увидеть изменения"))
+    assert row.count("|") == 4
+    assert "#choice%7Cnext%5C%5Blink%5D)" in row
+    assert row.endswith("| 2026-11-14 |")
