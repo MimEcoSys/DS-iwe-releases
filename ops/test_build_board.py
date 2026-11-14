@@ -412,28 +412,68 @@ def test_only_fully_ready_and_selected_results_move_to_taken():
     assert "mismatch" not in results[1]
 
 
-def test_general_board_summarizes_source_and_links_distinct_release_work():
+def test_general_board_preserves_workflow_stages_and_covers_unselected_results():
     source_text = "\n".join(
-        f"| Ц1-0{i} | 1 | гость | результат {i} | сайт | {stage} | фича | сайт | — | нет |"
-        for i, stage in enumerate(("план", "в работе", "сделано", "отложено"), 1)
+        f"| Ц1-{i:02} | 1 | гость | результат {i} | сайт | {stage} | фича | сайт | — | нет |"
+        for i, stage in enumerate(("план", "в работе", "сделано", "отложено", "в работе", "в работе", "в работе",
+                                   "в работе", "сделано", "сделано", "сделано"), 1)
     )
     results = [
         {"code": "Ц1-02", "status": "в работе"},
         {"code": "Ц1-03", "status": "у автора"},
+        {"code": "Ц1-05", "status": "у автора"},
+        {"code": "Ц1-06", "status": "готово для передачи"},
+        {"code": "Ц1-07", "status": "взято в 0.42"},
+        {"code": "Ц1-09", "status": "работает вне выпуска шаблона"},
+        {"code": "Ц1-10", "status": "выпущено в 0.36"},
     ]
+    states = board.general_result_states(source_text, results)
+    assert len(states) == 11
+    assert board.board_stage_counts(states) == {"план": 1, "в работе": 6, "сделано": 3, "отложено": 1}
+    assert states["Ц1-03"]["source_stage"] == "сделано"
+    assert states["Ц1-03"]["stage"] == "в работе"
+    assert {code for code, row in states.items() if row["stage"] == "сделано"} == {"Ц1-09", "Ц1-10", "Ц1-11"}
+    groups, work_lines = board.work_detail_groups(source_text, results)
+    expected = {"Ц1-02", "Ц1-03", "Ц1-05", "Ц1-06", "Ц1-07", "Ц1-08"}
+    listed = [code for group in groups for code in group["codes"]]
+    assert set(listed) == expected == set(work_lines)
+    assert len(listed) == len(set(listed)) == 6
+    assert [len(group["codes"]) for group in groups] == [2, 2, 1, 1]
+    assert groups[0]["codes"] == {"Ц1-02", "Ц1-08"}
     lines = board.board_lines("2026-11-11", source_text, results, "https://github.com/example/source/blob/sha/results.md")
     text = "\n".join(lines)
-    assert "# Табло результатов и подготовки выпуска" in text
-    assert "| **Всего** | **4** |" in text
-    assert "| 2. В работе | 1 |" in text
+    assert "| **Всего** | **11** |" in text
+    assert "| 2. В работе | 6 |" in text
+    assert "| 3. Сделано | 3 |" in text
     assert "| 4. Отложено | 1 |" in text
-    assert "<summary>Подготовка выпуска: этапы 2.1–2.4 — 2</summary>" in text
-    assert "| 2.1 Разрабатывается | [1](board/2.1-in-work.md) |" in text
-    assert "| 2.2 Проверяется Разработчиком | [1](board/2.2-at-developer.md) |" in text
-    assert "Исходная стадия «В работе»: всего 1; в этих этапах — 1, вне них — 0." in text
-    assert "другими исходными стадиями: 1 — «сделано»" in text
-    assert "Ц1-03" not in text
-    assert "225" not in text
+    assert "| **Итого пункт 2** | **6** |" in text
+    assert "**6 = 2 + 2 + 1 + 1**" in text
+    assert "Этап не уточнён" not in text
+    inventory = "\n".join(board.work_detail_inventory_lines(source_text, results, "https://github.com/example/source"))
+    for code in expected:
+        assert inventory.count(f"[{code}]") == 1
+    assert "Ц1-09" not in inventory
+    for group in groups:
+        assert f'board/completeness.md#{group["anchor"]}' in text
+        assert f'id="{group["anchor"]}"' in inventory
+    with pytest.raises(SystemExit, match="duplicate result codes"):
+        board.work_detail_groups(source_text + "\n" + source_text, results)
+    reconciliation = "\n".join(board.result_inventory_lines(set(states), source_text, "https://github.com/example/source", results))
+    assert "| 2. В работе | 5 | 6 | +1 |" in reconciliation
+    assert "| 3. Сделано | 4 | 3 | -1 |" in reconciliation
+    assert "«сделано» в источнике → «в работе» на табло: **1**" in reconciliation
+    assert "[Ц1-03](https://github.com/example/source#L3)" in reconciliation
+
+
+@pytest.mark.parametrize(("results", "error"), [
+    ([{"code": "Ц1-01", "status": "в работе"}] * 2, "duplicate result codes"),
+    ([{"code": "Ц1-02", "status": "в работе"}], "workflow results absent from source"),
+    ([{"code": "Ц1-01", "status": "неизвестно"}], "unknown board status"),
+])
+def test_general_board_rejects_invalid_workflow_input(results, error):
+    source_text = "| Ц1-01 | 1 | гость | результат | сайт | в работе |"
+    with pytest.raises(SystemExit, match=error):
+        board.general_result_states(source_text, results)
 
 
 def test_completeness_explains_separate_units_and_code_partition():
@@ -443,14 +483,14 @@ def test_completeness_explains_separate_units_and_code_partition():
         "| Ц1-02 | 1 | a | b | c | сделано |",
         "| Ц2-01 | 2 | a | b | c | в работе |",
     ])
-    result_text = "\n".join(board.result_inventory_lines(source, source_text, "https://github.com/example/blob/sha/source.md"))
+    result_text = "\n".join(board.result_inventory_lines(source, source_text, "https://github.com/example/blob/sha/source.md", []))
     assert (
         '<summary>1. Результаты — <a href="https://github.com/example/blob/sha/source.md">'
         '3 в исходном документе</a></summary>' in result_text
     )
     assert "**3 = 1 + 1 + 1 + 0**" in result_text
-    assert "| **Всего на общем табло** | **3** |" in result_text
-    assert "| 4. Отложено | 0 |" in result_text
+    assert "| **Всего** | **3** | **3** | **0** |" in result_text
+    assert "| 4. Отложено | 0 | 0 | 0 |" in result_text
     assert "225" not in result_text
 
     staging = [

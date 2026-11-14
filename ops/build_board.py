@@ -479,6 +479,14 @@ STAGES = (
     ("**4. Отложено**", "4-deferred.md", ("отложено",)),
 )
 OUTSIDE = ("Вне выпуска шаблона", "outside-template.md", ("работает вне выпуска шаблона",))
+WORK_STAGES = tuple(row for row in STAGES if row[0].startswith(("2.1 ", "2.2 ", "2.3 ", "2.4 ")))
+STATUS_TO_STAGE = {
+    status: stage
+    for label, stage in SOURCE_GROUPS
+    for name, _, statuses in STAGES if name == f"**{label}**"
+    for status in statuses
+}
+STATUS_TO_STAGE.update({"сделано": "сделано", "работает вне выпуска шаблона": "сделано"})
 
 
 def record_split(links: list[dict]) -> str:
@@ -616,28 +624,78 @@ def source_stages_for_codes(source_text: str, codes: set[str]) -> dict[str, int]
     return counts
 
 
-def result_inventory_lines(source_codes: set[str], source_text: str, source_url: str | None) -> list[str]:
-    stages = source_stages_for_codes(source_text, source_codes)
+def general_result_states(source_text: str, results: list[dict]) -> dict[str, dict]:
+    """Use every source row and refine its stage with the existing delivery workflow."""
+    source_codes = source_result_codes(source_text)
+    source_stages_for_codes(source_text, source_codes)
+    by_code = {result["code"]: result for result in results}
+    if len(by_code) != len(results):
+        raise SystemExit("duplicate result codes in workflow input")
+    foreign = set(by_code) - source_codes
+    if foreign:
+        raise SystemExit(f"workflow results absent from source: {sorted(foreign)}")
+    states = {}
+    for number, line in enumerate(source_text.splitlines(), 1):
+        if not re.match(r"^\| Ц\d+-\d+ \|", line):
+            continue
+        cells = table_cells(line)
+        code, source_stage = cells[0], cells[5]
+        status = by_code[code]["status"] if code in by_code else source_stage
+        if status not in STATUS_TO_STAGE:
+            raise SystemExit(f"unknown board status {status!r} in {code}")
+        states[code] = {"source_stage": source_stage, "stage": STATUS_TO_STAGE[status],
+                        "status": status, "line": number}
+    return states
+
+
+def board_stage_counts(states: dict[str, dict]) -> dict[str, int]:
+    return {stage: sum(row["stage"] == stage for row in states.values()) for _, stage in SOURCE_GROUPS}
+
+
+def source_code_link(code: str, row: dict, source_url: str | None) -> str:
+    return f"[{code}]({source_url}#L{row['line']})" if source_url else code
+
+
+def result_inventory_lines(source_codes: set[str], source_text: str, source_url: str | None, results: list[dict]) -> list[str]:
+    source_stages = source_stages_for_codes(source_text, source_codes)
+    states = general_result_states(source_text, results)
+    stages = board_stage_counts(states)
+    comparison_rows = []
+    for name, stage in SOURCE_GROUPS:
+        delta = stages[stage] - source_stages[stage]
+        difference = f"{delta:+d}" if delta else "0"
+        comparison_rows.append(f"| {name} | {source_stages[stage]} | {stages[stage]} | {difference} |")
     source_title = (
         f'<a href="{source_url}">{len(source_codes)} в исходном документе</a>'
         if source_url else f"{len(source_codes)} в исходном документе"
     )
-    return [
+    lines = [
         "<details>",
         f"<summary>1. Результаты — {source_title}</summary>",
         "",
-        "| Стадия исходного документа | Результатов |",
-        "|---|---:|",
-        *[f"| {name} | {stages[stage]} |" for name, stage in SOURCE_GROUPS],
-        f"| **Всего на общем табло** | **{len(source_codes)}** |",
+        "| Стадия | В исходном документе | На табло | Разница |",
+        "|---|---:|---:|---:|",
+        *comparison_rows,
+        f"| **Всего** | **{len(source_codes)}** | **{len(states)}** | **0** |",
         "",
-        f"**{len(source_codes)} = " + " + ".join(str(stages[stage]) for _, stage in SOURCE_GROUPS) + "**. "
+        f"Исходный документ: **{len(source_codes)} = " + " + ".join(str(source_stages[stage]) for _, stage in SOURCE_GROUPS) + "**.",
+        f"Табло: **{len(states)} = " + " + ".join(str(stages[stage]) for _, stage in SOURCE_GROUPS) + "**. "
         "Все слагаемые — результаты; каждый код источника учтён один раз. "
         "«Отложено» остаётся отдельной стадией.",
         "",
-        "</details>",
-        "",
     ]
+    changed = {code: row for code, row in states.items() if row["stage"] != row["source_stage"]}
+    if changed:
+        lines += ["**Почему стадии различаются.** Исходные отметки сохранены. На табло используется более "
+                  "подробный статус подготовки выпуска, когда он есть. Поэтому отметка источника «сделано» "
+                  "сама по себе не означает завершения проверки, передачи и принятия в выпуск. "
+                  "Каждый код учитывается на табло один раз. Ниже — все отличия, с кодами для сверки.", ""]
+        for source_stage, stage in sorted({(r["source_stage"], r["stage"]) for r in changed.values()}):
+            codes = [code for code, row in changed.items() if (row["source_stage"], row["stage"]) == (source_stage, stage)]
+            links = ", ".join(source_code_link(code, states[code], source_url) for code in codes)
+            lines += [f"- «{source_stage}» в источнике → «{stage}» на табло: **{len(codes)}** — {links}."]
+        lines += [""]
+    return lines + ["</details>", ""]
 
 
 def record_inventory_lines(staging: list[dict], unreleased_links: list[dict], released: dict, results: list[dict], taken_records: int) -> list[str]:
@@ -704,59 +762,88 @@ def code_inventory_lines(source_codes: set[str], result_codes_text: str) -> list
     ]
 
 
+def work_detail_groups(source_text: str, results: list[dict]) -> tuple[list[dict], dict[str, int]]:
+    """Partition the board's in-work stage, using the same effective states as its summary."""
+    states = general_result_states(source_text, results)
+    work_lines = {code: row["line"] for code, row in states.items() if row["stage"] == "в работе"}
+    groups = []
+    assigned = set()
+    for name, _, statuses in WORK_STAGES:
+        codes = {
+            code for code in work_lines
+            if states[code]["status"] in statuses
+        }
+        if assigned & codes:
+            raise SystemExit("work detail stages overlap")
+        assigned.update(codes)
+        groups.append({"name": name, "anchor": f"work-step-{len(groups) + 1}", "codes": codes})
+    if assigned != set(work_lines):
+        raise SystemExit(f"work detail does not cover the board in-work stage: {sorted(set(work_lines) - assigned)}")
+    return groups, work_lines
+
+
+def work_detail_inventory_lines(source_text: str, results: list[dict], source_url: str | None) -> list[str]:
+    groups, work_lines = work_detail_groups(source_text, results)
+    lines = ["<details open>", f"<summary>5. Строки пункта 2 «В работе» — {len(work_lines)}</summary>", "",
+             "Каждый код ниже учтён в пункте 2 табло и указан ровно в одной группе. "
+             "Ссылка на код ведёт к строке исходного документа; описания результатов здесь не копируются.", ""]
+    for group in groups:
+        lines += [f'<a id="{group["anchor"]}"></a>', f'### {group["name"]} — {len(group["codes"])}', ""]
+        codes = sorted(group["codes"], key=work_lines.get)
+        links = [f"[{code}]({source_url}#L{work_lines[code]})" if source_url else code for code in codes]
+        lines += [", ".join(links) if links else "Нет результатов на этом этапе.", ""]
+    return lines + ["</details>", ""]
+
+
 def board_lines(source_date: str, source_text: str, results: list[dict], source_url: str | None) -> list[str]:
-    """Source totals plus the distinct workflow the release team manages here."""
-    source_codes = source_result_codes(source_text)
-    counts = source_stages_for_codes(source_text, source_codes)
-    work_statuses = next(statuses for name, _, statuses in STAGES if name == "**2. В работе**")
-    release_work = [result for result in results if result["status"] in work_statuses]
-    work_total = len(release_work)
-    release_source_stages = source_stages_for_codes(source_text, {result["code"] for result in release_work})
-    other_source_stages = ", ".join(
-        f"{count} — «{stage}»"
-        for stage, count in release_source_stages.items() if stage != "в работе" and count
-    ) or "нет"
-    work_rows = [(name, page, statuses) for name, page, statuses in STAGES if name.startswith("2.")]
-    top_level = [statuses for name, _, statuses in work_rows if name.startswith(("2.1 ", "2.2 ", "2.3 ", "2.4 "))]
-    if sum(count_statuses(results, statuses) for statuses in top_level) != work_total:
-        raise SystemExit("release work stages do not add up to their total")
+    """One effective-state hierarchy; every child count is a subset of its parent."""
+    states = general_result_states(source_text, results)
+    counts = board_stage_counts(states)
+    groups, work_lines = work_detail_groups(source_text, results)
+    if len(work_lines) != counts["в работе"]:
+        raise SystemExit("work detail total differs from the summary")
     source_label = (
         f"[«Состояние по целям»]({source_url})" if source_url else "«Состояние по целям»"
     )
     out = [
         f"> Состояние результатов на {source_date}.",
         "",
-        "# Табло результатов и подготовки выпуска",
+        "# Табло результатов",
         "",
-        f"Сводка всех **{len(source_codes)}** результатов из документа {source_label} по четырём исходным стадиям. "
-        "Подробные строки остаются в исходном документе; эти числа обновятся после получения нового снимка источника и пересборки табло.",
+        f"Все **{len(states)}** результатов из документа {source_label}. "
+        "Стадии учитывают подробные статусы подготовки выпуска. «В работе» охватывает разработку, "
+        "проверку и передачу; «Сделано» — отмеченные как сделанные результаты без незавершённого этапа в учёте выпуска. "
+        "Подробные описания остаются в исходном документе.",
         "",
         "| Стадия | Результатов |",
         "|---|---:|",
         *[f"| {name} | {counts[stage]} |" for name, stage in SOURCE_GROUPS],
-        f"| **Всего** | **{len(source_codes)}** |",
+        f"| **Всего** | **{len(states)}** |",
         "",
-        "«Отложено» показано отдельно. Стадии описывают состояние результата на дату снимка, "
-        "а не обещают дату его появления.",
+        "Каждый результат учтён ровно в одной стадии. "
+        "Разница с исходными отметками показана в [сверке](board/completeness.md). "
+        "Числа обновляются после получения новых исходных данных и пересборки.",
         "",
         "<details>",
-        f"<summary>Подготовка выпуска: этапы 2.1–2.4 — {work_total}</summary>",
+        f"<summary>2. В работе — детализация {len(work_lines)} результатов</summary>",
         "",
-        f"Эта таблица показывает шаги команды, которая готовит **выпуск** — публикацию версии шаблона, например [0.42](releases/0.42/README.md). "
-        f"Исходная стадия «В работе»: всего {counts['в работе']}; "
-        f"в этих этапах — {release_source_stages['в работе']}, "
-        f"вне них — {counts['в работе'] - release_source_stages['в работе']}. "
-        f"В этих этапах также есть результаты с другими исходными стадиями: {other_source_stages}. "
-        f"Поэтому итог этапов {work_total} не является разбивкой числа {counts['в работе']}.",
+        "Все результаты пункта 2 распределены по этапам 2.1–2.4 без пересечений. "
+        "Исходная отметка «в работе» соответствует 2.1; подтверждённые статусы проверки, передачи "
+        "и принятия в выпуск определяют этапы 2.2–2.4.",
         "",
-        "| Этап подготовки выпуска | Результатов |",
+        "| Этап | Результатов |",
         "|---|---:|",
     ]
-    for name, page, statuses in work_rows:
-        count = count_statuses(results, statuses)
-        number = f"[{count}](board/{page})" if page else str(count)
-        out.append(f"| {name} | {number} |")
-    out += [f"| **Итого в подготовке выпуска** | **{work_total}** |", "", "</details>", ""]
+    for group in groups:
+        count = len(group["codes"])
+        number = f'[{count}](board/completeness.md#{group["anchor"]})' if count else "0"
+        out.append(f'| {group["name"]} | {number} |')
+    out += [f"| **Итого пункт 2** | **{len(work_lines)}** |", "",
+            f"**{len(work_lines)} = " + " + ".join(str(len(group["codes"])) for group in groups) + "**.", "",
+            "Этап 2.3 охватывает [ранее выпущенное в 0.37–0.41.11](board/2.3.1-released-0.37-0.41.11.md), "
+            "ещё ожидающее приёмки для 0.42, и [влитое после 0.41.11](board/2.3.2-merged-after-0.41.11.md). "
+            "Решения о составе версии — в [карточке выпуска 0.42](releases/0.42/README.md).",
+            "", "</details>", ""]
     out += ["[Сверка полноты](board/completeness.md).", ""]
     return out
 
@@ -1559,7 +1646,7 @@ def main() -> int:
         "Результаты, записи правок и коды — разные единицы счёта; их итоги не складываются друг с другом.",
         "",
     ]
-    lines += result_inventory_lines(source_codes, sbg_text, source_url)
+    lines += result_inventory_lines(source_codes, sbg_text, source_url, results)
     lines += record_inventory_lines(staging, developer["unreleased_links"], released, results, taken_records)
     lines += code_inventory_lines(source_codes, result_codes_text)
     lines += [
@@ -1592,6 +1679,7 @@ def main() -> int:
         "</details>",
         "",
     ]
+    lines += work_detail_inventory_lines(sbg_text, results, source_url)
     (args.repo / "board" / "completeness.md").write_text("\n".join(lines))
     lost = [name for name, a, b in checks if a != b]
     if lost:
