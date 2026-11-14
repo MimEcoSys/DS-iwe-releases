@@ -410,18 +410,19 @@ def test_only_fully_ready_and_selected_results_move_to_taken():
     assert "нет прямой связи" in results[2]["mismatch"]
     assert "mismatch" not in results[1]
 
-def test_board_total_separates_results_from_proposals():
+
+def test_release_board_excludes_service_results_and_unregistered_proposals():
     results = [
         {"status": "план"},
         {"status": "в работе"},
         {"status": "работает вне выпуска шаблона"},
     ]
     notes = {name: ("пояснение", "подробности") for name, _, _ in (*board.STAGES, board.OUTSIDE)}
-    lines = board.board_lines("снимок", results, notes, 22)
+    lines = board.board_lines("снимок", results, notes)
     text = "\n".join(lines)
-    assert "| **В стадиях 1–4** | **2** |" in text
-    assert "Всего учтённых результатов: 3 = 2 в стадиях 1–4 + 1" in text
-    assert "[в сервисах платформы](board/outside-template.md)" in text
-    assert "[предложения новых результатов](board/proposed.md): 22" in text
+    assert "| **Итого в стадиях выпуска** | **2** |" in text
+    assert "Всего учтённых результатов" not in text
+    assert "board/outside-template.md" not in text
+    assert "board/proposed.md" not in text
     assert "| Предложено новых результатов |" not in text
     assert "| Вне выпуска шаблона |" not in text

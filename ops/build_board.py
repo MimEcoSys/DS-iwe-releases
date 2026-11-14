@@ -554,9 +554,10 @@ def stage_notes(results, staging, unreleased_links, released, released_counts, t
         ),
         "**4. Отложено**": ("отложил Разработчик", "Разработчик отложил работу: в карточке РП фаза перенесена на потом."),
         OUTSIDE[0]: (
-            "сделано в сервисах платформы; входит в общий итог результатов",
+            "сделано в сервисах платформы; вне стадий выпуска",
             "Результат той же цели сделан не в шаблоне, а в сервисе платформы (сайт, бот, MCP-сервер). Через выпуск "
-            "шаблона он не проходит, поэтому не стоит в стадиях 1–4, но входит в общий итог результатов.",
+            "шаблона он не проходит и в итог стадий выпуска не входит. Этот список нужен для сверки источника, "
+            "а не для подсчёта всех результатов платформы.",
         ),
     }
 
@@ -565,7 +566,7 @@ def count_statuses(results, statuses) -> int:
     return sum(1 for r in results if r["status"] in statuses)
 
 
-def board_lines(stamp, results, notes, proposed_count) -> list[str]:
+def board_lines(stamp, results, notes) -> list[str]:
     """The board page: numbers only, each linked to its list."""
     on_board = len(results) - count_statuses(results, OUTSIDE[2])
     stages = [count_statuses(results, st) for name, _, st in STAGES if name.startswith("**")]
@@ -576,8 +577,9 @@ def board_lines(stamp, results, notes, proposed_count) -> list[str]:
         "",
         "# Табло выпуска шаблона IWE",
         "",
-        "Единица счёта — обещанный результат. Стадии и статусы описаны в [README](README.md#стадии-и-статусы); "
-        "число ведёт к списку результатов.",
+        "Здесь считаются обещанные результаты выбранных целей, проходящие стадии выпуска шаблона IWE, Open "
+        "или Библиотеки методов. Это не общий счёт результатов платформы. Стадии и статусы описаны в "
+        "[README](README.md#стадии-и-статусы); число ведёт к списку результатов.",
         "",
         "| Стадия | Результатов | Пояснения |",
         "|---|---|---|",
@@ -586,16 +588,8 @@ def board_lines(stamp, results, notes, proposed_count) -> list[str]:
         n = count_statuses(results, statuses)
         num = f"[{n}](board/{page})" if page else str(n)
         out += [f"| {name} | {f'**{num}**' if name.startswith('**') else num} | {notes[name][0]} |"]
-    outside_n = count_statuses(results, OUTSIDE[2])
     out += [
-        f"| **В стадиях 1–4** | **{on_board}** | результаты в стадиях выпуска |",
-        "",
-        f"**Всего учтённых результатов: {len(results)} = {on_board} в стадиях 1–4 + "
-        f"{outside_n} [в сервисах платформы](board/{OUTSIDE[1]}).** "
-        "Результаты в сервисах доступны без выпуска шаблона.",
-        "",
-        f"Отдельно — [предложения новых результатов](board/proposed.md): {proposed_count}. "
-        "Им ещё не присвоены коды результатов, поэтому в общий итог они не входят.",
+        f"| **Итого в стадиях выпуска** | **{on_board}** | сумма стадий 1–4 |",
         "",
         "Что вошло в выпуски: [до 0.36](releases/0.36/shipped.md), [0.37–0.41.11](releases/0.41.11/shipped.md). "
         "[Сверка полноты](board/completeness.md).",
@@ -732,7 +726,7 @@ def write_views(
     repo: Path, stamp: str, results, staging, unreleased, unreleased_links, released, author_ahead, released_links, released_counts,
     fmt_sha: str,
     taken_records: int = 0,
-) -> None:
+) -> int:
     lists = repo / "board"
     lists.mkdir(parents=True, exist_ok=True)
     testing = [s for s in staging if s["staging_status"] == "testing"]
@@ -744,15 +738,20 @@ def write_views(
             if link.get("proposed")
         }
     )
-    (repo / "BOARD.md").write_text("\n".join(board_lines(stamp, results, notes, len(proposed))))
+    (repo / "BOARD.md").write_text("\n".join(board_lines(stamp, results, notes)))
 
     for name, page, statuses in (*STAGES, OUTSIDE):
         if not page:
             continue
         rows = [r for r in results if r["status"] in statuses]
         title = name.strip("*")
-        out = [stamp, "", f"# {title}: {len(rows)}", "", "[← табло](../BOARD.md)", "", notes[name][1], ""]
-        out += RESULT_HEADER + result_rows(rows) + [""]
+        return_to = "completeness.md" if page == OUTSIDE[1] else "../BOARD.md"
+        return_label = "сверка полноты" if page == OUTSIDE[1] else "табло"
+        out = [stamp, "", f"# {title}: {len(rows)}", "", f"[← {return_label}]({return_to})", "", notes[name][1], ""]
+        headers = RESULT_HEADER
+        if page == OUTSIDE[1]:
+            headers = [RESULT_HEADER[0].replace("Часть выпуска", "Контур выбранной цели"), RESULT_HEADER[1]]
+        out += headers + result_rows(rows) + [""]
         out += stage_extra(page, staging, unreleased, unreleased_links, author_ahead, fmt_sha)
         (lists / page).write_text("\n".join(out))
     out = [
@@ -760,10 +759,11 @@ def write_views(
         "",
         f"# Предложено новых результатов: {len(proposed)}",
         "",
-        "[← табло](../BOARD.md)",
+        "[← сверка полноты](completeness.md)",
         "",
-        "Записи после 0.41.11 и записи обкатки, для которых результата в «Состоянии по целям» нет. Войдут в итог, "
-        "когда документ присвоит им коды.",
+        "Записи после 0.41.11 и записи обкатки, для которых результата в «Состоянии по целям» нет. "
+        "Список нужен для сверки записей шаблона. Часть предложений относится к целям вне выборки табло; "
+        "в итог стадий выпуска они не входят.",
         "",
     ]
     (lists / "proposed.md").write_text("\n".join(out + [f"- цель {goal}: {what}" for goal, what in proposed] + [""]))
@@ -788,6 +788,7 @@ def write_views(
             ]
             lines += [""]
         (repo / "releases" / name / "shipped.md").write_text("\n".join(lines))
+    return len(proposed)
 
 
 HANDOFF_FIELDS = ("rollback_unit", "commits", "user_gets", "how_to_check", "risk", "recommendation", "depends_on")
@@ -1311,7 +1312,7 @@ def main() -> int:
     )
     if handoff:
         write_candidates(args.repo, stamp, handoff, unreleased, developer["unreleased_links"])
-    write_views(
+    proposed_count = write_views(
         args.repo,
         stamp,
         results,
@@ -1358,9 +1359,9 @@ def main() -> int:
         "",
         "# Сверка полноты",
         "",
-        "Каждая запись каждого источника есть на табло: строкой или в списке «не привязано».",
+        "Каждая запись исходных материалов учтена: в стадии выпуска или в отдельном списке для сверки.",
         "",
-        "| Источник | В источнике | На табло |",
+        "| Источник | В источнике | Учтено в сборке |",
         "|---|---|---|",
     ]
     lines += [f"| {name} | {a} | {b} |" for name, a, b in checks]
@@ -1368,6 +1369,12 @@ def main() -> int:
         1 for u in developer["unreleased_links"] if not (u.get("result") or u.get("proposed") or u.get("service"))
     )
     lines += [
+        "",
+        f"- [Результаты выбранных целей в сервисах платформы: {platform_built}](outside-template.md) — "
+        "вне стадий выпуска. Это только пересечение с выбранными целями, а не все результаты платформы.",
+        f"- [Предложения из записей изменений и обкатки: {proposed_count}](proposed.md) — "
+        "не зарегистрированы как результаты в источнике; часть целей вне выборки табло. "
+        "В итог стадий выпуска они не входят.",
         "",
         (
             f"Не привязано к коду результата: записей «Ещё не выпущено» — {unlinked}, "
