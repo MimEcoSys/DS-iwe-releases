@@ -1,4 +1,5 @@
 """Tests for the author <-> template block of build_board.py (WP-529 F259)."""
+import hashlib
 import importlib.util
 import sys
 from pathlib import Path
@@ -431,18 +432,32 @@ def test_release_board_excludes_service_results_and_unregistered_proposals():
 
 def test_completeness_explains_separate_units_and_code_partition():
     source = {"Ц1-01", "Ц1-02", "Ц2-01"}
+    source_text = "\n".join([
+        "| Ц1-01 | 1 | a | b | c | план |",
+        "| Ц1-02 | 1 | a | b | c | сделано |",
+        "| Ц2-01 | 2 | a | b | c | в работе |",
+    ])
     results = [
         {"code": "Ц1-01", "status": "план"},
         {"code": "Ц1-02", "status": "работает вне выпуска шаблона"},
     ]
-    result_text = "\n".join(board.result_inventory_lines(source, results))
-    assert "Результатов в исходном документе: **3 = 1 + 2**" in result_text
-    assert "Слагаемые — результаты на этом табло выпуска" in result_text
+    result_text = "\n".join(board.result_inventory_lines(
+        source, source_text, results, "https://github.com/example/blob/sha/source.md"
+    ))
+    assert (
+        '<summary>1. Результаты — <a href="https://github.com/example/blob/sha/source.md">'
+        '3 в исходном документе</a></summary>' in result_text
+    )
+    assert "**3 = 1 + 2**" in result_text
+    assert "| Вне выборки этого табло | 2 |" in result_text
+    assert "| сделано | 1 |" in result_text
+    assert "| в работе | 1 |" in result_text
+    assert "нельзя назвать «требует проработки»" in result_text
     assert "непересекающиеся группы кодов результатов" in result_text
-    assert "оно не меняет стадию результата в исходном документе" in result_text
+    assert "Оно не меняет стадию результата в исходном документе" in result_text
     assert "Результат может попасть на табло после пересмотра его пути поставки" in result_text
     assert "outside-template.md" not in result_text
-    assert "не только уже работающие возможности" in result_text
+    assert "не означает, что все результаты уже работают" in result_text
 
     staging = [
         {"staging_status": "testing", "link": {"proposed": {"goal": 1, "what": "A"}}},
@@ -465,6 +480,24 @@ def test_completeness_explains_separate_units_and_code_partition():
     assert "Уникальных кодов в указателе: **4 = 3 + 1**" in code_text
     assert "Слагаемые — коды результатов и сохранённые коды других записей" in code_text
     assert "Кодов результатов, отсутствующих в указателе: **0**" in code_text
+
+
+def test_source_link_points_only_to_matching_pinned_revision(tmp_path):
+    source_text = "| Ц1-01 | 1 | a | b | c | план |\n"
+    source_hash = hashlib.sha256(source_text.encode()).hexdigest()
+    (tmp_path / "ops").mkdir()
+    (tmp_path / "ops" / "developer-sources.yaml").write_text(
+        "inputs:\n"
+        "  - name: sbg.md\n"
+        "    repo: https://github.com/example/source.git\n"
+        "    path: Goals-State/state-by-goals.md\n"
+        f"    revision: {'a' * 40}\n"
+        f"    sha256: {source_hash}\n"
+    )
+    assert board.pinned_input_url(tmp_path, "sbg.md", source_text) == (
+        f"https://github.com/example/source/blob/{'a' * 40}/Goals-State/state-by-goals.md"
+    )
+    assert board.pinned_input_url(tmp_path, "sbg.md", source_text + "extra") is None
 
 
 def test_outside_result_shows_implementation_evidence_separately_from_user_channel():

@@ -575,29 +575,82 @@ def source_result_codes(text: str) -> set[str]:
     return set(codes)
 
 
-def result_inventory_lines(source_codes: set[str], results: list[dict]) -> list[str]:
+def pinned_input_url(repo: Path, name: str, source_text: str) -> str | None:
+    """Link to the exact source revision only when its recorded hash matches this build."""
+    manifest = repo / "ops" / "developer-sources.yaml"
+    if not manifest.exists():
+        return None
+    doc = yaml.safe_load(manifest.read_text())
+    entry = next((item for item in doc.get("inputs", []) if item.get("name") == name), None)
+    if not entry or entry.get("sha256") != hashlib.sha256(source_text.encode()).hexdigest():
+        return None
+    source_repo = entry.get("repo", "").removesuffix(".git")
+    revision, path = entry.get("revision", ""), entry.get("path", "")
+    if not source_repo.startswith("https://github.com/") or not re.fullmatch(r"[0-9a-f]{40}", revision) or not path:
+        return None
+    return f"{source_repo}/blob/{revision}/{quote(path, safe='/')}"
+
+
+def source_stages_for_codes(source_text: str, codes: set[str]) -> dict[str, int]:
+    counts = dict.fromkeys(STAGE_TO_STATUS, 0)
+    for line in source_text.splitlines():
+        if not re.match(r"^\| Ц\d+-\d+ \|", line):
+            continue
+        cells = table_cells(line)
+        if cells[0] not in codes:
+            continue
+        stage = cells[5]
+        if stage not in counts:
+            raise SystemExit(f"unknown source stage {stage!r} in {cells[0]}")
+        counts[stage] += 1
+    if sum(counts.values()) != len(codes):
+        raise SystemExit("source stage counts do not cover excluded result codes")
+    return counts
+
+
+def result_inventory_lines(source_codes: set[str], source_text: str, results: list[dict], source_url: str | None) -> list[str]:
     selected = {r["code"] for r in results}
     if len(selected) != len(results) or not selected <= source_codes:
         raise SystemExit("selected result codes are duplicated or absent from source")
     release = {r["code"] for r in results if r["status"] not in OUTSIDE[2]}
     outside = source_codes - release
+    outside_stages = source_stages_for_codes(source_text, outside)
+    source_title = (
+        f'<a href="{source_url}">{len(source_codes)} в исходном документе</a>'
+        if source_url else f"{len(source_codes)} в исходном документе"
+    )
     rows = [
         f"| [{name.strip('*')}](./{page}) | {count_statuses(results, statuses)} |"
         for name, page, statuses in STAGES if page
     ]
     return [
         "<details>",
-        f"<summary>1. Результаты — {len(source_codes)} в исходном документе</summary>",
+        f"<summary>1. Результаты — {source_title}</summary>",
         "",
-        f"Результатов в исходном документе: **{len(source_codes)} = {len(release)} + {len(outside)}**. "
-        "Слагаемые — результаты на этом табло выпуска и результаты вне его выборки.",
+        "| Где учитывается результат | Результатов |",
+        "|---|---:|",
+        f"| На этом табло выпуска | {len(release)} |",
+        f"| Вне выборки этого табло | {len(outside)} |",
+        f"| **Всего в исходном документе** | **{len(source_codes)}** |",
+        "",
+        f"**{len(source_codes)} = {len(release)} + {len(outside)}** — все три числа считают результаты. "
+        f"{len(release)} — результаты, отобранные для табло, а не число уже проработанных. "
+        "Разделение показывает участие в табло, а не степень готовности.",
         "Это две непересекающиеся группы кодов результатов; вместе они охватывают все строки "
-        "исходного документа. Разделение показывает, какие результаты учтены на этом табло; "
-        "оно не меняет стадию результата в исходном документе. Вне выборки тоже есть план, работа и сделанное. "
+        "исходного документа. Оно не меняет стадию результата в исходном документе. "
         "Результат может попасть на табло после пересмотра его пути поставки и новой сборки, не автоматически.",
         "",
-        "Разделение по кодам не доказывает отсутствия пересечения функций или систем. "
-        "Число в стадиях выпуска включает план и отложенное, а не только уже работающие возможности.",
+        f"Среди {len(outside)} результатов вне выборки **{outside_stages['сделано']}** "
+        "отмечены в исходном документе как «сделано». "
+        "Поэтому эту группу нельзя назвать «требует проработки» или ставить как стадию 0. "
+        "Разделение по кодам не доказывает отсутствия пересечения функций или систем.",
+        "",
+        "| Исходная стадия вне выборки | Результатов |",
+        "|---|---:|",
+        *[f"| {stage} | {count} |" for stage, count in outside_stages.items()],
+        f"| **Итого вне выборки** | **{len(outside)}** |",
+        "",
+        "На самом табло тоже есть план и отложенное; число ниже не означает, что все результаты уже работают:",
         "",
         "| Стадия выпуска | Результатов |",
         "|---|---:|",
@@ -1483,7 +1536,8 @@ def main() -> int:
         "Результаты, записи правок и коды — разные единицы счёта; их итоги не складываются друг с другом.",
         "",
     ]
-    lines += result_inventory_lines(source_codes, results)
+    source_url = pinned_input_url(args.repo, "sbg.md", sbg_text)
+    lines += result_inventory_lines(source_codes, sbg_text, results, source_url)
     lines += record_inventory_lines(staging, developer["unreleased_links"], released, results, taken_records)
     lines += code_inventory_lines(source_codes, result_codes_text)
     lines += [
