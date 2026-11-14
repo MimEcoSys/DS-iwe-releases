@@ -21,3 +21,5 @@ jobs:
           python-version: "3.12"
       - name: Board builder tests
         run: python -m pip install --quiet pyyaml pytest && python -m pytest -q ops
+      - name: User board matches its sources
+        run: python ops/build_board.py --repo . --check-user-board

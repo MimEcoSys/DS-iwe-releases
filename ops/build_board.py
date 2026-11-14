@@ -23,9 +23,13 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import hashlib
+import html
+import os
 import re
 import sys
+import tempfile
 from pathlib import Path
+from urllib.parse import quote, urlsplit
 
 import yaml
 
@@ -940,11 +944,258 @@ def write_candidates(repo: Path, stamp: str, handoff: dict, unreleased: list[dic
     (repo / "releases" / release / "candidates.md").write_text("\n".join(out))
 
 
+PUBLIC_START = "<!-- USER-BOARD:START -->"
+PUBLIC_END = "<!-- USER-BOARD:END -->"
+PUBLIC_GROUPS = ("Вышло и доступно", "В работе", "Рассматриваем", "Приостановлено")
+PUBLIC_FIELDS = {
+    "code", "show", "title", "updated_at",
+    "vote_candidate", "selection_url", "pause_reason", "pause_source_url",
+}
+PUBLIC_STAGE_GROUPS = {
+    "3-done.md": "Вышло и доступно",
+    "2.3.1-released-0.37-0.41.11.md": "Вышло и доступно",
+    "2.1-in-work.md": "В работе",
+    "1-plan.md": "Рассматриваем",
+    "4-deferred.md": "Приостановлено",
+}
+
+
+def public_error(message: str) -> None:
+    raise SystemExit(f"public_board: {message}")
+
+
+def public_date(value, name: str) -> str:
+    if not isinstance(value, str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", value):
+        public_error(f"{name}: expected YYYY-MM-DD string")
+    try:
+        parsed = dt.date.fromisoformat(value)
+    except ValueError:
+        public_error(f"{name}: invalid date")
+    if parsed > dt.date.today():
+        public_error(f"{name}: future date")
+    return value
+
+
+def public_text(value, name: str) -> str:
+    if not isinstance(value, str) or not value.strip():
+        public_error(f"{name}: expected nonempty text")
+    clean = html.escape(" ".join(value.split()))
+    return re.sub(r"([\\`*_\[\]{}()|])", r"\\\1", clean)
+
+
+def public_url(value, name: str) -> str:
+    if not isinstance(value, str):
+        public_error(f"{name}: expected public GitHub URL")
+    url = urlsplit(value)
+    if (url.scheme != "https" or url.netloc != "github.com" or url.query
+            or not url.path.strip("/") or any(c.isspace() for c in value)):
+        public_error(f"{name}: expected public GitHub URL without query or credentials")
+    return quote(value, safe="/:#?&=%@+;,~!$'-._")
+
+
+def public_release(code: str, result: dict, declared: dict) -> str:
+    placements = declared.get("placement")
+    if not isinstance(placements, dict) or not isinstance(placements.get(code), dict):
+        public_error(f"{code}: released result needs a placement mapping")
+    placement = placements[code]
+    expected = {
+        "выпущено в 0.36": "released-0.36",
+        "в разнице 0.36–0.41.11": "released-0.37-0.41.11",
+    }[result["status"]]
+    version = placement.get("version")
+    if (placement.get("place") != expected or not isinstance(version, str)
+            or not re.fullmatch(r"\d+\.\d+\.\d+", version)
+            or not placement.get("evidence") or not result.get("evidence")):
+        public_error(f"{code}: released result needs matching stable placement and evidence")
+    key = version_key(version)
+    if ((expected == "released-0.36" and key > (0, 36, 99))
+            or (expected == "released-0.37-0.41.11" and not (0, 36, 99) < key <= (0, 41, 11))):
+        public_error(f"{code}: version is outside the released range")
+    if placement["evidence"] != result["evidence"]:
+        public_error(f"{code}: release evidence differs between placement and snapshot")
+    return version
+
+
+def public_row(entry: dict, result: dict, declared: dict) -> dict:
+    code = entry["code"]
+    if result.get("mismatch"):
+        public_error(f"{code}: source has an unresolved mismatch")
+    status = result.get("status")
+    page = next((page for _, page, states in STAGES if page in PUBLIC_STAGE_GROUPS and status in states), None)
+    if page is None:
+        public_error(f"{code}: status is not eligible for the public board: {status}")
+    group = PUBLIC_STAGE_GROUPS[page]
+    row = {
+        "code": code,
+        "group": group,
+        "title": public_text(entry.get("title"), f"{code}.title"),
+        "updated_at": public_date(entry.get("updated_at"), f"{code}.updated_at"),
+        "source_url": f"board/{page}",
+        "detail": "",
+    }
+    vote = entry.get("vote_candidate", False)
+    if type(vote) is not bool:
+        public_error(f"{code}.vote_candidate: expected boolean")
+    if vote and status != "план":
+        public_error(f"{code}: only planned results can be vote candidates")
+    if status == "план":
+        if not vote:
+            public_error(f"{code}: planned result has not been selected for voting")
+        selection = public_url(entry.get("selection_url"), f"{code}.selection_url")
+        row["detail"] = f"[Отобрано для обсуждения]({selection}); выпуск не назначен"
+    if group == "Вышло и доступно":
+        row["detail"] = f"Доступно с {public_release(code, result, declared)}"
+    pause = entry.get("pause_reason")
+    if pause is not None or status == "отложено":
+        if status not in ("в работе", "возвращено из 0.42", "отложено"):
+            public_error(f"{code}: pause cannot override this source status")
+        reason = public_text(pause, f"{code}.pause_reason")
+        source = public_url(entry.get("pause_source_url"), f"{code}.pause_source_url")
+        row.update(group="Приостановлено", detail=f"{reason} ([почему]({source}))")
+    return row
+
+
+def public_rows(snapshot: dict, declared: dict) -> tuple[str, list[dict]]:
+    config = declared.get("public_board")
+    if (not isinstance(config, dict) or set(config) != {"schema_version", "entries"}
+            or type(config["schema_version"]) is not int or config["schema_version"] != 1):
+        public_error("expected schema_version 1 and entries")
+    entries = config["entries"]
+    if not isinstance(entries, list):
+        public_error("entries must be a list")
+    header = snapshot.get("snapshot")
+    if not isinstance(header, dict):
+        public_error("snapshot metadata must be a mapping")
+    collected = public_date(header.get("collected_at"), "snapshot.collected_at")
+    results = snapshot.get("results")
+    if not isinstance(results, list):
+        public_error("snapshot.results must be a list")
+    by_code = {}
+    for result in results:
+        if not isinstance(result, dict) or not isinstance(result.get("code"), str):
+            public_error("source result needs a code")
+        code = result["code"]
+        if not re.fullmatch(r"Ц\d+-\d+", code):
+            public_error(f"invalid source code: {code}")
+        if code in by_code:
+            public_error(f"duplicate source code: {code}")
+        by_code[code] = result
+    seen, rows = set(), []
+    for entry in entries:
+        if not isinstance(entry, dict) or set(entry) - PUBLIC_FIELDS:
+            public_error("unknown entry fields")
+        code = entry.get("code")
+        if not isinstance(code, str) or code not in by_code:
+            public_error(f"unknown result code: {code}")
+        if code in seen:
+            public_error(f"duplicate public code: {code}")
+        seen.add(code)
+        if type(entry.get("show", False)) is not bool:
+            public_error(f"{code}.show: expected boolean")
+        if entry.get("show", False):
+            rows.append(public_row(entry, by_code[code], declared))
+    return collected, sorted(rows, key=lambda row: row["code"])
+
+
+def public_board_lines(snapshot: dict, declared: dict) -> list[str]:
+    collected, rows = public_rows(snapshot, declared)
+    lines = [
+        PUBLIC_START, "## Табло будущих изменений", "",
+        "Здесь — выбранные улучшения для пользователей IWE: доступные возможности и дальнейшая работа.", "",
+        f"**Состояния по данным на {collected}. После этой даты они могли измениться.** "
+        "Дата текста у строки показывает обновление её описания, а не повторную проверку состояния.", "",
+        "Работы ниже не обещаны к определённой дате или выпуску. "
+        "[Текущая проверка 0.42](releases/0.42/README.md) идёт отдельно. "
+        "Голосование пока не запущено; число голосов не подсчитано.", "",
+    ]
+    for group in PUBLIC_GROUPS:
+        lines.extend([f"### {group}", ""])
+        selected = [row for row in rows if row["group"] == group]
+        if not selected:
+            lines.extend(["Пока нет опубликованных записей.", ""])
+            continue
+        lines.extend(["| Что меняется для вас | Подробности | Дата текста |", "|---|---|---|"])
+        for row in selected:
+            detail = f"{row['detail']} · " if row["detail"] else ""
+            lines.append(f"| {row['title']} | {detail}[{row['code']}]({row['source_url']}) | {row['updated_at']} |")
+        lines.append("")
+    lines.extend(["Вопрос о записи — [команде выпуска](#роли). [Полное табло](BOARD.md) · [Как устроены состояния](#пользовательский-вид-табло)", "", PUBLIC_END])
+    return lines
+
+
+def read_public_readme(repo: Path) -> str:
+    with (repo / "README.md").open(encoding="utf-8", newline="") as stream:
+        return stream.read()
+
+
+def prepare_public_readme(repo: Path, snapshot: dict, declared: dict) -> str:
+    block = "\n".join(public_board_lines(snapshot, declared))
+    readme = read_public_readme(repo)
+    counts = (readme.count(PUBLIC_START), readme.count(PUBLIC_END))
+    if counts == (0, 0):
+        first, separator, rest = readme.partition("\n")
+        if not separator or not first.startswith("# "):
+            public_error("README needs a first-level heading before inserting the view")
+        return first + "\n\n" + block + "\n" + rest
+    if counts != (1, 1) or readme.index(PUBLIC_START) > readme.index(PUBLIC_END):
+        public_error("README has missing, duplicate or reversed public markers")
+    start = readme.index(PUBLIC_START)
+    end = readme.index(PUBLIC_END) + len(PUBLIC_END)
+    return readme[:start] + block + readme[end:]
+
+
+def write_public_readme(repo: Path, text: str) -> None:
+    path = repo / "README.md"
+    if read_public_readme(repo) == text:
+        return
+    temp_path = None
+    try:
+        with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", newline="", dir=path.parent, prefix=".user-board-", delete=False) as temporary:
+            temp_path = Path(temporary.name)
+            temporary.write(text)
+            temporary.flush()
+            os.fsync(temporary.fileno())
+        temp_path.chmod(path.stat().st_mode)
+        temp_path.replace(path)
+    finally:
+        if temp_path is not None:
+            temp_path.unlink(missing_ok=True)
+
+
+def existing_public_readme(repo: Path) -> str:
+    snapshot = yaml.safe_load((repo / "ops" / "snapshot.yaml").read_text())
+    declared = yaml.safe_load((repo / "ops" / "developer-links.yaml").read_text())
+    if not isinstance(snapshot, dict) or not isinstance(declared, dict):
+        public_error("snapshot and developer links must be mappings")
+    check_public_source_pages(repo, snapshot, declared)
+    return prepare_public_readme(repo, snapshot, declared)
+
+
+def check_public_source_pages(repo: Path, snapshot: dict, declared: dict) -> None:
+    _, rows = public_rows(snapshot, declared)
+    for row in rows:
+        path = repo / row["source_url"]
+        if not path.is_file() or not re.search(r"^\| " + re.escape(row["code"]) + r" \|", path.read_text(), re.MULTILINE):
+            public_error(f"{row['code']}: missing from source page {row['source_url']}")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("--src", type=Path, required=True)
+    mode = ap.add_mutually_exclusive_group(required=True)
+    mode.add_argument("--src", type=Path)
+    mode.add_argument("--user-board-only", action="store_true")
+    mode.add_argument("--check-user-board", action="store_true")
     ap.add_argument("--repo", type=Path, required=True)
     args = ap.parse_args()
+    if args.user_board_only or args.check_user_board:
+        readme = existing_public_readme(args.repo)
+        if args.check_user_board:
+            if read_public_readme(args.repo) != readme:
+                print("public_board: README is stale; run --user-board-only", file=sys.stderr)
+                return 1
+        else:
+            write_public_readme(args.repo, readme)
+        return 0
     src = args.src
 
     fmt_sha = (src / "fmt-sha").read_text().strip()
@@ -996,6 +1247,9 @@ def main() -> int:
         {u["key"] for u in unreleased},
         declared["released_0_41_11"],
         declared["placement"],
+    )
+    public_readme = (
+        prepare_public_readme(args.repo, developer, declared) if "public_board" in declared else None
     )
     ops = args.repo / "ops"
     ops.mkdir(exist_ok=True)
@@ -1086,6 +1340,9 @@ def main() -> int:
     if lost:
         print("completeness check failed: " + ", ".join(lost), file=sys.stderr)
         return 1
+    if public_readme is not None:
+        check_public_source_pages(args.repo, developer, declared)
+        write_public_readme(args.repo, public_readme)
     print(
         f"goals={len(goals)} results={len(results)} staging={len(staging)} unreleased={len(unreleased)} "
         f"released={on_board_released}"
