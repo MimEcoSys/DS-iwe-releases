@@ -1,0 +1,75 @@
+{
+  "tag": "v0.42.0-rc.15",
+  "tag_object": "428733f654c48dfadb5b6703a35b56714f6c2530",
+  "commit": "aaed1384ef772640288f08da3bd43332eeaecc18",
+  "tree": "0035753732315f17f03e79f09ffea41985d9e918",
+  "started_at": "2026-11-14T09:20:28.324188+00:00",
+  "archive_command": [
+    "git",
+    "-C",
+    "<workspace>/FMT-exocortex-template",
+    "archive",
+    "--format=tar",
+    "v0.42.0-rc.15"
+  ],
+  "test_cwd": "/private/tmp/wp529-tests-rc15/source",
+  "environment_policy": "Allowlist environment; user HOME preserved unchanged and not logged; no inherited BASH_ENV/PYTHONPATH or external pytest plugins; TMPDIR under evidence directory.",
+  "archive_sha256": "fdbcee3878af365b6cf32552b8183d95dc8000aecf5f4f7e8352084c676bb03d",
+  "file_sha256": {
+    "scripts/tests/dryrun-gate-knowledge-namespace-regression.sh": "45e890574866ba3d6e4fc0945b4d72bb27e8d49033684ce696c366622506c0a7",
+    "scripts/tests/test_dry_run_gate.py": "23c54f9a8fd84a9fc2374f36e41d467a7ea38740dabd2f9f94bce0bf3d2f5c68",
+    ".claude/hooks/dry-run-gate.sh": "c77f5b1bf715f5d7e92d3a1e2b7d18598586ea622bb37683144ca6de38944a70",
+    ".claude/lib/dry-run-dir.sh": "364d003bc3a4f9a53d02e67296b1075de2d34c306a5c018c30861c77508f139b"
+  },
+  "tool_versions": {
+    "bash": {
+      "exit_code": 0,
+      "output": "GNU bash, version 5.3.15(1)-release (aarch64-apple-darwin25.4.0)\nCopyright (C) 2025 Free Software Foundation, Inc.\nLicense GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>\n\nThis is free software; you are free to change and redistribute it.\nThere is NO WARRANTY, to the extent permitted by law."
+    },
+    "system_bash": {
+      "exit_code": 0,
+      "output": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)\nCopyright (C) 2007 Free Software Foundation, Inc."
+    },
+    "python_pytest": {
+      "exit_code": 0,
+      "output": "3.14.6 (main, Jun 10 2026, 10:03:53) [Clang 21.0.0 (clang-2100.0.123.102)]\n/opt/homebrew/opt/python@3.14/bin/python3.14\npytest 9.0.3"
+    },
+    "jq": {
+      "exit_code": 0,
+      "output": "jq-1.7.1-apple"
+    },
+    "git": {
+      "exit_code": 0,
+      "output": "git version 2.54.0 (Apple Git-157)\n2026-11-14 11:20:30.459 xcodebuild[50004:36526314]  DVTFilePathFSEvents: Failed to start fs event stream.\n2026-11-14 11:20:30.742 xcodebuild[50004:36526297] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 \"Input/output error\". Using NSCachesDirectory instead."
+    },
+    "platform": {
+      "exit_code": 0,
+      "output": "Darwin arm64"
+    }
+  },
+  "commands": [
+    {
+      "name": "namespace-regression",
+      "argv": [
+        "/opt/homebrew/bin/bash",
+        "scripts/tests/dryrun-gate-knowledge-namespace-regression.sh"
+      ]
+    },
+    {
+      "name": "pytest-15",
+      "argv": [
+        "/opt/homebrew/bin/python3.14",
+        "-B",
+        "-m",
+        "pytest",
+        "--noconftest",
+        "-p",
+        "no:cacheprovider",
+        "-q",
+        "scripts/tests/test_dry_run_gate.py",
+        "-k",
+        "mcp_server_names_of_other_channels or mcp_aisystant_write_allowed_without_rehearsal"
+      ]
+    }
+  ]
+}

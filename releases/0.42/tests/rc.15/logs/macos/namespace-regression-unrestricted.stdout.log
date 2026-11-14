@@ -1,0 +1,24 @@
+== Текущий сервер (mcp__iwe-knowledge__*): write заблокирован ==
+PASS: personal_write заблокирован
+PASS: dt_write_digital_twin заблокирован
+PASS: send_telegram_message заблокирован
+PASS: personal_delete заблокирован
+PASS: неизвестное действие (не read-паттерн) заблокировано по умолчанию
+== Текущий сервер: read-only разрешён (не блокируется этой секцией) ==
+PASS: search разрешён
+PASS: whoami разрешён
+PASS: get_instructions разрешён
+PASS: get_cognitive_brief (get_*) разрешён
+PASS: knowledge_list_documents (list_ в середине имени) разрешён
+PASS: user_profile_get_tier (get_ в середине имени) разрешён
+PASS: dt_read_digital_twin (read_ в середине имени) разрешён
+PASS: personal_graph_stats (*_stats) разрешён
+PASS: knowledge_pack_traverse (*_traverse) разрешён
+PASS: backlinks разрешён
+PASS: agent_status_list (*_list) разрешён
+PASS: agent_status_update (это запись, не читать её как *_status) заблокирован
+== Легаси-префикс (mcp__claude_ai_IWE__*) ловится тем же паттерном ==
+PASS: legacy personal_write тоже заблокирован
+PASS: legacy search тоже разрешён
+
+OK: все проверки прошли.

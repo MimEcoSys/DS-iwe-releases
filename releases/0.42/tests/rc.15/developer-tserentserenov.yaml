@@ -1,0 +1,56 @@
+build: 0.42-rc.15
+platform: macOS (Darwin arm64), распакованное git archive кандидата; CI Linux/macOS — отдельные ссылки
+environment: Сверка 14.11.2026, агент Codex. Коммит aaed1384ef772640288f08da3bd43332eeaecc18; дерево 0035753732315f17f03e79f09ffea41985d9e918.
+  Установка и update.sh не запускались, HOME и launchd не менялись, внешние MCP не вызывались. Исходники после
+  проверок совпали с тегом. Первый namespace-прогон остановлен ограничением среды на ps до проверок; разрешённый
+  повтор того же снимка прошёл.
+marks:
+- line: 3
+  result: не проверялось
+  tester: TserenTserenov
+  note: 'Сверено агентом Codex по программе выпуска 43418218912: upgrade-from-release на ubuntu-latest и macos-latest
+    для v0.36.3 завершены успешно на rc.15. Проверка включает сверку файлов, пользовательских меток и повторного
+    обновления. Это подтверждение CI, не новый ручной прогон. Источник: https://github.com/TserenTserenov/FMT-exocortex-template/actions/runs/43418218912
+    и опубликованный linux-tsekh-1-agent.yaml этого кандидата. Программная часть успешна, но полный критерий не
+    зачтён: повторный запуск CI проверяет код 0 и строку «Всё актуально», а не побайтную неизменность всех файлов.
+    Атака фиксирует L1 (служебные метки времени меняются), предложение принять её ещё не утверждено. Повторный
+    запуск без изменений пользовательских данных и принятие L1 не приравниваем к уже проверенной полной неизменности.'
+- line: 8
+  result: не проверялось
+  tester: TserenTserenov
+  note: 'Проверена программная часть на точном rc.15: namespace-regression 19/19, адресные pytest 15/15 (316 deselected).
+    Классификатор блокирует имена записи IWE/календаря и разрешает чтение/действия вне репетиции. Фактический
+    вызов хуков из Кими не проверялся; известная оговорка #1124 остаётся. Полный зачёт строки не ставится.'
+- line: 11
+  result: не проверялось
+  tester: TserenTserenov
+  note: Предложения по оговоркам записаны в README выпуска для решения Выпускающего. Принятие оговорок и итоговый
+    анонс ещё не подтверждены; сообщений не отправляли.
+- line: 12
+  result: не проверялось
+  tester: TserenTserenov
+  note: 'Все девять критериев сопоставлены с адресными доказательствами rc.15 в README выпуска: apply-op 132/0;
+    issue #1433 — семь успешных проверок; dry-run и glossary входят в общий pytest 1373 успешных, 2 пропуска;
+    macOS bash 3.2 test-i18n — эталоны 06, 12–17 успешны; light-onboarding-state успешен. Дополнительно 34 проверки
+    классификатора. Два пропуска pytest не расшифрованы. Проверка выбора сценария не подтверждает живой разговор;
+    общий итог не закрывает все ручные критерии. Прежний живой Claude-onboarding принят строкой 17; Windows не
+    обещается согласно decisions.md.'
+checks:
+- name: namespace-regression
+  passed: 19
+  failed: 0
+  command: bash scripts/tests/dryrun-gate-knowledge-namespace-regression.sh
+  log: logs/macos/namespace-regression-unrestricted.stdout.log
+- name: pytest-15
+  passed: 15
+  failed: 0
+  deselected: 316
+  command: python3 -B -m pytest --noconftest -p no:cacheprovider -q scripts/tests/test_dry_run_gate.py -k "mcp_server_names_of_other_channels
+    or mcp_aisystant_write_allowed_without_rehearsal"
+  log: logs/macos/pytest-15.stdout.log
+evidence: logs/macos/metadata.json — дерево, версии инструментов, команды, SHA256; logs/macos/report.txt — результат
+  и границы.
+not_checked:
+- Положительный возврат rc.15 → 0.41.11 после ROLLBACK с сохранностью пользовательских правок.
+- Живое подключение хуков Кими/Codex, открытие/закрытие дня, режимы доступа и онбординг.
+- Полная чистая установка macOS с расписаниями.
