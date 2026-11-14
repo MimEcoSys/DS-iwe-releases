@@ -426,3 +426,37 @@ def test_release_board_excludes_service_results_and_unregistered_proposals():
     assert "board/proposed.md" not in text
     assert "| Предложено новых результатов |" not in text
     assert "| Вне выпуска шаблона |" not in text
+
+
+def test_completeness_explains_separate_units_and_code_partition():
+    source = {"Ц1-01", "Ц1-02", "Ц2-01"}
+    results = [
+        {"code": "Ц1-01", "status": "план"},
+        {"code": "Ц1-02", "status": "работает вне выпуска шаблона"},
+    ]
+    result_text = "\n".join(board.result_inventory_lines(source, {1: ["шаблон IWE"]}, results))
+    assert "3 = 1 + 1 + 1" in result_text
+    assert "2 = 1 + 1" in result_text
+    assert "Коды результатов в трёх группах не пересекаются" in result_text
+    assert "не только уже работающие возможности" in result_text
+
+    staging = [
+        {"staging_status": "testing", "link": {"proposed": {"goal": 1, "what": "A"}}},
+        {"staging_status": "promoted"},
+        {"staging_status": "rejected"},
+    ]
+    unreleased = [
+        {"proposed": {"goal": 1, "what": "A"}},
+        {"proposed": {"goal": 2, "what": "B"}},
+    ]
+    released = {"0.36": {"0.36": [{}]}, "0.41.11": {"0.41.11": [{}, {}]}}
+    record_text = "\n".join(board.record_inventory_lines(staging, unreleased, released, [{"status": "взято в 0.42"}], 2))
+    assert "5 = 1 + 2 + 2" in record_text
+    assert "3 = 1 + 1 + 1" in record_text
+    assert "Предложений новых результатов: 2" in record_text
+    assert "1 из обкатки + 2 из невыпущенных правок − 1" in record_text
+
+    index = "| Ц1-01 |\n| Ц1-02 |\n| Ц2-01 |\n| Ц9-01 |\n| Ц9-01 |"
+    code_text = "\n".join(board.code_inventory_lines(source, index))
+    assert "4 = 3 + 1" in code_text
+    assert "Результатов без строки в указателе: **0**" in code_text

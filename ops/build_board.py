@@ -566,6 +566,115 @@ def count_statuses(results, statuses) -> int:
     return sum(1 for r in results if r["status"] in statuses)
 
 
+def source_result_codes(text: str) -> set[str]:
+    codes = re.findall(r"^\| (Ц\d+-\d+) \|", text, re.MULTILINE)
+    if len(codes) != len(set(codes)):
+        raise SystemExit("duplicate result codes in state-by-goals source")
+    return set(codes)
+
+
+def result_inventory_lines(source_codes: set[str], goals: dict, results: list[dict]) -> list[str]:
+    selected = {r["code"] for r in results}
+    if len(selected) != len(results) or not selected <= source_codes:
+        raise SystemExit("selected result codes are duplicated or absent from source")
+    service = {r["code"] for r in results if r["status"] in OUTSIDE[2]}
+    release = selected - service
+    other_goals = source_codes - selected
+    rows = [
+        f"| [{name.strip('*')}](./{page}) | {count_statuses(results, statuses)} |"
+        for name, page, statuses in STAGES if page
+    ]
+    return [
+        "<details>",
+        f"<summary>1. Результаты — {len(source_codes)} в исходном документе</summary>",
+        "",
+        f"**{len(source_codes)} = {len(release)} + {len(service)} + {len(other_goals)}**: "
+        "результаты в стадиях выпуска + результаты выбранных целей в сервисах + результаты остальных целей.",
+        f"Выбранных целей: {len(goals)}; результатов этих целей: "
+        f"**{len(selected)} = {len(release)} + {len(service)}**. "
+        f"Вне стадий выпуска: **{len(source_codes) - len(release)} = "
+        f"{len(service)} + {len(other_goals)}**.",
+        f"[Результаты выбранных целей в сервисах](outside-template.md): {len(service)}. "
+        "Это лишь пересечение выбранных целей с сервисами, не перечень всех результатов сервисов.",
+        "",
+        "Коды результатов в трёх группах не пересекаются. Это разделение **строк источника**, "
+        "а не доказательство, что функции или системы не пересекаются. "
+        "Число в стадиях выпуска включает план и отложенное, а не только уже работающие возможности.",
+        "",
+        "| Стадия выпуска | Результатов |",
+        "|---|---:|",
+        *rows,
+        f"| **Итого в стадиях 1–4** | **{len(release)}** |",
+        "",
+        "</details>",
+        "",
+    ]
+
+
+def record_inventory_lines(staging: list[dict], unreleased_links: list[dict], released: dict, results: list[dict], taken_records: int) -> list[str]:
+    old = sum(map(len, released["0.36"].values()))
+    recent = sum(map(len, released["0.41.11"].values()))
+    unreleased = len(unreleased_links)
+    staging_counts = {status: sum(s["staging_status"] == status for s in staging) for status in STAGING_TO_STATUS}
+    testing = [s for s in staging if s["staging_status"] == "testing"]
+    proposed_testing = {
+        (s["link"]["proposed"]["goal"], s["link"]["proposed"]["what"])
+        for s in testing if s.get("link", {}).get("proposed")
+    }
+    proposed_unreleased = {
+        (u["proposed"]["goal"], u["proposed"]["what"])
+        for u in unreleased_links if u.get("proposed")
+    }
+    shared = len(proposed_testing & proposed_unreleased)
+    proposed_total = len(proposed_testing | proposed_unreleased)
+    taken_results = count_statuses(results, ("взято в 0.42",))
+    return [
+        "<details>",
+        f"<summary>2. Записи правок и обкатки — {old + recent + unreleased} и {len(staging)}</summary>",
+        "",
+        f"**{old + recent + unreleased} = {old} + {recent} + {unreleased}** записей журнала изменений шаблона: "
+        f"[до 0.36](../releases/0.36/shipped.md), [0.37–0.41.11](../releases/0.41.11/shipped.md) "
+        "и [ещё не выпущенные кандидаты 0.42](../releases/0.42/candidates.md). "
+        "Одна запись описывает правку, а не целый результат; несколько записей могут служить одному результату.",
+        f"Невыпущенных записей: {unreleased}; Выпускающий взял: {taken_records}; "
+        f"[полностью подтверждённых результатов в стадии 2.4: {taken_results}](2.4-taken.md). "
+        "Это разные единицы счёта.",
+        "",
+        f"**{len(staging)} = {staging_counts['testing']} + {staging_counts['promoted']} + "
+        f"{staging_counts['rejected']}** записей обкатки: проверяются, перенесены в шаблон, отклонены. "
+        "Это отдельный журнал; его записи нельзя прибавлять к записям изменений или к результатам.",
+        f"[Предложений новых результатов: {proposed_total}](proposed.md) = "
+        f"{len(proposed_testing)} из обкатки + {len(proposed_unreleased)} из невыпущенных правок "
+        f"− {shared}, встречающихся в обоих источниках. Предложение пока не является строкой результата "
+        "в исходном документе и не прибавляется к его итогу.",
+        "",
+        "</details>",
+        "",
+    ]
+
+
+def code_inventory_lines(source_codes: set[str], result_codes_text: str) -> list[str]:
+    indexed = set(re.findall(r"^\| (Ц\d+-\d+) \|", result_codes_text, re.MULTILINE))
+    current = indexed & source_codes
+    retained = indexed - source_codes
+    missing = source_codes - indexed
+    return [
+        "<details>",
+        f"<summary>3. Коды — {len(indexed)} в указателе</summary>",
+        "",
+        f"**{len(indexed)} = {len(current)} + {len(retained)}** уникальных кодов: "
+        "коды строк результатов в исходном документе + сохранённые коды записей, "
+        "которых больше нет в таблице результатов. "
+        f"Результатов без строки в указателе: **{len(missing)}**.",
+        "Код сохраняется при переносе записи в другую таблицу или документ, поэтому число кодов "
+        "не обязано совпадать с числом результатов. Исходные ревизии обоих документов — "
+        "в [описании сборки](../ops/developer-sources.yaml).",
+        "",
+        "</details>",
+        "",
+    ]
+
+
 def board_lines(stamp, results, notes) -> list[str]:
     """The board page: numbers only, each linked to its list."""
     on_board = len(results) - count_statuses(results, OUTSIDE[2])
@@ -726,7 +835,7 @@ def write_views(
     repo: Path, stamp: str, results, staging, unreleased, unreleased_links, released, author_ahead, released_links, released_counts,
     fmt_sha: str,
     taken_records: int = 0,
-) -> int:
+) -> None:
     lists = repo / "board"
     lists.mkdir(parents=True, exist_ok=True)
     testing = [s for s in staging if s["staging_status"] == "testing"]
@@ -788,7 +897,6 @@ def write_views(
             ]
             lines += [""]
         (repo / "releases" / name / "shipped.md").write_text("\n".join(lines))
-    return len(proposed)
 
 
 HANDOFF_FIELDS = ("rollback_unit", "commits", "user_gets", "how_to_check", "risk", "recommendation", "depends_on")
@@ -1233,8 +1341,10 @@ def main() -> int:
     fmt_sha = (src / "fmt-sha").read_text().strip()
     fmt_files = (src / "fmt-files.txt").read_text().split()
     goals = selected_goals((src / "map005.md").read_text())
-    results = results_for((src / "sbg.md").read_text(), goals)
-    attach_works(results, (src / "result-codes.md").read_text(), (src / "weekplan.md").read_text())
+    sbg_text = (src / "sbg.md").read_text()
+    result_codes_text = (src / "result-codes.md").read_text()
+    results = results_for(sbg_text, goals)
+    attach_works(results, result_codes_text, (src / "weekplan.md").read_text())
     staging = staging_entries((src / "staging.md").read_text(), fmt_files)
     sections = changelog_sections((src / "changelog.md").read_text())
     unreleased = sections.pop("Unreleased")
@@ -1312,7 +1422,7 @@ def main() -> int:
     )
     if handoff:
         write_candidates(args.repo, stamp, handoff, unreleased, developer["unreleased_links"])
-    proposed_count = write_views(
+    write_views(
         args.repo,
         stamp,
         results,
@@ -1329,12 +1439,10 @@ def main() -> int:
 
     # Completeness: every source item is on the board, linked or explicitly not linked.
     # Each board count is compared with an independent raw count of the source text.
-    sbg_total = sum(1 for line in (src / "sbg.md").read_text().splitlines() if re.match(r"^\| Ц\d+-\d+ \|", line))
-    platform_built = sum(1 for r in results if r["status"] == "работает вне выпуска шаблона")
-    iwe_total = len(results) - platform_built
+    source_codes = source_result_codes(sbg_text)
     sbg_raw = sum(
         1
-        for line in (src / "sbg.md").read_text().splitlines()
+        for line in sbg_text.splitlines()
         if (m := re.match(r"^\| Ц(\d+)-\d+ \|", line)) and int(m.group(1)) in goals
     )
     staging_raw = sum(1 for line in (src / "staging.md").read_text().splitlines() if line.startswith("| S-"))
@@ -1359,6 +1467,18 @@ def main() -> int:
         "",
         "# Сверка полноты",
         "",
+        "Все числа относятся к дате снимка выше. При новой сборке они пересчитываются из "
+        "[закреплённых источников](../ops/developer-sources.yaml). "
+        "Результаты, записи правок и коды — разные единицы счёта; их итоги не складываются друг с другом.",
+        "",
+    ]
+    lines += result_inventory_lines(source_codes, goals, results)
+    lines += record_inventory_lines(staging, developer["unreleased_links"], released, results, taken_records)
+    lines += code_inventory_lines(source_codes, result_codes_text)
+    lines += [
+        "<details>",
+        "<summary>4. Проверка источников и связей</summary>",
+        "",
         "Каждая запись исходных материалов учтена: в стадии выпуска или в отдельном списке для сверки.",
         "",
         "| Источник | В источнике | Учтено в сборке |",
@@ -1370,12 +1490,6 @@ def main() -> int:
     )
     lines += [
         "",
-        f"- [Результаты выбранных целей в сервисах платформы: {platform_built}](outside-template.md) — "
-        "вне стадий выпуска. Это только пересечение с выбранными целями, а не все результаты платформы.",
-        f"- [Предложения из записей изменений и обкатки: {proposed_count}](proposed.md) — "
-        "не зарегистрированы как результаты в источнике; часть целей вне выборки табло. "
-        "В итог стадий выпуска они не входят.",
-        "",
         (
             f"Не привязано к коду результата: записей «Ещё не выпущено» — {unlinked}, "
             f"записей обкатки на обкатке — {sum(1 for s in staging if s['staging_status'] == 'testing' and 'link' not in s)} "
@@ -1384,11 +1498,7 @@ def main() -> int:
         f"Повторяющиеся номера записей обкатки: {', '.join(duplicates) or 'нет'}.",
         f"Связи файлов, которых нет в последнем полном замере: {', '.join(stale_file_links) or 'нет'}.",
         "",
-        (
-            f"Сверка с «Состоянием по целям»: всего результатов {sbg_total} = на табло IWE {iwe_total} "
-            f"+ результаты платформы {sbg_total - iwe_total} (из них {platform_built} — результаты целей табло, "
-            "сделанные в сервисах платформы)."
-        ),
+        "</details>",
         "",
     ]
     (args.repo / "board" / "completeness.md").write_text("\n".join(lines))
