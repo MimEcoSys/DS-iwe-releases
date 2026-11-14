@@ -476,6 +476,43 @@ def test_general_board_rejects_invalid_workflow_input(results, error):
         board.general_result_states(source_text, results)
 
 
+def test_stage_pages_cover_every_result_and_detect_equal_count_substitution(tmp_path):
+    source = "\n".join(
+        f"| Ц1-{i:02} | 1 | гость | описание {i} | сайт | {stage} | фича | сайт | — | нет |"
+        for i, stage in enumerate(("план", "в работе", "сделано", "сделано", "сделано", "сделано",
+                                   "сделано", "сделано", "сделано", "отложено"), 1)
+    )
+    results = [{"code": f"Ц1-{i:02}", "status": status, "what": "готовая заметка"}
+               for i, status in enumerate(("у автора", "в разнице 0.36–0.41.11", "готово для передачи",
+                                           "взято в 0.42", "выпущено в 0.36", "работает вне выпуска шаблона"), 3)]
+    states = board.general_result_states(source, results)
+    expected = {
+        "1-plan.md": {"Ц1-01"}, "2.1-in-work.md": {"Ц1-02"}, "2.2-at-developer.md": {"Ц1-03"},
+        "2.3.1-released-0.37-0.41.11.md": {"Ц1-04"}, "2.3.2-merged-after-0.41.11.md": {"Ц1-05"},
+        "2.4-taken.md": {"Ц1-06"}, "3-done.md": {"Ц1-07", "Ц1-08", "Ц1-09"},
+        "4-deferred.md": {"Ц1-10"}, "outside-template.md": {"Ц1-08"},
+    }
+    assert board.stage_page_codes(states) == expected
+    (tmp_path / "board").mkdir()
+    by_code = {r["code"]: r for r in results}
+    for page, codes in expected.items():
+        text = "\n".join([f"# Этап: {len(codes)}", *board.stage_result_lines(
+            codes, states, by_code, "https://github.com/example/source", "2.1 Разрабатывается")])
+        (tmp_path / "board" / page).write_text(text)
+    board.check_stage_pages(tmp_path, states)
+    plan = tmp_path / "board" / "1-plan.md"
+    original = plan.read_text()
+    assert "[Ц1-01](https://github.com/example/source#L1)" in original
+    assert "описание 1" not in original
+    for broken in (original.replace("Ц1-01", "Ц1-02"), original.replace("Этап: 1", "Этап: 2"),
+                   original + "\n| Ц1-01 | дубль |"):
+        plan.write_text(broken)
+        with pytest.raises(SystemExit, match="1-plan.md"):
+            board.check_stage_pages(tmp_path, states)
+    assert "готовая заметка" not in "\n".join(board.stage_result_lines(
+        {"Ц1-07"}, states, by_code, None, "3. Сделано"))
+
+
 def test_completeness_explains_separate_units_and_code_partition():
     source = {"Ц1-01", "Ц1-02", "Ц2-01"}
     source_text = "\n".join([

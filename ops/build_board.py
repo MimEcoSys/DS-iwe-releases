@@ -501,15 +501,13 @@ def record_split(links: list[dict]) -> str:
     )
 
 
-def stage_notes(results, staging, unreleased_links, released, released_counts, taken_records=0) -> dict[str, tuple[str, str]]:
+def stage_notes(results, released, released_counts, taken_records=0) -> dict[str, tuple[str, str]]:
     """Per board row: a one-line note for the board and a fuller explanation for the list page."""
     in_work = [r for r in results if r["status"] == "в работе"]
-    testing = [s for s in staging if s["staging_status"] == "testing"]
     plan_mismatch = sum(1 for r in results if r["status"] == "план" and r.get("mismatch"))
     released_part = sum(1 for r in in_work if r.get("released_041_records"))
     merged_part = sum(1 for r in in_work if r.get("merged_after_0_41_11"))
     staging_part = sum(1 for r in in_work if r.get("on_staging"))
-    rec_036 = sum(len(e) for e in released["0.36"].values())
     rec_041 = sum(len(e) for e in released["0.41.11"].values())
     c = released_counts
     linked_041 = {r["code"] for r in results if r.get("released_041_records")}
@@ -521,7 +519,7 @@ def stage_notes(results, staging, unreleased_links, released, released_counts, t
     return {
         "**1. План**": (
             plan,
-            "Результаты активных РП, работа по которым не начата."
+            "Все результаты со стадией «план», независимо от направления и системы."
             + (
                 f" У {plan_mismatch} — расходится: часть их правок уже на обкатке, влита или вышла."
                 if plan_mismatch
@@ -531,18 +529,25 @@ def stage_notes(results, staging, unreleased_links, released, released_counts, t
         "**2. В работе**": ("сумма 2.1–2.4", ""),
         "2.1 Разрабатывается": (
             in_work_note,
-            f"В плане недели — {sum(1 for r in in_work if r['in_week_plan'])}. Результат складывается из нескольких "
-            f"правок: {in_work_note}. Поэтому результат целиком остаётся здесь, а не в 2.2 или 2.3.",
+            f"Здесь все результаты со стадией «в работе» без подтверждённого перехода на 2.2–2.4. "
+            f"По результатам с подробным учётом выпуска: в плане недели — {sum(1 for r in in_work if r['in_week_plan'])}. "
+            f"Результат достигается несколькими "
+            f"правками: {in_work_note}. Поэтому результат целиком остаётся здесь, а не в 2.2 или 2.3.",
         ),
         "2.2 Проверяется Разработчиком": (
             "работают только в IWE Разработчика",
-            f"Сделаны и работают только в IWE Разработчика. На обкатке {len(testing)} записей: "
-            f"{record_split([s['link'] for s in testing])}.",
+            "Сделаны и работают только в IWE Разработчика; ещё проверяются перед передачей. "
+            "Первый опрос запланирован по всем результатам этого этапа: выбрать кандидатов для перехода в 2.3. "
+            "Опрос ещё не запущен; голоса помогают выбрать, готовность подтверждается отдельно. "
+            "Также предусмотрены опросы для переходов 1 → 2.1 и 2.1 → 2.2.",
         ),
         "2.3 Готово для передачи Выпускающему": ("сумма 2.3.1 и 2.3.2; отсюда Выпускающий берёт в выпуск", ""),
         "2.3.1 Вышло в 0.37–0.41.11": (
             "вышло пользователям после 0.36; Выпускающий решает, что принять в 0.42",
-            f"Вышло в выпусках 0.37–0.41.11 ([состав](../releases/0.41.11/shipped.md)): {rec_041} строк, "
+            f"Эти результаты уже доступны пользователям в 0.37–0.41.11, но ещё ожидают решения "
+            f"Выпускающего о принятии в 0.42. Поэтому здесь они учитываются в пункте 2 общего табло.\n\n"
+            f"Справка по всему журналу 0.37–0.41.11, а не только по результатам этого этапа "
+            f"([состав](../releases/0.41.11/shipped.md)): {rec_041} строк, "
             f"{c['records']} разных записей ({c['repeated']} повторяются в двух версиях). Связь записей с "
             f"результатами предварительная, до приёмки Разработчиком: по номеру коммита или запроса на слияние — "
             f"{c['result_by_ref']}, по совпавшему чтению двух разметчиков — {c['result_by_reading']}; они служат "
@@ -552,8 +557,9 @@ def stage_notes(results, staging, unreleased_links, released, released_counts, t
         ),
         "2.3.2 Влито после 0.41.11": (
             "влито в шаблон после 0.41.11, ещё не выпущено",
-            f"Сделано целиком и влито в шаблон после 0.41.11, но ещё не выпущено. Всего {len(unreleased_links)} "
-            f"записей: {record_split(unreleased_links)}.",
+            "Сделано целиком и влито в шаблон после 0.41.11, готово для передачи Выпускающему. "
+            "Принятие в 0.42 ещё не подтверждено. Расхождения в строках показывают, что нужно сверить. "
+            "Полный журнал невыпущенных правок приведён отдельно под спойлером; его число не равно числу результатов.",
         ),
         "2.4 Взято Выпускающим": (
             f"принятых правок: {taken_records}; считаются только готовые результаты с прямой связью"
@@ -563,18 +569,19 @@ def stage_notes(results, staging, unreleased_links, released, released_counts, t
             "остаются в 2.3.2." if taken_records else "Отобрано Выпускающим в выпуск 0.42.",
         ),
         "**3. Сделано**": (
-            "вышло в стабильном 0.36; пока только результаты открытых РП",
-            f"Вышло в выпусках до 0.36 включительно ([состав](../releases/0.36/shipped.md), {rec_036} записей). "
-            "С результатами пока связаны только сделанные результаты открытых РП; результаты закрытых работ — "
-            "следующая очередь.",
+            "сделано; незавершённых этапов 2.1–2.4 не зафиксировано",
+            "Все результаты со стадией «сделано», для которых не зафиксирован незавершённый этап 2.1–2.4. "
+            "Основание отметки указано в состоянии: выпуск шаблона, поставка через отдельный сервис или исходный документ. "
+            "Отметка «сделано» в источнике сама по себе не подтверждает выпуск шаблона.",
         ),
-        "**4. Отложено**": ("отложил Разработчик", "Разработчик отложил работу: в карточке РП фаза перенесена на потом."),
+        "**4. Отложено**": ("работа отложена", "Все результаты со стадией «отложено». Основание — исходный документ или подробный учёт работы."),
         OUTSIDE[0]: (
             "сделано вне выпуска шаблона",
             "В исходном документе у этих результатов стадия «сделано». Они поставлены вне файлов шаблона: "
             "в плагине, сервисе или отдельном расширении. "
             "Место реализации указано в подтверждении Разработчика; канал, где человек видит результат, "
-            "показан отдельно. Эти результаты не проходят выпуск шаблона и не входят в итог этого табло. "
+            "показан отдельно. Все эти результаты уже учтены в [пункте 3 «Сделано»](3-done.md) "
+            "и в общем итоге; повторно прибавлять их не нужно. "
             "Список служит для сверки отбора, а не для подсчёта всех результатов других систем.",
         ),
     }
@@ -644,7 +651,7 @@ def general_result_states(source_text: str, results: list[dict]) -> dict[str, di
         if status not in STATUS_TO_STAGE:
             raise SystemExit(f"unknown board status {status!r} in {code}")
         states[code] = {"source_stage": source_stage, "stage": STATUS_TO_STAGE[status],
-                        "status": status, "line": number}
+                        "status": status, "line": number, "system": cells[7] if len(cells) > 7 else "—"}
     return states
 
 
@@ -654,6 +661,49 @@ def board_stage_counts(states: dict[str, dict]) -> dict[str, int]:
 
 def source_code_link(code: str, row: dict, source_url: str | None) -> str:
     return f"[{code}]({source_url}#L{row['line']})" if source_url else code
+
+
+def stage_page_codes(states: dict[str, dict]) -> dict[str, set[str]]:
+    """The leaf pages partition the full board; outside-template is a done subset."""
+    stages = {f"**{label}**": stage for label, stage in SOURCE_GROUPS}
+    pages = {}
+    for name, page, statuses in (*STAGES, OUTSIDE):
+        if page:
+            pages[page] = {code for code, row in states.items()
+                           if (row["stage"] == stages[name] if name in stages else row["status"] in statuses)}
+    leaves = [code for page, codes in pages.items() if page != OUTSIDE[1] for code in codes]
+    if len(leaves) != len(set(leaves)) or set(leaves) != set(states):
+        raise SystemExit("stage pages must partition all source results exactly once")
+    if not pages[OUTSIDE[1]] <= pages["3-done.md"]:
+        raise SystemExit("outside-template results must be counted as done")
+    return pages
+
+
+def stage_result_lines(codes: set[str], states: dict[str, dict], by_code: dict[str, dict],
+                       source_url: str | None, stage_name: str) -> list[str]:
+    """Keep source descriptions at source; retain existing working notes only for item 2."""
+    detailed = stage_name.startswith("2.")
+    out = ["| Код | Система | Состояние | Источник |" + (" Что получает |" if detailed else ""),
+           "|---|---|---|---|" + ("---|" if detailed else "")]
+    for code in sorted(codes):
+        row, result = states[code], by_code.get(code, {})
+        status = "сделано — отметка источника" if row["status"] == "сделано" else row["status"]
+        note = "; ".join(filter(None, (status, result.get("mismatch"), result.get("evidence"))))
+        line = f"| {code} | {cell(row['system'])} | {cell(note)} | {source_code_link(code, row, source_url)} |"
+        if detailed:
+            line += f" {cell(result.get('what', 'Описание в источнике'))} |"
+        out.append(line)
+    return out + [""]
+
+
+def check_stage_pages(repo: Path, states: dict[str, dict]) -> None:
+    for page, expected in stage_page_codes(states).items():
+        text = (repo / "board" / page).read_text()
+        codes = re.findall(r"^\| (Ц\d+-\d+) \|", text, re.MULTILINE)
+        if set(codes) != expected or len(codes) != len(expected):
+            raise SystemExit(f"{page}: result rows differ from the general board")
+        if not re.search(rf"^# .+: {len(expected)}$", text, re.MULTILINE):
+            raise SystemExit(f"{page}: heading count differs from result rows")
 
 
 def result_inventory_lines(source_codes: set[str], source_text: str, source_url: str | None, results: list[dict]) -> list[str]:
@@ -848,23 +898,10 @@ def board_lines(source_date: str, source_text: str, results: list[dict], source_
     return out
 
 
-RESULT_HEADER = [
-    "| Код | Направление цели | Система результата | РП | Кто | Что получает | Расхождение |",
-    "|---|---|---|---|---|---|---|",
-]
-
-
-def result_rows(rows: list[dict]) -> list[str]:
-    return [
-        f"| {r['code']} | {', '.join(r['contours'])} | {cell(r['system'])} | {', '.join(r['works'])} | "
-        f"{r['who']} | {cell(r['what'])} | {r.get('mismatch', '')} |"
-        for r in rows
-    ]
-
-
-def outside_result_rows(rows: list[dict]) -> list[str]:
+def outside_result_rows(rows: list[dict], states: dict[str, dict] | None = None, source_url: str | None = None) -> list[str]:
     return [
         f"| {r['code']} | {cell(r['where'])} | {cell(r['evidence'])} | {cell(r['what'])} |"
+        + (f" {source_code_link(r['code'], states[r['code']], source_url)} |" if states is not None else "")
         for r in rows
     ]
 
@@ -956,6 +993,12 @@ def stage_extra(page, staging, unreleased, unreleased_links, author_ahead, fmt_s
         moved = [s for s in staging if s["staging_status"] == "promoted"]
         kept = [s for s in staging if s["staging_status"] == "rejected"]
         out = [
+            "<details>",
+            "<summary>Справка: весь журнал обкатки и замер файлов Разработчика</summary>",
+            "",
+            "Здесь считаются записи правок и файлы, а не результаты этапа 2.2. "
+            f"На обкатке {len(testing)} записей: {record_split([s['link'] for s in testing])}.",
+            "",
             f"## На обкатке — записи `STAGING.md` Разработчика: {len(testing)}",
             "",
             "| Запись | Что | С | Расхождение |",
@@ -970,16 +1013,22 @@ def stage_extra(page, staging, unreleased, unreleased_links, author_ahead, fmt_s
             "| Запись | Что | Статус | Расхождение |",
             "|---|---|---|---|",
         ]
-        return out + [f"| {s['id']} | {cell(s['title'])} | {s['status']} | {s.get('mismatch', '')} |" for s in moved + kept] + [""]
+        return out + [f"| {s['id']} | {cell(s['title'])} | {s['status']} | {s.get('mismatch', '')} |" for s in moved + kept] + ["", "</details>", ""]
     if page == "2.3.2-merged-after-0.41.11.md":
         link_of = {u["key"]: link_label(u) for u in unreleased_links}
         out = [
+            "<details>",
+            "<summary>Справка: весь журнал невыпущенных правок</summary>",
+            "",
+            "Записи этого журнала служат результатам разных этапов и новым предложениям. "
+            f"Это не число результатов этапа 2.3.2. Всего {len(unreleased_links)} записей: {record_split(unreleased_links)}.",
+            "",
             f"## Записи раздела «Ещё не выпущено»: {len(unreleased)}",
             "",
             "| Ключ | Вид | Что | Код результата |",
             "|---|---|---|---|",
         ]
-        return out + [f"| {u['key']} | {u['tag']} | {cell(short(u['text'], 200))} | {link_of[u['key']]} |" for u in unreleased] + [""]
+        return out + [f"| {u['key']} | {u['tag']} | {cell(short(u['text'], 200))} | {link_of[u['key']]} |" for u in unreleased] + ["", "</details>", ""]
     return []
 
 
@@ -994,7 +1043,7 @@ def write_views(
     lists = repo / "board"
     lists.mkdir(parents=True, exist_ok=True)
     testing = [s for s in staging if s["staging_status"] == "testing"]
-    notes = stage_notes(results, staging, unreleased_links, released, released_counts, taken_records)
+    notes = stage_notes(results, released, released_counts, taken_records)
     proposed = sorted(
         {
             (link["proposed"]["goal"], link["proposed"]["what"])
@@ -1003,34 +1052,47 @@ def write_views(
         }
     )
     (repo / "BOARD.md").write_text("\n".join(board_lines(source_date, source_text, results, source_url)))
+    states = general_result_states(source_text, results)
+    pages = stage_page_codes(states)
+    by_code = {r["code"]: r for r in results}
 
     for name, page, statuses in (*STAGES, OUTSIDE):
         if not page:
             continue
-        rows = [r for r in results if r["status"] in statuses]
+        codes = pages[page]
+        rows = [by_code[code] for code in sorted(codes) if code in by_code]
         title = name.strip("*")
         return_to = "completeness.md" if page == OUTSIDE[1] else "../BOARD.md"
         return_label = "сверка полноты" if page == OUTSIDE[1] else "общее табло"
-        heading = title if page == OUTSIDE[1] else f"Подготовка выпуска — {title}"
-        out = [stamp, "", f"# {heading}: {len(rows)}", "", f"[← {return_label}]({return_to})", ""]
+        out = [stamp, "", f"# {title}: {len(codes)}", "", f"[← {return_label}]({return_to})", ""]
         if page != OUTSIDE[1]:
             out += [
-                "Это рабочая выборка по целям для команды выпуска, не общий счёт результатов. "
-                "Направление цели не определяет систему каждого результата; она показана в отдельной колонке.",
+                "Число и коды согласованы с общим табло. Полные описания открываются по ссылкам на исходный документ. "
+                "Ссылки закреплены за снимком источника; новые изменения появятся после пересборки.",
                 "",
             ]
         out += [notes[name][1], ""]
+        if page.startswith("2.3."):
+            out += [f"**Этап 2.3: {len(pages['2.3.1-released-0.37-0.41.11.md']) + len(pages['2.3.2-merged-after-0.41.11.md'])} = "
+                    f"[2.3.1 — {len(pages['2.3.1-released-0.37-0.41.11.md'])}](2.3.1-released-0.37-0.41.11.md) + "
+                    f"[2.3.2 — {len(pages['2.3.2-merged-after-0.41.11.md'])}](2.3.2-merged-after-0.41.11.md).**", ""]
+        if page == "3-done.md":
+            counts = {status: sum(states[code]["status"] == status for code in codes)
+                      for status in sorted({states[code]["status"] for code in codes})}
+            out += [f"- {'сделано — отметка источника' if status == 'сделано' else status}: **{count}**."
+                    for status, count in counts.items()] + [""]
         if page == OUTSIDE[1]:
             out += [
-                "| Код | Где пользователь видит | Реализация и подтверждение | Что получает |",
-                "|---|---|---|---|",
-                *outside_result_rows(rows),
+                "| Код | Где пользователь видит | Реализация и подтверждение | Что получает | Источник |",
+                "|---|---|---|---|---|",
+                *outside_result_rows(rows, states, source_url),
                 "",
             ]
         else:
-            out += RESULT_HEADER + result_rows(rows) + [""]
+            out += stage_result_lines(codes, states, by_code, source_url, title)
         out += stage_extra(page, staging, unreleased, unreleased_links, author_ahead, fmt_sha)
         (lists / page).write_text("\n".join(out))
+    check_stage_pages(repo, states)
     out = [
         stamp,
         "",
@@ -1039,8 +1101,11 @@ def write_views(
         "[← сверка полноты](completeness.md)",
         "",
         "Записи после 0.41.11 и записи обкатки, для которых результата в «Состоянии по целям» нет. "
-        "Список нужен для сверки записей шаблона. Часть предложений относится к целям вне выборки табло; "
-        "в итог стадий выпуска они не входят.",
+        "Список нужен для сверки записей шаблона. Это предложения без строки и кода результата в источнике; "
+        f"к {len(states)} результатам общего табло они пока не прибавляются. "
+        "После проработки и внесения в источник результат учитывается на подходящей стадии. "
+        "Этот список не является итогом пользовательского опроса; первый опрос планируется по "
+        "[результатам этапа 2.2](2.2-at-developer.md).",
         "",
     ]
     (lists / "proposed.md").write_text("\n".join(out + [f"- цель {goal}: {what}" for goal, what in proposed] + [""]))
@@ -1666,7 +1731,9 @@ def main() -> int:
     lines += [
         "",
         "Отбор целей для подготовки выпуска не определяет путь поставки каждого результата. "
-        "Его отдельные списки служат команде выпуска; на общем табло учтены все результаты.",
+        "На общем табло и страницах стадий учтены все результаты. "
+        "Сборка сверяет коды и числа каждой страницы, отсутствие пересечений и полный охват источника. "
+        "Список поставленного вне шаблона показывает повторно только соответствующие результаты пункта 3.",
         "",
         (
             f"Не привязано к коду результата: записей «Ещё не выпущено» — {unlinked}, "
