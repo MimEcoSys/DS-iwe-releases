@@ -420,7 +420,8 @@ def test_release_board_excludes_service_results_and_unregistered_proposals():
     notes = {name: ("пояснение", "подробности") for name, _, _ in (*board.STAGES, board.OUTSIDE)}
     lines = board.board_lines("снимок", results, notes)
     text = "\n".join(lines)
-    assert "| **Итого в стадиях выпуска** | **2** |" in text
+    assert "| **Итого на табло выпуска** | **2** |" in text
+    assert "«План» означает, что работа не начата" in text
     assert "Всего учтённых результатов" not in text
     assert "board/outside-template.md" not in text
     assert "board/proposed.md" not in text
@@ -436,9 +437,10 @@ def test_completeness_explains_separate_units_and_code_partition():
     ]
     result_text = "\n".join(board.result_inventory_lines(source, results))
     assert "Результатов в исходном документе: **3 = 1 + 2**" in result_text
-    assert "Слагаемые — результаты в стадиях выпуска" in result_text
+    assert "Слагаемые — результаты на этом табло выпуска" in result_text
     assert "непересекающиеся группы кодов результатов" in result_text
-    assert "не означает «реализовано в других системах»" in result_text
+    assert "оно не меняет стадию результата в исходном документе" in result_text
+    assert "Результат может попасть на табло после пересмотра его пути поставки" in result_text
     assert "outside-template.md" not in result_text
     assert "не только уже работающие возможности" in result_text
 
