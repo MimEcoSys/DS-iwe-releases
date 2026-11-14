@@ -412,22 +412,35 @@ def test_only_fully_ready_and_selected_results_move_to_taken():
     assert "mismatch" not in results[1]
 
 
-def test_release_board_excludes_service_results_and_unregistered_proposals():
-    results = [
-        {"status": "план"},
-        {"status": "в работе"},
-        {"status": "работает вне выпуска шаблона"},
+def test_general_board_lists_every_result_once_in_its_source_stage():
+    rows = [
+        {"code": f"Ц1-0{i}", "stage": stage, "direction": "Знакомство", "system": "сайт", "what": f"результат {i}", "line": i + 10}
+        for i, stage in enumerate(("план", "в работе", "сделано", "отложено"), 1)
     ]
-    notes = {name: ("пояснение", "подробности") for name, _, _ in (*board.STAGES, board.OUTSIDE)}
-    lines = board.board_lines("снимок", results, notes)
+    lines = board.board_lines("2026-11-11", rows, "https://github.com/example/source/blob/sha/results.md")
     text = "\n".join(lines)
-    assert "| **Итого на табло выпуска** | **2** |" in text
-    assert "«План» означает, что работа не начата" in text
-    assert "Всего учтённых результатов" not in text
-    assert "board/outside-template.md" not in text
-    assert "board/proposed.md" not in text
-    assert "| Предложено новых результатов |" not in text
-    assert "| Вне выпуска шаблона |" not in text
+    assert "# Табло всех результатов" in text
+    assert "| **Всего** | **4** |" in text
+    for code in ("Ц1-01", "Ц1-02", "Ц1-03", "Ц1-04"):
+        assert text.count(f"[{code}]") == 1
+    for name in ("1. План", "2. В работе", "3. Сделано", "4. Отложено"):
+        assert f"<summary>{name} — 1</summary>" in text
+    assert "225" not in text
+
+
+def test_source_rows_include_all_directions_and_reject_missing_goals():
+    map_text = "## А. Знакомство\n| 1 | гость | цель |\n## Б. Подписка\n| 2 | участник | цель |\n"
+    source_text = (
+        "| Ц1-01 | 1 | гость | первое | сайт | план | фича | сайт | — | нет |\n"
+        "| Ц2-01 | 2 | участник | второе | бот | сделано | фича | бот | — | нет |\n"
+    )
+    rows = board.source_result_rows(source_text, board.goal_directions(map_text))
+    assert [(row["code"], row["direction"], row["system"], row["stage"]) for row in rows] == [
+        ("Ц1-01", "Знакомство", "сайт", "план"),
+        ("Ц2-01", "Подписка", "бот", "сделано"),
+    ]
+    with pytest.raises(SystemExit, match="unknown goal or stage"):
+        board.source_result_rows(source_text, {1: "Знакомство"})
 
 
 def test_completeness_explains_separate_units_and_code_partition():
@@ -437,27 +450,15 @@ def test_completeness_explains_separate_units_and_code_partition():
         "| Ц1-02 | 1 | a | b | c | сделано |",
         "| Ц2-01 | 2 | a | b | c | в работе |",
     ])
-    results = [
-        {"code": "Ц1-01", "status": "план"},
-        {"code": "Ц1-02", "status": "работает вне выпуска шаблона"},
-    ]
-    result_text = "\n".join(board.result_inventory_lines(
-        source, source_text, results, "https://github.com/example/blob/sha/source.md"
-    ))
+    result_text = "\n".join(board.result_inventory_lines(source, source_text, "https://github.com/example/blob/sha/source.md"))
     assert (
         '<summary>1. Результаты — <a href="https://github.com/example/blob/sha/source.md">'
         '3 в исходном документе</a></summary>' in result_text
     )
-    assert "**3 = 1 + 2**" in result_text
-    assert "| Вне выборки этого табло | 2 |" in result_text
-    assert "| сделано | 1 |" in result_text
-    assert "| в работе | 1 |" in result_text
-    assert "нельзя назвать «требует проработки»" in result_text
-    assert "непересекающиеся группы кодов результатов" in result_text
-    assert "Оно не меняет стадию результата в исходном документе" in result_text
-    assert "Результат может попасть на табло после пересмотра его пути поставки" in result_text
-    assert "outside-template.md" not in result_text
-    assert "не означает, что все результаты уже работают" in result_text
+    assert "**3 = 1 + 1 + 1 + 0**" in result_text
+    assert "| **Всего на общем табло** | **3** |" in result_text
+    assert "| 4. Отложено | 0 |" in result_text
+    assert "225" not in result_text
 
     staging = [
         {"staging_status": "testing", "link": {"proposed": {"goal": 1, "what": "A"}}},
