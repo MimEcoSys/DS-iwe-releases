@@ -434,10 +434,12 @@ def test_completeness_explains_separate_units_and_code_partition():
         {"code": "Ц1-01", "status": "план"},
         {"code": "Ц1-02", "status": "работает вне выпуска шаблона"},
     ]
-    result_text = "\n".join(board.result_inventory_lines(source, {1: ["шаблон IWE"]}, results))
-    assert "3 = 1 + 1 + 1" in result_text
-    assert "2 = 1 + 1" in result_text
-    assert "Коды результатов в трёх группах не пересекаются" in result_text
+    result_text = "\n".join(board.result_inventory_lines(source, results))
+    assert "Результатов в исходном документе: **3 = 1 + 2**" in result_text
+    assert "Слагаемые — результаты в стадиях выпуска" in result_text
+    assert "непересекающиеся группы кодов результатов" in result_text
+    assert "не означает «реализовано в других системах»" in result_text
+    assert "outside-template.md" not in result_text
     assert "не только уже работающие возможности" in result_text
 
     staging = [
@@ -458,5 +460,6 @@ def test_completeness_explains_separate_units_and_code_partition():
 
     index = "| Ц1-01 |\n| Ц1-02 |\n| Ц2-01 |\n| Ц9-01 |\n| Ц9-01 |"
     code_text = "\n".join(board.code_inventory_lines(source, index))
-    assert "4 = 3 + 1" in code_text
-    assert "Результатов без строки в указателе: **0**" in code_text
+    assert "Уникальных кодов в указателе: **4 = 3 + 1**" in code_text
+    assert "Слагаемые — коды результатов и сохранённые коды других записей" in code_text
+    assert "Кодов результатов, отсутствующих в указателе: **0**" in code_text

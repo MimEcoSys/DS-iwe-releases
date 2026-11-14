@@ -573,13 +573,12 @@ def source_result_codes(text: str) -> set[str]:
     return set(codes)
 
 
-def result_inventory_lines(source_codes: set[str], goals: dict, results: list[dict]) -> list[str]:
+def result_inventory_lines(source_codes: set[str], results: list[dict]) -> list[str]:
     selected = {r["code"] for r in results}
     if len(selected) != len(results) or not selected <= source_codes:
         raise SystemExit("selected result codes are duplicated or absent from source")
-    service = {r["code"] for r in results if r["status"] in OUTSIDE[2]}
-    release = selected - service
-    other_goals = source_codes - selected
+    release = {r["code"] for r in results if r["status"] not in OUTSIDE[2]}
+    outside = source_codes - release
     rows = [
         f"| [{name.strip('*')}](./{page}) | {count_statuses(results, statuses)} |"
         for name, page, statuses in STAGES if page
@@ -588,17 +587,13 @@ def result_inventory_lines(source_codes: set[str], goals: dict, results: list[di
         "<details>",
         f"<summary>1. Результаты — {len(source_codes)} в исходном документе</summary>",
         "",
-        f"**{len(source_codes)} = {len(release)} + {len(service)} + {len(other_goals)}**: "
-        "результаты в стадиях выпуска + результаты выбранных целей в сервисах + результаты остальных целей.",
-        f"Выбранных целей: {len(goals)}; результатов этих целей: "
-        f"**{len(selected)} = {len(release)} + {len(service)}**. "
-        f"Вне стадий выпуска: **{len(source_codes) - len(release)} = "
-        f"{len(service)} + {len(other_goals)}**.",
-        f"[Результаты выбранных целей в сервисах](outside-template.md): {len(service)}. "
-        "Это лишь пересечение выбранных целей с сервисами, не перечень всех результатов сервисов.",
+        f"Результатов в исходном документе: **{len(source_codes)} = {len(release)} + {len(outside)}**. "
+        "Слагаемые — результаты в стадиях выпуска и результаты вне этих стадий.",
+        "Это две непересекающиеся группы кодов результатов; вместе они охватывают все строки "
+        "исходного документа. «Вне стадий выпуска» не означает «реализовано в других системах»: "
+        "там есть планы, работа и отложенное. Для перечня систем нужна отдельная сверка размещения.",
         "",
-        "Коды результатов в трёх группах не пересекаются. Это разделение **строк источника**, "
-        "а не доказательство, что функции или системы не пересекаются. "
+        "Разделение по кодам не доказывает отсутствия пересечения функций или систем. "
         "Число в стадиях выпуска включает план и отложенное, а не только уже работающие возможности.",
         "",
         "| Стадия выпуска | Результатов |",
@@ -662,10 +657,10 @@ def code_inventory_lines(source_codes: set[str], result_codes_text: str) -> list
         "<details>",
         f"<summary>3. Коды — {len(indexed)} в указателе</summary>",
         "",
-        f"**{len(indexed)} = {len(current)} + {len(retained)}** уникальных кодов: "
-        "коды строк результатов в исходном документе + сохранённые коды записей, "
-        "которых больше нет в таблице результатов. "
-        f"Результатов без строки в указателе: **{len(missing)}**.",
+        f"Уникальных кодов в указателе: **{len(indexed)} = {len(current)} + {len(retained)}**. "
+        "Слагаемые — коды результатов и сохранённые коды других записей.",
+        f"Строк результатов в исходном документе: {len(source_codes)}; у каждой — один уникальный код. "
+        f"Кодов результатов, отсутствующих в указателе: **{len(missing)}**.",
         "Код сохраняется при переносе записи в другую таблицу или документ, поэтому число кодов "
         "не обязано совпадать с числом результатов. Исходные ревизии обоих документов — "
         "в [описании сборки](../ops/developer-sources.yaml).",
@@ -1472,7 +1467,7 @@ def main() -> int:
         "Результаты, записи правок и коды — разные единицы счёта; их итоги не складываются друг с другом.",
         "",
     ]
-    lines += result_inventory_lines(source_codes, goals, results)
+    lines += result_inventory_lines(source_codes, results)
     lines += record_inventory_lines(staging, developer["unreleased_links"], released, results, taken_records)
     lines += code_inventory_lines(source_codes, result_codes_text)
     lines += [
@@ -1485,10 +1480,18 @@ def main() -> int:
         "|---|---|---|",
     ]
     lines += [f"| {name} | {a} | {b} |" for name, a, b in checks]
+    service_count = count_statuses(results, OUTSIDE[2])
+    release_count = len(results) - service_count
     unlinked = sum(
         1 for u in developer["unreleased_links"] if not (u.get("result") or u.get("proposed") or u.get("service"))
     )
     lines += [
+        "",
+        f"Выборка выпуска: целей — {len(goals)}; результатов этих целей — {len(results)} = "
+        f"{release_count} в стадиях выпуска + {service_count} с отметкой «работает вне выпуска шаблона». "
+        f"[Список результатов вне выпуска](outside-template.md) нужен только для сверки отбора. "
+        f"Эти {service_count} уже учтены среди {len(source_codes) - release_count} результатов вне стадий; "
+        "повторно прибавлять их к общему числу нельзя.",
         "",
         (
             f"Не привязано к коду результата: записей «Ещё не выпущено» — {unlinked}, "
