@@ -13,13 +13,13 @@
 built_at_local_date: '2026-11-14'   # день повторной сборки
 source_collected_at: '2026-11-11'  # дата закреплённых входов и шапок табло
 host_timezone: EET                  # локальная дата зависит от таймзоны хоста
-recorded_at: '2026-11-14T15:48:48Z' # когда записан этот файл (после сборки)
+recorded_at: '2026-11-14T16:00:36Z' # когда записан этот файл (после сборки)
 decision_revision: 7d0d79bc2c319b4412a054e64c1d7cb3a3416cf8
 decision_sha256: 7ca5f8b396bd9dd839784dd34e8ed6a261ba8716895e7fb4c27a5d41808ab94d
 
 builder:
   program: ops/build_board.py
-  program_commit: 1b40347af9cc5eb6286073b467cc57f2e11a85bb   # версия программы этой пересборки
+  program_commit: beda81306852bf03d72bd3cedcb4b1f0428ee627   # версия программы этой пересборки
   program_sha256: c759a4ad1a3b92234b73155d680ef8af75869a0cf9fc2461b0601ae96f97a820
   python: 3.14.6
   dependencies: {pyyaml: 6.0.3}       # других сторонних модулей программа не импортирует
