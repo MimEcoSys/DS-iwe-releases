@@ -412,22 +412,28 @@ def test_only_fully_ready_and_selected_results_move_to_taken():
     assert "mismatch" not in results[1]
 
 
-def test_release_board_excludes_service_results_and_unregistered_proposals():
+def test_general_board_summarizes_source_and_links_distinct_release_work():
+    source_text = "\n".join(
+        f"| Ц1-0{i} | 1 | гость | результат {i} | сайт | {stage} | фича | сайт | — | нет |"
+        for i, stage in enumerate(("план", "в работе", "сделано", "отложено"), 1)
+    )
     results = [
-        {"status": "план"},
-        {"status": "в работе"},
-        {"status": "работает вне выпуска шаблона"},
+        {"code": "Ц1-02", "status": "в работе"},
+        {"code": "Ц1-03", "status": "у автора"},
     ]
-    notes = {name: ("пояснение", "подробности") for name, _, _ in (*board.STAGES, board.OUTSIDE)}
-    lines = board.board_lines("снимок", results, notes)
+    lines = board.board_lines("2026-11-11", source_text, results, "https://github.com/example/source/blob/sha/results.md")
     text = "\n".join(lines)
-    assert "| **Итого на табло выпуска** | **2** |" in text
-    assert "«План» означает, что работа не начата" in text
-    assert "Всего учтённых результатов" not in text
-    assert "board/outside-template.md" not in text
-    assert "board/proposed.md" not in text
-    assert "| Предложено новых результатов |" not in text
-    assert "| Вне выпуска шаблона |" not in text
+    assert "# Табло результатов и подготовки выпуска" in text
+    assert "| **Всего** | **4** |" in text
+    assert "| 2. В работе | 1 |" in text
+    assert "| 4. Отложено | 1 |" in text
+    assert "<summary>Подготовка выпуска: этапы 2.1–2.4 — 2</summary>" in text
+    assert "| 2.1 Разрабатывается | [1](board/2.1-in-work.md) |" in text
+    assert "| 2.2 Проверяется Разработчиком | [1](board/2.2-at-developer.md) |" in text
+    assert "Исходная стадия «В работе»: всего 1; в этих этапах — 1, вне них — 0." in text
+    assert "другими исходными стадиями: 1 — «сделано»" in text
+    assert "Ц1-03" not in text
+    assert "225" not in text
 
 
 def test_completeness_explains_separate_units_and_code_partition():
@@ -437,27 +443,15 @@ def test_completeness_explains_separate_units_and_code_partition():
         "| Ц1-02 | 1 | a | b | c | сделано |",
         "| Ц2-01 | 2 | a | b | c | в работе |",
     ])
-    results = [
-        {"code": "Ц1-01", "status": "план"},
-        {"code": "Ц1-02", "status": "работает вне выпуска шаблона"},
-    ]
-    result_text = "\n".join(board.result_inventory_lines(
-        source, source_text, results, "https://github.com/example/blob/sha/source.md"
-    ))
+    result_text = "\n".join(board.result_inventory_lines(source, source_text, "https://github.com/example/blob/sha/source.md"))
     assert (
         '<summary>1. Результаты — <a href="https://github.com/example/blob/sha/source.md">'
         '3 в исходном документе</a></summary>' in result_text
     )
-    assert "**3 = 1 + 2**" in result_text
-    assert "| Вне выборки этого табло | 2 |" in result_text
-    assert "| сделано | 1 |" in result_text
-    assert "| в работе | 1 |" in result_text
-    assert "нельзя назвать «требует проработки»" in result_text
-    assert "непересекающиеся группы кодов результатов" in result_text
-    assert "Оно не меняет стадию результата в исходном документе" in result_text
-    assert "Результат может попасть на табло после пересмотра его пути поставки" in result_text
-    assert "outside-template.md" not in result_text
-    assert "не означает, что все результаты уже работают" in result_text
+    assert "**3 = 1 + 1 + 1 + 0**" in result_text
+    assert "| **Всего на общем табло** | **3** |" in result_text
+    assert "| 4. Отложено | 0 |" in result_text
+    assert "225" not in result_text
 
     staging = [
         {"staging_status": "testing", "link": {"proposed": {"goal": 1, "what": "A"}}},

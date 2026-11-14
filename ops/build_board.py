@@ -46,6 +46,12 @@ STAGE_TO_STATUS = {
     "сделано": "сделано, не сверено",
     "отложено": "отложено",
 }
+SOURCE_GROUPS = (
+    ("1. План", "план"),
+    ("2. В работе", "в работе"),
+    ("3. Сделано", "сделано"),
+    ("4. Отложено", "отложено"),
+)
 STAGING_TO_STATUS = {
     "testing": "в обкатке",
     "promoted": "перенесено в шаблон",
@@ -114,7 +120,8 @@ def results_for(sbg: str, goals: dict[int, list[str]]) -> list[dict]:
     for line in sbg.splitlines():
         if not re.match(r"^\| Ц\d+-\d+ \|", line):
             continue
-        code, goal, who, what, where, stage = table_cells(line)[:6]
+        cells = table_cells(line)
+        code, goal, who, what, where, stage = cells[:6]
         if int(goal) not in goals:
             continue
         if stage not in STAGE_TO_STATUS:
@@ -127,6 +134,7 @@ def results_for(sbg: str, goals: dict[int, list[str]]) -> list[dict]:
                 "who": who,
                 "what": short(what),
                 "where": where,
+                "system": cells[7],
                 "status": STAGE_TO_STATUS[stage],
                 "works": [],
             }
@@ -604,58 +612,28 @@ def source_stages_for_codes(source_text: str, codes: set[str]) -> dict[str, int]
             raise SystemExit(f"unknown source stage {stage!r} in {cells[0]}")
         counts[stage] += 1
     if sum(counts.values()) != len(codes):
-        raise SystemExit("source stage counts do not cover excluded result codes")
+        raise SystemExit("source stage counts do not cover the requested result codes")
     return counts
 
 
-def result_inventory_lines(source_codes: set[str], source_text: str, results: list[dict], source_url: str | None) -> list[str]:
-    selected = {r["code"] for r in results}
-    if len(selected) != len(results) or not selected <= source_codes:
-        raise SystemExit("selected result codes are duplicated or absent from source")
-    release = {r["code"] for r in results if r["status"] not in OUTSIDE[2]}
-    outside = source_codes - release
-    outside_stages = source_stages_for_codes(source_text, outside)
+def result_inventory_lines(source_codes: set[str], source_text: str, source_url: str | None) -> list[str]:
+    stages = source_stages_for_codes(source_text, source_codes)
     source_title = (
         f'<a href="{source_url}">{len(source_codes)} в исходном документе</a>'
         if source_url else f"{len(source_codes)} в исходном документе"
     )
-    rows = [
-        f"| [{name.strip('*')}](./{page}) | {count_statuses(results, statuses)} |"
-        for name, page, statuses in STAGES if page
-    ]
     return [
         "<details>",
         f"<summary>1. Результаты — {source_title}</summary>",
         "",
-        "| Где учитывается результат | Результатов |",
+        "| Стадия исходного документа | Результатов |",
         "|---|---:|",
-        f"| На этом табло выпуска | {len(release)} |",
-        f"| Вне выборки этого табло | {len(outside)} |",
-        f"| **Всего в исходном документе** | **{len(source_codes)}** |",
+        *[f"| {name} | {stages[stage]} |" for name, stage in SOURCE_GROUPS],
+        f"| **Всего на общем табло** | **{len(source_codes)}** |",
         "",
-        f"**{len(source_codes)} = {len(release)} + {len(outside)}** — все три числа считают результаты. "
-        f"{len(release)} — результаты, отобранные для табло, а не число уже проработанных. "
-        "Разделение показывает участие в табло, а не степень готовности.",
-        "Это две непересекающиеся группы кодов результатов; вместе они охватывают все строки "
-        "исходного документа. Оно не меняет стадию результата в исходном документе. "
-        "Результат может попасть на табло после пересмотра его пути поставки и новой сборки, не автоматически.",
-        "",
-        f"Среди {len(outside)} результатов вне выборки **{outside_stages['сделано']}** "
-        "отмечены в исходном документе как «сделано». "
-        "Поэтому эту группу нельзя назвать «требует проработки» или ставить как стадию 0. "
-        "Разделение по кодам не доказывает отсутствия пересечения функций или систем.",
-        "",
-        "| Исходная стадия вне выборки | Результатов |",
-        "|---|---:|",
-        *[f"| {stage} | {count} |" for stage, count in outside_stages.items()],
-        f"| **Итого вне выборки** | **{len(outside)}** |",
-        "",
-        "На самом табло тоже есть план и отложенное; число ниже не означает, что все результаты уже работают:",
-        "",
-        "| Стадия выпуска | Результатов |",
-        "|---|---:|",
-        *rows,
-        f"| **Итого на табло выпуска** | **{len(release)}** |",
+        f"**{len(source_codes)} = " + " + ".join(str(stages[stage]) for _, stage in SOURCE_GROUPS) + "**. "
+        "Все слагаемые — результаты; каждый код источника учтён один раз. "
+        "«Отложено» остаётся отдельной стадией.",
         "",
         "</details>",
         "",
@@ -726,45 +704,73 @@ def code_inventory_lines(source_codes: set[str], result_codes_text: str) -> list
     ]
 
 
-def board_lines(stamp, results, notes) -> list[str]:
-    """The board page: numbers only, each linked to its list."""
-    on_board = len(results) - count_statuses(results, OUTSIDE[2])
-    stages = [count_statuses(results, st) for name, _, st in STAGES if name.startswith("**")]
-    if sum(stages) != on_board:
-        raise SystemExit("stages do not add up to the total")
+def board_lines(source_date: str, source_text: str, results: list[dict], source_url: str | None) -> list[str]:
+    """Source totals plus the distinct workflow the release team manages here."""
+    source_codes = source_result_codes(source_text)
+    counts = source_stages_for_codes(source_text, source_codes)
+    work_statuses = next(statuses for name, _, statuses in STAGES if name == "**2. В работе**")
+    release_work = [result for result in results if result["status"] in work_statuses]
+    work_total = len(release_work)
+    release_source_stages = source_stages_for_codes(source_text, {result["code"] for result in release_work})
+    other_source_stages = ", ".join(
+        f"{count} — «{stage}»"
+        for stage, count in release_source_stages.items() if stage != "в работе" and count
+    ) or "нет"
+    work_rows = [(name, page, statuses) for name, page, statuses in STAGES if name.startswith("2.")]
+    top_level = [statuses for name, _, statuses in work_rows if name.startswith(("2.1 ", "2.2 ", "2.3 ", "2.4 "))]
+    if sum(count_statuses(results, statuses) for statuses in top_level) != work_total:
+        raise SystemExit("release work stages do not add up to their total")
+    source_label = (
+        f"[«Состояние по целям»]({source_url})" if source_url else "«Состояние по целям»"
+    )
     out = [
-        stamp,
+        f"> Состояние результатов на {source_date}.",
         "",
-        "# Табло выпуска шаблона IWE",
+        "# Табло результатов и подготовки выпуска",
         "",
-        "Здесь показаны результаты выбранных целей, которые команда учитывает при выпуске шаблона IWE, Open "
-        "и Библиотеки методов. «План» означает, что работа не начата; это не обещание конкретного выпуска. "
-        "«Отложено» тоже входит в счёт табло. Стадии и статусы описаны в "
-        "[README](README.md#стадии-и-статусы); число ведёт к списку результатов.",
+        f"Сводка всех **{len(source_codes)}** результатов из документа {source_label} по четырём исходным стадиям. "
+        "Подробные строки остаются в исходном документе; эти числа обновятся после получения нового снимка источника и пересборки табло.",
         "",
-        "| Стадия | Результатов | Пояснения |",
-        "|---|---|---|",
+        "| Стадия | Результатов |",
+        "|---|---:|",
+        *[f"| {name} | {counts[stage]} |" for name, stage in SOURCE_GROUPS],
+        f"| **Всего** | **{len(source_codes)}** |",
+        "",
+        "«Отложено» показано отдельно. Стадии описывают состояние результата на дату снимка, "
+        "а не обещают дату его появления.",
+        "",
+        "<details>",
+        f"<summary>Подготовка выпуска: этапы 2.1–2.4 — {work_total}</summary>",
+        "",
+        f"Эта таблица показывает шаги команды, которая готовит **выпуск** — публикацию версии шаблона, например [0.42](releases/0.42/README.md). "
+        f"Исходная стадия «В работе»: всего {counts['в работе']}; "
+        f"в этих этапах — {release_source_stages['в работе']}, "
+        f"вне них — {counts['в работе'] - release_source_stages['в работе']}. "
+        f"В этих этапах также есть результаты с другими исходными стадиями: {other_source_stages}. "
+        f"Поэтому итог этапов {work_total} не является разбивкой числа {counts['в работе']}.",
+        "",
+        "| Этап подготовки выпуска | Результатов |",
+        "|---|---:|",
     ]
-    for name, page, statuses in STAGES:
-        n = count_statuses(results, statuses)
-        num = f"[{n}](board/{page})" if page else str(n)
-        out += [f"| {name} | {f'**{num}**' if name.startswith('**') else num} | {notes[name][0]} |"]
-    out += [
-        f"| **Итого на табло выпуска** | **{on_board}** | сумма стадий 1–4 |",
-        "",
-        "Что вошло в выпуски: [до 0.36](releases/0.36/shipped.md), [0.37–0.41.11](releases/0.41.11/shipped.md). "
-        "[Сверка полноты](board/completeness.md).",
-        "",
-    ]
+    for name, page, statuses in work_rows:
+        count = count_statuses(results, statuses)
+        number = f"[{count}](board/{page})" if page else str(count)
+        out.append(f"| {name} | {number} |")
+    out += [f"| **Итого в подготовке выпуска** | **{work_total}** |", "", "</details>", ""]
+    out += ["[Сверка полноты](board/completeness.md).", ""]
     return out
 
 
-RESULT_HEADER = ["| Код | Часть выпуска | РП | Кто | Что получает | Расхождение |", "|---|---|---|---|---|---|"]
+RESULT_HEADER = [
+    "| Код | Направление цели | Система результата | РП | Кто | Что получает | Расхождение |",
+    "|---|---|---|---|---|---|---|",
+]
 
 
 def result_rows(rows: list[dict]) -> list[str]:
     return [
-        f"| {r['code']} | {', '.join(r['contours'])} | {', '.join(r['works'])} | {r['who']} | {cell(r['what'])} | {r.get('mismatch', '')} |"
+        f"| {r['code']} | {', '.join(r['contours'])} | {cell(r['system'])} | {', '.join(r['works'])} | "
+        f"{r['who']} | {cell(r['what'])} | {r.get('mismatch', '')} |"
         for r in rows
     ]
 
@@ -893,6 +899,9 @@ def stage_extra(page, staging, unreleased, unreleased_links, author_ahead, fmt_s
 def write_views(
     repo: Path, stamp: str, results, staging, unreleased, unreleased_links, released, author_ahead, released_links, released_counts,
     fmt_sha: str,
+    source_date: str,
+    source_text: str,
+    source_url: str | None,
     taken_records: int = 0,
 ) -> None:
     lists = repo / "board"
@@ -906,7 +915,7 @@ def write_views(
             if link.get("proposed")
         }
     )
-    (repo / "BOARD.md").write_text("\n".join(board_lines(stamp, results, notes)))
+    (repo / "BOARD.md").write_text("\n".join(board_lines(source_date, source_text, results, source_url)))
 
     for name, page, statuses in (*STAGES, OUTSIDE):
         if not page:
@@ -914,8 +923,16 @@ def write_views(
         rows = [r for r in results if r["status"] in statuses]
         title = name.strip("*")
         return_to = "completeness.md" if page == OUTSIDE[1] else "../BOARD.md"
-        return_label = "сверка полноты" if page == OUTSIDE[1] else "табло"
-        out = [stamp, "", f"# {title}: {len(rows)}", "", f"[← {return_label}]({return_to})", "", notes[name][1], ""]
+        return_label = "сверка полноты" if page == OUTSIDE[1] else "общее табло"
+        heading = title if page == OUTSIDE[1] else f"Подготовка выпуска — {title}"
+        out = [stamp, "", f"# {heading}: {len(rows)}", "", f"[← {return_label}]({return_to})", ""]
+        if page != OUTSIDE[1]:
+            out += [
+                "Это рабочая выборка по целям для команды выпуска, не общий счёт результатов. "
+                "Направление цели не определяет систему каждого результата; она показана в отдельной колонке.",
+                "",
+            ]
+        out += [notes[name][1], ""]
         if page == OUTSIDE[1]:
             out += [
                 "| Код | Где пользователь видит | Реализация и подтверждение | Что получает |",
@@ -1406,6 +1423,7 @@ def main() -> int:
     fmt_files = (src / "fmt-files.txt").read_text().split()
     goals = selected_goals((src / "map005.md").read_text())
     sbg_text = (src / "sbg.md").read_text()
+    source_url = pinned_input_url(args.repo, "sbg.md", sbg_text)
     result_codes_text = (src / "result-codes.md").read_text()
     results = results_for(sbg_text, goals)
     attach_works(results, result_codes_text, (src / "weekplan.md").read_text())
@@ -1498,12 +1516,16 @@ def main() -> int:
         declared["released_0_41_11"],
         released_counts,
         fmt_sha,
+        today,
+        sbg_text,
+        source_url,
         taken_records,
     )
 
     # Completeness: every source item is on the board, linked or explicitly not linked.
     # Each board count is compared with an independent raw count of the source text.
     source_codes = source_result_codes(sbg_text)
+    source_raw = sum(1 for line in sbg_text.splitlines() if re.match(r"^\| Ц\d+-\d+ \|", line))
     sbg_raw = sum(
         1
         for line in sbg_text.splitlines()
@@ -1513,6 +1535,7 @@ def main() -> int:
     changelog_raw = sum(1 for line in (src / "changelog.md").read_text().splitlines() if line.startswith("- "))
     on_board_released = sum(len(e) for part in released.values() for e in part.values())
     checks = [
+        ("Все результаты исходного документа", source_raw, len(source_codes)),
         ("Результаты выбранных целей (документ 4)", sbg_raw, len(results)),
         ("Записи обкатки STAGING.md", staging_raw, len(staging)),
         (
@@ -1536,32 +1559,27 @@ def main() -> int:
         "Результаты, записи правок и коды — разные единицы счёта; их итоги не складываются друг с другом.",
         "",
     ]
-    source_url = pinned_input_url(args.repo, "sbg.md", sbg_text)
-    lines += result_inventory_lines(source_codes, sbg_text, results, source_url)
+    lines += result_inventory_lines(source_codes, sbg_text, source_url)
     lines += record_inventory_lines(staging, developer["unreleased_links"], released, results, taken_records)
     lines += code_inventory_lines(source_codes, result_codes_text)
     lines += [
         "<details>",
         "<summary>4. Проверка источников и связей</summary>",
         "",
-        "Каждая запись исходных материалов учтена: в стадии выпуска или в отдельном списке для сверки.",
+        "Все результаты исходного документа учтены на общем табло. Остальные строки ниже "
+        "проверяют только материалы подготовки выпуска шаблона.",
         "",
         "| Источник | В источнике | Учтено в сборке |",
         "|---|---|---|",
     ]
     lines += [f"| {name} | {a} | {b} |" for name, a, b in checks]
-    service_count = count_statuses(results, OUTSIDE[2])
-    release_count = len(results) - service_count
     unlinked = sum(
         1 for u in developer["unreleased_links"] if not (u.get("result") or u.get("proposed") or u.get("service"))
     )
     lines += [
         "",
-        f"Выборка выпуска: целей — {len(goals)}; результатов этих целей — {len(results)} = "
-        f"{release_count} на табло выпуска + {service_count} с отметкой «работает вне выпуска шаблона». "
-        f"[Список результатов вне выпуска](outside-template.md) нужен только для сверки отбора. "
-        f"Эти {service_count} уже учтены среди {len(source_codes) - release_count} результатов вне стадий; "
-        "повторно прибавлять их к общему числу нельзя.",
+        "Отбор целей для подготовки выпуска не определяет путь поставки каждого результата. "
+        "Его отдельные списки служат команде выпуска; на общем табло учтены все результаты.",
         "",
         (
             f"Не привязано к коду результата: записей «Ещё не выпущено» — {unlinked}, "
