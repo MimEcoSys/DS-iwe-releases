@@ -12,15 +12,17 @@ marks:
     tester: tsekh-1-claude-code
     note: >-
       Свежая установка v0.41.11, обновление на канале кандидата дошло до конца, повторный запуск — «Всё
-      актуально», собственная правка в extensions/ и params.yaml сохранилась. Журнал:
-      logs/linux-claude-code/line2-redo/.
+      актуально». Собственная правка в extensions/ и params.yaml сохранилась (найдено по замечанию холодной
+      проверки 15.11.2026: вывод об этом шёл мимо файлов журнала — дословная цитата восстановлена отдельно).
+      Журнал: logs/linux-claude-code/line2-redo/, logs/linux-claude-code/user-edit-preserved.md.
   - line: 4
     result: пройдено
     tester: tsekh-1-claude-code
     note: >-
       На установке rc.15 обычный канал выпуска (где последний выпуск всё ещё 0.41.11) без подтверждения ничего
-      не меняет и явно называет это откатом; после ввода ROLLBACK — откат до 0.41.11 завершён, собственная
-      правка сохранена. Журнал: logs/linux-claude-code/line4-redo/.
+      не меняет и явно называет это откатом; после ввода ROLLBACK — откат до 0.41.11 завершён. Собственная
+      правка сохранена на обоих шагах (цитата — см. user-edit-preserved.md, та же оговорка, что у строки 2).
+      Журнал: logs/linux-claude-code/line4-redo/, logs/linux-claude-code/user-edit-preserved.md.
   - line: 9
     result: пройдено
     tester: tsekh-1-claude-code
