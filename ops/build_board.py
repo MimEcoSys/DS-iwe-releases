@@ -33,6 +33,7 @@ from urllib.parse import quote, urlsplit
 
 import yaml
 
+import release_catalog
 from check_decisions import decision_problems, selected_record_keys
 
 TEMPLATE_PLACEMENTS = ("шаблон IWE", "Staging")
@@ -1300,6 +1301,7 @@ def write_candidates(repo: Path, stamp: str, handoff: dict, unreleased: list[dic
     (repo / "releases" / release / "candidates.md").write_text("\n".join(out))
 
 
+LINK_CHECKED_FILES = ["README.md", "releases/INDEX.md", "guides/board-rules.md", "guides/team-handbook.md"]
 PUBLIC_START = "<!-- USER-BOARD:START -->"
 PUBLIC_END = "<!-- USER-BOARD:END -->"
 PUBLIC_GROUPS = ("Вышло и доступно", "В работе", "Рассматриваем", "Приостановлено")
@@ -1453,29 +1455,31 @@ def public_rows(snapshot: dict, declared: dict) -> tuple[str, list[dict]]:
     return collected, sorted(rows, key=lambda row: row["code"])
 
 
-def public_board_lines(snapshot: dict, declared: dict) -> list[str]:
+def public_board_lines(snapshot: dict, declared: dict, entries: list[dict], counts: dict[str, int]) -> list[str]:
     collected, rows = public_rows(snapshot, declared)
     lines = [
-        PUBLIC_START, "## Табло будущих изменений", "",
-        "Здесь — выбранные улучшения для пользователей IWE: доступные возможности и дальнейшая работа.", "",
-        f"**Состояния по данным на {collected}. После этой даты они могли измениться.** "
-        "Дата текста у строки показывает обновление её описания, а не повторную проверку состояния.", "",
-        "Работы ниже не обещаны к определённой дате или выпуску. "
-        "[Текущая проверка 0.42](releases/0.42/README.md) идёт отдельно. "
-        "Голосование пока не запущено; число голосов не подсчитано.", "",
+        PUBLIC_START, "## Выпуски шаблона IWE", "",
+        "Здесь команда готовит выпуски шаблона IWE. Полный список — [каталог выпусков](releases/INDEX.md).", "",
+        "### Текущий выпуск", "",
+        *release_catalog.current_release_lines(entries), "",
+        *release_catalog.version_table_lines(entries), "",
+        release_catalog.legend_line(), "",
+        release_catalog.counts_line(counts), "",
+        "### Табло будущих изменений", "",
+        f"Состояния по данным на {collected}; позже они могли измениться. Работы не обещаны к определённой дате или выпуску. "
+        "Голосование пока не запущено.", "",
     ]
     for group in PUBLIC_GROUPS:
-        lines.extend([f"### {group}", ""])
         selected = [row for row in rows if row["group"] == group]
         if not selected:
-            lines.extend(["Пока нет опубликованных записей.", ""])
             continue
-        lines.extend(["| Что меняется для вас | Подробности | Дата текста |", "|---|---|---|"])
+        lines.extend([f"**{group}**", "", "| Что меняется для вас | Подробности | Дата текста |", "|---|---|---|"])
         for row in selected:
             detail = f"{row['detail']} · " if row["detail"] else ""
             lines.append(f"| {row['title']} | {detail}[{row['code']}]({row['source_url']}) | {row['updated_at']} |")
         lines.append("")
-    lines.extend(["Вопрос о записи — [команде выпуска](#роли). [Полное табло](BOARD.md) · [Как устроены состояния](#пользовательский-вид-табло)", "", PUBLIC_END])
+    lines.extend(["Вопрос о записи — [команде выпуска](guides/team-handbook.md#роли). "
+                  "[Как устроены состояния](guides/board-rules.md#пользовательский-вид-табло)", "", PUBLIC_END])
     return lines
 
 
@@ -1485,7 +1489,8 @@ def read_public_readme(repo: Path) -> str:
 
 
 def prepare_public_readme(repo: Path, snapshot: dict, declared: dict) -> str:
-    block = "\n".join(public_board_lines(snapshot, declared))
+    entries = release_catalog.load_catalog(repo)
+    block = "\n".join(public_board_lines(snapshot, declared, entries, release_catalog.board_counts(repo)))
     readme = read_public_readme(repo)
     counts = (readme.count(PUBLIC_START), readme.count(PUBLIC_END))
     if counts == (0, 0):
@@ -1557,17 +1562,27 @@ def main() -> int:
     mode.add_argument("--src", type=Path)
     mode.add_argument("--user-board-only", action="store_true")
     mode.add_argument("--check-user-board", action="store_true")
+    mode.add_argument("--check-links", action="store_true", help="relative links and anchors of the public pages")
     ap.add_argument("--source-date", help="date when the pinned inputs were collected (YYYY-MM-DD)")
     ap.add_argument("--repo", type=Path, required=True)
     args = ap.parse_args()
+    if args.check_links:
+        broken = release_catalog.broken_links(args.repo, LINK_CHECKED_FILES)
+        if broken:
+            print("links: broken:\n" + "\n".join(broken), file=sys.stderr)
+        return 1 if broken else 0
     if args.user_board_only or args.check_user_board:
         readme = existing_public_readme(args.repo)
+        entries = release_catalog.load_catalog(args.repo)
         if args.check_user_board:
-            if read_public_readme(args.repo) != readme:
-                print("public_board: README is stale; run --user-board-only", file=sys.stderr)
+            stale = ["README.md"] if read_public_readme(args.repo) != readme else []
+            stale += release_catalog.stale_outputs(args.repo, entries)
+            if stale:
+                print(f"public_board: stale {', '.join(stale)}; run --user-board-only", file=sys.stderr)
                 return 1
         else:
             write_public_readme(args.repo, readme)
+            release_catalog.write_outputs(args.repo, entries)
         return 0
     src = args.src
 
@@ -1642,9 +1657,7 @@ def main() -> int:
         taken, _ = selected_record_keys(handoff, decisions, fmt_sha)
         taken_records = len(taken)
         apply_taken_results(results, developer["unreleased_links"], taken)
-    public_readme = (
-        prepare_public_readme(args.repo, developer, declared) if "public_board" in declared else None
-    )
+    has_public_board = "public_board" in declared
     ops = args.repo / "ops"
     ops.mkdir(exist_ok=True)
     header = (
@@ -1752,9 +1765,11 @@ def main() -> int:
     if lost:
         print("completeness check failed: " + ", ".join(lost), file=sys.stderr)
         return 1
-    if public_readme is not None:
+    if has_public_board:
+        # BOARD.md is rewritten above; the README counts are read from it, so build the view only now.
         check_public_source_pages(args.repo, developer, declared)
-        write_public_readme(args.repo, public_readme)
+        write_public_readme(args.repo, prepare_public_readme(args.repo, developer, declared))
+        release_catalog.write_outputs(args.repo, release_catalog.load_catalog(args.repo))
     print(
         f"goals={len(goals)} results={len(results)} staging={len(staging)} unreleased={len(unreleased)} "
         f"released={on_board_released}"
