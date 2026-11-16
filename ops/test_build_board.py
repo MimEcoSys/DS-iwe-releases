@@ -133,12 +133,42 @@ def test_proposed_link_is_labelled_as_proposal(tmp_path):
 
 
 
+BOARD_FIXTURE = """Командное табло не менять.
+
+| Стадия | Результатов |
+|---|---:|
+| 1. План | 5 |
+| 2. В работе | 3 |
+| 3. Сделано | 2 |
+| 4. Отложено | 1 |
+| **Всего** | **11** |
+"""
+CATALOG_FIXTURE = {
+    "schema_version": 1,
+    "versions": [
+        {"version": "0.2", "state": "testing", "as_of": "2026-11-01", "summary": "проверка",
+         "links": {"release": "releases/0.2/README.md"}},
+        {"version": "0.1", "state": "released", "as_of": "2026-11-01", "summary": "первый выпуск",
+         "published_tag": "v0.1.0", "historical": True, "links": {"shipped": "releases/0.1/shipped.md"}},
+    ],
+}
+
+
+def write_catalog_fixture(repo, catalog=None):
+    for relative in ("releases/0.2/README.md", "releases/0.1/shipped.md"):
+        (repo / relative).parent.mkdir(parents=True, exist_ok=True)
+        (repo / relative).write_text("x\n")
+    (repo / "releases" / "index.yaml").write_text(yaml.safe_dump(catalog or CATALOG_FIXTURE, allow_unicode=True))
+    board.release_catalog.write_outputs(repo, board.release_catalog.load_catalog(repo))
+
+
 def public_fixture(tmp_path, status="в работе"):
     repo = tmp_path / "repo"
     (repo / "ops").mkdir(parents=True)
     (repo / "board").mkdir()
     (repo / "README.md").write_text("# IWE\n\nРучная навигация и правила.\n")
-    (repo / "BOARD.md").write_text("Командное табло не менять.\n")
+    (repo / "BOARD.md").write_text(BOARD_FIXTURE)
+    write_catalog_fixture(repo)
     snapshot = {
         "snapshot": {"collected_at": "2026-11-11"},
         "results": [{"code": "Ц77-04", "status": status, "evidence": "release evidence"}],
@@ -177,7 +207,7 @@ def test_public_view_uses_source_state_date_and_preserves_other_files(tmp_path):
     text = (repo / "README.md").read_text()
     assert "Состояния по данным на 2026-11-11" in text
     assert "Состояния по данным на 2026-11-14" not in text
-    assert "Доступно с 0.41.10" in text.split("### В работе")[0]
+    assert "Доступно с 0.41.10" in text.split("**В работе**")[0]
     assert "[Ц77-04](board/2.3.1-released-0.37-0.41.11.md)" in text
     assert text.endswith("\n\nРучная навигация и правила.\n")
     assert "Голосование пока не запущено" in text
@@ -192,9 +222,9 @@ def test_public_view_uses_source_state_date_and_preserves_other_files(tmp_path):
 def test_placement_does_not_promote_incomplete_work_to_released(tmp_path):
     repo, snapshot, declared = public_fixture(tmp_path)
     text = board.prepare_public_readme(repo, snapshot, declared)
-    released, developing = text.split("### В работе")
+    released, developing = text.split("**В работе**")
     assert "Увидеть изменения" not in released
-    assert "Увидеть изменения" in developing.split("### Рассматриваем")[0]
+    assert "Увидеть изменения" in developing.split("**Рассматриваем**")[0]
     assert "Доступно с" not in text
 
 
@@ -207,7 +237,8 @@ def test_hiding_last_entry_removes_stale_text(tmp_path):
     assert run_public_cli(repo, "--user-board-only").returncode == 0
     text = (repo / "README.md").read_text()
     assert "PRIVATE_UNIQUE_SENTINEL" not in text and "Увидеть изменения" not in text
-    assert text.count("Пока нет опубликованных записей.") == 4
+    assert "Пока нет опубликованных записей" not in text
+    assert not any(f"**{group}**" in text for group in board.PUBLIC_GROUPS)
     assert run_public_cli(repo, "--check-user-board").returncode == 0
 
 
@@ -266,7 +297,7 @@ def test_plan_requires_recorded_selection_and_pause_requires_reason(tmp_path):
         board.prepare_public_readme(repo, snapshot, declared)
     entry.update(pause_reason="Ждём проверку", pause_source_url="https://github.com/MimEcoSys/DS-iwe-releases/issues/1")
     text = board.prepare_public_readme(repo, snapshot, declared)
-    assert "Ждём проверку" in text.split("### Приостановлено")[1]
+    assert "Ждём проверку" in text.split("**Приостановлено**")[1]
 
 
 @pytest.mark.parametrize("url", ["javascript:alert(1)", "http://github.com/x", "https://user:secret" + "@" + "github.com/x", "https://github.com/x?token=secret"])
@@ -336,6 +367,7 @@ def test_full_build_updates_public_view_without_changing_team_outputs(tmp_path):
         if name == "public":
             declared["public_board"] = {"schema_version": 1, "entries": []}
             (repo / "README.md").write_text("# IWE\n\nРучной текст.\n")
+            write_catalog_fixture(repo)
         (repo / "ops" / "developer-links.yaml").write_text(yaml.safe_dump(declared))
         result = subprocess.run(
             [sys.executable, board.__file__, "--src", str(src), "--repo", str(repo)],
@@ -344,11 +376,12 @@ def test_full_build_updates_public_view_without_changing_team_outputs(tmp_path):
         assert result.returncode == 0, result.stderr
         outputs.append({
             p.relative_to(repo): p.read_bytes() for p in repo.rglob("*")
-            if p.is_file() and p.name not in ("developer-links.yaml", "README.md")
+            if p.is_file() and p.name not in ("developer-links.yaml", "README.md", "index.yaml", "INDEX.md", "catalog.json")
+            and "releases/0." not in str(p)
         })
     assert outputs[0] == outputs[1]
     assert "public_board" not in (tmp_path / "public/ops/snapshot.yaml").read_text()
-    assert (tmp_path / "public/README.md").read_text().count("Пока нет опубликованных записей.") == 4
+    assert "Пока нет опубликованных записей" not in (tmp_path / "public/README.md").read_text()
     assert run_public_cli(tmp_path / "public", "--check-user-board").returncode == 0
     assert not (tmp_path / "legacy/README.md").exists()
 

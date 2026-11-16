@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "generated_from": "releases/index.yaml",
+  "versions": [
+    {
+      "version": "0.42",
+      "state": "testing",
+      "as_of": "2026-11-16",
+      "summary": "проверка сборки-кандидата; срок и состав выпуска не объявлены",
+      "candidate": "v0.42.0-rc.15",
+      "links": {
+        "release": "releases/0.42/README.md",
+        "decisions": "releases/0.42/decisions.md"
+      }
+    },
+    {
+      "version": "0.37–0.41.11",
+      "state": "released",
+      "as_of": "2026-11-16",
+      "summary": "выпуски 0.37–0.41.11, последний — 0.41.11",
+      "last_version": "0.41.11",
+      "published_tag": "v0.41.11",
+      "links": {
+        "shipped": "releases/0.41.11/shipped.md"
+      },
+      "composition_page": "board/2.3.1-released-0.37-0.41.11.md",
+      "result_codes": [
+        "Ц23-06",
+        "Ц37-02",
+        "Ц38-10",
+        "Ц38-11",
+        "Ц38-13",
+        "Ц53-10",
+        "Ц70-01",
+        "Ц70-03",
+        "Ц77-02",
+        "Ц77-04",
+        "Ц77-05",
+        "Ц77-06",
+        "Ц78-01",
+        "Ц79-01",
+        "Ц81-02",
+        "Ц83-02"
+      ]
+    },
+    {
+      "version": "до 0.36",
+      "state": "released",
+      "as_of": "2026-11-16",
+      "summary": "выпуски до 0.36 включительно",
+      "last_version": "0.36",
+      "published_tag": "v0.36.3",
+      "links": {
+        "shipped": "releases/0.36/shipped.md"
+      }
+    }
+  ]
+}

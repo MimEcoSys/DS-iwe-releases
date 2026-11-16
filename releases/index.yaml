@@ -1,0 +1,33 @@
+# Каталог выпусков шаблона IWE: единственный список версий, который ведут руками (Разработчик).
+# Из него программа собирает releases/INDEX.md, releases/catalog.json и таблицу версий в README.
+# Состав выпуска здесь не пишут: его выводит программа из файла «composition_page».
+# state: released | testing | planned. as_of — когда состояние проверено, а не когда правили текст.
+schema_version: 1
+versions:
+  - version: "0.42"
+    state: testing
+    as_of: 2026-11-16
+    summary: проверка сборки-кандидата; срок и состав выпуска не объявлены
+    candidate: v0.42.0-rc.15
+    links:
+      release: releases/0.42/README.md
+      decisions: releases/0.42/decisions.md
+  - version: "0.37–0.41.11"
+    state: released
+    last_version: "0.41.11"
+    as_of: 2026-11-16
+    summary: выпуски 0.37–0.41.11, последний — 0.41.11
+    published_tag: v0.41.11
+    historical: true
+    composition_page: board/2.3.1-released-0.37-0.41.11.md
+    links:
+      shipped: releases/0.41.11/shipped.md
+  - version: "до 0.36"
+    state: released
+    last_version: "0.36"
+    as_of: 2026-11-16
+    summary: выпуски до 0.36 включительно
+    published_tag: v0.36.3
+    historical: true
+    links:
+      shipped: releases/0.36/shipped.md

@@ -23,3 +23,15 @@ jobs:
         run: python -m pip install --quiet pyyaml pytest && python -m pytest -q ops
       - name: User board matches its sources
         run: python ops/build_board.py --repo . --check-user-board
+      - name: Public pages have no broken links
+        run: python ops/build_board.py --repo . --check-links
+      - name: Release tags in the catalog exist in the template
+        run: |
+          python - <<'PY'
+          import subprocess, sys, yaml
+          tags = [v["published_tag"] for v in yaml.safe_load(open("releases/index.yaml"))["versions"] if v.get("published_tag")]
+          missing = [t for t in tags if not subprocess.run(
+              ["git", "ls-remote", "--exit-code", "--tags", "https://github.com/TserenTserenov/FMT-exocortex-template.git", f"refs/tags/{t}"],
+              capture_output=True).returncode == 0]
+          sys.exit(f"tags missing in the template: {missing}" if missing else 0)
+          PY
