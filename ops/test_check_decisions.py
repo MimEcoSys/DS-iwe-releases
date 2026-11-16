@@ -247,6 +247,40 @@ def test_all_at_cut_rejects_wrong_snapshot_and_deferred_records():
             cd.selected_record_keys(HANDOFF, form, commit)
 
 
+def test_short_snapshot_commit_is_not_a_prefix_match():
+    with pytest.raises(cd.DecisionsFormError):
+        cd.selected_record_keys(HANDOFF, ALL_CUT, "a" * 9)
+    assert cd.selected_record_keys(HANDOFF, ALL_CUT, "a" * 10)[0] == set(HANDOFF["records"])
+
+
+def released_repo(tmp_path, snapshot_commit, candidates_stamp):
+    repo = repo_with(tmp_path, ALL_CUT)
+    (repo / "ops" / "snapshot.yaml").write_text(yaml.safe_dump({"snapshot": {"template_commit": snapshot_commit}}))
+    (repo / "releases" / "index.yaml").write_text(
+        yaml.safe_dump({"versions": [{"version": "0.42", "state": "released"}]}), encoding="utf-8")
+    (repo / "releases" / "0.42" / "candidates.md").write_text(candidates_stamp, encoding="utf-8")
+    return repo
+
+
+def test_released_version_is_checked_against_its_frozen_candidates_not_the_live_board(tmp_path, capsys):
+    # WP-529 F274: after 0.42 the board was rebuilt on a newer template and the check broke.
+    repo = released_repo(tmp_path, "b" * 40, "> Собрано 2026-11-11 по шаблону " + CUT_SHA[:10] + ".\n")
+    assert cd.main(["--repo", str(repo)]) == 0
+    assert "замечаний нет" in capsys.readouterr().out
+    (repo / "releases" / "0.42" / "candidates.md").write_text("> Собрано 2026-11-11 по шаблону " + "c" * 10 + ".\n")
+    assert cd.main(["--repo", str(repo)]) == 2
+    (repo / "releases" / "0.42" / "candidates.md").write_text("# без отметки сборки\n")
+    assert cd.main(["--repo", str(repo)]) == 2
+    assert "нет версии шаблона снимка" in capsys.readouterr().err
+
+
+def test_unreleased_version_is_still_checked_against_the_live_board(tmp_path):
+    repo = released_repo(tmp_path, "b" * 40, "> Собрано 2026-11-11 по шаблону " + CUT_SHA[:10] + ".\n")
+    (repo / "releases" / "index.yaml").write_text(
+        yaml.safe_dump({"versions": [{"version": "0.42", "state": "testing"}]}), encoding="utf-8")
+    assert cd.main(["--repo", str(repo)]) == 2
+
+
 def test_unrecognized_take_all_wording_is_not_read_as_zero():
     form = decisions(taken="все кандидаты", deferred="ничего")
     with pytest.raises(cd.DecisionsFormError, match="не содержит кодов"):
