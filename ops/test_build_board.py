@@ -179,7 +179,7 @@ def public_fixture(tmp_path, status="в работе"):
             {"code": "Ц77-04", "show": True, "title": "Увидеть изменения", "updated_at": "2026-11-14"},
         ]},
     }
-    for _, page, _ in board.STAGES:
+    for _, page, _ in (*board.STAGES, *board.DONE_SUBSETS):
         if page:
             (repo / "board" / page).write_text("| Ц77-04 | тестовый результат |\n")
     write_public_fixture(repo, snapshot, declared)
@@ -201,7 +201,7 @@ def run_public_cli(repo, option):
 
 
 def test_public_view_uses_source_state_date_and_preserves_other_files(tmp_path):
-    repo, _, _ = public_fixture(tmp_path, "в разнице 0.36–0.41.11")
+    repo, _, _ = public_fixture(tmp_path, "выпущено в 0.37–0.41.11")
     original = {p.relative_to(repo): p.read_bytes() for p in repo.rglob("*") if p.is_file()}
     assert run_public_cli(repo, "--user-board-only").returncode == 0
     text = (repo / "README.md").read_text()
@@ -276,7 +276,7 @@ def test_invalid_public_entry_is_rejected_before_writing(tmp_path, mutation, mes
     ("version", "0.42.0"), ("evidence", ""), ("evidence", "another release"),
 ])
 def test_released_claim_needs_consistent_stable_evidence(tmp_path, field, value):
-    repo, snapshot, declared = public_fixture(tmp_path, "в разнице 0.36–0.41.11")
+    repo, snapshot, declared = public_fixture(tmp_path, "выпущено в 0.37–0.41.11")
     declared["placement"]["Ц77-04"][field] = value
     with pytest.raises(SystemExit, match="public_board"):
         board.prepare_public_readme(repo, snapshot, declared)
@@ -363,7 +363,7 @@ def test_full_build_updates_public_view_without_changing_team_outputs(tmp_path):
         (repo / "ops").mkdir(parents=True)
         for version in ("0.36", "0.41.11"):
             (repo / "releases" / version).mkdir(parents=True)
-        declared = {key: {} for key in ("links", "staging", "placement", "released_0_41_11", "files")}
+        declared = {key: {} for key in ("links", "staging", "placement", "released_0_41_11", "released_0_42", "files")}
         if name == "public":
             declared["public_board"] = {"schema_version": 1, "entries": []}
             (repo / "README.md").write_text("# IWE\n\nРучной текст.\n")
@@ -516,14 +516,14 @@ def test_stage_pages_cover_every_result_and_detect_equal_count_substitution(tmp_
                                    "сделано", "сделано", "сделано", "отложено"), 1)
     )
     results = [{"code": f"Ц1-{i:02}", "status": status, "what": "готовая заметка"}
-               for i, status in enumerate(("у автора", "в разнице 0.36–0.41.11", "готово для передачи",
+               for i, status in enumerate(("у автора", "выпущено в 0.37–0.41.11", "готово для передачи",
                                            "взято в 0.42", "выпущено в 0.36", "работает вне выпуска шаблона"), 3)]
     states = board.general_result_states(source, results)
     expected = {
         "1-plan.md": {"Ц1-01"}, "2.1-in-work.md": {"Ц1-02"}, "2.2-at-developer.md": {"Ц1-03"},
-        "2.3.1-released-0.37-0.41.11.md": {"Ц1-04"}, "2.3.2-merged-after-0.41.11.md": {"Ц1-05"},
-        "2.4-taken.md": {"Ц1-06"}, "3-done.md": {"Ц1-07", "Ц1-08", "Ц1-09"},
+        "2.3-ready.md": {"Ц1-05"}, "2.4-taken.md": {"Ц1-06"}, "3-done.md": {"Ц1-04", "Ц1-07", "Ц1-08", "Ц1-09"},
         "4-deferred.md": {"Ц1-10"}, "outside-template.md": {"Ц1-08"},
+        "2.3.1-released-0.37-0.41.11.md": {"Ц1-04"}, "released-0.42.md": set(),
     }
     assert board.stage_page_codes(states) == expected
     (tmp_path / "board").mkdir()
@@ -572,9 +572,9 @@ def test_completeness_explains_separate_units_and_code_partition():
         {"proposed": {"goal": 1, "what": "A"}},
         {"proposed": {"goal": 2, "what": "B"}},
     ]
-    released = {"0.36": {"0.36": [{}]}, "0.41.11": {"0.41.11": [{}, {}]}}
+    released = {"0.36": {"0.36": [{}]}, "0.41.11": {"0.41.11": [{}, {}]}, "0.42": {"0.42.0": [{}, {}, {}]}}
     record_text = "\n".join(board.record_inventory_lines(staging, unreleased, released, [{"status": "взято в 0.42"}], 2))
-    assert "5 = 1 + 2 + 2" in record_text
+    assert "8 = 1 + 2 + 3 + 2" in record_text
     assert "3 = 1 + 1 + 1" in record_text
     assert "Предложений новых результатов: 2" in record_text
     assert "1 из обкатки + 2 из невыпущенных правок − 1" in record_text
@@ -613,3 +613,59 @@ def test_outside_result_shows_implementation_evidence_separately_from_user_chann
     }
     line, = board.outside_result_rows([row])
     assert "| среда на компьютере | DS-iwe-wp-panel — отдельное расширение VS Code |" in line
+
+
+def links_file(tmp_path, links=None, released_042=None, placement=None):
+    path = tmp_path / "developer-links.yaml"
+    path.write_text(yaml.safe_dump({
+        "links": links or {}, "released_0_42": released_042 or {}, "staging": {}, "placement": placement or {},
+    }, allow_unicode=True))
+    return path
+
+
+def test_done_results_move_to_released_042_only_when_no_record_is_pending(tmp_path):
+    results = [
+        {"code": "Ц1-01", "status": "сделано, не сверено"},
+        {"code": "Ц1-02", "status": "сделано, не сверено"},
+        {"code": "Ц1-03", "status": "в работе"},
+        {"code": "Ц1-04", "status": "план"},
+    ]
+    path = links_file(
+        tmp_path,
+        links={"U-c3": {"result": ["Ц1-02"]}},
+        released_042={"U-a1": {"result": ["Ц1-01", "Ц1-02", "Ц1-03"]}, "U-b2": {"result": ["Ц1-04"]}},
+    )
+    board.apply_links(results, [{"key": "U-c3"}], {"U-a1", "U-b2"}, [], path)
+    assert [r["status"] for r in results] == ["выпущено в 0.42", "готово для передачи", "в работе", "план"]
+    assert "вышла" in results[3]["mismatch"]
+
+
+def test_released_042_links_must_cover_exactly_the_042_records(tmp_path):
+    path = links_file(tmp_path, released_042={"U-a1": {"service": "x"}})
+    with pytest.raises(SystemExit, match=r"released_0_42: missing \['U-b2'\]"):
+        board.apply_links([], [], {"U-a1", "U-b2"}, [], path)
+
+
+def test_newer_release_than_the_last_range_stops_the_build():
+    assert board.released_range("0.42.0") == "0.42"
+    assert board.released_range("0.41.11") == "0.41.11"
+    with pytest.raises(SystemExit, match="0.43.0 is newer than 0.42; extend the board ranges"):
+        board.released_range("0.43.0")
+
+
+def test_shipped_page_of_a_released_version_is_written_once(tmp_path):
+    released = {"0.42": {"0.42.0": [{"key": "U-a1", "tag": "", "text": "правка"}]}}
+    board.write_shipped(tmp_path, "> Собрано 1", released, {"0.42": {"U-a1": "Ц1-01"}})
+    page = tmp_path / "releases" / "0.42" / "shipped.md"
+    first = page.read_text()
+    assert "# Выпуск 0.42: что добавилось к 0.41.11" in first and "— **Ц1-01**" in first
+    board.write_shipped(tmp_path, "> Собрано 2", released, {})
+    assert page.read_text() == first
+
+
+def test_handoff_of_a_released_version_is_closed(tmp_path):
+    path = tmp_path / "developer-handoff.yaml"
+    path.write_text(yaml.safe_dump({"release": "0.42", "groups": {}, "records": {"U-a1": {}}}))
+    assert board.load_handoff(path, [], {"0.42"}) is None
+    with pytest.raises(SystemExit, match="handoff: missing"):
+        board.load_handoff(path, [{"key": "U-b2"}], set())
