@@ -11,8 +11,21 @@
       "links": {
         "release": "releases/0.42/README.md",
         "decisions": "releases/0.42/decisions.md",
-        "shipped": "releases/0.42/candidates.md"
-      }
+        "shipped": "releases/0.42/shipped.md"
+      },
+      "composition_page": "board/released-0.42.md",
+      "result_codes": [
+        "Ц34-03",
+        "Ц34-17",
+        "Ц38-15",
+        "Ц38-16",
+        "Ц38-17",
+        "Ц70-04",
+        "Ц78-05",
+        "Ц78-07",
+        "Ц78-08",
+        "Ц84-13"
+      ]
     },
     {
       "version": "0.37–0.41.11",

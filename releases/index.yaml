@@ -10,10 +10,11 @@ versions:
     summary: первый выпуск через проверенную сборку-кандидат; оговорки по непроверенному названы в описании
     published_tag: v0.42.0
     decision_ref: releases/0.42/decisions.md
+    composition_page: board/released-0.42.md
     links:
       release: releases/0.42/README.md
       decisions: releases/0.42/decisions.md
-      shipped: releases/0.42/candidates.md
+      shipped: releases/0.42/shipped.md
   - version: "0.37–0.41.11"
     state: released
     last_version: "0.41.11"

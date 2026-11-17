@@ -119,7 +119,7 @@ def selected_record_keys(handoff: dict, decisions: str, snapshot_commit: str | N
             raise DecisionsFormError("для решения «всё до снимка» нужен снимок с версией шаблона")
         cut = next((value for name, value in values.items() if name.startswith("Версия основной ветки шаблона")), "")
         match = re.search(r"[0-9a-f]{40}", cut)
-        if not match or match.group() != snapshot_commit:
+        if not match or len(snapshot_commit) < 10 or not match.group().startswith(snapshot_commit):
             raise DecisionsFormError("снимок табло и версия в решении о составе выпуска различаются")
         deferred = next((value for name, value in values.items() if name.startswith(DEFERRED_ROW)), "")
         if deferred != "ничего":
@@ -226,6 +226,33 @@ def red_team_problems(tests_dir: Path, rc_tree: str | None) -> list[str]:
     return [problem for name, block in blocks for problem in block_problems(name, block, rc_tree)]
 
 
+FROZEN_STAMP = re.compile(r"^> Собрано \S+ по шаблону ([0-9a-f]{10,40})\.", re.MULTILINE)
+
+
+def is_released(repo: Path, release: str) -> bool:
+    index = repo / "releases" / "index.yaml"
+    versions = (yaml.safe_load(index.read_text(encoding="utf-8")) or {}).get("versions", []) if index.exists() else []
+    return any(str(v.get("version")) == release and v.get("state") == "released" for v in versions)
+
+
+def decision_snapshot_commit(repo: Path, release: str) -> str | None:
+    """Template version of the board snapshot the composition decision was taken on.
+
+    Before the release is out it is the live board snapshot. After it the board moves on
+    (WP-529 F274: the 16.11 rebuild broke this check), so the witness is the frozen
+    candidates page of that release, written from the snapshot at the cut.
+    """
+    if is_released(repo, release):
+        candidates = repo / "releases" / release / "candidates.md"
+        match = FROZEN_STAMP.search(candidates.read_text(encoding="utf-8")) if candidates.exists() else None
+        if not match:
+            raise DecisionsFormError(f"выпуск {release} вышел, но в его candidates.md нет версии шаблона снимка")
+        return match.group(1)
+    snapshot_path = repo / "ops" / "snapshot.yaml"
+    snapshot = yaml.safe_load(snapshot_path.read_text()) if snapshot_path.exists() else {}
+    return (snapshot or {}).get("snapshot", {}).get("template_commit")
+
+
 def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--repo", type=Path, default=Path(__file__).resolve().parents[1])
@@ -242,10 +269,7 @@ def main(argv: list[str]) -> int:
         problems: list[str] = []
         for key, record in records.items():
             problems += record_problems(key, record or {})
-        snapshot_path = args.repo / "ops" / "snapshot.yaml"
-        snapshot = yaml.safe_load(snapshot_path.read_text()) if snapshot_path.exists() else {}
-        snapshot_commit = (snapshot or {}).get("snapshot", {}).get("template_commit")
-        problems += decision_problems(handoff, decisions, snapshot_commit)
+        problems += decision_problems(handoff, decisions, decision_snapshot_commit(args.repo, release))
         unfilled = unfilled_rows(decisions)
         if args.require_final:
             problems += [f"в decisions.md не заполнена строка «{row}»" for row in unfilled]

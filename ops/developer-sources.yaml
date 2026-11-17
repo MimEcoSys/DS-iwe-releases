@@ -2,77 +2,73 @@
 # Ведёт Разработчик руками при каждой пересборке; build_board.py читает запись sbg.md,
 # чтобы ссылаться на исходный документ только при совпадении SHA-256 входа.
 # Запись описывает сборку, после которой BOARD.md и board/ в этом же коммите.
-# Пересборка 14.11: исходные восемь входов и их SHA-256 не изменились с 11.11. Общее
-# табло показывает все 568 результатов с уточнёнными статусами: 237 план, 212 в работе,
-# 85 сделано, 34 отложено. Пункт 2: 175 на этапе 2.1, 11 на 2.2, 18 на 2.3, 8 на 2.4.
-# Исходные 175/122 сохранены в сверке: 37 исходно сделанных результатов ещё находятся
-# на этапах 2.2–2.4 подготовки выпуска. Прежние 95 вне выборки целей учитываются на 2.1
-# по тому же правилу исходной стадии «в работе», что и остальные 80. Неизвестного этапа нет.
-# Дата состояния в табло остаётся 11.11, поскольку исходные материалы не были собраны заново.
-# Все 11 страниц board/ сверены с общим табло: списки стадий охватывают 568 кодов.
-# Девять поставленных вне шаблона учтены в 85 сделанных; 22 предложения вне исходных 568.
-# Первый опрос запланирован по 11 результатам этапа 2.2, но ещё не запущен.
-# Замер Разработчика по-прежнему не приложен.
+# Пересборка 16.11 (РП-529 Ф274, шаг 9): первая после выхода 0.42. Все входы собраны заново;
+# не изменилась только STAGING.md. Табло: 605 результатов — 243 план, 212 в работе, 116 сделано,
+# 34 отложено. Пункт 2: 201 на 2.1, 11 на 2.2, 0 на 2.3, 0 на 2.4. Вышедшее перешло в «Сделано»:
+# 16 результатов 0.37–0.41.11 (бывший этап 2.3.1) и 10 результатов 0.42 (бывшие 2.3.2 и 2.4).
+# Записи 0.42 — 110 (81 прежний кандидат и 29 исправлений ветки выпуска), невыпущенных — 14;
+# 43 новые записи размечены черновиком агента как служебные, Разработчик уточняет связи.
+# Замер Разработчика не приложен: канон DS-my-strategy был под заморозкой, canon-refresh не делали.
 
-built_at_local_date: '2026-11-14'   # день повторной сборки
-source_collected_at: '2026-11-11'  # дата закреплённых входов и шапок табло
+built_at_local_date: '2026-11-16'   # день повторной сборки
+source_collected_at: '2026-11-16'  # дата закреплённых входов и шапок табло
 host_timezone: EET                  # локальная дата зависит от таймзоны хоста
-recorded_at: '2026-11-14T17:45:20Z' # когда записан этот файл (после сборки)
+recorded_at: '2026-11-16T19:44:04Z' # когда записан этот файл (после сборки)
 decision_revision: 7d0d79bc2c319b4412a054e64c1d7cb3a3416cf8
 decision_sha256: 7ca5f8b396bd9dd839784dd34e8ed6a261ba8716895e7fb4c27a5d41808ab94d
 
 builder:
   program: ops/build_board.py
-  program_commit: afeda88d3c19d60155650f1d06bb124be2db7323   # версия программы этой пересборки
-  program_sha256: 317a47724c1f32be6435c7a9c79c772b688c4a10e5c813002765565e1f04d820
-  python: 3.14.6
+  program_commit: c7cd701059cb05ee03337aaae00107832ac8eace   # версия программы этой пересборки
+  program_sha256: ed92ce401766ed74ecca57ec6117c6ef8c13c3c6eefab77289f2af6c49f42c3b
+  python: 3.15.0
   dependencies: {pyyaml: 6.0.3}       # других сторонних модулей программа не импортирует
-  command: python3 ops/build_board.py --src <папка входов> --source-date 2026-11-11 --repo <копия DS-iwe-releases>
+  command: python3 ops/build_board.py --src <папка входов> --source-date 2026-11-16 --repo <копия DS-iwe-releases>
 
 # Все входы, кроме замера, читаются из закреплённой ревизии origin/main: git show <revision>:<path>.
 inputs:
   - name: map005.md
     repo: https://github.com/MimEcoSys/PACK-digital-platform.git
     path: pack/digital-platform/07-map/DP.MAP.005-mcp-scenarios.md
-    revision: 4e9d24956bb56ba03f3bdcced1ef7d55cb3bd757
-    sha256: fb873ea3a5671715d01a214a10b65a5fb9a95a0c1dc38f02338b460af3f78b00
+    revision: 761779a77ca9f97688a2853f7690ebbe4e9f39c0
+    sha256: 3e7c146685700d12ec700ee490371aa6bfbf84fdf601d35f32f8667072c4673c
   - name: sbg.md
     repo: https://github.com/aisystant/DS-ecosystem-development.git
     path: C.IT-Platform/C2.IT-Platform/C2.3.Operations/Goals-State/state-by-goals.md
-    revision: c8bcc6916069454c17abbeebc393f728be39a3a4
-    sha256: c008f417a52b672aedb7dbf748b7e69771db5ccdad92c059846bd881ca881ae1
+    revision: 134f2d017fbc8987e82818b8d22fc90cd8716d33
+    sha256: 0d807e34dfe98b146eb8e9eeb4d9ce03b75181930cff110284b8b049ed2c6c57
   - name: result-codes.md
     repo: https://github.com/aisystant/DS-ecosystem-development.git
     path: C.IT-Platform/C2.IT-Platform/C2.3.Operations/Goals-State/working-records/result-codes.md
-    revision: c8bcc6916069454c17abbeebc393f728be39a3a4
-    sha256: 0018fca20e5a036482276183283c68477bbdee8efd0311d9dfc711e3e8500b88
+    revision: 134f2d017fbc8987e82818b8d22fc90cd8716d33
+    sha256: b0e3093e548e70cb2175a69f56211e48705abb12cdc77aa7bde233ef47fc3b91
   - name: changelog.md
     repo: https://github.com/TserenTserenov/FMT-exocortex-template.git
     path: CHANGELOG.md
-    revision: 637e06a1afb3b635f8f4954aec6aa80e8956f924
-    sha256: de23bbb26493943bfb4495624b2cfc70d1e77745a3e23ac808727844f4800c0f
+    revision: 01a9877a0a3f6068458ee736359a76964f50a816
+    sha256: 6d81357963808163d5bf077f7ade492809fda9c02fe4962d9401eb8dacf77c27
   - name: fmt-sha
     repo: https://github.com/TserenTserenov/FMT-exocortex-template.git
-    derived_by: git rev-parse 637e06a1   # снимок «режем» 0.42, та же ревизия, что у changelog.md
-    revision: 637e06a1afb3b635f8f4954aec6aa80e8956f924
-    sha256: 5f6dc0ceb499f71d086b7cfacf65b39f0ede8cb355595ad7f0f7ce6ed19bdccb
+    derived_by: git rev-parse 01a9877a   # та же ревизия, что у changelog.md
+    revision: 01a9877a0a3f6068458ee736359a76964f50a816
+    sha256: 63414b6ff77f73b07b79215e67e5b3f882444f59eddaca9892f2fc077eef2755
   - name: fmt-files.txt
     repo: https://github.com/TserenTserenov/FMT-exocortex-template.git
     derived_by: git ls-tree -r --name-only <revision>
-    revision: 637e06a1afb3b635f8f4954aec6aa80e8956f924
-    sha256: 45d0a708b9b7a911054ed6b51b035754cbff4cca06afb6b17ad16b1d101e7ebd
+    revision: 01a9877a0a3f6068458ee736359a76964f50a816
+    sha256: 253b72bbdf7920bfd52e490888c2847fbd7b43fb615ee6fbb142170029daf541
   - name: staging.md
     repo: https://github.com/TserenTserenov/iwe-local-config.git   # закрытый, корень IWE Разработчика
     path: STAGING.md
-    revision: 7a211522457ebde6092a67bb14a275b33f6186d3
+    revision: de0a4cf409621966caa8f26b44a8fdb53b67fb1d
     sha256: 09510628f5bad5eebc9869ec3ae2529be442b5ac33d91a45873d941da050f03a
   - name: weekplan.md
     repo: https://github.com/TserenTserenov/DS-my-strategy.git        # закрытый, план недели Разработчика
-    path: current/WeekPlan W46 2026-11-09.md   # каждую неделю — план текущей недели
-    revision: 98a4ff3e65733ffc60410d22149245a44b124f3a
-    sha256: 52d6cd21067214549a4d51a1bc75a7d01558b8923664b8cbf061a17d6e4d5df1
+    path: current/WeekPlan W47 2026-11-16.md   # каждую неделю — план текущей недели
+    revision: dc7f656b343e50045f844e6c186bbcf23eabe968
+    sha256: b08fad0ef14243408902b52a78d544b66804ce7081aa50d487e4c6f0cc86ebf9
   - name: author-ahead.yaml   # результат замера рабочих копий хоста, не файл из Git
-    status: не приложен к сборке 11.11 — пересобирались кандидаты 0.42; страница 2.2 табло так и пишет; прошлый неполный замер 08.11 — в журнале сессий Разработчика
+    status: не приложен к сборке 16.11 — канон DS-my-strategy был под заморозкой, canon-refresh не делали; страница 2.2 табло так и пишет
 
 # Порядок сборки. Любой отказ команды — стоп, табло не пересобирается.
 steps:

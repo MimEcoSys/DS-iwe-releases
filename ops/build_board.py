@@ -287,13 +287,33 @@ def attach_works(results: list[dict], result_codes: str, week_plan: str) -> None
         r["in_week_plan"] = bool(set(works[r["code"]]) & in_week)
 
 
+# Released ranges of the board: name -> highest version in it. A changelog section newer than the
+# last range stops the build until the range is added (WP-529 F274: 0.42 released 16.11.2026).
+RELEASED_RANGES = {"0.36": (0, 36, 99), "0.41.11": (0, 41, 11), "0.42": (0, 42, 99)}
+RELEASED_TITLES = {
+    "0.36": "Выпуски до 0.36 включительно",
+    "0.41.11": "Выпуски 0.37–0.41.11: что добавилось к 0.36",
+    "0.42": "Выпуск 0.42: что добавилось к 0.41.11",
+}
+RANGE_PLACES = {"0.36": "released-0.36", "0.41.11": "released-0.37-0.41.11", "0.42": "released-0.42"}
+RELEASED_041 = "выпущено в 0.37–0.41.11"
+RELEASED_042 = "выпущено в 0.42"
 PLACE_TO_STATUS = {
     "released-0.36": "выпущено в 0.36",
-    "released-0.37-0.41.11": "в разнице 0.36–0.41.11",
-    "merged-after-0.41.11": "готово для передачи",
+    "released-0.37-0.41.11": RELEASED_041,
+    "released-0.42": RELEASED_042,
     "author-only": "у автора",
     "not-template": "работает вне выпуска шаблона",
 }
+
+
+def released_range(ver: str) -> str:
+    """The board range a released changelog section belongs to."""
+    key = version_key(ver)
+    for name, limit in RELEASED_RANGES.items():
+        if key <= limit:
+            return name
+    raise SystemExit(f"released version {ver} is newer than {list(RELEASED_RANGES)[-1]}; extend the board ranges")
 
 
 def check_keys(name: str, declared: dict, expected: set) -> None:
@@ -320,11 +340,18 @@ def check_codes(name: str, link: dict, by_code: dict) -> None:
             raise SystemExit(f"{name}: result {code} is not on the board")
 
 
-def apply_links(results: list[dict], unreleased_links: list[dict], staging: list[dict], links_file: Path) -> None:
-    """Apply the Developer's links: records and staging entries -> results, done results -> where they are."""
+def apply_links(
+    results: list[dict], unreleased_links: list[dict], released_042_keys: set, staging: list[dict], links_file: Path
+) -> None:
+    """Apply the Developer's links: records and staging entries -> results, done results -> where they are.
+
+    A done result whose every linked record is out in 0.42 becomes «выпущено в 0.42»; one with a record
+    merged after 0.42 is «готово для передачи». Records only reach a result through these links.
+    """
     declared = yaml.safe_load(links_file.read_text())
     by_code = {r["code"]: r for r in results}
     check_keys("links", declared["links"], {u["key"] for u in unreleased_links})
+    check_keys("released_0_42", declared["released_0_42"], released_042_keys)
     testing = [s for s in staging if s["staging_status"] == "testing"]
     check_keys("staging", declared["staging"], {s["id"] for s in testing})
 
@@ -332,9 +359,14 @@ def apply_links(results: list[dict], unreleased_links: list[dict], staging: list
         u.update(declared["links"][u["key"]])
         check_link(u["key"], u, by_code)
         for code in u.get("result", []):
-            by_code[code]["merged_after_0_41_11"] = True
+            by_code[code]["merged_unreleased"] = True
+    for key, link in declared["released_0_42"].items():
+        check_link(key, link, by_code)
+        for code in link.get("result", []):
+            by_code[code]["released_042"] = True
+    linked = ("merged_unreleased", "released_042")
     done_unmerged = {
-        r["code"] for r in results if r["status"] == "сделано, не сверено" and not r.get("merged_after_0_41_11")
+        r["code"] for r in results if r["status"] == "сделано, не сверено" and not any(r.get(k) for k in linked)
     }
     check_keys("placement", declared["placement"], done_unmerged)
     for s in testing:
@@ -346,12 +378,16 @@ def apply_links(results: list[dict], unreleased_links: list[dict], staging: list
         by_code[code]["status"] = PLACE_TO_STATUS[place["place"]]
         by_code[code]["evidence"] = place["evidence"]
     for r in results:
-        # A done result whose records were merged after 0.41.11 and that no release holds yet.
-        if r["status"] == "сделано, не сверено" and r.get("merged_after_0_41_11"):
+        if r["status"] != "сделано, не сверено":
+            continue
+        # Done, with a record merged after 0.42 that no release holds yet.
+        if r.get("merged_unreleased"):
             r["status"] = "готово для передачи"
+        elif r.get("released_042"):
+            r["status"] = RELEASED_042
     for r in results:
-        if r["status"] == "план" and (r.get("on_staging") or r.get("merged_after_0_41_11")):
-            r["mismatch"] = "расходится: в карточке «план», но часть уже на обкатке или влита в шаблон"
+        if r["status"] == "план" and any(r.get(k) for k in ("on_staging", *linked)):
+            r["mismatch"] = "расходится: в карточке «план», но часть уже на обкатке, влита в шаблон или вышла"
     left = [r["code"] for r in results if r["status"] == "сделано, не сверено"]
     if left:
         raise SystemExit(f"done results without placement: {left}")
@@ -468,18 +504,23 @@ STAGES = (
     (
         "**2. В работе**",
         None,
-        ("в работе", "возвращено из 0.42", "у автора", "в разнице 0.36–0.41.11", "готово для передачи", "взято в 0.42"),
+        ("в работе", "возвращено из 0.42", "у автора", "готово для передачи", "взято в 0.42"),
     ),
     ("2.1 Разрабатывается", "2.1-in-work.md", ("в работе", "возвращено из 0.42")),
     ("2.2 Проверяется Разработчиком", "2.2-at-developer.md", ("у автора",)),
-    ("2.3 Готово для передачи Выпускающему", None, ("в разнице 0.36–0.41.11", "готово для передачи")),
-    ("2.3.1 Вышло в 0.37–0.41.11", "2.3.1-released-0.37-0.41.11.md", ("в разнице 0.36–0.41.11",)),
-    ("2.3.2 Влито после 0.41.11", "2.3.2-merged-after-0.41.11.md", ("готово для передачи",)),
+    ("2.3 Готово для передачи Выпускающему", "2.3-ready.md", ("готово для передачи",)),
     ("2.4 Взято Выпускающим", "2.4-taken.md", ("взято в 0.42",)),
-    ("**3. Сделано**", "3-done.md", ("выпущено в 0.36",)),
+    ("**3. Сделано**", "3-done.md", ("выпущено в 0.36", RELEASED_041, RELEASED_042)),
     ("**4. Отложено**", "4-deferred.md", ("отложено",)),
 )
 OUTSIDE = ("Вне выпуска шаблона", "outside-template.md", ("работает вне выпуска шаблона",))
+# Lists inside «Сделано», like OUTSIDE; the 0.37-0.41.11 page keeps its old address, which the
+# frozen releases/0.42/README.md and releases/index.yaml link to.
+RELEASED_PAGES = (
+    ("Вышло в 0.37–0.41.11", "2.3.1-released-0.37-0.41.11.md", (RELEASED_041,)),
+    ("Вышло в 0.42", "released-0.42.md", (RELEASED_042,)),
+)
+DONE_SUBSETS = (OUTSIDE, *RELEASED_PAGES)
 WORK_STAGES = tuple(row for row in STAGES if row[0].startswith(("2.1 ", "2.2 ", "2.3 ", "2.4 ")))
 STATUS_TO_STAGE = {
     status: stage
@@ -506,15 +547,16 @@ def stage_notes(results, released, released_counts, taken_records=0) -> dict[str
     """Per board row: a one-line note for the board and a fuller explanation for the list page."""
     in_work = [r for r in results if r["status"] == "в работе"]
     plan_mismatch = sum(1 for r in results if r["status"] == "план" and r.get("mismatch"))
-    released_part = sum(1 for r in in_work if r.get("released_041_records"))
-    merged_part = sum(1 for r in in_work if r.get("merged_after_0_41_11"))
+    released_part = sum(1 for r in in_work if r.get("released_041_records") or r.get("released_042"))
+    merged_part = sum(1 for r in in_work if r.get("merged_unreleased"))
     staging_part = sum(1 for r in in_work if r.get("on_staging"))
     rec_041 = sum(len(e) for e in released["0.41.11"].values())
+    rec_042 = sum(len(e) for e in released["0.42"].values())
     c = released_counts
     linked_041 = {r["code"] for r in results if r.get("released_041_records")}
     plan = "работа не начата" + (f"; у {plan_mismatch} — расходится" if plan_mismatch else "")
     in_work_note = (
-        f"у {released_part} часть правок уже вышла в 0.37–0.41.11, у {merged_part} — влита после 0.41.11, "
+        f"у {released_part} часть правок уже вышла (0.37–0.42), у {merged_part} — влита после 0.42, "
         f"у {staging_part} — на обкатке; остальное ещё в разработке"
     )
     return {
@@ -542,12 +584,24 @@ def stage_notes(results, released, released_counts, taken_records=0) -> dict[str
             "Опрос ещё не запущен; голоса помогают выбрать, готовность подтверждается отдельно. "
             "Также предусмотрены опросы для переходов 1 → 2.1 и 2.1 → 2.2.",
         ),
-        "2.3 Готово для передачи Выпускающему": ("сумма 2.3.1 и 2.3.2; отсюда Выпускающий берёт в выпуск", ""),
-        "2.3.1 Вышло в 0.37–0.41.11": (
-            "вышло пользователям после 0.36; Выпускающий решает, что принять в 0.42",
-            f"Эти результаты уже доступны пользователям в 0.37–0.41.11, но ещё ожидают решения "
-            f"Выпускающего о принятии в 0.42. Поэтому здесь они учитываются в пункте 2 общего табло.\n\n"
-            f"Справка по всему журналу 0.37–0.41.11, а не только по результатам этого этапа "
+        "2.3 Готово для передачи Выпускающему": (
+            "влито в шаблон после 0.42, ещё не выпущено; отсюда Выпускающий берёт в выпуск",
+            "Сделано целиком и влито в шаблон после выхода 0.42, готово для передачи Выпускающему. "
+            "Расхождения в строках показывают, что нужно сверить. "
+            "Полный журнал невыпущенных правок приведён отдельно под спойлером; его число не равно числу результатов.",
+        ),
+        "2.4 Взято Выпускающим": (
+            f"принятых правок: {taken_records}; считаются только готовые результаты с прямой связью"
+            if taken_records else "отобрано Выпускающим в следующий выпуск",
+            f"Правок в принятом составе: {taken_records}. Здесь только готовые результаты, все связанные правки "
+            "которых взяты; частично готовые остаются в 2.1. Готовые результаты без подтверждённой связи "
+            "остаются в 2.3." if taken_records else "Отобрано Выпускающим в следующий выпуск; после выхода 0.42 отбор ещё не начат.",
+        ),
+        "Вышло в 0.37–0.41.11": (
+            "вышло пользователям в 0.37–0.41.11",
+            f"Эти результаты вышли пользователям в выпусках 0.37–0.41.11 и вошли в 0.42; на общем табло они "
+            f"учитываются в [пункте 3 «Сделано»](3-done.md). До выхода 0.42 здесь был этап 2.3.1.\n\n"
+            f"Справка по всему журналу 0.37–0.41.11, а не только по результатам этого списка "
             f"([состав](../releases/0.41.11/shipped.md)): {rec_041} строк, "
             f"{c['records']} разных записей ({c['repeated']} повторяются в двух версиях). Связь записей с "
             f"результатами предварительная, до приёмки Разработчиком: по номеру коммита или запроса на слияние — "
@@ -556,18 +610,12 @@ def stage_notes(results, released, released_counts, taken_records=0) -> dict[str
             f"единственного подходящего результата — {c['none']}; служебные — {c['service']}; у РП записи нет "
             f"результатов на табло — {c['rp_no_board_results']}; без номера РП — {c['no_rp']}.",
         ),
-        "2.3.2 Влито после 0.41.11": (
-            "влито в шаблон после 0.41.11, ещё не выпущено",
-            "Сделано целиком и влито в шаблон после 0.41.11, готово для передачи Выпускающему. "
-            "Принятие в 0.42 ещё не подтверждено. Расхождения в строках показывают, что нужно сверить. "
-            "Полный журнал невыпущенных правок приведён отдельно под спойлером; его число не равно числу результатов.",
-        ),
-        "2.4 Взято Выпускающим": (
-            f"принятых правок: {taken_records}; считаются только готовые результаты с прямой связью"
-            if taken_records else "отобрано Выпускающим в 0.42",
-            f"Правок в принятом составе: {taken_records}. Здесь только готовые результаты, все связанные правки "
-            "которых взяты; частично готовые остаются в 2.1. Готовые результаты без подтверждённой связи "
-            "остаются в 2.3.2." if taken_records else "Отобрано Выпускающим в выпуск 0.42.",
+        "Вышло в 0.42": (
+            "вышло пользователям в 0.42",
+            f"Сделанные результаты, все правки которых вошли в выпуск 0.42, и результаты, которые Разработчик "
+            f"отнёс к 0.42 вручную. На общем табло они учитываются в [пункте 3 «Сделано»](3-done.md). "
+            f"Журнал выпуска 0.42 — {rec_042} записей ([состав](../releases/0.42/shipped.md)); "
+            "запись служит результату только по связи из файла Разработчика.",
         ),
         "**3. Сделано**": (
             "сделано; незавершённых этапов 2.1–2.4 не зафиксировано",
@@ -665,18 +713,20 @@ def source_code_link(code: str, row: dict, source_url: str | None) -> str:
 
 
 def stage_page_codes(states: dict[str, dict]) -> dict[str, set[str]]:
-    """The leaf pages partition the full board; outside-template is a done subset."""
+    """The leaf pages partition the full board; the DONE_SUBSETS pages are lists inside «Сделано»."""
     stages = {f"**{label}**": stage for label, stage in SOURCE_GROUPS}
+    subsets = {page for _, page, _ in DONE_SUBSETS}
     pages = {}
-    for name, page, statuses in (*STAGES, OUTSIDE):
+    for name, page, statuses in (*STAGES, *DONE_SUBSETS):
         if page:
             pages[page] = {code for code, row in states.items()
                            if (row["stage"] == stages[name] if name in stages else row["status"] in statuses)}
-    leaves = [code for page, codes in pages.items() if page != OUTSIDE[1] for code in codes]
+    leaves = [code for page, codes in pages.items() if page not in subsets for code in codes]
     if len(leaves) != len(set(leaves)) or set(leaves) != set(states):
         raise SystemExit("stage pages must partition all source results exactly once")
-    if not pages[OUTSIDE[1]] <= pages["3-done.md"]:
-        raise SystemExit("outside-template results must be counted as done")
+    for page in subsets:
+        if not pages[page] <= pages["3-done.md"]:
+            raise SystemExit(f"{page}: its results must be counted as done")
     return pages
 
 
@@ -752,7 +802,9 @@ def result_inventory_lines(source_codes: set[str], source_text: str, source_url:
 def record_inventory_lines(staging: list[dict], unreleased_links: list[dict], released: dict, results: list[dict], taken_records: int) -> list[str]:
     old = sum(map(len, released["0.36"].values()))
     recent = sum(map(len, released["0.41.11"].values()))
+    last = sum(map(len, released["0.42"].values()))
     unreleased = len(unreleased_links)
+    total = old + recent + last + unreleased
     staging_counts = {status: sum(s["staging_status"] == status for s in staging) for status in STAGING_TO_STATUS}
     testing = [s for s in staging if s["staging_status"] == "testing"]
     proposed_testing = {
@@ -768,11 +820,11 @@ def record_inventory_lines(staging: list[dict], unreleased_links: list[dict], re
     taken_results = count_statuses(results, ("взято в 0.42",))
     return [
         "<details>",
-        f"<summary>2. Записи правок и обкатки — {old + recent + unreleased} и {len(staging)}</summary>",
+        f"<summary>2. Записи правок и обкатки — {total} и {len(staging)}</summary>",
         "",
-        f"**{old + recent + unreleased} = {old} + {recent} + {unreleased}** записей журнала изменений шаблона: "
-        f"[до 0.36](../releases/0.36/shipped.md), [0.37–0.41.11](../releases/0.41.11/shipped.md) "
-        "и [ещё не выпущенные кандидаты 0.42](../releases/0.42/candidates.md). "
+        f"**{total} = {old} + {recent} + {last} + {unreleased}** записей журнала изменений шаблона: "
+        f"[до 0.36](../releases/0.36/shipped.md), [0.37–0.41.11](../releases/0.41.11/shipped.md), "
+        "[0.42](../releases/0.42/shipped.md) и [ещё не выпущенные](2.3-ready.md). "
         "Одна запись описывает правку, а не целый результат; несколько записей могут служить одному результату.",
         f"Невыпущенных записей: {unreleased}; Выпускающий взял: {taken_records}; "
         f"[полностью подтверждённых результатов в стадии 2.4: {taken_results}](2.4-taken.md). "
@@ -891,9 +943,9 @@ def board_lines(source_date: str, source_text: str, results: list[dict], source_
         out.append(f'| {group["name"]} | {number} |')
     out += [f"| **Итого пункт 2** | **{len(work_lines)}** |", "",
             f"**{len(work_lines)} = " + " + ".join(str(len(group["codes"])) for group in groups) + "**.", "",
-            "Этап 2.3 охватывает [ранее выпущенное в 0.37–0.41.11](board/2.3.1-released-0.37-0.41.11.md), "
-            "ещё ожидающее приёмки для 0.42, и [влитое после 0.41.11](board/2.3.2-merged-after-0.41.11.md). "
-            "Решения о составе версии — в [карточке выпуска 0.42](releases/0.42/README.md).",
+            "Этап 2.3 — результаты, все правки которых [влиты в шаблон после выхода 0.42](board/2.3-ready.md). "
+            "Вышедшее учитывается в пункте 3 «Сделано»: [в 0.37–0.41.11](board/2.3.1-released-0.37-0.41.11.md) "
+            "и [в 0.42](board/released-0.42.md).",
             "", "</details>", ""]
     out += ["[Сверка полноты](board/completeness.md).", ""]
     return out
@@ -1015,14 +1067,14 @@ def stage_extra(page, staging, unreleased, unreleased_links, author_ahead, fmt_s
             "|---|---|---|---|",
         ]
         return out + [f"| {s['id']} | {cell(s['title'])} | {s['status']} | {s.get('mismatch', '')} |" for s in moved + kept] + ["", "</details>", ""]
-    if page == "2.3.2-merged-after-0.41.11.md":
+    if page == "2.3-ready.md":
         link_of = {u["key"]: link_label(u) for u in unreleased_links}
         out = [
             "<details>",
             "<summary>Справка: весь журнал невыпущенных правок</summary>",
             "",
             "Записи этого журнала служат результатам разных этапов и новым предложениям. "
-            f"Это не число результатов этапа 2.3.2. Всего {len(unreleased_links)} записей: {record_split(unreleased_links)}.",
+            f"Это не число результатов этапа 2.3. Всего {len(unreleased_links)} записей: {record_split(unreleased_links)}.",
             "",
             f"## Записи раздела «Ещё не выпущено»: {len(unreleased)}",
             "",
@@ -1035,6 +1087,7 @@ def stage_extra(page, staging, unreleased, unreleased_links, author_ahead, fmt_s
 
 def write_views(
     repo: Path, stamp: str, results, staging, unreleased, unreleased_links, released, author_ahead, released_links, released_counts,
+    released_042_links: dict,
     fmt_sha: str,
     source_date: str,
     source_text: str,
@@ -1057,14 +1110,16 @@ def write_views(
     pages = stage_page_codes(states)
     by_code = {r["code"]: r for r in results}
 
-    for name, page, statuses in (*STAGES, OUTSIDE):
+    for name, page, statuses in (*STAGES, *DONE_SUBSETS):
         if not page:
             continue
         codes = pages[page]
         rows = [by_code[code] for code in sorted(codes) if code in by_code]
         title = name.strip("*")
-        return_to = "completeness.md" if page == OUTSIDE[1] else "../BOARD.md"
-        return_label = "сверка полноты" if page == OUTSIDE[1] else "общее табло"
+        return_to, return_label = {
+            OUTSIDE[1]: ("completeness.md", "сверка полноты"),
+            **{p: ("3-done.md", "сделано") for _, p, _ in RELEASED_PAGES},
+        }.get(page, ("../BOARD.md", "общее табло"))
         out = [stamp, "", f"# {title}: {len(codes)}", "", f"[← {return_label}]({return_to})", ""]
         if page != OUTSIDE[1]:
             out += [
@@ -1073,11 +1128,9 @@ def write_views(
                 "",
             ]
         out += [notes[name][1], ""]
-        if page.startswith("2.3."):
-            out += [f"**Этап 2.3: {len(pages['2.3.1-released-0.37-0.41.11.md']) + len(pages['2.3.2-merged-after-0.41.11.md'])} = "
-                    f"[2.3.1 — {len(pages['2.3.1-released-0.37-0.41.11.md'])}](2.3.1-released-0.37-0.41.11.md) + "
-                    f"[2.3.2 — {len(pages['2.3.2-merged-after-0.41.11.md'])}](2.3.2-merged-after-0.41.11.md).**", ""]
         if page == "3-done.md":
+            out += ["Вышедшее по выпускам: " + ", ".join(
+                f"[{n} — {len(pages[p])}]({p})" for n, p, _ in RELEASED_PAGES) + ".", ""]
             counts = {status: sum(states[code]["status"] == status for code in codes)
                       for status in sorted({states[code]["status"] for code in codes})}
             out += [f"- {'сделано — отметка источника' if status == 'сделано' else status}: **{count}**."
@@ -1101,7 +1154,7 @@ def write_views(
         "",
         "[← сверка полноты](completeness.md)",
         "",
-        "Записи после 0.41.11 и записи обкатки, для которых результата в «Состоянии по целям» нет. "
+        "Невыпущенные записи и записи обкатки, для которых результата в «Состоянии по целям» нет. "
         "Список нужен для сверки записей шаблона. Это предложения без строки и кода результата в источнике; "
         f"к {len(states)} результатам общего табло они пока не прибавляются. "
         "После проработки и внесения в источник результат учитывается на подходящей стадии. "
@@ -1111,26 +1164,37 @@ def write_views(
     ]
     (lists / "proposed.md").write_text("\n".join(out + [f"- цель {goal}: {what}" for goal, what in proposed] + [""]))
 
-    titles = {"0.36": "Выпуски до 0.36 включительно", "0.41.11": "Выпуски 0.37–0.41.11: что добавилось к 0.36"}
+    write_shipped(repo, stamp, released, {
+        "0.41.11": {key: released_label(link) for key, link in released_links.items()},
+        "0.42": {key: link_label(link) for key, link in released_042_links.items()},
+    })
+
+
+def write_shipped(repo: Path, stamp: str, released: dict, labels: dict[str, dict[str, str]]) -> None:
+    """releases/<N>/shipped.md is written once: after a release is out its page does not change."""
     for name, versions in released.items():
+        path = repo / "releases" / name / "shipped.md"
+        if path.exists():
+            continue
         lines = [
             stamp,
             "",
-            f"# {titles[name]}",
+            f"# {RELEASED_TITLES[name]}",
             "",
             "Короткая выжимка записей списка изменений шаблона; полный текст — в CHANGELOG.md шаблона.",
             "",
         ]
-        labels = released_links if name == "0.41.11" else {}
+        marks = labels.get(name, {})
         for ver, entries in versions.items():
             lines += [f"## {ver} — записей: {len(entries)}", ""]
             lines += [
                 f"- [{e['tag'] or '—'}] {short(e['text'], 200)}"
-                + (f" — **{released_label(labels[e['key']])}**" if e["key"] in labels else "")
+                + (f" — **{marks[e['key']]}**" if e["key"] in marks else "")
                 for e in entries
             ]
             lines += [""]
-        (repo / "releases" / name / "shipped.md").write_text("\n".join(lines))
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("\n".join(lines))
 
 
 HANDOFF_FIELDS = ("rollback_unit", "commits", "user_gets", "how_to_check", "risk", "recommendation", "depends_on")
@@ -1170,11 +1234,17 @@ def handoff_groups(records: dict) -> dict[str, list[str]]:
     return {unit: keys for unit, keys in units.items() if len(keys) > 1}
 
 
-def load_handoff(path: Path, unreleased: list[dict]) -> dict | None:
-    """Developer's draft fields for every pending record; None when the file is not there yet."""
+def load_handoff(path: Path, unreleased: list[dict], released_versions: set[str]) -> dict | None:
+    """Developer's draft fields for every pending record.
+
+    None when the file is not there yet or still describes a release that is already out:
+    that release's candidates page is frozen, and the next handoff starts with the next release.
+    """
     if not path.exists():
         return None
     declared = yaml.safe_load(path.read_text())
+    if str(declared["release"]) in released_versions:
+        return None
     records = declared["records"]
     check_keys("handoff", records, {u["key"] for u in unreleased})
     for key, rec in records.items():
@@ -1242,7 +1312,7 @@ def write_candidates(repo: Path, stamp: str, handoff: dict, unreleased: list[dic
         "Собрано программой из файла Разработчика (`ops/developer-handoff.yaml`); руками не править. "
         "Решения Выпускающего — в [decisions.md](decisions.md), порядок чтения и словарь — в [README](README.md).",
         "",
-        f"**Кандидатов — {len(unreleased)}** правок, влитых в шаблон после 0.41.11: "
+        f"**Кандидатов — {len(unreleased)}** правок, влитых в шаблон после прошлого выпуска: "
         + ", ".join(f"{TAG_LABELS[t]} — {n}" for t, n in by_tag.items() if n)
         + ".",
         "",
@@ -1310,8 +1380,8 @@ PUBLIC_FIELDS = {
     "vote_candidate", "selection_url", "pause_reason", "pause_source_url",
 }
 PUBLIC_STAGE_GROUPS = {
+    **{page: "Вышло и доступно" for _, page, _ in RELEASED_PAGES},
     "3-done.md": "Вышло и доступно",
-    "2.3.1-released-0.37-0.41.11.md": "Вышло и доступно",
     "2.1-in-work.md": "В работе",
     "1-plan.md": "Рассматриваем",
     "4-deferred.md": "Приостановлено",
@@ -1352,22 +1422,19 @@ def public_url(value, name: str) -> str:
 
 
 def public_release(code: str, result: dict, declared: dict) -> str:
+    if result.get("status") == RELEASED_042 and result.get("released_042"):
+        return "0.42.0"  # derived from the 0.42 changelog records, not from a manual placement
     placements = declared.get("placement")
     if not isinstance(placements, dict) or not isinstance(placements.get(code), dict):
         public_error(f"{code}: released result needs a placement mapping")
     placement = placements[code]
-    expected = {
-        "выпущено в 0.36": "released-0.36",
-        "в разнице 0.36–0.41.11": "released-0.37-0.41.11",
-    }[result["status"]]
+    expected = {status: place for place, status in PLACE_TO_STATUS.items()}[result["status"]]
     version = placement.get("version")
     if (placement.get("place") != expected or not isinstance(version, str)
             or not re.fullmatch(r"\d+\.\d+\.\d+", version)
             or not placement.get("evidence") or not result.get("evidence")):
         public_error(f"{code}: released result needs matching stable placement and evidence")
-    key = version_key(version)
-    if ((expected == "released-0.36" and key > (0, 36, 99))
-            or (expected == "released-0.37-0.41.11" and not (0, 36, 99) < key <= (0, 41, 11))):
+    if PLACE_TO_STATUS[RANGE_PLACES[released_range(version)]] != result["status"]:
         public_error(f"{code}: version is outside the released range")
     if placement["evidence"] != result["evidence"]:
         public_error(f"{code}: release evidence differs between placement and snapshot")
@@ -1379,7 +1446,9 @@ def public_row(entry: dict, result: dict, declared: dict) -> dict:
     if result.get("mismatch"):
         public_error(f"{code}: source has an unresolved mismatch")
     status = result.get("status")
-    page = next((page for _, page, states in STAGES if page in PUBLIC_STAGE_GROUPS and status in states), None)
+    # A release page is more precise than «Сделано», so it is looked up first.
+    page = next((page for _, page, states in (*RELEASED_PAGES, *STAGES)
+                 if page in PUBLIC_STAGE_GROUPS and status in states), None)
     if page is None:
         public_error(f"{code}: status is not eligible for the public board: {status}")
     group = PUBLIC_STAGE_GROUPS[page]
@@ -1597,15 +1666,10 @@ def main() -> int:
     staging = staging_entries((src / "staging.md").read_text(), fmt_files)
     sections = changelog_sections((src / "changelog.md").read_text())
     unreleased = sections.pop("Unreleased")
-    released = {"0.36": {}, "0.41.11": {}}
+    released = {name: {} for name in RELEASED_RANGES}
     for ver, entries in sections.items():
-        key = version_key(ver)
-        if key <= (0, 36, 99):
-            released["0.36"][ver] = entries
-        elif key <= (0, 41, 11):
-            released["0.41.11"][ver] = entries
-        else:
-            raise SystemExit(f"released version {ver} is newer than 0.41.11; extend the board ranges")
+        released[released_range(ver)][ver] = entries
+    released_042_keys = {e["key"] for entries in released["0.42"].values() for e in entries}
     author_ahead = load_author_ahead(src / "author-ahead.yaml")
 
     if args.source_date:
@@ -1634,7 +1698,7 @@ def main() -> int:
         ],
     }
     links_file = args.repo / "ops" / "developer-links.yaml"
-    apply_links(results, developer["unreleased_links"], staging, links_file)
+    apply_links(results, developer["unreleased_links"], released_042_keys, staging, links_file)
     declared = yaml.safe_load(links_file.read_text())
     stale_file_links = apply_file_links(
         author_ahead, declared.get("files", {}), {r["code"]: r for r in results}
@@ -1646,7 +1710,11 @@ def main() -> int:
         declared["released_0_41_11"],
         declared["placement"],
     )
-    handoff = load_handoff(args.repo / "ops" / "developer-handoff.yaml", unreleased)
+    handoff_path = args.repo / "ops" / "developer-handoff.yaml"
+    released_versions = {
+        e["version"] for e in release_catalog.load_catalog(args.repo) if e["state"] == "released"
+    } if handoff_path.exists() else set()
+    handoff = load_handoff(handoff_path, unreleased, released_versions)
     taken_records = 0
     if handoff:
         decisions_path = args.repo / "releases" / str(handoff["release"]) / "decisions.md"
@@ -1680,6 +1748,7 @@ def main() -> int:
         author_ahead,
         declared["released_0_41_11"],
         released_counts,
+        declared["released_0_42"],
         fmt_sha,
         today,
         sbg_text,
