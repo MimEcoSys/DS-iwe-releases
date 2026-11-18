@@ -33,4 +33,4 @@
 
 </details>
 
-[Сверка полноты](completeness.md).
+[Сверка полноты](completeness.md) · [результаты и статистика IWE](stats.md).

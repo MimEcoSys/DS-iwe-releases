@@ -16,6 +16,7 @@
 | 7 | Согласование и выпуск | Выпускающий, затем `release.yml` | итог проверки | метка `v<N>` | `decisions.md`, строка «Итог»; шаблон: `release.yml` |
 | 8 | После выхода | Выпускающий, Разработчик | вышедший выпуск | «держим» или откат; `shipped.md`; пересобранное табло | `build_board.py`, `index.yaml` |
 | — | Табло результатов IWE | Разработчик запускает программу | закреплённые входы (`board/developer-sources.yaml`), связи (`board/developer-links.yaml`) | `board/README.md`, страницы стадий, сверка полноты, `board/snapshot.yaml` | [board/program/build_board.py](../board/program/build_board.py) |
+| — | Результаты и статистика IWE | программа | табло, метки и история основной ветки шаблона (`fmt-tags.txt`, `fmt-history.txt` среди входов) | `board/stats.md` | [board/program/iwe_stats.py](../board/program/iwe_stats.py) |
 | — | Что сейчас, история, планы | программа | `releases/index.yaml`, табло, папки выпусков | `NOW.md`, `releases/HISTORY.md`, `releases/NEXT.md`, `releases/INDEX.md`, `releases/catalog.json` | `build_board.py` вместе с [releases/program/release_catalog.py](../releases/program/release_catalog.py) |
 | — | Проверка перед слиянием | автоматика GitHub | запрос на слияние | пропуск или отказ | [.github/workflows/publication-gate.yml](../.github/workflows/publication-gate.yml), [.github/scripts/pii_scan.py](../.github/scripts/pii_scan.py) |
 
@@ -47,11 +48,12 @@ releases/               выпуски
   <X>.N/<N>/            папка выпуска (схема — releases/README.md)
 board/                  табло результатов IWE
   README.md             общее табло                                            программа
+  stats.md              результаты и статистика крупными цифрами               программа
   plan.md … deferred.md страницы стадий; completeness.md — сверка полноты     программа
   snapshot.yaml         снимок источников                                      программа
   developer-links.yaml  связи записей с результатами                           Разработчик
   developer-sources.yaml  закреплённые входы последней сборки                  Разработчик
-  program/              сборщик табло и его тест                               Разработчик
+  program/              сборщик табло, статистика и их тесты                   Разработчик
 .github/                проверка перед слиянием, владельцы файлов, поиск личных данных
 ```
 
