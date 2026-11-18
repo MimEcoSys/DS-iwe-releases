@@ -206,12 +206,14 @@ def test_public_view_uses_source_state_date_and_preserves_other_files(tmp_path):
     original = {p.relative_to(repo): p.read_bytes() for p in repo.rglob("*") if p.is_file()}
     assert run_public_cli(repo, "--user-board-only").returncode == 0
     text = (repo / "NOW.md").read_text()
-    assert "Состояния по данным на 2026-11-11" in text
-    assert "Состояния по данным на 2026-11-14" not in text
-    assert "Доступно с 0.41.10" in text.split("**В работе**")[0]
+    assert "Состояния результатов по данным на 2026-11-11" in text
+    assert "Состояния результатов по данным на 2026-11-14" not in text
+    work, released = text.split("## Что вышло и доступно")
+    assert "## Над чем идёт работа" in work
+    assert "Доступно с 0.41.10" in released.split("## Как читать состояния")[0]
+    assert "Доступно с 0.41.10" not in work
     assert "[Ц77-04](board/released-0.37-0.41.11.md)" in text
     assert text.startswith("# Что сейчас: выпуски шаблона IWE\n")
-    assert "Голосование пока не запущено" in text
     assert "0 голосов" not in text
     assert run_public_cli(repo, "--user-board-only").returncode == 0
     assert (repo / "NOW.md").read_text() == text

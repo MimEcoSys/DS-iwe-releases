@@ -1390,7 +1390,10 @@ def link_checked_files(repo: Path) -> list[str]:
     return sorted({path.relative_to(repo).as_posix() for pattern in LINK_CHECKED_GLOBS for path in repo.glob(pattern)})
 
 
-PUBLIC_GROUPS = ("Вышло и доступно", "В работе", "Рассматриваем", "Приостановлено")
+RELEASED_GROUPS = ("Вышло и доступно",)
+GROUP_LABELS = {"Вышло и доступно": "Результаты, которые уже можно получить"}
+WORK_GROUPS = ("В работе", "Рассматриваем", "Приостановлено")
+PUBLIC_GROUPS = RELEASED_GROUPS + WORK_GROUPS
 PUBLIC_FIELDS = {
     "code", "show", "title", "updated_at",
     "vote_candidate", "selection_url", "pause_reason", "pause_source_url",
@@ -1540,32 +1543,49 @@ def public_rows(snapshot: dict, declared: dict) -> tuple[str, list[dict]]:
     return collected, sorted(rows, key=lambda row: row["code"])
 
 
-def public_board_lines(snapshot: dict, declared: dict, entries: list[dict], counts: dict[str, int]) -> list[str]:
-    collected, rows = public_rows(snapshot, declared)
-    lines = [
-        "# Что сейчас: выпуски шаблона IWE", "",
-        "Собирает программа; руками не править. Что сделано — [вышедшие выпуски](releases/HISTORY.md), "
-        "что будет — [выпуски в проверке и в плане](releases/NEXT.md), все версии — [каталог выпусков](releases/INDEX.md).", "",
-        "## Текущий выпуск", "",
-        *release_catalog.current_release_lines(entries), "",
-        *release_catalog.version_table_lines(entries), "",
-        release_catalog.legend_line(), "",
-        release_catalog.counts_line(counts), "",
-        "## Табло будущих изменений", "",
-        f"Состояния по данным на {collected}; позже они могли измениться. Работы не обещаны к определённой дате или выпуску. "
-        "Голосование пока не запущено.", "",
-    ]
-    for group in PUBLIC_GROUPS:
+def public_group_tables(rows: list[dict], groups: tuple[str, ...]) -> list[str]:
+    lines: list[str] = []
+    for group in groups:
         selected = [row for row in rows if row["group"] == group]
         if not selected:
             continue
-        lines.extend([f"**{group}**", "", "| Что меняется для вас | Подробности | Дата текста |", "|---|---|---|"])
+        lines.extend([f"**{GROUP_LABELS.get(group, group)}**", "", "| Что меняется для вас | Подробности | Дата текста |", "|---|---|---|"])
         for row in selected:
             detail = f"{row['detail']} · " if row["detail"] else ""
             lines.append(f"| {row['title']} | {detail}[{row['code']}]({row['source_url']}) | {row['updated_at']} |")
         lines.append("")
-    lines.extend(["Вопрос о записи — [команде выпуска](team/README.md#роли). "
-                  "[Как устроены состояния](method/board-rules.md#пользовательский-вид-табло)", ""])
+    return lines
+
+
+def public_board_lines(snapshot: dict, declared: dict, entries: list[dict], counts: dict[str, int]) -> list[str]:
+    collected, rows = public_rows(snapshot, declared)
+    coming = [entry for entry in entries if entry["state"] != "released"]
+    released = [entry for entry in entries if entry["state"] == "released"]
+    lines = [
+        "# Что сейчас: выпуски шаблона IWE", "",
+        "Собирает программа; руками не править. Что сделано — [вышедшие выпуски](releases/HISTORY.md), "
+        "что будет — [выпуски в проверке и в плане](releases/NEXT.md), все версии — [каталог выпусков](releases/INDEX.md).", "",
+        "## Над чем идёт работа", "",
+        *release_catalog.testing_line(entries), "",
+    ]
+    if coming:
+        lines.extend([*release_catalog.version_table_lines(coming), ""])
+    else:
+        lines.extend(["Выпусков в проверке или в плане нет.", ""])
+    lines.extend([
+        f"Состояния результатов по данным на {collected}; позже они могли измениться. "
+        "Работы не обещаны к определённой дате или выпуску.", "",
+        *public_group_tables(rows, WORK_GROUPS),
+        "## Что вышло и доступно", "",
+        *release_catalog.released_line(entries), "",
+        *release_catalog.version_table_lines(released), "",
+        *public_group_tables(rows, RELEASED_GROUPS),
+        "## Как читать состояния", "",
+        release_catalog.legend_line(), "",
+        release_catalog.counts_line(counts), "",
+        "Вопрос о записи — [команде выпуска](team/README.md#роли). "
+        "[Как устроены состояния](method/board-rules.md#пользовательский-вид-табло)", "",
+    ])
     return lines
 
 
