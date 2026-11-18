@@ -1,4 +1,4 @@
-"""Tests for board/program/iwe_stats.py (WP-529 F278): big numbers with a source each."""
+"""Tests for tools/iwe_stats.py (WP-529 F278): big numbers with a source each."""
 import sys
 from pathlib import Path
 

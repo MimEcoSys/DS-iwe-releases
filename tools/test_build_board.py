@@ -654,7 +654,7 @@ def test_private_or_undeclared_source_gets_no_link_on_any_generated_page(tmp_pat
 
 
 def test_manifest_declares_visibility_of_every_repository_input():
-    doc = yaml.safe_load((Path(__file__).parents[1] / "developer-sources.yaml").read_text())
+    doc = yaml.safe_load((Path(__file__).parents[1] / "board" / "developer-sources.yaml").read_text())
     undeclared = [i["name"] for i in doc["inputs"] if "repo" in i and not isinstance(i.get("public"), bool)]
     assert undeclared == []
     private = {i["name"] for i in doc["inputs"] if i.get("public") is False}
@@ -662,7 +662,7 @@ def test_manifest_declares_visibility_of_every_repository_input():
 
 
 def test_committed_pages_carry_no_link_to_a_private_source():
-    root = Path(__file__).parents[2]
+    root = Path(__file__).parents[1]
     doc = yaml.safe_load((root / "board" / "developer-sources.yaml").read_text())
     private = {i["repo"].removesuffix(".git") + "/" for i in doc["inputs"] if i.get("public") is False}
     assert private

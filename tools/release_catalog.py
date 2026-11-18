@@ -6,7 +6,7 @@ Output releases/catalog.json - for the site, the bot and IWE (machine view, comp
        releases/HISTORY.md   - what is done: the released versions.
        releases/NEXT.md      - what comes: versions in testing or planned, and version folders
                                not yet in the catalog (a vote on the composition, for example).
-       version table + current-release lines for NOW.md (built by board/program/build_board.py).
+       version table + current-release lines for NOW.md (built by tools/build_board.py).
 
 The catalog is a projection, not a second source of statuses: a state is accepted only
 together with the evidence in files of this repository (see load_catalog).

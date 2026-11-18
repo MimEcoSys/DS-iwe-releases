@@ -22,7 +22,7 @@ that must not depend on judgement:
 Fields of the CHANGELOG entries themselves are checked in the template by
 scripts/check-changelog-fields.py; this script does not repeat it.
 
-Usage: python3 releases/program/check_decisions.py [--repo PATH] [--release N] [--require-final] [--rc-tree SHA]
+Usage: python3 tools/check_decisions.py [--repo PATH] [--release N] [--require-final] [--rc-tree SHA]
 Exit: 0 - no problems; 1 - problems listed on stdout; 2 - files unreadable.
 """
 
@@ -258,7 +258,7 @@ def decision_snapshot_commit(repo: Path, release: str) -> str | None:
 
 def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--repo", type=Path, default=Path(__file__).resolve().parents[2])
+    parser.add_argument("--repo", type=Path, default=Path(__file__).resolve().parents[1])
     parser.add_argument("--release", default=None, help="release number; default — `release` from developer-handoff.yaml")
     parser.add_argument("--require-final", action="store_true", help="before merge: form rows filled and red team verdict recorded")
     parser.add_argument("--rc-tree", default=None, help="tree SHA of the candidate the PR releases (from the next-rc comment)")

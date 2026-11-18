@@ -1,4 +1,4 @@
-"""Tests for releases/program/check_decisions.py (WP-529 Ф250/Ф252)."""
+"""Tests for tools/check_decisions.py (WP-529 Ф250/Ф252)."""
 import importlib.util
 import sys
 from pathlib import Path

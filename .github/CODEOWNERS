@@ -7,6 +7,6 @@
 /releases/*.N/*/candidates.md  @MimEcoSys/iwe-developers
 /releases/*.N/*/README.md      @MimEcoSys/iwe-developers
 /releases/developer-handoff.yaml @MimEcoSys/iwe-developers
-/releases/program/             @MimEcoSys/iwe-developers
+/tools/                        @MimEcoSys/iwe-developers
 /NOW.md                        @MimEcoSys/iwe-developers
 /board/                        @MimEcoSys/iwe-developers

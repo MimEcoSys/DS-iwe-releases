@@ -7,17 +7,17 @@
 | Шаг | Функция | Роль | Вход | Выход | Модуль |
 |---|---|---|---|---|---|
 | 1 | Снимок | Выпускающий называет, Разработчик запускает | вершина основной ветки шаблона | ветка `release/v<N>` | шаблон: `Release Candidate`, режим `cut` |
-| 1–2 | Кандидаты выпуска | Разработчик | `releases/developer-handoff.yaml`, список изменений шаблона | `candidates.md` папки выпуска | [board/program/build_board.py](../board/program/build_board.py) |
+| 1–2 | Кандидаты выпуска | Разработчик | `releases/developer-handoff.yaml`, список изменений шаблона | `candidates.md` папки выпуска | [tools/build_board.py](../tools/build_board.py) |
 | 2 | Поля и коды | Разработчик, Разметчик кодов | раздел версии в `CHANGELOG.md` шаблона | каждая запись с полями и кодом результата | шаблон: `check-changelog-fields.py`; связи — `board/developer-links.yaml` |
-| 3 | Отбор состава | Выпускающий | `candidates.md` | взято / отложено | `decisions.md` папки выпуска; проверка — [releases/program/check_decisions.py](../releases/program/check_decisions.py) |
+| 3 | Отбор состава | Выпускающий | `candidates.md` | взято / отложено | `decisions.md` папки выпуска; проверка — [tools/check_decisions.py](../tools/check_decisions.py) |
 | 4 | Сборка-кандидат | Разработчик | ветка выпуска | метка `v<N>-rc.<K>` и дерево | шаблон: `Release Candidate`, режим `next-rc` |
-| 5 | Проверки на кандидате | программы, Рецензент, Аудитор кода, тестировщики, проверяющий red team | дерево кандидата, `protocol.md` | отметки и вердикт | `tests/rc.<K>/` папки выпуска; отчёт — [releases/program/release-checklist.py](../releases/program/release-checklist.py) |
+| 5 | Проверки на кандидате | программы, Рецензент, Аудитор кода, тестировщики, проверяющий red team | дерево кандидата, `protocol.md` | отметки и вердикт | `tests/rc.<K>/` папки выпуска; отчёт — [tools/release-checklist.py](../tools/release-checklist.py) |
 | 6 | Сверка доказательств | Рецензент доказательств | отметки, вердикт, дерево | «сходится» или расхождение | `check_decisions.py --require-final --rc-tree` |
 | 7 | Согласование и выпуск | Выпускающий, затем `release.yml` | итог проверки | метка `v<N>` | `decisions.md`, строка «Итог»; шаблон: `release.yml` |
 | 8 | После выхода | Выпускающий, Разработчик | вышедший выпуск | «держим» или откат; `shipped.md`; пересобранное табло | `build_board.py`, `index.yaml` |
-| — | Табло результатов IWE | Разработчик запускает программу | закреплённые входы (`board/developer-sources.yaml`), связи (`board/developer-links.yaml`) | `board/README.md`, страницы стадий, сверка полноты, `board/snapshot.yaml` | [board/program/build_board.py](../board/program/build_board.py) |
-| — | Результаты и статистика IWE | программа | табло, метки и история основной ветки шаблона (`fmt-tags.txt`, `fmt-history.txt` среди входов) | `board/stats.md` | [board/program/iwe_stats.py](../board/program/iwe_stats.py) |
-| — | Что сейчас, история, планы | программа | `releases/index.yaml`, табло, папки выпусков | `NOW.md`, `releases/HISTORY.md`, `releases/NEXT.md`, `releases/INDEX.md`, `releases/catalog.json` | `build_board.py` вместе с [releases/program/release_catalog.py](../releases/program/release_catalog.py) |
+| — | Табло результатов IWE | Разработчик запускает программу | закреплённые входы (`board/developer-sources.yaml`), связи (`board/developer-links.yaml`) | `board/README.md`, страницы стадий, сверка полноты, `board/snapshot.yaml` | [tools/build_board.py](../tools/build_board.py) |
+| — | Результаты и статистика IWE | программа | табло, метки и история основной ветки шаблона (`fmt-tags.txt`, `fmt-history.txt` среди входов) | `board/stats.md` | [tools/iwe_stats.py](../tools/iwe_stats.py) |
+| — | Что сейчас, история, планы | программа | `releases/index.yaml`, табло, папки выпусков | `NOW.md`, `releases/HISTORY.md`, `releases/NEXT.md`, `releases/INDEX.md`, `releases/catalog.json` | `build_board.py` вместе с [tools/release_catalog.py](../tools/release_catalog.py) |
 | — | Проверка перед слиянием | автоматика GitHub | запрос на слияние | пропуск или отказ | [.github/workflows/publication-gate.yml](../.github/workflows/publication-gate.yml), [.github/scripts/pii_scan.py](../.github/scripts/pii_scan.py) |
 
 ## Что роли передают друг другу
@@ -43,7 +43,6 @@ releases/               выпуски
   index.yaml            список версий                                          Разработчик
   developer-handoff.yaml  передача Выпускающему                                Разработчик
   INDEX.md HISTORY.md NEXT.md catalog.json   списки выпусков                   программа
-  program/              каталог, проверка решений, чек-лист, раскладка путей  Разработчик
   <X>.N/<N>/            папка выпуска (схема — releases/README.md)
 board/                  табло результатов IWE
   README.md             общее табло                                            программа
@@ -52,19 +51,20 @@ board/                  табло результатов IWE
   snapshot.yaml         снимок источников                                      программа
   developer-links.yaml  связи записей с результатами                           Разработчик
   developer-sources.yaml  закреплённые входы последней сборки                  Разработчик
-  program/              сборщик табло, статистика и их тесты                   Разработчик
+tools/                  программы: сборщик табло, статистика, каталог выпусков,
+                        проверка решений, чек-лист, раскладка путей и их тесты  Разработчик
 .github/                проверка перед слиянием, владельцы файлов, поиск личных данных
 ```
 
-Все пути, которые читают и пишут программы, собраны в одном месте — [releases/program/layout.py](../releases/program/layout.py). Раскладка следует принципам [DP.METHOD.265](https://github.com/MimEcoSys/PACK-digital-platform/blob/main/pack/digital-platform/03-methods/DP.METHOD.265-repository-structure-principles.md): у каждой папки одно назначение, программа и её данные лежат в папке модуля, который они обслуживают.
+Все пути, которые читают и пишут программы, собраны в одном месте — [tools/layout.py](../tools/layout.py). Раскладка следует принципам [DP.METHOD.265](https://github.com/MimEcoSys/PACK-digital-platform/blob/main/pack/digital-platform/03-methods/DP.METHOD.265-repository-structure-principles.md): у каждой папки одно назначение, программы с их тестами собраны в одной папке `tools/`, потому что табло и каталог выпусков собираются одним конвейером и используют общую раскладку путей.
 
 ## Команды
 
 | Что | Команда (из папки репозитория) |
 |---|---|
-| Полная пересборка табло | `python3 board/program/build_board.py --src <папка входов> --source-date <дата входов> --repo .` — порядок сбора входов в `board/developer-sources.yaml` |
-| Только «что сейчас» и каталог | `python3 board/program/build_board.py --repo . --user-board-only` |
-| Проверить, что собранное не устарело | `python3 board/program/build_board.py --repo . --check-user-board` |
-| Проверить ссылки всех страниц | `python3 board/program/build_board.py --repo . --check-links` |
-| Проверить решения выпуска | `python3 releases/program/check_decisions.py` |
-| Тесты программ | `python -m pytest -q board/program releases/program` |
+| Полная пересборка табло | `python3 tools/build_board.py --src <папка входов> --source-date <дата входов> --repo .` — порядок сбора входов в `board/developer-sources.yaml` |
+| Только «что сейчас» и каталог | `python3 tools/build_board.py --repo . --user-board-only` |
+| Проверить, что собранное не устарело | `python3 tools/build_board.py --repo . --check-user-board` |
+| Проверить ссылки всех страниц | `python3 tools/build_board.py --repo . --check-links` |
+| Проверить решения выпуска | `python3 tools/check_decisions.py` |
+| Тесты программ | `python -m pytest -q tools` |

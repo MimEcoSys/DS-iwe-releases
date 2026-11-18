@@ -11,7 +11,7 @@
 # Замер Разработчика не приложен: канон DS-my-strategy был под заморозкой, canon-refresh не делали.
 # Пересборка 18.11 (РП-529 Ф276, п.10): те же входы 16.11; убраны 865 ссылок на закрытый источник, остальное без изменений.
 # Пересборка 18.11 (РП-529 Ф278): те же входы 16.11 плюс метки и история шаблона для страницы статистики board/stats.md;
-# табло и страницы стадий не изменились, кроме ссылки на статистику. Программа переехала в board/program/.
+# табло и страницы стадий не изменились, кроме ссылки на статистику. Программа переехала в tools/.
 
 built_at_local_date: '2026-11-16'   # день повторной сборки
 source_collected_at: '2026-11-16'  # дата закреплённых входов и шапок табло
@@ -21,12 +21,12 @@ decision_revision: 7d0d79bc2c319b4412a054e64c1d7cb3a3416cf8
 decision_sha256: 7ca5f8b396bd9dd839784dd34e8ed6a261ba8716895e7fb4c27a5d41808ab94d
 
 builder:
-  program: board/program/build_board.py   # вместе с board/program/iwe_stats.py и releases/program/
+  program: tools/build_board.py   # вместе с tools/iwe_stats.py и соседними
   program_commit: b3c2a3dec9212fff06689f4b6c01e355c5de852b   # версия программы этой пересборки
   program_sha256: 1544273940850c0c8752d212345cc8f3796aa9e57575bbc29cbb428bfff474fc
   python: 3.15.0
   dependencies: {pyyaml: 6.0.3}       # других сторонних модулей программа не импортирует
-  command: python3 board/program/build_board.py --src <папка входов> --source-date 2026-11-16 --repo <копия DS-iwe-releases>
+  command: python3 tools/build_board.py --src <папка входов> --source-date 2026-11-16 --repo <копия DS-iwe-releases>
 
 # Все входы, кроме замера, читаются из закреплённой ревизии origin/main: git show <revision>:<path>.
 inputs:
