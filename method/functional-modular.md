@@ -38,7 +38,8 @@ CLAUDE.md               правила для ИИ-агентов               
 NOW.md                  что сейчас                                             программа
 method/                 как должно работать (эта папка)                        Разработчик с Выпускающим
 team/                   роли, как присоединиться, инструкции людям            Разработчик с Выпускающим
-  testing/              инструкции тестировщикам
+  developer/ release-lead/ tester/ code-marker/ red-team/
+  release-reviewer/ code-auditor/ evidence-reviewer/ owner/   по папке на роль, в каждой README.md
 releases/               выпуски
   index.yaml            список версий                                          Разработчик
   developer-handoff.yaml  передача Выпускающему                                Разработчик
