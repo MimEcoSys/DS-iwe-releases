@@ -13,20 +13,23 @@
 # Пересборка 18.11 (РП-529 Ф278): те же входы 16.11 плюс метки и история шаблона для страницы статистики board/stats.md;
 # табло и страницы стадий не изменились, кроме ссылки на статистику. Программа переехала в tools/.
 
-built_at_local_date: '2026-11-16'   # день повторной сборки
-source_collected_at: '2026-11-16'  # дата закреплённых входов и шапок табло
+# Пересборка 18.11 (РП-529, после выхода 0.42): входы собраны заново на 18.11 (не изменились с 16.11 только метки шаблона и STAGING.md);
+# табло 608 результатов — 244 план, 214 в работе, 116 сделано, 34 отложено; 16 новых записей шаблона размечены черновиком агента как служебные.
+
+built_at_local_date: '2026-11-18'   # день повторной сборки
+source_collected_at: '2026-11-18'  # дата закреплённых входов и шапок табло
 host_timezone: EET                  # локальная дата зависит от таймзоны хоста
-recorded_at: '2026-11-18T09:23:08Z' # когда записан этот файл (после сборки)
+recorded_at: '2026-11-18T17:59:01Z' # когда записан этот файл (после сборки)
 decision_revision: 7d0d79bc2c319b4412a054e64c1d7cb3a3416cf8
 decision_sha256: 7ca5f8b396bd9dd839784dd34e8ed6a261ba8716895e7fb4c27a5d41808ab94d
 
 builder:
   program: tools/build_board.py   # вместе с tools/iwe_stats.py и соседними
-  program_commit: b3c2a3dec9212fff06689f4b6c01e355c5de852b   # версия программы этой пересборки
-  program_sha256: 1544273940850c0c8752d212345cc8f3796aa9e57575bbc29cbb428bfff474fc
+  program_commit: 86bab30ac375723478aed6dc5df9fe9891aaf454   # версия программы этой пересборки
+  program_sha256: 833fff20b1a1db3196e7360a768fb0a7222861f33c1323f57cb0505f714a9969
   python: 3.15.0
   dependencies: {pyyaml: 6.0.3}       # других сторонних модулей программа не импортирует
-  command: python3 tools/build_board.py --src <папка входов> --source-date 2026-11-16 --repo <копия DS-iwe-releases>
+  command: python3 tools/build_board.py --src <папка входов> --source-date 2026-11-18 --repo <копия DS-iwe-releases>
 
 # Все входы, кроме замера, читаются из закреплённой ревизии origin/main: git show <revision>:<path>.
 inputs:
@@ -34,62 +37,62 @@ inputs:
     repo: https://github.com/MimEcoSys/PACK-digital-platform.git
     public: true
     path: pack/digital-platform/07-map/DP.MAP.005-mcp-scenarios.md
-    revision: 761779a77ca9f97688a2853f7690ebbe4e9f39c0
-    sha256: 3e7c146685700d12ec700ee490371aa6bfbf84fdf601d35f32f8667072c4673c
+    revision: 5f82c9fde0fc64d45b57fbc7c6a7e5cc063f8c81
+    sha256: 9da36f4a7456a076993dc2a99f7180d9326806d4417d56d28acbdf732c5caefd
   - name: sbg.md
     repo: https://github.com/aisystant/DS-ecosystem-development.git
     public: false   # закрытый: на публичных страницах без ссылки
     path: C.IT-Platform/C2.IT-Platform/C2.3.Operations/Goals-State/state-by-goals.md
-    revision: 134f2d017fbc8987e82818b8d22fc90cd8716d33
-    sha256: 0d807e34dfe98b146eb8e9eeb4d9ce03b75181930cff110284b8b049ed2c6c57
+    revision: 2b51331d147016c09496a5fff60abf3a0c1945ff
+    sha256: ec1bb2c8c3a15096a5139840bdf58caf39da9cf6d049f5ea86bb91e5ce877c82
   - name: result-codes.md
     repo: https://github.com/aisystant/DS-ecosystem-development.git
     public: false   # закрытый: на публичных страницах без ссылки
     path: C.IT-Platform/C2.IT-Platform/C2.3.Operations/Goals-State/working-records/result-codes.md
-    revision: 134f2d017fbc8987e82818b8d22fc90cd8716d33
-    sha256: b0e3093e548e70cb2175a69f56211e48705abb12cdc77aa7bde233ef47fc3b91
+    revision: 2b51331d147016c09496a5fff60abf3a0c1945ff
+    sha256: bb898b4278b764f2af140551d43980bb25b47060c529c68e3f8f7a91846803ed
   - name: changelog.md
     repo: https://github.com/TserenTserenov/FMT-exocortex-template.git
     public: true
     path: CHANGELOG.md
-    revision: 01a9877a0a3f6068458ee736359a76964f50a816
-    sha256: 6d81357963808163d5bf077f7ade492809fda9c02fe4962d9401eb8dacf77c27
+    revision: 12208d12a7867e8f43d03c3ca674631da1fc64e6
+    sha256: 6c38326157ac52559954cd6f639b3085a09f3ef9ba0820d46575eef0780c30ea
   - name: fmt-sha
     repo: https://github.com/TserenTserenov/FMT-exocortex-template.git
     public: true
     derived_by: git rev-parse 01a9877a   # та же ревизия, что у changelog.md
-    revision: 01a9877a0a3f6068458ee736359a76964f50a816
-    sha256: 63414b6ff77f73b07b79215e67e5b3f882444f59eddaca9892f2fc077eef2755
+    revision: 12208d12a7867e8f43d03c3ca674631da1fc64e6
+    sha256: 754f7317930c18b81e6ac8ac7174ab84927a725554794f39d7a5207308754836
   - name: fmt-files.txt
     repo: https://github.com/TserenTserenov/FMT-exocortex-template.git
     public: true
     derived_by: git ls-tree -r --name-only <revision>
-    revision: 01a9877a0a3f6068458ee736359a76964f50a816
-    sha256: 253b72bbdf7920bfd52e490888c2847fbd7b43fb615ee6fbb142170029daf541
+    revision: 12208d12a7867e8f43d03c3ca674631da1fc64e6
+    sha256: 36c59fa58880e2ebb01c75839f5101feef8ce80aa2ac5cc4bf1ca1fe81a34289
   - name: fmt-tags.txt   # для страницы статистики board/stats.md (РП-529 Ф278)
     repo: https://github.com/TserenTserenov/FMT-exocortex-template.git
     public: true
     derived_by: git for-each-ref refs/tags --merged <revision> --sort=refname --format='%(refname:short) %(creatordate:short)'
-    revision: 01a9877a0a3f6068458ee736359a76964f50a816
+    revision: 12208d12a7867e8f43d03c3ca674631da1fc64e6
     sha256: 0ea315d6965919aff115889a6f31629a8ea8b6c770aa30ec2ddd63652bfdc242
   - name: fmt-history.txt   # для страницы статистики board/stats.md (РП-529 Ф278)
     repo: https://github.com/TserenTserenov/FMT-exocortex-template.git
     public: true
     derived_by: git log --first-parent --format='%cs %s' <revision>
-    revision: 01a9877a0a3f6068458ee736359a76964f50a816
-    sha256: 851a95fd6119f33d35811ed7c3a7eef095f98044f7b87382b965a39420d700e6
+    revision: 12208d12a7867e8f43d03c3ca674631da1fc64e6
+    sha256: 22beb4c8762d983050dd4a8f44fe8f03e96571d07cb6354ac1c159c23da59648
   - name: staging.md
     repo: https://github.com/TserenTserenov/iwe-local-config.git   # закрытый, корень IWE Разработчика
     public: false   # закрытый: на публичных страницах без ссылки
     path: STAGING.md
-    revision: de0a4cf409621966caa8f26b44a8fdb53b67fb1d
+    revision: 1c0c09389b89fb34f94b33eb870603a2430f11f1
     sha256: 09510628f5bad5eebc9869ec3ae2529be442b5ac33d91a45873d941da050f03a
   - name: weekplan.md
     repo: https://github.com/TserenTserenov/DS-my-strategy.git        # закрытый, план недели Разработчика
     public: false   # закрытый: на публичных страницах без ссылки
     path: current/WeekPlan W47 2026-11-16.md   # каждую неделю — план текущей недели
-    revision: dc7f656b343e50045f844e6c186bbcf23eabe968
-    sha256: b08fad0ef14243408902b52a78d544b66804ce7081aa50d487e4c6f0cc86ebf9
+    revision: 9d92b32f7ca5c2ae8cc52559cc9afdd1ccff5eb7
+    sha256: 046f22e2e6932ea9dc85662170a5f4d51b4dec160a8c324fae9cb1d7d6100fd4
   - name: author-ahead.yaml   # результат замера рабочих копий хоста, не файл из Git
     status: не приложен к сборке 16.11 — канон DS-my-strategy был под заморозкой, canon-refresh не делали; страница 2.2 табло так и пишет
 

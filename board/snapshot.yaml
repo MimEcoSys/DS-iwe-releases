@@ -1,8 +1,8 @@
 # Снимок источников: результаты и их заявленные статусы из карточек работ.
 # Собирает tools/build_board.py при каждом запуске; руками не править.
 snapshot:
-  collected_at: '2026-11-16'
-  template_commit: 01a9877a0a3f6068458ee736359a76964f50a816
+  collected_at: '2026-11-18'
+  template_commit: 12208d12a7867e8f43d03c3ca674631da1fc64e6
   rule: результаты целей с размещением «шаблон IWE», «Staging» или Open, все цели блока «И. Своя IWE» и цели функции «Библиотека методов»
   goals:
   - 1
@@ -275,7 +275,7 @@ results:
   status: в работе
   works:
   - РП-151
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц14-02
   goal: 14
   contours: *id003
@@ -843,7 +843,7 @@ results:
   status: у автора
   works:
   - РП-503
-  in_week_plan: false
+  in_week_plan: true
   evidence: 'РП-503 Ф23 (06.09): четвёртый фильтр hypothesis_falsified_review_needed в scripts/wp-pool-cascade.sh; шаблонный wp-pool-cascade.sh (с 0.38.6) этого фильтра не содержит (git grep пусто)'
 - code: Ц38-08
   goal: 38
@@ -855,7 +855,7 @@ results:
   status: план
   works:
   - РП-503
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц38-09
   goal: 38
   contours: *id008
@@ -987,7 +987,7 @@ results:
   status: в работе
   works:
   - РП-503
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц40-01
   goal: 40
   contours: &id009
@@ -1174,7 +1174,7 @@ results:
   status: работает вне выпуска шаблона
   works:
   - РП-151
-  in_week_plan: false
+  in_week_plan: true
   evidence: 'РП-151 repo: PACK-personal, DS-MCP/digital-twin-mcp, aist_bot — расчёт в цифровом двойнике платформы'
 - code: Ц52-02
   goal: 52
@@ -1333,7 +1333,7 @@ results:
   status: план
   works:
   - РП-427
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц53-02
   goal: 53
   contours: *id012
@@ -1649,7 +1649,7 @@ results:
   status: работает вне выпуска шаблона
   works:
   - РП-427
-  in_week_plan: false
+  in_week_plan: true
   evidence: 'РП-427 Ф6.1: поллер bridge-2-lms-homework, consent-gate, таблица learning.homework_content — платформа'
 - code: Ц54-03
   goal: 54
@@ -1661,7 +1661,7 @@ results:
   status: план
   works:
   - РП-427
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц54-04
   goal: 54
   contours: *id013
@@ -1695,7 +1695,7 @@ results:
   status: выпущено в 0.37–0.41.11
   works:
   - РП-170
-  in_week_plan: false
+  in_week_plan: true
   evidence: 'CHANGELOG 0.41.11: «Скилл /apply-captures (1.3.1): кандидаты… карточкой из пяти строк» (PR #1389, 29.10); версия 1.4.0 (проверка соседей по смыслу) — только в iwe-local-config / ~/IWE, в шаблоне 1.3.1'
   released_041_records:
   - U-8ff750
@@ -1922,7 +1922,7 @@ results:
   status: выпущено в 0.37–0.41.11
   works:
   - РП-7
-  in_week_plan: false
+  in_week_plan: true
   evidence: 'CHANGELOG 0.41.11: ext-railway убран из .mcp.json, changelog-append.sh без пустых строк, «(WP-7, #1409)»; c73d19bb в v0.41.11'
   released_041_records:
   - U-72908a
@@ -2230,7 +2230,7 @@ results:
   status: выпущено в 0.37–0.41.11
   works:
   - РП-7
-  in_week_plan: false
+  in_week_plan: true
   evidence: 'scripts/iwe-backup-run.sh (51f63448, Ф237в регулярный зашифрованный бэкап) и iwe-backup-protect.sh (be7807cc, Ф237б) первыми в v0.41.9; единый договор и тревога по регрессу — CHANGELOG 0.41.10 (iwe-backup.sh, PR #1368)'
   released_041_records:
   - U-0d37f5
@@ -2519,7 +2519,7 @@ results:
   status: в работе
   works:
   - РП-617
-  in_week_plan: false
+  in_week_plan: true
   released_042: true
   released_041_records:
   - U-1d20b2
@@ -2533,7 +2533,7 @@ results:
   status: план
   works:
   - РП-617
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц93-04
   goal: 93
   contours: *id024
@@ -2544,7 +2544,7 @@ results:
   status: план
   works:
   - РП-617
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц93-05
   goal: 93
   contours: *id024
@@ -2615,7 +2615,7 @@ results:
   status: план
   works:
   - РП-7
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц95-02
   goal: 95
   contours: *id026
@@ -2801,7 +2801,7 @@ results:
   status: выпущено в 0.36
   works:
   - РП-415
-  in_week_plan: false
+  in_week_plan: true
   evidence: 'РП-415: шаг «Cyrillic gate» в translate-sync.yml (63c2ec5) и публикация без следов происхождения (8c9c305), оба 16.07, git tag --contains → v0.36.0; сам iwesys/IWE — внешнее зеркало'
   released_041_records:
   - U-087300
@@ -3642,6 +3642,70 @@ author_ahead:
   present: false
   files: []
 unreleased_links:
+- key: U-2e8020
+  tag: behavior
+  first_words: (#1591) Наблюдатель открытия дня (`roles/strategist/scripts/strategist.sh`)…
+  service: (#1591) Наблюдатель открытия дня (`roles/strategist/scripts/strategist.sh`) считает план дня опубликованн…
+- key: U-56fd6d
+  tag: behavior
+  first_words: 'Автоматическая доставка из авторского источника (template-sync.sh): обновлены…'
+  service: 'Автоматическая доставка из авторского источника (template-sync.sh): обновлены roles/synchronizer/scripts/…'
+- key: U-63b080
+  tag: security
+  first_words: (#1582) Проверка опасных команд агента (`.claude/hooks/destructive-guard.sh`)…
+  service: (#1582) Проверка опасных команд агента (`.claude/hooks/destructive-guard.sh`) больше не пропускает без за…
+- key: U-cbdf00
+  tag: optional
+  first_words: (#1579) Инструкция агента о возврате лёгкого онбординга совпадает с защитой из…
+  service: '(#1579) Инструкция агента о возврате лёгкого онбординга совпадает с защитой из #1576: сброс заранее не ра…'
+- key: U-e84ed5
+  tag: security
+  first_words: (#1576) Проверка опасных команд агента (`.claude/hooks/destructive-guard.sh`)…
+  service: (#1576) Проверка опасных команд агента (`.claude/hooks/destructive-guard.sh`) узнаёт защитные файлы (`.cl…
+- key: U-eff5c6
+  tag: security
+  first_words: (#1576) Перезапись файла перенаправлением `>` (также `>|`, `2>`, `&>`) после…
+  service: (#1576) Перезапись файла перенаправлением `>` (также `>|`, `2>`, `&>`) после команды, которую `settings.j…
+- key: U-83bce1
+  tag: optional
+  first_words: (#1576) Скрипт уведомлений `scripts/iwe-notify` берёт имя репозитория планов из…
+  service: (#1576) Скрипт уведомлений `scripts/iwe-notify` берёт имя репозитория планов из настроек (`IWE_GOVERNANCE…
+- key: U-d73289
+  tag: security
+  first_words: (#1576) Сброс лёгкого онбординга (`bash…
+  service: (#1576) Сброс лёгкого онбординга (`bash .claude/scripts/light-onboarding-state.sh reset`) больше не разре…
+- key: U-b01839
+  tag: optional
+  first_words: (#1573) Перевод шаблона на английский проходит следующий слой проверки «нет…
+  service: '(#1573) Перевод шаблона на английский проходит следующий слой проверки «нет кириллицы»: обозначения фаз с…'
+- key: U-994ef1
+  tag: optional
+  first_words: '(#1564) Ночная проверка шаблона снова может пройти: поиск секретов с 02.11…'
+  service: '(#1564) Ночная проверка шаблона снова может пройти: поиск секретов с 02.11 каждую ночь находил одну и ту…'
+- key: U-b5bf5b
+  tag: optional
+  first_words: '(#1564) Перевод шаблона на английский снова проходит: проверка «нет кириллицы»…'
+  service: '(#1564) Перевод шаблона на английский снова проходит: проверка «нет кириллицы» в черновике перевода больш…'
+- key: U-90fe71
+  tag: optional
+  first_words: (#1571) Ссылки на PACK-personal и DS-principles-curriculum в документах шаблона…
+  service: (#1571) Ссылки на PACK-personal и DS-principles-curriculum в документах шаблона указывают на организацию…
+- key: U-025a18
+  tag: behavior
+  first_words: (#1565) Закрытие РП берёт название по заголовку таблицы реестра; без колонки…
+  service: (#1565) Закрытие РП берёт название по заголовку таблицы реестра; без колонки «Название» останавливается д…
+- key: U-7df1b6
+  tag: behavior
+  first_words: (#1565) Ночной обзор недели не режет память по строкам и не удаляет указатели…
+  service: (#1565) Ночной обзор недели не режет память по строкам и не удаляет указатели на существующие файлы памят…
+- key: U-f24cd7
+  tag: behavior
+  first_words: (#1565) Журнал ретро недели сохраняется коммитом закрытия недели; шаг ретро…
+  service: (#1565) Журнал ретро недели сохраняется коммитом закрытия недели; шаг ретро засчитывается только после пу…
+- key: U-08ea3d
+  tag: behavior
+  first_words: (#1565) Протоколы открытия и закрытия и подсказки при отказе коммита зовут…
+  service: (#1565) Протоколы открытия и закрытия и подсказки при отказе коммита зовут скрипты через `IWE_SCRIPTS`; ш…
 - key: U-e634de
   tag: optional
   first_words: Снимок терминов графа понятий для перевода шаблона на английский обновлён…
