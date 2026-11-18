@@ -36,7 +36,30 @@
 - После выхода — свести исправления ветки выпуска обратно в рабочую копию Разработчика (шаг 8 протокола).
 - После выхода — пересобрать табло вручную: новая метка в шаблоне сама его не пересчитывает (шаг 9 протокола).
 
+## Почему понадобилось 15 сборок
+
+Причина каждой сборки - запрос на слияние в ветку выпуска, который её создал (источник: метки `v0.42.0-rc.K` и заголовки запросов шаблона).
+
+| Сборка | Дата | Что заставило собрать её | Запрос |
+|---|---|---|---|
+| rc.1 | 11.11 | первая сборка: состав закреплён снимком | [#1526](https://github.com/TserenTserenov/FMT-exocortex-template/pull/1526) |
+| rc.2 | 11.11 | находки прогона протокола на rc.1 | [#1528](https://github.com/TserenTserenov/FMT-exocortex-template/pull/1528) |
+| rc.3 | 11.11 | находки независимой атаки на rc.2 | [#1529](https://github.com/TserenTserenov/FMT-exocortex-template/pull/1529) |
+| rc.4 | 11.11 | находки атаки на rc.3 и поломка проверки в CI после них | [#1531](https://github.com/TserenTserenov/FMT-exocortex-template/pull/1531), [#1532](https://github.com/TserenTserenov/FMT-exocortex-template/pull/1532) |
+| rc.5 | 11.11 | находки прогона на rc.4 (откат, настоящая проверка обновления) | [#1533](https://github.com/TserenTserenov/FMT-exocortex-template/pull/1533) |
+| rc.6 | 11.11 | находки атаки на rc.5 | [#1537](https://github.com/TserenTserenov/FMT-exocortex-template/pull/1537) |
+| rc.7 | 11.11 | находки атаки на rc.6 | [#1538](https://github.com/TserenTserenov/FMT-exocortex-template/pull/1538) |
+| rc.8 | 12.11 | находки проверки rc.7 | [#1539](https://github.com/TserenTserenov/FMT-exocortex-template/pull/1539) |
+| rc.9 | 12.11 | находка атаки (RT8-1): обновление заводило расписание там, где его не было | [#1541](https://github.com/TserenTserenov/FMT-exocortex-template/pull/1541) |
+| rc.10 | 12.11 | rc.9 ушла тестировщикам с поломкой перехода с 0.36; мелочи атаки rc.9; проверка на macOS | [#1543](https://github.com/TserenTserenov/FMT-exocortex-template/pull/1543) |
+| rc.11 | 12.11 | переход с 0.36 без отпечатков в манифесте, права, ключ для macOS | [#1544](https://github.com/TserenTserenov/FMT-exocortex-template/pull/1544) |
+| rc.12 | 12.11 | программа выпуска входила через переменную вместо входа gh; ложные замечания теста | [#1545](https://github.com/TserenTserenov/FMT-exocortex-template/pull/1545) |
+| rc.13 | 12.11 | ожидания теста под замену нетронутой копии (сам тест, не продукт) | [#1546](https://github.com/TserenTserenov/FMT-exocortex-template/pull/1546) |
+| rc.14 | 13.11 | обновление на Маке ставило роли на урезанной установке | [#1548](https://github.com/TserenTserenov/FMT-exocortex-template/pull/1548) |
+| rc.15 | 13.11 | находки атаки на rc.14; эта сборка вышла как 0.42.0 | [#1554](https://github.com/TserenTserenov/FMT-exocortex-template/pull/1554) |
+
+По роду причины (14 пересборок после первой): шесть вызваны независимой атакой на предыдущую сборку (rc.3, 4, 6, 7, 9, 15), три - прогоном протокола (rc.2, 5, 8), две - переходом с 0.36 и проверкой на macOS (rc.10, 11), две - сбоем программы выпуска или теста, а не продукта (rc.12, 13), одна - ролями на Маке (rc.14). Предположение для 0.43 (проверит Выпускающий): если переход с 0.36 и проверку на macOS прогонять программой до раздачи кандидата людям (Ф271), пересборки rc.10 и rc.11 найдутся раньше.
+
 ## Открыто для Выпускающего
 
-- Почему понадобилось 15 сборок: причины каждой новой сборки — в запросе на слияние ветки выпуска шаблона ([#1524](https://github.com/TserenTserenov/FMT-exocortex-template/pull/1524)); сводку по причинам сюда добавляет Выпускающий.
 - Итог окна наблюдения (7 дней после 16.11): «держим» или откат.
