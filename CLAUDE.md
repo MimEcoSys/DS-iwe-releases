@@ -4,7 +4,7 @@
 
 ## Обязательно загружай
 
-Перед работой в роли выпуска — прочитай [method/pipeline.md](method/pipeline.md), [method/functional-modular.md](method/functional-modular.md) и инструкцию своей роли: Выпускающему — [team/release-lead-start.md](team/release-lead-start.md) и [team/release-lead.md](team/release-lead.md), затем `README.md` в папке текущего выпуска (номер — на странице [NOW.md](NOW.md)); тестировщику — [team/testing/README.md](team/testing/README.md). Роль и метод — в Паке (DP.ROLE.120); расходится — прав Пак.
+Перед работой в роли выпуска — прочитай [method/pipeline.md](method/pipeline.md), [method/functional-modular.md](method/functional-modular.md) и инструкцию своей роли: Выпускающему — [team/release-lead/start.md](team/release-lead/start.md) и [team/release-lead/instruction.md](team/release-lead/instruction.md), затем `README.md` в папке текущего выпуска (номер — на странице [NOW.md](NOW.md)); тестировщику — [team/tester/README.md](team/tester/README.md). Роль и метод — в Паке (DP.ROLE.120); расходится — прав Пак.
 
 ## Обязательно
 

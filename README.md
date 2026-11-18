@@ -15,7 +15,7 @@
 | Что делает каждый шаг и какая программа его исполняет | [method/functional-modular.md](method/functional-modular.md) |
 | Кто что делает: роли | [team/README.md](team/README.md) |
 | Как присоединиться | [team/join.md](team/join.md) |
-| Как проверить сборку (тестировщику) | [team/testing/README.md](team/testing/README.md) |
+| Как проверить сборку (тестировщику) | [team/tester/README.md](team/tester/README.md) |
 | Табло результатов: что сделано и что запланировано вообще, не только в выпусках | [board/README.md](board/README.md) |
 | Результаты крупными цифрами (статистика) | [board/stats.md](board/stats.md) |
 | Откуда цифры и как их считают | [method/board-rules.md](method/board-rules.md), [сверка полноты](board/completeness.md) |
