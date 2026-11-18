@@ -57,7 +57,7 @@ tools/                  программы: сборщик табло, стат�
 .github/                проверка перед слиянием, владельцы файлов, поиск личных данных
 ```
 
-Все пути, которые читают и пишут программы, собраны в одном месте — [tools/layout.py](../tools/layout.py). Раскладка следует принципам [DP.METHOD.265](https://github.com/MimEcoSys/PACK-digital-platform/blob/main/pack/digital-platform/03-methods/DP.METHOD.265-repository-structure-principles.md): у каждой папки одно назначение, программы с их тестами собраны в одной папке `tools/`, потому что табло и каталог выпусков собираются одним конвейером и используют общую раскладку путей.
+Все пути, которые читают и пишут программы, собраны в одном месте — [tools/layout.py](../tools/layout.py) (оглавление папки — [tools/README.md](../tools/README.md)). Раскладка следует принципам [DP.METHOD.265](https://github.com/MimEcoSys/PACK-digital-platform/blob/main/pack/digital-platform/03-methods/DP.METHOD.265-repository-structure-principles.md): у каждой папки одно назначение, программы с их тестами собраны в одной папке `tools/`, потому что табло и каталог выпусков собираются одним конвейером и используют общую раскладку путей.
 
 ## Команды
 
