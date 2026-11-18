@@ -179,16 +179,22 @@ def legend_line() -> str:
     return "Состояния: " + "; ".join(f"**{STATE_WORDS[state]}** — {STATE_LEGEND[state]}" for state in STATES) + "."
 
 
+def testing_line(entries: list[dict], prefix: str = "") -> list[str]:
+    testing = testing_now(entries)
+    if not testing:
+        return []
+    link = prefix + testing["links"]["release"]
+    candidate = f", кандидат {testing['candidate']}" if testing.get("candidate") else ""
+    return [f"Проверяется сейчас: **{testing['version']}** ([что внутри]({link}){candidate})."]
+
+
+def released_line(entries: list[dict]) -> list[str]:
+    released = last_released(entries)
+    return [f"Последний вышедший: **{shown_version(released)}**."] if released else []
+
+
 def current_release_lines(entries: list[dict], prefix: str = "") -> list[str]:
-    lines = []
-    testing, released = testing_now(entries), last_released(entries)
-    if testing:
-        link = prefix + testing["links"]["release"]
-        candidate = f", кандидат {testing['candidate']}" if testing.get("candidate") else ""
-        lines.append(f"Проверяется сейчас: **{testing['version']}** ([что внутри]({link}){candidate}).")
-    if released:
-        lines.append(f"Последний вышедший: **{shown_version(released)}**.")
-    return lines
+    return testing_line(entries, prefix) + released_line(entries)
 
 
 def board_counts(repo: Path) -> dict[str, int]:
