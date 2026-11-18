@@ -5,7 +5,7 @@ opening every tests/rc.<K>/*.yaml file and decisions.md by hand (WP-529, found 1
 the pilot asked who confirmed each checklist item and when, and there was no single place
 that answered it).
 
-Usage: python3 releases/program/release-checklist.py [--repo PATH] [--release N]
+Usage: python3 tools/release-checklist.py [--repo PATH] [--release N]
 Exit: 0 always — this is a report, not a gate (the gate is check_decisions.py).
 """
 

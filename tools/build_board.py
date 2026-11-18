@@ -34,7 +34,7 @@ from urllib.parse import quote, urlsplit
 
 import yaml
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "releases" / "program"))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 import layout  # noqa: E402
 import iwe_stats  # noqa: E402
 import release_catalog  # noqa: E402
@@ -1765,7 +1765,7 @@ def main() -> int:
     has_public_board = "public_board" in declared
     header = (
         "# Снимок источников: результаты и их заявленные статусы из карточек работ.\n"
-        "# Собирает board/program/build_board.py при каждом запуске; руками не править.\n"
+        "# Собирает tools/build_board.py при каждом запуске; руками не править.\n"
     )
     (args.repo / layout.SNAPSHOT).write_text(
         header + yaml.safe_dump(developer, allow_unicode=True, sort_keys=False, width=1000)

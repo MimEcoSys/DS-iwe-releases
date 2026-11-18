@@ -1,7 +1,7 @@
 """Where things live in DS-iwe-releases (WP-529 F278): every path the programs read or write.
 
 The layout follows DP.METHOD.265 (PACK-digital-platform): each folder has one purpose,
-helper programs and their inputs live inside the module they serve.
+all helper programs and their tests live together in tools/, because the board and the release catalog are built by one pipeline.
 """
 
 from __future__ import annotations

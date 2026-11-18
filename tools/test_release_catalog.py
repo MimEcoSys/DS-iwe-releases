@@ -9,7 +9,7 @@ import yaml
 sys.path.insert(0, str(Path(__file__).parent))
 import release_catalog as rc  # noqa: E402
 
-REPO = Path(__file__).resolve().parents[2]
+REPO = Path(__file__).resolve().parents[1]
 DECISIONS_FINAL = "| Итог: выпускаем / откладываем | {} |\n"
 BOARD = (
     "| Стадия | Результатов |\n|---|---:|\n| 1. План | 5 |\n| 2. В работе | 3 |\n"
