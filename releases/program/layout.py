@@ -9,15 +9,13 @@ from __future__ import annotations
 from pathlib import Path
 
 NOW_PAGE = Path("NOW.md")
-README = Path("README.md")
-OLD_BOARD_POINTER = Path("BOARD.md")
 
 BOARD_DIR = Path("board")
 BOARD_PAGE = BOARD_DIR / "README.md"
+STATS_PAGE = BOARD_DIR / "stats.md"
 SNAPSHOT = BOARD_DIR / "snapshot.yaml"
 DEVELOPER_LINKS = BOARD_DIR / "developer-links.yaml"
 DEVELOPER_SOURCES = BOARD_DIR / "developer-sources.yaml"
-BOARD_BUILDER = BOARD_DIR / "program" / "build_board.py"
 
 RELEASES_DIR = Path("releases")
 CATALOG = RELEASES_DIR / "index.yaml"
@@ -27,9 +25,7 @@ HISTORY_PAGE = RELEASES_DIR / "HISTORY.md"
 NEXT_PAGE = RELEASES_DIR / "NEXT.md"
 HANDOFF = RELEASES_DIR / "developer-handoff.yaml"
 
-METHOD_DIR = Path("method")
-BOARD_RULES = METHOD_DIR / "board-rules.md"
-TEAM_DIR = Path("team")
+BOARD_RULES = Path("method") / "board-rules.md"
 
 
 def release_dir(version: str) -> Path:

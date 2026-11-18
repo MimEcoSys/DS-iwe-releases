@@ -36,6 +36,7 @@ import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "releases" / "program"))
 import layout  # noqa: E402
+import iwe_stats  # noqa: E402
 import release_catalog  # noqa: E402
 from check_decisions import decision_problems, selected_record_keys  # noqa: E402
 
@@ -956,7 +957,7 @@ def board_lines(source_date: str, source_text: str, results: list[dict], source_
             "Вышедшее учитывается в пункте 3 «Сделано»: [в 0.37–0.41.11](released-0.37-0.41.11.md) "
             "и [в 0.42](released-0.42.md).",
             "", "</details>", ""]
-    out += ["[Сверка полноты](completeness.md).", ""]
+    out += ["[Сверка полноты](completeness.md) · [результаты и статистика IWE](stats.md).", ""]
     return out
 
 
@@ -1632,6 +1633,15 @@ def apply_taken_results(results: list[dict], links: list[dict], taken: set[str])
             result["mismatch"] = "нет прямой связи результата с принятой записью; сверить код"
 
 
+def write_stats(repo: Path, src: Path, stamp: str, today: str, fmt_sha: str, released_records: int) -> None:
+    """board/stats.md: big numbers; the template tag and history inputs are optional."""
+    optional = {name: (src / name).read_text() if (src / name).exists() else None
+                for name in ("fmt-tags.txt", "fmt-history.txt")}
+    lines = iwe_stats.stats_lines(stamp, today, fmt_sha, release_catalog.board_counts(repo), released_records,
+                                  optional["fmt-tags.txt"], optional["fmt-history.txt"])
+    (repo / layout.STATS_PAGE).write_text("\n".join(lines))
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     mode = ap.add_mutually_exclusive_group(required=True)
@@ -1839,6 +1849,7 @@ def main() -> int:
     if lost:
         print("completeness check failed: " + ", ".join(lost), file=sys.stderr)
         return 1
+    write_stats(args.repo, src, stamp, today, fmt_sha, on_board_released)
     if has_public_board:
         # board/README.md is rewritten above; NOW.md reads its counts, so build the view only now.
         check_public_source_pages(args.repo, developer, declared)
