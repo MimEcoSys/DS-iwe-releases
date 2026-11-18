@@ -597,11 +597,75 @@ def test_source_link_points_only_to_matching_pinned_revision(tmp_path):
         "    path: Goals-State/state-by-goals.md\n"
         f"    revision: {'a' * 40}\n"
         f"    sha256: {source_hash}\n"
+        "    public: true\n"
     )
     assert board.pinned_input_url(tmp_path, "sbg.md", source_text) == (
         f"https://github.com/example/source/blob/{'a' * 40}/Goals-State/state-by-goals.md"
     )
     assert board.pinned_input_url(tmp_path, "sbg.md", source_text + "extra") is None
+
+
+PRIVATE_SOURCE = "https://github.com/example/private-source"
+
+
+def pinned_manifest(tmp_path, source_text, visibility_line):
+    (tmp_path / "ops").mkdir(exist_ok=True)
+    (tmp_path / "ops" / "developer-sources.yaml").write_text(
+        "inputs:\n"
+        "  - name: sbg.md\n"
+        f"    repo: {PRIVATE_SOURCE}.git\n"
+        "    path: Goals-State/state-by-goals.md\n"
+        f"    revision: {'c' * 40}\n"
+        f"    sha256: {hashlib.sha256(source_text.encode()).hexdigest()}\n"
+        + visibility_line
+    )
+
+
+@pytest.mark.parametrize("visibility_line", ["    public: false\n", ""])
+def test_private_or_undeclared_source_gets_no_link_on_any_generated_page(tmp_path, visibility_line):
+    source_text = "\n".join(
+        f"| Ц1-{i:02} | 1 | гость | результат {i} | сайт | {stage} | фича | сайт | — | нет |"
+        for i, stage in enumerate(("план", "в работе", "сделано", "отложено", "в работе"), 1)
+    )
+    results = [{"code": "Ц1-02", "status": "в работе"}, {"code": "Ц1-05", "status": "у автора"}]
+    pinned_manifest(tmp_path, source_text, visibility_line)
+    source_url = board.pinned_input_url(tmp_path, "sbg.md", source_text)
+    assert source_url is None
+    states = board.general_result_states(source_text, results)
+    by_code = {r["code"]: r for r in results}
+    generated = [
+        *board.board_lines("2026-11-11", source_text, results, source_url),
+        *board.work_detail_inventory_lines(source_text, results, source_url),
+        *board.result_inventory_lines(set(states), source_text, source_url, results),
+        *board.stage_result_lines(set(states), states, by_code, source_url, "2.1 В работе"),
+        *board.outside_result_rows(
+            [{"code": "Ц1-03", "where": "сайт", "evidence": "—", "what": "—"}], states, source_url),
+    ]
+    leaked = [line for line in generated if PRIVATE_SOURCE in line]
+    assert leaked == []
+    text = "\n".join(generated)
+    assert "«Состояние по целям»" in text and "[«Состояние по целям»]" not in text
+    assert "5 в исходном документе" in text and "<a href" not in text
+    assert "| Ц1-02 |" in text and "[Ц1-02]" not in text
+
+
+def test_manifest_declares_visibility_of_every_repository_input():
+    doc = yaml.safe_load((Path(__file__).parent / "developer-sources.yaml").read_text())
+    undeclared = [i["name"] for i in doc["inputs"] if "repo" in i and not isinstance(i.get("public"), bool)]
+    assert undeclared == []
+    private = {i["name"] for i in doc["inputs"] if i.get("public") is False}
+    assert {"sbg.md", "result-codes.md", "staging.md", "weekplan.md"} <= private
+
+
+def test_committed_pages_carry_no_link_to_a_private_source():
+    root = Path(__file__).parent.parent
+    doc = yaml.safe_load((root / "ops" / "developer-sources.yaml").read_text())
+    private = {i["repo"].removesuffix(".git") + "/" for i in doc["inputs"] if i.get("public") is False}
+    assert private
+    pages = [root / "BOARD.md", *sorted((root / "board").glob("*.md"))]
+    leaked = [f"{page.name}:{n}" for page in pages for n, line in enumerate(page.read_text().splitlines(), 1)
+              if any(repo in line for repo in private)]
+    assert leaked == []
 
 
 def test_outside_result_shows_implementation_evidence_separately_from_user_channel():

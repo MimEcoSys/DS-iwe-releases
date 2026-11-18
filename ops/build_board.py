@@ -648,13 +648,19 @@ def source_result_codes(text: str) -> set[str]:
 
 
 def pinned_input_url(repo: Path, name: str, source_text: str) -> str | None:
-    """Link to the exact source revision only when its recorded hash matches this build."""
+    """Link to the exact source revision only when its recorded hash matches this build.
+
+    The pages are public, so only an input declared `public: true` in the manifest gets a link;
+    a private or undeclared source is shown as plain text (readers would get 404 otherwise).
+    """
     manifest = repo / "ops" / "developer-sources.yaml"
     if not manifest.exists():
         return None
     doc = yaml.safe_load(manifest.read_text())
     entry = next((item for item in doc.get("inputs", []) if item.get("name") == name), None)
-    if not entry or entry.get("sha256") != hashlib.sha256(source_text.encode()).hexdigest():
+    if not entry or entry.get("public") is not True:
+        return None
+    if entry.get("sha256") != hashlib.sha256(source_text.encode()).hexdigest():
         return None
     source_repo = entry.get("repo", "").removesuffix(".git")
     revision, path = entry.get("revision", ""), entry.get("path", "")
