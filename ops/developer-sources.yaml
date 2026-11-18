@@ -9,18 +9,19 @@
 # Записи 0.42 — 110 (81 прежний кандидат и 29 исправлений ветки выпуска), невыпущенных — 14;
 # 43 новые записи размечены черновиком агента как служебные, Разработчик уточняет связи.
 # Замер Разработчика не приложен: канон DS-my-strategy был под заморозкой, canon-refresh не делали.
+# Пересборка 18.11 (РП-529 Ф276, п.10): те же входы 16.11; убраны 865 ссылок на закрытый источник, остальное без изменений.
 
 built_at_local_date: '2026-11-16'   # день повторной сборки
 source_collected_at: '2026-11-16'  # дата закреплённых входов и шапок табло
 host_timezone: EET                  # локальная дата зависит от таймзоны хоста
-recorded_at: '2026-11-16T19:44:04Z' # когда записан этот файл (после сборки)
+recorded_at: '2026-11-18T07:50:48Z' # когда записан этот файл (после сборки)
 decision_revision: 7d0d79bc2c319b4412a054e64c1d7cb3a3416cf8
 decision_sha256: 7ca5f8b396bd9dd839784dd34e8ed6a261ba8716895e7fb4c27a5d41808ab94d
 
 builder:
   program: ops/build_board.py
-  program_commit: c7cd701059cb05ee03337aaae00107832ac8eace   # версия программы этой пересборки
-  program_sha256: ed92ce401766ed74ecca57ec6117c6ef8c13c3c6eefab77289f2af6c49f42c3b
+  program_commit: 16dab020b7f1477b6479f4cbf1f92745f495d626   # версия программы этой пересборки
+  program_sha256: db172395ad3ecae5afd0c15514d615d3c049eb98d78dab348e8d3e68db42c190
   python: 3.15.0
   dependencies: {pyyaml: 6.0.3}       # других сторонних модулей программа не импортирует
   command: python3 ops/build_board.py --src <папка входов> --source-date 2026-11-16 --repo <копия DS-iwe-releases>
@@ -29,41 +30,49 @@ builder:
 inputs:
   - name: map005.md
     repo: https://github.com/MimEcoSys/PACK-digital-platform.git
+    public: true
     path: pack/digital-platform/07-map/DP.MAP.005-mcp-scenarios.md
     revision: 761779a77ca9f97688a2853f7690ebbe4e9f39c0
     sha256: 3e7c146685700d12ec700ee490371aa6bfbf84fdf601d35f32f8667072c4673c
   - name: sbg.md
     repo: https://github.com/aisystant/DS-ecosystem-development.git
+    public: false   # закрытый: на публичных страницах без ссылки
     path: C.IT-Platform/C2.IT-Platform/C2.3.Operations/Goals-State/state-by-goals.md
     revision: 134f2d017fbc8987e82818b8d22fc90cd8716d33
     sha256: 0d807e34dfe98b146eb8e9eeb4d9ce03b75181930cff110284b8b049ed2c6c57
   - name: result-codes.md
     repo: https://github.com/aisystant/DS-ecosystem-development.git
+    public: false   # закрытый: на публичных страницах без ссылки
     path: C.IT-Platform/C2.IT-Platform/C2.3.Operations/Goals-State/working-records/result-codes.md
     revision: 134f2d017fbc8987e82818b8d22fc90cd8716d33
     sha256: b0e3093e548e70cb2175a69f56211e48705abb12cdc77aa7bde233ef47fc3b91
   - name: changelog.md
     repo: https://github.com/TserenTserenov/FMT-exocortex-template.git
+    public: true
     path: CHANGELOG.md
     revision: 01a9877a0a3f6068458ee736359a76964f50a816
     sha256: 6d81357963808163d5bf077f7ade492809fda9c02fe4962d9401eb8dacf77c27
   - name: fmt-sha
     repo: https://github.com/TserenTserenov/FMT-exocortex-template.git
+    public: true
     derived_by: git rev-parse 01a9877a   # та же ревизия, что у changelog.md
     revision: 01a9877a0a3f6068458ee736359a76964f50a816
     sha256: 63414b6ff77f73b07b79215e67e5b3f882444f59eddaca9892f2fc077eef2755
   - name: fmt-files.txt
     repo: https://github.com/TserenTserenov/FMT-exocortex-template.git
+    public: true
     derived_by: git ls-tree -r --name-only <revision>
     revision: 01a9877a0a3f6068458ee736359a76964f50a816
     sha256: 253b72bbdf7920bfd52e490888c2847fbd7b43fb615ee6fbb142170029daf541
   - name: staging.md
     repo: https://github.com/TserenTserenov/iwe-local-config.git   # закрытый, корень IWE Разработчика
+    public: false   # закрытый: на публичных страницах без ссылки
     path: STAGING.md
     revision: de0a4cf409621966caa8f26b44a8fdb53b67fb1d
     sha256: 09510628f5bad5eebc9869ec3ae2529be442b5ac33d91a45873d941da050f03a
   - name: weekplan.md
     repo: https://github.com/TserenTserenov/DS-my-strategy.git        # закрытый, план недели Разработчика
+    public: false   # закрытый: на публичных страницах без ссылки
     path: current/WeekPlan W47 2026-11-16.md   # каждую неделю — план текущей недели
     revision: dc7f656b343e50045f844e6c186bbcf23eabe968
     sha256: b08fad0ef14243408902b52a78d544b66804ce7081aa50d487e4c6f0cc86ebf9
