@@ -47,6 +47,25 @@ def decision_value(decisions_md: str, row: str) -> str:
     return ""
 
 
+# Steps 7-9 of "Порядок" in protocol.md happen after the release, so no rc.<K>/*.yaml mark can
+# hold them (WP-529 F276 item 2, 17.11.2026: the checklist showed only the build-check lines and
+# the after-release steps were silently skipped on 0.42). Each step is answered by one row of the
+# decisions form; a missing row is shown as a gap, never as done.
+POST_RELEASE_ROWS = (
+    ("7. Проверка опубликованного, окно наблюдения", "Итог окна наблюдения"),
+    ("8. Исправления сведены в рабочую копию Разработчика", "Свод исправлений в рабочую копию Разработчика"),
+    ("9. Табло пересобрано после выхода", "Табло пересобрано после выхода"),
+)
+
+
+def post_release_lines(decisions_md: str) -> list[str]:
+    lines = []
+    for title, row in POST_RELEASE_ROWS:
+        value = decision_value(decisions_md, row) or "— не заполнено —"
+        lines.append(f"  {title}\n      {value}")
+    return lines
+
+
 def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--repo", type=Path, default=Path("."))
@@ -88,6 +107,9 @@ def main(argv: list[str]) -> int:
     print("Независимая атака (строка 13):")
     for entry in red_team or ["— нет записанного вердикта —"]:
         print(f"  {entry}")
+    print()
+    print("После выхода (шаги 7–9 протокола):")
+    print("\n".join(post_release_lines(decisions_md)))
     print()
     print(f"Итог Выпускающего: {decision_value(decisions_md, 'Итог: выпускаем / откладываем') or '— не заполнено —'}")
     return 0
