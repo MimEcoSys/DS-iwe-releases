@@ -10,21 +10,23 @@
 # 43 новые записи размечены черновиком агента как служебные, Разработчик уточняет связи.
 # Замер Разработчика не приложен: канон DS-my-strategy был под заморозкой, canon-refresh не делали.
 # Пересборка 18.11 (РП-529 Ф276, п.10): те же входы 16.11; убраны 865 ссылок на закрытый источник, остальное без изменений.
+# Пересборка 18.11 (РП-529 Ф278): те же входы 16.11 плюс метки и история шаблона для страницы статистики board/stats.md;
+# табло и страницы стадий не изменились, кроме ссылки на статистику. Программа переехала в board/program/.
 
 built_at_local_date: '2026-11-16'   # день повторной сборки
 source_collected_at: '2026-11-16'  # дата закреплённых входов и шапок табло
 host_timezone: EET                  # локальная дата зависит от таймзоны хоста
-recorded_at: '2026-11-18T07:50:48Z' # когда записан этот файл (после сборки)
+recorded_at: '2026-11-18T09:23:08Z' # когда записан этот файл (после сборки)
 decision_revision: 7d0d79bc2c319b4412a054e64c1d7cb3a3416cf8
 decision_sha256: 7ca5f8b396bd9dd839784dd34e8ed6a261ba8716895e7fb4c27a5d41808ab94d
 
 builder:
-  program: ops/build_board.py
-  program_commit: 16dab020b7f1477b6479f4cbf1f92745f495d626   # версия программы этой пересборки
-  program_sha256: db172395ad3ecae5afd0c15514d615d3c049eb98d78dab348e8d3e68db42c190
+  program: board/program/build_board.py   # вместе с board/program/iwe_stats.py и releases/program/
+  program_commit: b3c2a3dec9212fff06689f4b6c01e355c5de852b   # версия программы этой пересборки
+  program_sha256: 1544273940850c0c8752d212345cc8f3796aa9e57575bbc29cbb428bfff474fc
   python: 3.15.0
   dependencies: {pyyaml: 6.0.3}       # других сторонних модулей программа не импортирует
-  command: python3 ops/build_board.py --src <папка входов> --source-date 2026-11-16 --repo <копия DS-iwe-releases>
+  command: python3 board/program/build_board.py --src <папка входов> --source-date 2026-11-16 --repo <копия DS-iwe-releases>
 
 # Все входы, кроме замера, читаются из закреплённой ревизии origin/main: git show <revision>:<path>.
 inputs:
@@ -64,6 +66,18 @@ inputs:
     derived_by: git ls-tree -r --name-only <revision>
     revision: 01a9877a0a3f6068458ee736359a76964f50a816
     sha256: 253b72bbdf7920bfd52e490888c2847fbd7b43fb615ee6fbb142170029daf541
+  - name: fmt-tags.txt   # для страницы статистики board/stats.md (РП-529 Ф278)
+    repo: https://github.com/TserenTserenov/FMT-exocortex-template.git
+    public: true
+    derived_by: git for-each-ref refs/tags --merged <revision> --sort=refname --format='%(refname:short) %(creatordate:short)'
+    revision: 01a9877a0a3f6068458ee736359a76964f50a816
+    sha256: 0ea315d6965919aff115889a6f31629a8ea8b6c770aa30ec2ddd63652bfdc242
+  - name: fmt-history.txt   # для страницы статистики board/stats.md (РП-529 Ф278)
+    repo: https://github.com/TserenTserenov/FMT-exocortex-template.git
+    public: true
+    derived_by: git log --first-parent --format='%cs %s' <revision>
+    revision: 01a9877a0a3f6068458ee736359a76964f50a816
+    sha256: 851a95fd6119f33d35811ed7c3a7eef095f98044f7b87382b965a39420d700e6
   - name: staging.md
     repo: https://github.com/TserenTserenov/iwe-local-config.git   # закрытый, корень IWE Разработчика
     public: false   # закрытый: на публичных страницах без ссылки
@@ -84,7 +98,7 @@ steps:
   - 'Подготовка: рабочие копии шести репозиториев выше рядом в одной папке IWE; python3 с pyyaml.'
   - 'В каждом репозитории: git fetch origin; ревизия = git rev-parse origin/main (записать в inputs).'
   - 'Новая пустая папка входов SRC; в неё для каждого входа с path: git -C <repo> show <revision>:<path> > SRC/<name>.'
-  - 'FMT: git -C FMT rev-parse <revision> > SRC/fmt-sha; git -C FMT ls-tree -r --name-only <revision> > SRC/fmt-files.txt.'
+  - 'FMT: git -C FMT rev-parse <revision> > SRC/fmt-sha; git -C FMT ls-tree -r --name-only <revision> > SRC/fmt-files.txt; метки и история — командами derived_by входов fmt-tags.txt и fmt-history.txt (перед этим git -C FMT fetch --tags).'
   - 'Замер (около 4 минут): сразу перед ним canon-refresh.sh DS-my-strategy и DS-IT-systems/DS-ai-systems (иначе «позади origin» даёт complete: false); команда из produced_by; complete: false — не ошибка сборки, причина уйдёт на табло.'
   - 'shasum -a 256 SRC/* — записать в inputs.'
   - 'Сборка в чистую копию DS-iwe-releases: command из builder; код возврата 0, строка goals=… results=… совпадает с прошлой или расхождение объяснено входами.'
