@@ -9,9 +9,9 @@
       "summary": "первый выпуск через проверенную сборку-кандидат; оговорки по непроверенному названы в описании",
       "published_tag": "v0.42.0",
       "links": {
-        "release": "releases/0.42/README.md",
-        "decisions": "releases/0.42/decisions.md",
-        "shipped": "releases/0.42/shipped.md"
+        "release": "releases/0.N/0.42/README.md",
+        "decisions": "releases/0.N/0.42/decisions.md",
+        "shipped": "releases/0.N/0.42/shipped.md"
       },
       "composition_page": "board/released-0.42.md",
       "result_codes": [
@@ -35,9 +35,9 @@
       "last_version": "0.41.11",
       "published_tag": "v0.41.11",
       "links": {
-        "shipped": "releases/0.41.11/shipped.md"
+        "shipped": "releases/0.N/0.41.11/shipped.md"
       },
-      "composition_page": "board/2.3.1-released-0.37-0.41.11.md",
+      "composition_page": "board/released-0.37-0.41.11.md",
       "result_codes": [
         "Ц23-06",
         "Ц37-02",
@@ -65,7 +65,7 @@
       "last_version": "0.36",
       "published_tag": "v0.36.3",
       "links": {
-        "shipped": "releases/0.36/shipped.md"
+        "shipped": "releases/0.N/0.36/shipped.md"
       }
     }
   ]
