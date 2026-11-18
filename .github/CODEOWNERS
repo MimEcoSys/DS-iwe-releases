@@ -1,11 +1,13 @@
-# Who approves changes to which file (README.md, section "Кто куда пишет").
+# Who approves changes to which file (team/README.md, section "Кто куда пишет").
 # The last matching line wins.
 *                              @TserenTserenov
 /releases/                     @MimEcoSys/iwe-release-lead
-/releases/*/tests/             @MimEcoSys/iwe-testers
-/releases/*/shipped.md         @MimEcoSys/iwe-developers
-/releases/*/candidates.md      @MimEcoSys/iwe-developers
-/releases/*/README.md          @MimEcoSys/iwe-developers
+/releases/*.N/*/tests/         @MimEcoSys/iwe-testers
+/releases/*.N/*/shipped.md     @MimEcoSys/iwe-developers
+/releases/*.N/*/candidates.md  @MimEcoSys/iwe-developers
+/releases/*.N/*/README.md      @MimEcoSys/iwe-developers
+/releases/developer-handoff.yaml @MimEcoSys/iwe-developers
+/releases/program/             @MimEcoSys/iwe-developers
+/NOW.md                        @MimEcoSys/iwe-developers
 /BOARD.md                      @MimEcoSys/iwe-developers
 /board/                        @MimEcoSys/iwe-developers
-/ops/                          @MimEcoSys/iwe-developers

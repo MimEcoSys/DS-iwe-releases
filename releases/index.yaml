@@ -9,12 +9,12 @@ versions:
     as_of: 2026-11-16
     summary: первый выпуск через проверенную сборку-кандидат; оговорки по непроверенному названы в описании
     published_tag: v0.42.0
-    decision_ref: releases/0.42/decisions.md
+    decision_ref: releases/0.N/0.42/decisions.md
     composition_page: board/released-0.42.md
     links:
-      release: releases/0.42/README.md
-      decisions: releases/0.42/decisions.md
-      shipped: releases/0.42/shipped.md
+      release: releases/0.N/0.42/README.md
+      decisions: releases/0.N/0.42/decisions.md
+      shipped: releases/0.N/0.42/shipped.md
   - version: "0.37–0.41.11"
     state: released
     last_version: "0.41.11"
@@ -22,9 +22,9 @@ versions:
     summary: выпуски 0.37–0.41.11, последний — 0.41.11
     published_tag: v0.41.11
     historical: true
-    composition_page: board/2.3.1-released-0.37-0.41.11.md
+    composition_page: board/released-0.37-0.41.11.md
     links:
-      shipped: releases/0.41.11/shipped.md
+      shipped: releases/0.N/0.41.11/shipped.md
   - version: "до 0.36"
     state: released
     last_version: "0.36"
@@ -33,4 +33,4 @@ versions:
     published_tag: v0.36.3
     historical: true
     links:
-      shipped: releases/0.36/shipped.md
+      shipped: releases/0.N/0.36/shipped.md
