@@ -38,6 +38,7 @@ README.md               что это и зачем, карта вопросов
 CLAUDE.md               правила для ИИ-агентов                                 человек
 NOW.md                  что сейчас                                             программа
 method/                 как должно работать (эта папка)                        Разработчик с Выпускающим
+  template-architecture.md  шаблон IWE для проверки качества (выжимка DP.ARCH.001)
 team/                   роли, как присоединиться, инструкции людям            Разработчик с Выпускающим
   developer/ release-lead/ tester/ code-marker/ red-team/
   release-reviewer/ code-auditor/ evidence-reviewer/ owner/   по папке на роль, в каждой README.md
