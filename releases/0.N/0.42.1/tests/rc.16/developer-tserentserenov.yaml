@@ -1,0 +1,21 @@
+build: 0.42.1-rc.16
+platform: CI шаблона (Linux, macOS, Windows) и Мак Разработчика
+environment: 'Сверка 20.11.2026, агент Разработчика. Коммит b67766fc6b0019da366341e87f7afe719d8feaac; дерево 8ffebee2f0319a71a91ba83c59de087b330e00f7. Запуск «Release Candidate» 44732661830, «Validate Template» 44732497981.'
+marks:
+- line: 3
+  result: пройдено
+  tester: TserenTserenov
+  note: 'Автоматическая проверка, не ручной прогон: задания upgrade-from-release (ubuntu-latest и macos-latest,
+    v0.36.3) запуска https://github.com/TserenTserenov/FMT-exocortex-template/actions/runs/44732661830 успешны —
+    сверка файлов, пользовательских меток и повторного обновления.'
+- line: 4
+  result: не проверялось
+  tester: TserenTserenov
+  note: 'Возврат на 0.42.0 на rc.16 не проверялся ни вручную, ни атакой. Известно из аудита кода (Кодекс): после возврата запись моста DeepSeek Harness в ~/.dsh/cordis.patch.yml остаётся. Оговорка принята Выпускающим 20.11.2026.'
+- line: 9
+  result: пройдено
+  tester: TserenTserenov
+  note: 'Анонс собран программой scripts/release-notice-build.py из раздела 0.42.1 (сборка моделью, одна попытка,
+    1 541 знак) — logs/macos/notice-0.42.1.html. Полей передачи нет, есть ссылка на выпуск и способ обновиться.
+    Оговорок в тексте бота нет — они в описании выпуска и в decisions.md. Раздел датирован 17.11, поэтому
+    плановая рассылка его не возьмёт: после выхода запустить рассылку вручную с version=0.42.1.'
