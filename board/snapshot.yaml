@@ -1,8 +1,8 @@
 # Снимок источников: результаты и их заявленные статусы из карточек работ.
 # Собирает tools/build_board.py при каждом запуске; руками не править.
 snapshot:
-  collected_at: '2026-11-18'
-  template_commit: 12208d12a7867e8f43d03c3ca674631da1fc64e6
+  collected_at: '2026-11-20'
+  template_commit: 54cdf6a2150dd05b599ba8704164753a2d12f3a4
   rule: результаты целей с размещением «шаблон IWE», «Staging» или Open, все цели блока «И. Своя IWE» и цели функции «Библиотека методов»
   goals:
   - 1
@@ -516,7 +516,7 @@ results:
   status: план
   works:
   - РП-530
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц34-08
   goal: 34
   contours: *id005
@@ -527,7 +527,7 @@ results:
   status: в работе
   works:
   - РП-545
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц34-09
   goal: 34
   contours: *id005
@@ -2412,7 +2412,7 @@ results:
   status: работает вне выпуска шаблона
   works:
   - РП-530
-  in_week_plan: false
+  in_week_plan: true
   evidence: 'РП-530 Ф3: стадии в панели DS-iwe-wp-panel (VS Code-расширение, .vsix 0.1.15) — отдельный репозиторий, в шаблоне файлов панели нет'
 - code: Ц82-06
   goal: 82
@@ -2424,7 +2424,7 @@ results:
   status: план
   works:
   - РП-530
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц82-07
   goal: 82
   contours: *id022
@@ -2570,6 +2570,17 @@ results:
   - РП-610
   in_week_plan: true
   released_042: true
+- code: Ц93-07
+  goal: 93
+  contours: *id024
+  who: пользователь IWE, гость без IWE
+  what: 'перевод своих текстов по утверждённому словарю: системные понятия названы утверждёнными английскими именами, неутверждённое имя видно в отчёте'
+  where: любой клиент
+  system: Переводчик
+  status: план
+  works:
+  - РП-620
+  in_week_plan: false
 - code: Ц94-01
   goal: 94
   contours: &id025
@@ -2660,7 +2671,7 @@ results:
   status: в работе
   works:
   - РП-530
-  in_week_plan: false
+  in_week_plan: true
   released_042: true
 - code: Ц96-02
   goal: 96
@@ -2672,7 +2683,7 @@ results:
   status: в работе
   works:
   - РП-530
-  in_week_plan: false
+  in_week_plan: true
   released_042: true
 - code: Ц96-03
   goal: 96
@@ -2684,7 +2695,7 @@ results:
   status: в работе
   works:
   - РП-530
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц96-04
   goal: 96
   contours: *id027
@@ -2695,7 +2706,7 @@ results:
   status: в работе
   works:
   - РП-530
-  in_week_plan: false
+  in_week_plan: true
   on_staging: true
 - code: Ц96-05
   goal: 96
@@ -2707,7 +2718,7 @@ results:
   status: в работе
   works:
   - РП-530
-  in_week_plan: false
+  in_week_plan: true
   released_042: true
 - code: Ц96-06
   goal: 96
@@ -2719,7 +2730,7 @@ results:
   status: в работе
   works:
   - РП-530
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц96-07
   goal: 96
   contours: *id027
@@ -2730,7 +2741,7 @@ results:
   status: план
   works:
   - РП-530
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц96-08
   goal: 96
   contours: *id027
@@ -2741,7 +2752,7 @@ results:
   status: план
   works:
   - РП-530
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц96-09
   goal: 96
   contours: *id027
@@ -2752,7 +2763,7 @@ results:
   status: план
   works:
   - РП-530
-  in_week_plan: false
+  in_week_plan: true
 - code: Ц96-10
   goal: 96
   contours: *id027
@@ -3642,123 +3653,11 @@ author_ahead:
   present: false
   files: []
 unreleased_links:
-- key: U-2e8020
-  tag: behavior
-  first_words: (#1591) Наблюдатель открытия дня (`roles/strategist/scripts/strategist.sh`)…
-  service: (#1591) Наблюдатель открытия дня (`roles/strategist/scripts/strategist.sh`) считает план дня опубликованн…
-- key: U-56fd6d
-  tag: behavior
-  first_words: 'Автоматическая доставка из авторского источника (template-sync.sh): обновлены…'
-  service: 'Автоматическая доставка из авторского источника (template-sync.sh): обновлены roles/synchronizer/scripts/…'
-- key: U-63b080
-  tag: security
-  first_words: (#1582) Проверка опасных команд агента (`.claude/hooks/destructive-guard.sh`)…
-  service: (#1582) Проверка опасных команд агента (`.claude/hooks/destructive-guard.sh`) больше не пропускает без за…
-- key: U-cbdf00
-  tag: optional
-  first_words: (#1579) Инструкция агента о возврате лёгкого онбординга совпадает с защитой из…
-  service: '(#1579) Инструкция агента о возврате лёгкого онбординга совпадает с защитой из #1576: сброс заранее не ра…'
-- key: U-e84ed5
-  tag: security
-  first_words: (#1576) Проверка опасных команд агента (`.claude/hooks/destructive-guard.sh`)…
-  service: (#1576) Проверка опасных команд агента (`.claude/hooks/destructive-guard.sh`) узнаёт защитные файлы (`.cl…
-- key: U-eff5c6
-  tag: security
-  first_words: (#1576) Перезапись файла перенаправлением `>` (также `>|`, `2>`, `&>`) после…
-  service: (#1576) Перезапись файла перенаправлением `>` (также `>|`, `2>`, `&>`) после команды, которую `settings.j…
-- key: U-83bce1
-  tag: optional
-  first_words: (#1576) Скрипт уведомлений `scripts/iwe-notify` берёт имя репозитория планов из…
-  service: (#1576) Скрипт уведомлений `scripts/iwe-notify` берёт имя репозитория планов из настроек (`IWE_GOVERNANCE…
-- key: U-d73289
-  tag: security
-  first_words: (#1576) Сброс лёгкого онбординга (`bash…
-  service: (#1576) Сброс лёгкого онбординга (`bash .claude/scripts/light-onboarding-state.sh reset`) больше не разре…
-- key: U-b01839
-  tag: optional
-  first_words: (#1573) Перевод шаблона на английский проходит следующий слой проверки «нет…
-  service: '(#1573) Перевод шаблона на английский проходит следующий слой проверки «нет кириллицы»: обозначения фаз с…'
-- key: U-994ef1
-  tag: optional
-  first_words: '(#1564) Ночная проверка шаблона снова может пройти: поиск секретов с 02.11…'
-  service: '(#1564) Ночная проверка шаблона снова может пройти: поиск секретов с 02.11 каждую ночь находил одну и ту…'
-- key: U-b5bf5b
-  tag: optional
-  first_words: '(#1564) Перевод шаблона на английский снова проходит: проверка «нет кириллицы»…'
-  service: '(#1564) Перевод шаблона на английский снова проходит: проверка «нет кириллицы» в черновике перевода больш…'
-- key: U-90fe71
-  tag: optional
-  first_words: (#1571) Ссылки на PACK-personal и DS-principles-curriculum в документах шаблона…
-  service: (#1571) Ссылки на PACK-personal и DS-principles-curriculum в документах шаблона указывают на организацию…
-- key: U-025a18
-  tag: behavior
-  first_words: (#1565) Закрытие РП берёт название по заголовку таблицы реестра; без колонки…
-  service: (#1565) Закрытие РП берёт название по заголовку таблицы реестра; без колонки «Название» останавливается д…
-- key: U-7df1b6
-  tag: behavior
-  first_words: (#1565) Ночной обзор недели не режет память по строкам и не удаляет указатели…
-  service: (#1565) Ночной обзор недели не режет память по строкам и не удаляет указатели на существующие файлы памят…
-- key: U-f24cd7
-  tag: behavior
-  first_words: (#1565) Журнал ретро недели сохраняется коммитом закрытия недели; шаг ретро…
-  service: (#1565) Журнал ретро недели сохраняется коммитом закрытия недели; шаг ретро засчитывается только после пу…
-- key: U-08ea3d
-  tag: behavior
-  first_words: (#1565) Протоколы открытия и закрытия и подсказки при отказе коммита зовут…
-  service: (#1565) Протоколы открытия и закрытия и подсказки при отказе коммита зовут скрипты через `IWE_SCRIPTS`; ш…
-- key: U-e634de
-  tag: optional
-  first_words: Снимок терминов графа понятий для перевода шаблона на английский обновлён…
-  service: Снимок терминов графа понятий для перевода шаблона на английский обновлён поставщиком терминов перевода…
-- key: U-462b56
-  tag: behavior
-  first_words: '(#1560) Объединённая поставка восьми проверенных исправлений: охранник сессий…'
-  service: '(#1560) Объединённая поставка восьми проверенных исправлений: охранник сессий, навыки DeepSeek, диспетчер…'
-- key: U-11335c
-  tag: behavior
-  first_words: (#1536) Охранник сессии предупреждает о второй живой отметке того же агента…
-  service: (#1536) Охранник сессии предупреждает о второй живой отметке того же агента, беседы и РП, не блокируя…
-- key: U-4b28cc
-  tag: behavior
-  first_words: (#1534) Навыки шаблона подключены к DeepSeek Harness; путь в YAML экранируется…
-  service: (#1534) Навыки шаблона подключены к DeepSeek Harness; путь в YAML экранируется, поэтому пробелы и спецсимволы…
-- key: U-b01747
-  tag: behavior
-  first_words: (#1535) Девять навыков получили запасной путь к скриптам для оболочки без…
-  service: (#1535) Девять навыков получили запасной путь к скриптам для оболочки без подгруженных переменных (WP-53…
-- key: U-2b52e9
-  tag: behavior
-  first_words: (#1504) Диспетчер фоновых ролей поддерживает DeepSeek Harness и разбирает его…
-  service: (#1504) Диспетчер фоновых ролей поддерживает DeepSeek Harness и разбирает его итоговое событие; по умолчанию…
-- key: U-4ae920
-  tag: optional
-  first_words: (#1522) Генератор обложек использует поддерживаемую модель…
-  service: (#1522) Генератор обложек использует поддерживаемую модель `gpt-image-2.6-sunburst` вместо выводимой из API…
-- key: U-bfe9c7
-  tag: optional
-  first_words: (#1551) Напоминание о перерыве читает статистику WakaTime через OAuth-токен и…
-  service: (#1551) Напоминание о перерыве читает статистику WakaTime через OAuth-токен и получило юниты systemd для…
-- key: U-6895e1
-  tag: optional
-  first_words: (#1559) Поставщик словаря при сбое открывает назначенный пилоту issue…
-  service: (#1559) Поставщик словаря при сбое открывает назначенный пилоту issue; повторный сбой того же запуска…
-- key: U-560303
-  tag: optional
-  first_words: (#1527) Снимок словаря пересобран после исключения режимов отказа и методов…
-  service: (#1527) Снимок словаря пересобран после исключения режимов отказа и методов; паспорт соответствует новому…
-- key: U-2087b2
-  tag: optional
-  first_words: Словарь перевода больше не берёт из графа понятий описания режимов отказа и…
-  service: Словарь перевода больше не берёт из графа понятий описания режимов отказа и методов (виды DP.FM и DP.M, новое…
-- key: U-87c4ba
-  tag: optional
-  first_words: Поставщик терминов перевода пишет запись журнала изменений с полями передачи…
-  service: Поставщик терминов перевода пишет запись журнала изменений с полями передачи (Цель, Результат, Как проверить…
-- key: U-491e9c
-  tag: ci
-  first_words: (#1557) Ручной запуск рассылки анонса (`.github/workflows/notify-update.yml`)…
-  service: (#1557) Ручной запуск рассылки анонса (`.github/workflows/notify-update.yml`) принимает необязательную версию…
-- key: U-86bf41
+- key: U-5c024f
   tag: docs
-  first_words: (#1557) Описание выпуска 0.42 (`docs/releases/0.42/README.md`) стало полным…
-  service: '(#1557) Описание выпуска 0.42 (`docs/releases/0.42/README.md`) стало полным: примеры запросов, как…'
+  first_words: (#1624) В журнал пострелизных аудитов (`docs/release-audit-log.md`) записан…
+  service: (#1624) В журнал пострелизных аудитов записан итог проверки выпуска 0.42.1 (WP-529 Ф275)
+- key: U-ad2f4e
+  tag: behavior
+  first_words: (#1622) В ручной словарь перевода записана роль «Верификатор» → Verifier (пилот…
+  service: (#1622) В ручной словарь перевода записана роль «Верификатор» → Verifier (пилот утвердил 20.11, WP-…
