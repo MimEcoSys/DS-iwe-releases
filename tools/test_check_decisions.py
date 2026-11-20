@@ -286,3 +286,38 @@ def test_unrecognized_take_all_wording_is_not_read_as_zero():
     form = decisions(taken="все кандидаты", deferred="ничего")
     with pytest.raises(cd.DecisionsFormError, match="не содержит кодов"):
         cd.selected_record_keys(HANDOFF, form, CUT_SHA)
+
+
+# 20.11.2026: a release without its own candidate list (0.42.1 while the handoff lists 0.42).
+
+def repo_for_release(tmp_path, release, decisions_text, rc_files=None):
+    base = tmp_path / "releases" / "0.N" / release
+    (base / "tests").mkdir(parents=True)
+    (tmp_path / "releases" / "developer-handoff.yaml").write_text(yaml.safe_dump(HANDOFF, allow_unicode=True), encoding="utf-8")
+    (base / "decisions.md").write_text(decisions_text, encoding="utf-8")
+    for name, body in (rc_files or {}).items():
+        target = base / "tests" / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(yaml.safe_dump(body, allow_unicode=True), encoding="utf-8")
+    return tmp_path
+
+
+def test_other_release_composition_in_words_passes_final(tmp_path, capsys):
+    text = FILLED.replace("U-000001 U-000002", "всё, что в ветке выпуска на последней сборке")
+    repo = repo_for_release(tmp_path, "0.42.1", text, {"rc.1/macos-tester.yaml": verdict()})
+    assert cd.main(["--repo", str(repo), "--release", "0.42.1", "--require-final", "--rc-tree", TREE]) == 0
+    out = capsys.readouterr().out
+    assert "кандидатов 0, замечаний нет" in out and "сверен только на заполненность" in out
+
+
+def test_other_release_still_requires_the_composition_row_filled(tmp_path, capsys):
+    text = FILLED.replace("U-000001 U-000002", "")
+    repo = repo_for_release(tmp_path, "0.42.1", text, {"rc.1/macos-tester.yaml": verdict()})
+    assert cd.main(["--repo", str(repo), "--release", "0.42.1", "--require-final", "--rc-tree", TREE]) == 1
+    assert "не заполнена строка «Состав: что взято" in capsys.readouterr().out
+
+
+def test_own_release_words_without_keys_are_still_refused(tmp_path):
+    text = FILLED.replace("U-000001 U-000002", "всё, что в ветке выпуска на последней сборке")
+    repo = repo_with(tmp_path, text, {"rc.1/linux-tester.yaml": verdict()})
+    assert cd.main(["--repo", str(repo), "--require-final", "--rc-tree", TREE]) == 2

@@ -268,11 +268,18 @@ def main(argv: list[str]) -> int:
         handoff = yaml.safe_load((args.repo / layout.HANDOFF).read_text(encoding="utf-8")) or {}
         release = args.release or str(handoff.get("release") or "")
         decisions = (args.repo / layout.release_dir(release) / "decisions.md").read_text(encoding="utf-8")
-        records = handoff.get("records") or {}
+        # The handoff lists candidates of one release only. For any other release its keys
+        # say nothing about the composition: the row is then checked for being filled
+        # (--require-final), not against foreign keys (found 20.11.2026 on 0.42.1, which
+        # had no candidate list of its own and failed on "no candidate codes").
+        handoff_release = str(handoff.get("release") or "")
+        own_candidates = release == handoff_release
+        records = (handoff.get("records") or {}) if own_candidates else {}
         problems: list[str] = []
         for key, record in records.items():
             problems += record_problems(key, record or {})
-        problems += decision_problems(handoff, decisions, decision_snapshot_commit(args.repo, release))
+        if own_candidates:
+            problems += decision_problems(handoff, decisions, decision_snapshot_commit(args.repo, release))
         unfilled = unfilled_rows(decisions)
         if args.require_final:
             problems += [f"в decisions.md не заполнена строка «{row}»" for row in unfilled]
@@ -289,6 +296,8 @@ def main(argv: list[str]) -> int:
         print(f"Выпуск {release}: замечаний {len(problems)} (кандидатов {len(records)})")
         return 1
     print(f"OK: выпуск {release}, кандидатов {len(records)}, замечаний нет")
+    if not own_candidates:
+        print(f"ЗАМЕТКА: список кандидатов Разработчика ведётся для выпуска {handoff_release}; состав выпуска {release} сверен только на заполненность строки")
     if unfilled and not args.require_final:
         print(f"ЗАМЕТКА: форма решений заполнена не до конца ({'; '.join(unfilled)}) — это не «всё чисто»; перед слиянием запустить с --require-final")
     return 0
