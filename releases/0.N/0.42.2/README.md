@@ -1,0 +1,53 @@
+# Выпуск 0.42.2: исправительный
+
+Карточку завёл Разработчик 21.11.2026. Это стартовый пакет для Выпускающего 0.42.2: что за выпуск, что уже лежит в основной ветке шаблона, какие ошибки ещё можно взять и с чего начать. Состав и срок решает Выпускающий; эта страница их не обещает. Общий порядок любого выпуска - [схема конвейера](../../../method/pipeline.md), лист этапов - [там же, раздел «Этапы»](../../../method/pipeline.md#этапы).
+
+## Что за выпуск
+
+- **0.42.2** - исправительный выпуск после [0.42.1](../0.42.1/README.md): только исправления ошибок и долг проверок. Новые возможности идут в [0.43](../0.43/plan.md) (решение Выпускающего 21.11.2026).
+- **Выпускающий:** предложено вести `SDaiBots` (сообщение 19.11.2026); до его согласия выпуск не начат: ветки выпуска и сборок-кандидатов нет.
+- **Состояние:** в плане.
+
+## Почему выпуски идут по очереди
+
+Программа выпуска шаблона (`release.yml`, шаг «Check the release commit belongs to main») выпускает только коммит основной ветки, и дерево этого коммита должно совпасть с деревом последней проверенной сборки-кандидата. Поэтому 0.42.2 собирается из основной ветки, а новое для 0.43 вливается в неё только после выхода 0.42.2. Если до выхода в основную ветку что-то вольют, кандидат собирается и проверяется заново.
+
+## Что уже в основной ветке шаблона после v0.42.1
+
+Сверено 21.11.2026 09:10 UTC (`git log --first-parent v0.42.1..origin/main`).
+
+| Запрос | Что | Род |
+|---|---|---|
+| [#1622](https://github.com/TserenTserenov/FMT-exocortex-template/pull/1622) | роль «Верификатор» в английской версии называется Verifier; формулировка проверки рабочего продукта | правка формулировок |
+| [#1624](https://github.com/TserenTserenov/FMT-exocortex-template/pull/1624) | итог проверки 0.42.1 в журнале аудитов | документ |
+| [#1626](https://github.com/TserenTserenov/FMT-exocortex-template/pull/1626) | запись в память агента через ссылку `memory/` без ручного подтверждения ([обращение #1487](https://github.com/TserenTserenov/FMT-exocortex-template/issues/1487)) | исправление |
+| [#1627](https://github.com/TserenTserenov/FMT-exocortex-template/pull/1627) | срочное уведомление о безопасности - короткий текст по темам вместо сырых строк журнала | исправление |
+| [#1628](https://github.com/TserenTserenov/FMT-exocortex-template/pull/1628) | новые версии навыков пир-сессий: исправления по обращениям #1513, #876, #1006 | исправление |
+| [#1629](https://github.com/TserenTserenov/FMT-exocortex-template/pull/1629) | сверка названия рабочего продукта с реестром понятий ([обращение #1606](https://github.com/TserenTserenov/FMT-exocortex-template/issues/1606)) | исправление |
+| [#1633](https://github.com/TserenTserenov/FMT-exocortex-template/pull/1633) | рабочий продукт нельзя закрыть, пока не разобраны его входящие записи | **новая возможность (0.43)**, влита 21.11 08:21 UTC |
+| [#1630](https://github.com/TserenTserenov/FMT-exocortex-template/pull/1630) | `iwe-notify --direct`: уведомление уходит без шлюза (нужно сторожу резервной копии памяти) | новый флаг для починки уведомлений, влит 21.11 08:49 UTC |
+
+**Первое решение Выпускающего:** #1633 - новая возможность в основной ветке. Чтобы 0.42.2 остался исправительным, его либо откатывают из основной ветки до выхода 0.42.2 (и вливают снова после), либо принимают в 0.42.2 с пометкой в описании. #1630 - отнести к исправлениям или к новому.
+
+## Ошибки, которые ещё можно взять
+
+| Обращение | Что | Заметка |
+|---|---|---|
+| [#1625](https://github.com/TserenTserenov/FMT-exocortex-template/issues/1625) | лишнее предупреждение `IWE_RUNTIME used as a directory` при обычной установке | есть и на 0.42.0 |
+| [#1623](https://github.com/TserenTserenov/FMT-exocortex-template/issues/1623) | мост DeepSeek Harness: установщик верит метке в тексте, откат оставляет запись моста | находка аудита 0.42.1 |
+| [#1631](https://github.com/TserenTserenov/FMT-exocortex-template/issues/1631), [#1632](https://github.com/TserenTserenov/FMT-exocortex-template/issues/1632) | учёт времени WakaTime: сети без доступа к wakatime.com; пустая дата при нулевом счётчике | сообщил пользователь |
+| [#1601](https://github.com/TserenTserenov/FMT-exocortex-template/pull/1601) | пути к репозиторию выпусков в описании процесса выпуска | запрос открыт |
+| [#1586](https://github.com/TserenTserenov/FMT-exocortex-template/issues/1586), [#1359](https://github.com/TserenTserenov/FMT-exocortex-template/issues/1359) | остаточные разрывы в Git Bash на Windows | нужен прогон на настоящей Windows |
+
+Ответов авторов ждут обращения [#1577](https://github.com/TserenTserenov/FMT-exocortex-template/issues/1577), [#1578](https://github.com/TserenTserenov/FMT-exocortex-template/issues/1578) (до 04.12), [#1547](https://github.com/TserenTserenov/FMT-exocortex-template/issues/1547), [#1447](https://github.com/TserenTserenov/FMT-exocortex-template/issues/1447) (до 30.11); по [#1468](https://github.com/TserenTserenov/FMT-exocortex-template/issues/1468) и [#1124](https://github.com/TserenTserenov/FMT-exocortex-template/issues/1124) осталась доработка.
+
+## С чего начать Выпускающему
+
+1. Прочитать [инструкцию Выпускающего](../../../team/release-lead/instruction.md) и [архитектуру шаблона](../../../method/template-architecture.md): что меняет правка и кто её проверяет.
+2. Решить про #1633 и #1630 (выше) и назвать состав: что из таблицы «ещё можно взять» входит.
+3. Завести форму решений `decisions.md` по образцу [0.42.1](../0.42.1/decisions.md): блокирующие строки проверки, тестировщики, окно наблюдения.
+4. Попросить Разработчика собрать первый кандидат и протокол проверки.
+
+## Где что лежит
+
+Файлы появляются по шагам [конвейера](../../../method/pipeline.md) (схема папки - [releases/README.md](../../README.md)); пустых файлов не заводят.
