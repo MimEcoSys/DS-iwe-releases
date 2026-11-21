@@ -17,4 +17,4 @@
 
 ## Какие файлы пишет
 
-`board/developer-links.yaml`, `board/developer-sources.yaml`, `releases/developer-handoff.yaml`, `releases/index.yaml`, `README.md` папки выпуска, программы в [tools/](../../tools/). По согласованию с Выпускающим — `method/` и `team/`. Полный перечень — [кто куда пишет](../README.md#кто-куда-пишет).
+`board/developer-links.yaml`, `board/developer-sources.yaml`, `releases/developer-handoff.yaml`, `releases/index.yaml`, `README.md` и `checklist.md` папки выпуска, программы в [tools/](../../tools/). По согласованию с Выпускающим — `method/` и `team/`. Полный перечень — [кто куда пишет](../README.md#кто-куда-пишет).
