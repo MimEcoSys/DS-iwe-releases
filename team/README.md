@@ -34,7 +34,7 @@
 
 | Роль | Файлы |
 |---|---|
-| Разработчик | `board/developer-links.yaml`, `board/developer-sources.yaml`, `releases/developer-handoff.yaml`, `releases/index.yaml`, `README.md` папки выпуска, программы в `tools/` и `tools/` |
+| Разработчик | `board/developer-links.yaml`, `board/developer-sources.yaml`, `releases/developer-handoff.yaml`, `releases/index.yaml`, `README.md` и `checklist.md` папки выпуска, программы в `tools/` |
 | Выпускающий | `decisions.md` папки выпуска |
 | Разработчик по согласованию с Выпускающим | `method/` и `team/` — описание конвейера и инструкции по ролям |
 | Тестировщики | `tests/rc.<K>/` папки выпуска — папка на сборку: файл отметок на тестировщика и платформу, отчёт атаки, журналы, проверочные скрипты |

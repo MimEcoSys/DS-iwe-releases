@@ -16,6 +16,7 @@
 | 6 | Сверка доказательств | Рецензент доказательств | отметки, вердикт, дерево | «сходится» или расхождение | `check_decisions.py --require-final --rc-tree` |
 | 7 | Согласование и выпуск | Выпускающий, затем `release.yml` | итог проверки | метка `v<N>` | `decisions.md`, строка «Итог»; шаблон: `release.yml` |
 | 8 | После выхода | Выпускающий, Разработчик | вышедший выпуск | «держим» или откат; `shipped.md`; пересобранное табло | `build_board.py`, `index.yaml` |
+| 1–8 | Чек-лист выпуска | Разработчик отмечает, Выпускающий сверяет | [общий чек-лист](release-checklist.md), записи выпуска | кто и когда сделал каждое действие | `checklist.md` папки выпуска |
 | — | Табло результатов IWE | Разработчик запускает программу | закреплённые входы (`board/developer-sources.yaml`), связи (`board/developer-links.yaml`) | `board/README.md`, страницы стадий, сверка полноты, `board/snapshot.yaml` | [tools/build_board.py](../tools/build_board.py) |
 | — | Результаты и статистика IWE | программа | табло, метки и история основной ветки шаблона (`fmt-tags.txt`, `fmt-history.txt` среди входов) | `board/stats.md` | [tools/iwe_stats.py](../tools/iwe_stats.py) |
 | — | Что сейчас, история, планы | программа | `releases/index.yaml`, табло, папки выпусков | `NOW.md`, `releases/HISTORY.md`, `releases/NEXT.md`, `releases/INDEX.md`, `releases/catalog.json` | `build_board.py` вместе с [tools/release_catalog.py](../tools/release_catalog.py) |
