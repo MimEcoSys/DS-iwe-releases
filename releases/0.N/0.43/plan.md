@@ -31,7 +31,15 @@
 | - | ИИ-наставник (вариант 8, 21 голос) | для IWE не написан | в 0.43 не входит |
 | - | Самостоятельная проверка гипотез (вариант 3, 2 голоса) | на деле не применялась | в 0.43 не входит |
 
-Новое, что уже ждёт в запросах на слияние шаблона и вольётся после выхода 0.42.2: [#1616](https://github.com/TserenTserenov/FMT-exocortex-template/pull/1616) (снимок терминов перевода). Запрос [#1630](https://github.com/TserenTserenov/FMT-exocortex-template/pull/1630) (уведомления без шлюза) уже в основной ветке и выйдет в 0.42.2. Обращения-предложения [#1478](https://github.com/TserenTserenov/FMT-exocortex-template/issues/1478) и [#1473](https://github.com/TserenTserenov/FMT-exocortex-template/issues/1473) остаются обращениями.
+Черновики запросов к шаблону для 0.43 (21.11.2026; все проверки пройдены; сливаются только после выхода 0.42.2, перед слиянием каждый обновляется поверх основной ветки и пересобирает список файлов поставки):
+
+- разбор проекта (вариант 6) - [#1635](https://github.com/TserenTserenov/FMT-exocortex-template/pull/1635);
+- план дня из плана недели (вариант 1) - [#1641](https://github.com/TserenTserenov/FMT-exocortex-template/pull/1641);
+- базы знаний других авторов (вариант 5) - [#1642](https://github.com/TserenTserenov/FMT-exocortex-template/pull/1642), в выпуск - после живого прогона не автором;
+- раздача независимых подзадач нескольким агентам (вариант 4) - [#1644](https://github.com/TserenTserenov/FMT-exocortex-template/pull/1644), в выпуск - после живого прогона не автором (инструкция для проверяющего - в запросе);
+- забытые наработки (вариант 7) - [#1643](https://github.com/TserenTserenov/FMT-exocortex-template/pull/1643).
+
+Снимок терминов перевода [#1616](https://github.com/TserenTserenov/FMT-exocortex-template/pull/1616) влит в основную ветку 21.11.2026 и выйдет в 0.42.2 (служебное изменение, поведение у пользователя не меняется). Запрос [#1630](https://github.com/TserenTserenov/FMT-exocortex-template/pull/1630) (уведомления без шлюза) уже в основной ветке и выйдет в 0.42.2. Обращения-предложения [#1478](https://github.com/TserenTserenov/FMT-exocortex-template/issues/1478) и [#1473](https://github.com/TserenTserenov/FMT-exocortex-template/issues/1473) остаются обращениями.
 
 ## Решение, которое нужно от Выпускающего
 
