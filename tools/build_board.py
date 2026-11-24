@@ -36,6 +36,7 @@ import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import layout  # noqa: E402
+from changelog import changelog_sections  # noqa: E402
 import iwe_stats  # noqa: E402
 import release_catalog  # noqa: E402
 from check_decisions import decision_problems, selected_record_keys  # noqa: E402
@@ -63,7 +64,6 @@ STAGING_TO_STATUS = {
     "rejected": "остаётся только у автора",
 }
 PATH_TOKEN = re.compile(r"[\w.\-/]+\.(?:md|sh|py|json|yaml|yml|plist)\b|[\w.\-]+/[\w.\-/]*")
-VERSION_HEAD = re.compile(r"^## \[(?P<ver>[^\]]+)\]")
 TEMPLATE_BLOB = "https://github.com/TserenTserenov/FMT-exocortex-template/blob/main/"
 ORG_BLOB = "https://github.com/MimEcoSys/{repo}/blob/main/{path}"
 LOCAL_LINK = re.compile(r"\]\((?!https?:|#)([^)\s]+)\)")
@@ -193,32 +193,6 @@ def staging_entries(staging: str, fmt_files: list[str]) -> list[dict]:
 
 def version_key(ver: str) -> tuple:
     return tuple(int(p) for p in re.findall(r"\d+", ver))
-
-
-def changelog_sections(changelog: str) -> dict[str, list[dict]]:
-    sections, current, group = {}, None, ""
-    for line in changelog.splitlines():
-        head = VERSION_HEAD.match(line)
-        if head:
-            current, group = head.group("ver"), ""
-            sections[current] = []
-            continue
-        if current is None:
-            continue
-        if line.startswith("### "):
-            group = line[4:].strip()
-        elif line.startswith("- "):
-            text = line[2:].strip()
-            tag = re.match(r"^\[(\w[\w-]*)\]\s*", text)
-            sections[current].append(
-                {
-                    "key": "U-" + hashlib.sha1(text[:200].encode()).hexdigest()[:6],
-                    "group": group,
-                    "tag": tag.group(1) if tag else "",
-                    "text": text[tag.end() :] if tag else text,
-                }
-            )
-    return sections
 
 
 AUTHOR_AHEAD_CATEGORIES = {

@@ -321,3 +321,73 @@ def test_own_release_words_without_keys_are_still_refused(tmp_path):
     text = FILLED.replace("U-000001 U-000002", "всё, что в ветке выпуска на последней сборке")
     repo = repo_with(tmp_path, text, {"rc.1/linux-tester.yaml": verdict()})
     assert cd.main(["--repo", str(repo), "--require-final", "--rc-tree", TREE]) == 2
+
+
+# WP-529 Ф282: a deferral is a revert on the release branch; after the release merge it must come back to main.
+
+DEFERRED_LINE = "[behavior] Новая проверка закрытия РП (#1633)."
+RETURNED_CHANGELOG = f"# Changelog\n\n## [Unreleased]\n\n### Изменено\n- {DEFERRED_LINE}\n  - Как проверить: тест\n\n## [0.42.2] - 2026-11-25\n- [fix] исправление\n"
+SHIPPED_ONLY_CHANGELOG = f"# Changelog\n\n## [Unreleased]\n\n## [0.42.2] - 2026-11-25\n- {DEFERRED_LINE}\n"
+
+
+def deferred_key():
+    return next(e["key"] for e in cd.changelog_sections(RETURNED_CHANGELOG)["Unreleased"])
+
+
+def with_return_row(text, value):
+    return text + f"| {cd.RETURN_ROW} | {value} |\n"
+
+
+def test_deferred_record_missing_from_unreleased_is_reported():
+    key = deferred_key()
+    problems = cd.return_problems(with_return_row(decisions(deferred=key), "FMT #1700"), SHIPPED_ONLY_CHANGELOG, "0.42.2")
+    assert problems == [
+        f"{key}: отложено в 0.42.2, но в «Ещё не выпущено» основной ветки шаблона записи нет — "
+        "вернуть правку (откат отката) и её запись в этот раздел"
+    ]
+
+
+def test_returned_record_with_filled_row_passes():
+    key = deferred_key()
+    assert cd.return_problems(with_return_row(decisions(deferred=key), "FMT #1700"), RETURNED_CHANGELOG, "0.42.2") == []
+
+
+def test_returned_record_still_needs_the_form_row():
+    problems = cd.return_problems(decisions(deferred=deferred_key()), RETURNED_CHANGELOG, "0.42.2")
+    assert problems == [f"в decisions.md не заполнена строка «{cd.RETURN_ROW}»: каким запросом в шаблоне возвращено отложенное"]
+
+
+def test_nothing_deferred_needs_no_return():
+    assert cd.return_problems(decisions(deferred="ничего"), SHIPPED_ONLY_CHANGELOG, "0.42.2") == []
+
+
+def test_deferred_in_words_only_is_a_note_not_a_pass_claim():
+    assert cd.deferred_without_keys(decisions(deferred="исправление #1487: в основной ветке его не было"))
+    assert not cd.deferred_without_keys(decisions(deferred="ничего"))
+    assert not cd.deferred_without_keys(decisions(deferred=deferred_key()))
+
+
+def test_after_release_reads_template_changelog_and_fails_on_lost_record(tmp_path, capsys):
+    changelog = tmp_path / "CHANGELOG.md"
+    changelog.write_text(SHIPPED_ONLY_CHANGELOG, encoding="utf-8")
+    repo = repo_with(tmp_path, with_return_row(FILLED.replace("| Состав: что отложено | |", f"| Состав: что отложено | {deferred_key()} |"), "FMT #1700"))
+    other = {**HANDOFF, "release": "0.41"}  # composition of 0.42 is checked only for being filled
+    (repo / "releases" / "developer-handoff.yaml").write_text(yaml.safe_dump(other, allow_unicode=True), encoding="utf-8")
+    assert cd.main(["--repo", str(repo), "--release", "0.42", "--after-release", "--template-changelog", str(changelog)]) == 1
+    assert "отложено в 0.42, но в «Ещё не выпущено»" in capsys.readouterr().out
+
+    changelog.write_text(RETURNED_CHANGELOG, encoding="utf-8")
+    assert cd.main(["--repo", str(repo), "--release", "0.42", "--after-release", "--template-changelog", str(changelog)]) == 0
+
+
+def test_after_release_without_changelog_is_refused(tmp_path):
+    with pytest.raises(SystemExit) as stop:
+        cd.main(["--repo", str(tmp_path), "--after-release"])
+    assert stop.value.code == 2
+
+
+def test_after_release_on_a_file_without_unreleased_is_exit_two(tmp_path):
+    changelog = tmp_path / "CHANGELOG.md"
+    changelog.write_text("# Changelog\n\n## [0.42.2]\n- x\n", encoding="utf-8")
+    repo = repo_with(tmp_path, FILLED)
+    assert cd.main(["--repo", str(repo), "--after-release", "--template-changelog", str(changelog)]) == 2
