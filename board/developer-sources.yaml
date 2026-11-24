@@ -34,12 +34,16 @@
 # Табло 625 результатов — 258 план, 216 в работе, 116 сделано, 35 отложено. Замер Разработчика не приложен (как 16.11).
 # Повторная сборка в другой чистой копии совпала (кроме кэша Python). decision_* — форма решений 0.42.2 из этого же запроса.
 
+# Пересборка 24.11, вторая (РП-529 Ф282): входы шаблона взяты с вершины 75cb2ff9 — после разметки FMT #1669 (31 запись,
+# добавлена запись самой разметки U-d4adfc); остальные входы те же. Состав «откладываем три»: отложены U-9d0abc (#1633),
+# U-a8d101 (#1662), U-802d20 (#1665), остальные 28 взяты. decision_* — форма решений 0.42.2 после этого решения.
+
 built_at_local_date: '2026-11-24'   # день сборки
 source_collected_at: '2026-11-24'  # дата закреплённых входов и шапок табло
 host_timezone: EET                  # локальная дата зависит от таймзоны хоста
-recorded_at: '2026-11-24T11:47:04Z' # когда записан этот файл (после сборки)
+recorded_at: '2026-11-24T14:36:49Z' # когда записан этот файл (после сборки)
 decision_revision: null             # форма решений 0.42.2 заведена этим же запросом; содержимое — по decision_sha256
-decision_sha256: 48245a3661e5056a23852cedb8ac222fb3ee83a8f11c87a54c06baae7f9f4892
+decision_sha256: 1c86b4bc83779de39b0b6731fbb6edef8139b12d9d23b9998a1be2dfcaf35e38
 
 builder:
   program: tools/build_board.py   # вместе с tools/iwe_stats.py и соседними
@@ -73,32 +77,32 @@ inputs:
     repo: https://github.com/TserenTserenov/FMT-exocortex-template.git
     public: true
     path: CHANGELOG.md
-    revision: 36bbe6464b3a98eb4a51d5d5ef0f9633ee61fffd
-    sha256: fe3c4a2cb9016636d2d897e84c4c465cd0265119cbaca91772a61cae4a72fa28
+    revision: 75cb2ff9e7c924847b83769f413df08923e10ba7
+    sha256: 5383adf68e798e3c8666fd810c25eddca15c25e395444d0674811937d265ef4d
   - name: fmt-sha
     repo: https://github.com/TserenTserenov/FMT-exocortex-template.git
     public: true
-    derived_by: git rev-parse 36bbe646   # та же ревизия, что у changelog.md
-    revision: 36bbe6464b3a98eb4a51d5d5ef0f9633ee61fffd
-    sha256: 40798d18ab8f48a071b3977f0b4315697167ba6f59850a357652a345fc1c6987
+    derived_by: git rev-parse 75cb2ff9   # та же ревизия, что у changelog.md
+    revision: 75cb2ff9e7c924847b83769f413df08923e10ba7
+    sha256: 95740221f66fe942c32806fbb642c85ac5bb94c3a2a1fd91748bb38e68a339f0
   - name: fmt-files.txt
     repo: https://github.com/TserenTserenov/FMT-exocortex-template.git
     public: true
     derived_by: git ls-tree -r --name-only <revision>
-    revision: 36bbe6464b3a98eb4a51d5d5ef0f9633ee61fffd
+    revision: 75cb2ff9e7c924847b83769f413df08923e10ba7
     sha256: 21723a1f359f4e23cc4a71c1b33c9abfee3473b40ded2e9a3095d12aa13cef22
   - name: fmt-tags.txt   # для страницы статистики board/stats.md (РП-529 Ф278)
     repo: https://github.com/TserenTserenov/FMT-exocortex-template.git
     public: true
     derived_by: git for-each-ref refs/tags --merged <revision> --sort=refname --format='%(refname:short) %(creatordate:short)'
-    revision: 36bbe6464b3a98eb4a51d5d5ef0f9633ee61fffd
+    revision: 75cb2ff9e7c924847b83769f413df08923e10ba7
     sha256: 9318fb85f4b4ab4f70e944b423bb1e0de1a40515077737c8924a5045d954794b
   - name: fmt-history.txt   # для страницы статистики board/stats.md (РП-529 Ф278)
     repo: https://github.com/TserenTserenov/FMT-exocortex-template.git
     public: true
     derived_by: git log --first-parent --format='%cs %s' <revision>
-    revision: 36bbe6464b3a98eb4a51d5d5ef0f9633ee61fffd
-    sha256: 1cba70642ad0d49578bb8676c3de24e227118d0850bdeb3a3ff832380d3a54fd
+    revision: 75cb2ff9e7c924847b83769f413df08923e10ba7
+    sha256: 9277f8b099821672ff2ff0e75697341fc2392608dda4d0a4e94cb99bfb493ba3
   - name: staging.md
     repo: https://github.com/TserenTserenov/iwe-local-config.git   # закрытый, корень IWE Разработчика
     public: false   # закрытый: на публичных страницах без ссылки

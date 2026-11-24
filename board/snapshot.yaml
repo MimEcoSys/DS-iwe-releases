@@ -2,7 +2,7 @@
 # Собирает tools/build_board.py при каждом запуске; руками не править.
 snapshot:
   collected_at: '2026-11-24'
-  template_commit: 36bbe6464b3a98eb4a51d5d5ef0f9633ee61fffd
+  template_commit: 75cb2ff9e7c924847b83769f413df08923e10ba7
   rule: результаты целей с размещением «шаблон IWE», «Staging» или Open, все цели блока «И. Своя IWE» и цели функции «Библиотека методов»
   goals:
   - 1
@@ -2834,7 +2834,7 @@ results:
   what: сессия, программа или агент в IWE отдаёт готовое отправление Почтальону и называет адресата по адресной книге (ящик РП, очередь агента); доставка ровно один…
   where: среда на компьютере, по расписанию
   system: IWE по шаблону
-  status: взято в 0.42
+  status: готово для передачи
   works:
   - РП-418
   in_week_plan: true
@@ -3761,6 +3761,35 @@ unreleased_links:
   result:
   - Ц93-01
   - Ц93-05
+- key: U-df4851
+  tag: behavior
+  first_words: (#1652) Хост API WakaTime (`api.wakatime.com` вместо `wakatime.com`) теперь во…
+  service: (#1652) адрес API WakaTime api.wakatime.com во всех программах шаблона (WP-7 Ф317)
+- key: U-9e9af6
+  tag: behavior
+  first_words: (#1646) Сводка WakaTime для закрытия дня (`scripts/wakatime-day-total.py`)…
+  service: (#1646) сводка WakaTime закрытия дня через api.wakatime.com, верная причина пустого дня
+- key: U-2417cb
+  tag: behavior
+  first_words: (#1653) Сверка главной копии с опубликованной…
+  service: '(#1653) нет ложного предупреждения IWE_RUNTIME при публикации (обращение #1625)'
+- key: U-77d368
+  tag: behavior
+  first_words: (#1634) Проверка запуска Кими (`scripts/kimi-standalone-preflight.sh`) теперь…
+  result:
+  - Ц82-02
+- key: U-e0430e
+  tag: behavior
+  first_words: (#1627) Срочное уведомление подписчикам о защитных изменениях…
+  service: (#1627) короткое срочное уведомление о безопасности (WP-529 Ф275)
+- key: U-f7aadd
+  tag: behavior
+  first_words: (#1629) Создание РП (`scripts/create-wp.sh`) снова держит замок, который…
+  service: '(#1629) сверка названия РП с реестром понятий при создании РП (обращение #1606)'
+- key: U-815c6b
+  tag: behavior
+  first_words: (#1626) Запись в авто-память агента через ссылку `memory/` в рабочей папке…
+  service: '(#1626) запись памяти агента без ручного подтверждения (обращение #1487)'
 - key: U-a8d101
   tag: optional
   first_words: 'Почтальон: `scripts/postman.py deliver --to WP-N --from "..." --pointer "..."…'
@@ -3779,6 +3808,20 @@ unreleased_links:
   tag: optional
   first_words: '`scripts/iwe-notify --direct`: one direct send to Telegram without looking up…'
   service: '(#1630) iwe-notify --direct: прямая отправка без шлюза уведомлений'
+- key: U-ed137c
+  tag: behavior
+  first_words: Day Open recognizes the plan table and attention section from the installed…
+  result:
+  - Ц93-06
+- key: U-9d0abc
+  tag: behavior
+  first_words: (#1633) Рабочий продукт (РП) нельзя перенести в архив, пока в его ящике…
+  result:
+  - Ц96-13
+- key: U-d4adfc
+  tag: docs
+  first_words: 'Разметка изменений перед выпуском 0.42.2: записи «Ещё не выпущено» разнесены по…'
+  service: '(#1669) разметка изменений перед выпуском 0.42.2: записи разнесены по разделам (WP-529 Ф282)'
 - key: U-653331
   tag: optional
   first_words: (#1664) В разделе «Переезд с Claude на другого агента»…
@@ -3787,23 +3830,10 @@ unreleased_links:
   tag: optional
   first_words: (#1663) Инструкция по подключению агента (`docs/AGENT-VENDOR-SETUP.md`)…
   service: (#1663) раздел «Переезд с Claude на другого агента» в AGENT-VENDOR-SETUP.md
-- key: U-df4851
-  tag: behavior
-  first_words: (#1652) Хост API WakaTime (`api.wakatime.com` вместо `wakatime.com`) теперь во…
-  service: (#1652) адрес API WakaTime api.wakatime.com во всех программах шаблона (WP-7 Ф317)
 - key: U-fa5819
   tag: behavior
   first_words: 'Автоматическая доставка из авторского источника (template-sync.sh): обновлены…'
   service: (#1650) доставка навыка mentor-participant-brief из авторской установки
-- key: U-9e9af6
-  tag: behavior
-  first_words: (#1646) Сводка WakaTime для закрытия дня (`scripts/wakatime-day-total.py`)…
-  service: (#1646) сводка WakaTime закрытия дня через api.wakatime.com, верная причина пустого дня
-- key: U-ed137c
-  tag: behavior
-  first_words: Day Open recognizes the plan table and attention section from the installed…
-  result:
-  - Ц93-06
 - key: U-4ddcaf
   tag: behavior
   first_words: English installation scripts keep their executable bits when the translated…
@@ -3817,10 +3847,6 @@ unreleased_links:
   tag: optional
   first_words: '`scripts/session-guard.sh`: при наличии `scripts/lib/process-identity.sh`…'
   service: (#1640) строка pid_start_id в отметке сессии охранника (WP-530 Ф160)
-- key: U-2417cb
-  tag: behavior
-  first_words: (#1653) Сверка главной копии с опубликованной…
-  service: '(#1653) нет ложного предупреждения IWE_RUNTIME при публикации (обращение #1625)'
 - key: U-eeb1d6
   tag: optional
   first_words: Снимок терминов графа понятий для перевода шаблона на английский обновлён…
@@ -3833,33 +3859,11 @@ unreleased_links:
   tag: docs
   first_words: (#1601) Описание процесса выпуска (`docs/RELEASE-PROCESS.md`) называет…
   service: (#1601) настоящие пути репозитория выпусков в docs/RELEASE-PROCESS.md
-- key: U-77d368
-  tag: behavior
-  first_words: (#1634) Проверка запуска Кими (`scripts/kimi-standalone-preflight.sh`) теперь…
-  result:
-  - Ц82-02
-- key: U-9d0abc
-  tag: behavior
-  first_words: (#1633) Рабочий продукт (РП) нельзя перенести в архив, пока в его ящике…
-  result:
-  - Ц96-13
 - key: U-c7bbce
   tag: behavior
   first_words: (#1628) Скиллы пир-сессий `peer-conversation` (1.5.7 → 1.8.0) и…
   result:
   - Ц82-02
-- key: U-e0430e
-  tag: behavior
-  first_words: (#1627) Срочное уведомление подписчикам о защитных изменениях…
-  service: (#1627) короткое срочное уведомление о безопасности (WP-529 Ф275)
-- key: U-f7aadd
-  tag: behavior
-  first_words: (#1629) Создание РП (`scripts/create-wp.sh`) снова держит замок, который…
-  service: '(#1629) сверка названия РП с реестром понятий при создании РП (обращение #1606)'
-- key: U-815c6b
-  tag: behavior
-  first_words: (#1626) Запись в авто-память агента через ссылку `memory/` в рабочей папке…
-  service: '(#1626) запись памяти агента без ручного подтверждения (обращение #1487)'
 - key: U-5c024f
   tag: docs
   first_words: (#1624) В журнал пострелизных аудитов (`docs/release-audit-log.md`) записан…
