@@ -1,4 +1,4 @@
-> Собрано 2026-11-20 по шаблону 54cdf6a215.
+> Собрано 2026-11-24 по шаблону 36bbe6464b.
 
 # Результаты и статистика IWE
 
@@ -8,11 +8,11 @@
 
 | Цифра | Что это | Откуда | На дату |
 |---|---|---|---|
-| **616** | результатов IWE: план 252 · в работе 214 · сделано 116 · отложено 34 | «Состояние по целям», [табло](README.md) | 2026-11-20 |
-| **1858** | записей списка изменений вышло в выпусках шаблона | список изменений шаблона на [54cdf6a](https://github.com/TserenTserenov/FMT-exocortex-template/commit/54cdf6a2150dd05b599ba8704164753a2d12f3a4) | 2026-11-20 |
-| **39** | выпусков шаблона (метки vX.Y.Z), первая метка — v0.35.4 от 2026-06-23 | метки шаблона на [54cdf6a](https://github.com/TserenTserenov/FMT-exocortex-template/commit/54cdf6a2150dd05b599ba8704164753a2d12f3a4) | 2026-11-20 |
-| **33** | сборок-кандидатов (метки -rc), из них у выпуска 0.42.1 — 16 | метки шаблона на [54cdf6a](https://github.com/TserenTserenov/FMT-exocortex-template/commit/54cdf6a2150dd05b599ba8704164753a2d12f3a4) | 2026-11-20 |
-| **171** | изменений основной ветки шаблона за 30 дней (с 2026-10-21); через запрос на слияние — 171 | история шаблона до [54cdf6a](https://github.com/TserenTserenov/FMT-exocortex-template/commit/54cdf6a2150dd05b599ba8704164753a2d12f3a4) | 2026-11-20 |
+| **625** | результатов IWE: план 258 · в работе 216 · сделано 116 · отложено 35 | «Состояние по целям», [табло](README.md) | 2026-11-24 |
+| **1858** | записей списка изменений вышло в выпусках шаблона | список изменений шаблона на [36bbe64](https://github.com/TserenTserenov/FMT-exocortex-template/commit/36bbe6464b3a98eb4a51d5d5ef0f9633ee61fffd) | 2026-11-24 |
+| **39** | выпусков шаблона (метки vX.Y.Z), первая метка — v0.35.4 от 2026-06-23 | метки шаблона на [36bbe64](https://github.com/TserenTserenov/FMT-exocortex-template/commit/36bbe6464b3a98eb4a51d5d5ef0f9633ee61fffd) | 2026-11-24 |
+| **33** | сборок-кандидатов (метки -rc), из них у выпуска 0.42.1 — 16 | метки шаблона на [36bbe64](https://github.com/TserenTserenov/FMT-exocortex-template/commit/36bbe6464b3a98eb4a51d5d5ef0f9633ee61fffd) | 2026-11-24 |
+| **167** | изменений основной ветки шаблона за 30 дней (с 2026-10-25); через запрос на слияние — 167 | история шаблона до [36bbe64](https://github.com/TserenTserenov/FMT-exocortex-template/commit/36bbe6464b3a98eb4a51d5d5ef0f9633ee61fffd) | 2026-11-24 |
 
 ## Пустые места
 
