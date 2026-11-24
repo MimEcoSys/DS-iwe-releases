@@ -19,10 +19,17 @@ that must not depend on judgement:
    Without the flag an unfilled form is only reported as a note: a form still being
    filled is normal before the candidate, but it must not read as "all clear".
 
+4. With --after-release --template-changelog PATH (run right after the release PR is merged,
+   WP-529 Ф282): every record the Release Lead deferred by key is back in the "Unreleased"
+   section of the template main CHANGELOG, and the form names how it was returned. A deferral
+   is a `git revert` on the release branch; merging that branch into main brings the revert
+   along, so without this step the deferred change silently disappears from main.
+
 Fields of the CHANGELOG entries themselves are checked in the template by
 scripts/check-changelog-fields.py; this script does not repeat it.
 
 Usage: python3 tools/check_decisions.py [--repo PATH] [--release N] [--require-final] [--rc-tree SHA]
+       [--after-release --template-changelog PATH]
 Exit: 0 - no problems; 1 - problems listed on stdout; 2 - files unreadable.
 """
 
@@ -37,10 +44,12 @@ import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import layout  # noqa: E402
+from changelog import changelog_sections  # noqa: E402
 
 KEY = re.compile(r"\bU-[0-9a-f]{6}\b")
 TAKEN_ROW = "Состав: что взято"
 DEFERRED_ROW = "Состав: что отложено"
+RETURN_ROW = "После выхода: отложенное возвращено в основную ветку"
 FINAL_ROWS = (
     TAKEN_ROW,
     "Какие строки проверки сборки блокируют выпуск",
@@ -180,6 +189,33 @@ def unfilled_rows(decisions: str) -> list[str]:
     return unfilled
 
 
+def return_problems(decisions: str, changelog: str, release: str) -> list[str]:
+    """Deferred records that did not come back to "Unreleased" of template main after the release merge.
+
+    Keys are computed by the board's own parser, so a record returned with its first line
+    unchanged has the same key it had among the candidates.
+    """
+    deferred, _ = decision_keys(decisions, DEFERRED_ROW)
+    if not deferred:
+        return []
+    back = {entry["key"] for entry in changelog_sections(changelog).get("Unreleased", [])}
+    problems = [
+        f"{key}: отложено в {release}, но в «Ещё не выпущено» основной ветки шаблона записи нет — "
+        "вернуть правку (откат отката) и её запись в этот раздел"
+        for key in sorted(deferred - back)
+    ]
+    returned = next((value for name, value in row_values(decisions).items() if name.startswith(RETURN_ROW)), "")
+    if not returned.strip():
+        problems.append(f"в decisions.md не заполнена строка «{RETURN_ROW}»: каким запросом в шаблоне возвращено отложенное")
+    return problems
+
+
+def deferred_without_keys(decisions: str) -> bool:
+    """The deferred row names something in words only: nothing to verify, but worth a note."""
+    value = next((v for name, v in row_values(decisions).items() if name.startswith(DEFERRED_ROW)), "").strip()
+    return bool(value) and value != "ничего" and not KEY.search(value)
+
+
 def latest_rc_dir(tests_dir: Path) -> Path | None:
     """The rc.<K>/ folder with the largest K: one folder per candidate, a new candidate starts a new folder."""
     candidates = [(int(m.group(1)), path) for path in tests_dir.glob("rc.*") if path.is_dir() and (m := RC_DIR.match(path.name))]
@@ -262,7 +298,11 @@ def main(argv: list[str]) -> int:
     parser.add_argument("--release", default=None, help="release number; default — `release` from developer-handoff.yaml")
     parser.add_argument("--require-final", action="store_true", help="before merge: form rows filled and red team verdict recorded")
     parser.add_argument("--rc-tree", default=None, help="tree SHA of the candidate the PR releases (from the next-rc comment)")
+    parser.add_argument("--after-release", action="store_true", help="after the release merge: deferred records are back in template main")
+    parser.add_argument("--template-changelog", type=Path, default=None, help="CHANGELOG.md of template main, read after the release merge")
     args = parser.parse_args(argv)
+    if args.after_release and args.template_changelog is None:
+        parser.error("--after-release требует --template-changelog: без журнала основной ветки возврат не проверить")
 
     try:
         handoff = yaml.safe_load((args.repo / layout.HANDOFF).read_text(encoding="utf-8")) or {}
@@ -286,6 +326,11 @@ def main(argv: list[str]) -> int:
             if not args.rc_tree:
                 problems.append("--require-final требует --rc-tree: без дерева кандидата вердикт можно принять за вердикт чужой сборки")
             problems += red_team_problems(args.repo / layout.release_dir(release) / "tests", args.rc_tree)
+        if args.after_release:
+            changelog = args.template_changelog.read_text(encoding="utf-8")
+            if "Unreleased" not in changelog_sections(changelog):
+                raise DecisionsFormError(f"в {args.template_changelog} нет раздела «## [Unreleased]» — это не журнал основной ветки шаблона")
+            problems += return_problems(decisions, changelog, release)
     except (OSError, yaml.YAMLError, DecisionsFormError) as error:
         print(f"check_decisions: {error}", file=sys.stderr)
         return 2
@@ -298,6 +343,9 @@ def main(argv: list[str]) -> int:
     print(f"OK: выпуск {release}, кандидатов {len(records)}, замечаний нет")
     if not own_candidates:
         print(f"ЗАМЕТКА: список кандидатов Разработчика ведётся для выпуска {handoff_release}; состав выпуска {release} сверен только на заполненность строки")
+    if args.after_release and deferred_without_keys(decisions):
+        print("ЗАМЕТКА: отложенное названо словами, без ключей записей U-… — возврат в основную ветку не проверен; "
+              "если отложенное было в основной ветке на момент нарезки, назовите его ключи")
     if unfilled and not args.require_final:
         print(f"ЗАМЕТКА: форма решений заполнена не до конца ({'; '.join(unfilled)}) — это не «всё чисто»; перед слиянием запустить с --require-final")
     return 0

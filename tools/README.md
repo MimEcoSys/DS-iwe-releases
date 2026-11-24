@@ -7,7 +7,8 @@
 | [build_board.py](build_board.py) | собирает табло (`board/`), страницу [NOW.md](../NOW.md) и каталог выпусков; проверяет ссылки и актуальность собранного |
 | [iwe_stats.py](iwe_stats.py) | считает результаты крупными цифрами для [board/stats.md](../board/stats.md) |
 | [release_catalog.py](release_catalog.py) | собирает каталог выпусков из [releases/index.yaml](../releases/index.yaml) |
-| [check_decisions.py](check_decisions.py) | проверяет форму решений Выпускающего (`decisions.md` папки выпуска) |
+| [check_decisions.py](check_decisions.py) | проверяет форму решений Выпускающего (`decisions.md` папки выпуска), а после слияния выпуска — что отложенное вернулось в основную ветку шаблона |
+| [changelog.py](changelog.py) | разбирает журнал изменений шаблона по разделам и даёт записям ключи `U-…`; общий для сборщика табло и проверки решений |
 | [release-checklist.py](release-checklist.py) | печатает сводку по выпуску: каждая строка протокола, кто и когда её отметил, последний вердикт атаки и итоговое решение Выпускающего |
 | [layout.py](layout.py) | единое место, где записаны пути, которые читают и пишут программы |
 | `test_*.py` | тесты программ выше |
