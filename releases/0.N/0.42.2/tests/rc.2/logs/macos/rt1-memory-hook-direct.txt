@@ -1,0 +1,70 @@
+# fixtures (all inside the disposable case)
+# 1. baseline
+ok         | expect=allow  got=allow  exit=0 | new file in memory | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/rt-note.md
+ok         | expect=allow  got=allow  exit=0 | new file in memory | mode=auto tool=Write | <RT>/clean/ws/memory/rt-note.md
+ok         | expect=allow  got=allow  exit=0 | nested existing folder | mode=acceptEdits tool=Edit | <RT>/clean/ws/memory/sub/deep/a.md
+ok         | expect=allow  got=allow  exit=0 | MultiEdit | mode=acceptEdits tool=MultiEdit | <RT>/clean/ws/memory/rt-note.md
+ok         | expect=allow  got=allow  exit=0 | NotebookEdit | mode=acceptEdits tool=NotebookEdit | <RT>/clean/ws/memory/rt.ipynb
+# 2. permission modes
+ok         | expect=silent got=silent exit=0 | mode not in the approve list | mode=default tool=Write | <RT>/clean/ws/memory/rt-note.md
+ok         | expect=silent got=silent exit=0 | mode not in the approve list | mode=plan tool=Write | <RT>/clean/ws/memory/rt-note.md
+ok         | expect=silent got=silent exit=0 | mode not in the approve list | mode=bypassPermissions tool=Write | <RT>/clean/ws/memory/rt-note.md
+ok         | expect=silent got=silent exit=0 | mode not in the approve list | mode=dontAsk tool=Write | <RT>/clean/ws/memory/rt-note.md
+ok         | expect=silent got=silent exit=0 | mode not in the approve list | mode= tool=Write | <RT>/clean/ws/memory/rt-note.md
+ok         | expect=silent got=silent exit=0 | mode not in the approve list | mode=AUTO tool=Write | <RT>/clean/ws/memory/rt-note.md
+ok         | expect=silent got=silent exit=0 | mode not in the approve list | mode=Auto tool=Write | <RT>/clean/ws/memory/rt-note.md
+ok         | expect=silent got=silent exit=0 | mode not in the approve list | mode=acceptEdits  tool=Write | <RT>/clean/ws/memory/rt-note.md
+ok         | expect=silent got=silent exit=0 | mode not in the approve list | mode=auto,default tool=Write | <RT>/clean/ws/memory/rt-note.md
+# 3. dot-dot and normalisation
+ok         | expect=silent got=silent exit=0 | memory/../ escape | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/../CLAUDE.md
+ok         | expect=silent got=silent exit=0 | memory/sub/../../ escape | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/sub/../../.claude/settings.json
+ok         | expect=silent got=silent exit=0 | memory itself | mode=acceptEdits tool=Write | <RT>/clean/ws/memory
+ok         | expect=silent got=silent exit=0 | memory with trailing slash | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/
+ok         | expect=silent got=silent exit=0 | prefix sibling memory-evil | mode=acceptEdits tool=Write | <RT>/clean/ws/memory-evil/x.md
+ok         | expect=silent got=silent exit=0 | double leading slash | mode=acceptEdits tool=Write | /<RT>/clean/ws/memory/x.md
+ok         | expect=silent got=silent exit=0 | relative path | mode=acceptEdits tool=Write | memory/x.md
+ok         | expect=silent got=silent exit=0 | upper-case MEMORY (same folder on this volume) | mode=acceptEdits tool=Write | <RT>/clean/ws/MEMORY/x.md
+ok         | expect=silent got=silent exit=0 | missing parent folder | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/no-such-dir/x.md
+ok         | expect=allow  got=allow  exit=0 | dot segment inside | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/./sub/../rt-note.md
+# 4. links
+ok         | expect=silent got=silent exit=0 | folder link leaving memory | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/link-out-dir/x.md
+ok         | expect=silent got=silent exit=0 | file link leaving memory | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/link-out-file.md
+ok         | expect=silent got=silent exit=0 | dangling link leaving memory | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/dangling.md
+UNEXPECTED | expect=silent got=allow  exit=0 | link loop | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/loopa
+ok         | expect=allow  got=allow  exit=0 | folder link staying inside | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/link-in/a.md
+ok         | expect=silent got=silent exit=0 | out-link then dot-dot (physical parent is outside) | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/link-out-dir/../x.md
+# 4a. check/use mismatch: the hook resolves dot-dot after the link (physical), an editor that
+#     collapses dot-dot as text writes to memory/mis.md, which is a link leaving memory
+UNEXPECTED | expect=silent got=allow  exit=0 | in-link + dot-dot, lexical target is an out-link | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/link-in/../mis.md
+#     hard link: same inode as a file outside memory (the hook cannot see it)
+ok         | expect=allow  got=allow  exit=0 | hard link to an outside file | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/hardlink.md
+# 5. other tools and malformed requests
+ok         | expect=silent got=silent exit=0 | Bash is not a file tool | mode=acceptEdits tool=Bash | echo x > <RT>/clean/ws/memory/x.md
+ok         | expect=silent got=silent exit=0 | Read | mode=acceptEdits tool=Read | <RT>/clean/ws/memory/x.md
+ok         | expect=silent got=silent exit=0 | lower-case tool name | mode=acceptEdits tool=write | <RT>/clean/ws/memory/x.md
+ok         | expect=silent got=silent exit=0 | Write with the path in the wrong field | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/x.md
+ok         | expect=silent got=silent | path is a list
+ok         | expect=silent got=silent | tool_input is a string
+ok         | expect=silent got=silent | top level is a list
+ok         | expect=silent got=silent | not JSON
+ok         | expect=silent got=silent | empty input
+ok         | expect=silent got=silent | NUL inside the path
+ok         | expect=allow  got=allow  | duplicate mode key, last one wins (auto)
+# 6. switches and environment
+ok         | expect=silent got=silent exit=0 | opt-out variable = 0 | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/rt-note.md
+ok         | expect=allow  got=allow  exit=0 | opt-out variable = false (only the literal 0 switches it off) | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/rt-note.md
+ok         | expect=allow  got=allow  exit=0 | opt-out variable empty | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/rt-note.md
+ok         | expect=silent got=silent exit=0 | no project folder in the environment | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/rt-note.md
+# 7. foreign project: a cloned folder ships its own memory link and its own copy of the hook
+ok         | expect=silent got=silent | memory -> a folder outside (stand-in for ~/.ssh)
+ok         | expect=silent got=silent | memory -> the memory of ANOTHER project (the install)
+ok         | expect=silent got=silent | memory -> the whole projects folder
+ok         | expect=allow  got=allow  | memory -> its own auto-memory folder (legitimate)
+#     environment the session could inherit: the folder name and the config folder are taken from variables
+ok         | expect=allow  got=allow  | CLAUDE_CODE_PROJECT_DIR_NAME points the check at another project's memory
+ok         | expect=allow  got=allow  | CLAUDE_CONFIG_DIR points at a folder where projects/<name>/memory is a link outside
+#     same folder name for two different project paths (every non-alphanumeric character becomes -)
+note       | project paths .../slug/a-b and .../slug/a/b share one auto-memory folder name (same rule as Claude Code itself)
+# 8. swap between check and write (documented limit): the hook answers allow, then memory is repointed
+note       | answer before the swap: allow; after the swap the same written path resolves to <RT>/clean/outside/ssh
+# total requests: 53, answers different from the expected one: 2

@@ -1,0 +1,23 @@
+PASS: guard refuses a real IWE workspace path
+PASS: guard refuses a real non-disposable path
+PASS: guard refuses a fixture nested inside the workspace root
+PASS: guard runs the command under a disposable temp path
+PASS: guard redirects HOME into the fixture
+PASS: guard redirects WORKSPACE_DIR into the fixture
+PASS: guard strips inherited IWE_ROOT from the command environment
+PASS: guard forces SETUP_CI=1 inside the disposable fixture
+PASS: guard preserves an ordinary child failure without service calls
+PASS: guard denies direct launchctl without reaching caller stub
+PASS: guard denies direct systemctl without reaching caller stub
+PASS: guard denies direct crontab without reaching caller stub
+PASS: guard reports a swallowed nested launchctl call
+PASS: guard keeps deny shims through nested env -i with PATH propagation
+PASS: guard fails closed when a child removes a used audit record
+PASS: guard fails closed when a child removes the deny directory
+PASS: guard fails closed when a child removes a deny shim
+PASS: SETUP_CI installs all role plists without unloading host jobs
+PASS: smoke clean PATH keeps guard-owned deny shims first
+PASS: known-good release classified GO
+PASS: known-bad release BLOCKED by the planted manifest hash mismatch
+
+calibration OK — guard containment and integrity contract behave as required

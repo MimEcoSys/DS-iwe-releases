@@ -1,0 +1,53 @@
+## group- or world-writable files and folders (outside .git):
+count: 0
+## modes of sensitive files:
+-rw------- <RT>/upg/ws/.exocortex.env
+-rw------- <RT>/upg/ws/.mcp.json
+-rw-r--r-- <RT>/upg/ws/.claude/settings.json
+-rw-r--r-- <RT>/upg/ws/params.yaml
+-rw-r--r-- <RT>/upg/ws/.iwe-paths
+-rw-r--r-- <RT>/upg/home/.zshenv
+-rw-r--r-- <RT>/upg/home/.claude.json
+## modes of folders:
+drwxr-xr-x <RT>/upg/ws/.claude
+drwxr-xr-x <RT>/upg/ws/.iwe-runtime
+drwxr-xr-x <RT>/upg/ws/.claude/hooks
+drwxr-xr-x <RT>/upg/home/.claude
+drwx------ <RT>/upg/home/.claude/projects
+drwxr-xr-x <RT>/upg/home/.claude/projects/<RT>-SLUG-upg-ws/memory
+## hook scripts without the execute bit: 0
+## setuid/setgid files: 0
+## absolute symlinks that leave the disposable install:
+## plist files written into the disposable HOME: 3
+-rw-r--r-- <RT>/upg/home/Library/LaunchAgents/com.extractor.git-diff-feed.plist
+-rw-r--r-- <RT>/upg/home/Library/LaunchAgents/com.strategist.weekreview.plist
+-rw-r--r-- <RT>/upg/home/Library/LaunchAgents/com.strategist.morning.plist
+## backups folder modes:
+drwxr-xr-x <RT>/upg/ws/.backups
+drwxr-xr-x <RT>/upg/ws/.backups/settings-merge
+-rw-r--r-- <RT>/upg/ws/.backups/settings-merge/settings.json.20261125T143253Z
+-rw-r--r-- <RT>/upg/ws/.backups/settings-merge/settings.json.20261125T143050Z
+drwxr-xr-x <RT>/upg/ws/.backups/deprecated
+drwxr-xr-x <RT>/upg/ws/.backups/deprecated/20261125T143253Z-35427
+drwxr-xr-x <RT>/upg/ws/.backups/deprecated/20261125T143253Z-35427/workspace
+drwxr-xr-x <RT>/upg/ws/.backups/deprecated/20261125T143253Z-35427/template
+## service manager calls recorded by the stubs:
+launchctl unload <RT>/upg/home/Library/LaunchAgents/com.strategist.morning.plist
+launchctl load <RT>/upg/home/Library/LaunchAgents/com.strategist.morning.plist
+launchctl unload <RT>/upg/home/Library/LaunchAgents/com.strategist.weekreview.plist
+launchctl load <RT>/upg/home/Library/LaunchAgents/com.strategist.weekreview.plist
+launchctl list
+launchctl list com.extractor.git-diff-feed
+launchctl unload <RT>/upg/home/Library/LaunchAgents/com.extractor.git-diff-feed.plist
+launchctl load <RT>/upg/home/Library/LaunchAgents/com.extractor.git-diff-feed.plist
+launchctl unload <RT>/upg/home/Library/LaunchAgents/com.strategist.morning.plist
+launchctl load <RT>/upg/home/Library/LaunchAgents/com.strategist.morning.plist
+launchctl unload <RT>/upg/home/Library/LaunchAgents/com.strategist.weekreview.plist
+launchctl load <RT>/upg/home/Library/LaunchAgents/com.strategist.weekreview.plist
+launchctl list
+launchctl list com.extractor.git-diff-feed
+launchctl unload <RT>/upg/home/Library/LaunchAgents/com.extractor.git-diff-feed.plist
+launchctl load <RT>/upg/home/Library/LaunchAgents/com.extractor.git-diff-feed.plist
+launchctl list com.extractor.git-diff-feed
+launchctl unload <RT>/upg/home/Library/LaunchAgents/com.extractor.git-diff-feed.plist
+launchctl load <RT>/upg/home/Library/LaunchAgents/com.extractor.git-diff-feed.plist

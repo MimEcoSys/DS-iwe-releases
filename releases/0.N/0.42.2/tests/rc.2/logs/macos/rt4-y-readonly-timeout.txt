@@ -1,0 +1,96 @@
+### variant=y-readonly shape=readonly answer=y command: IWE_UPDATE_CHANNEL=rc bash update.sh
+### before: sha=175e65b41c6b kind=file mode=-r--r--r-- json=valid memory-hook=0 session-gate=1 secret-read-matcher=Read|Edit|MultiEdit|Grep secret-read-timeout=none own-key=0
+==========================================
+  Exocortex Update v2.4.1
+==========================================
+  Репо: <RT>/upg/ws/FMT-exocortex-template
+
+  Канал поставки: кандидат v0.42.2-rc.2 (снимок 13179b4e0824)
+[0] Проверка update.sh...
+  Найдена новая версия update.sh — обновляю...
+  Перезапуск...
+==========================================
+  Exocortex Update v2.4.1
+==========================================
+  Репо: <RT>/upg/ws/FMT-exocortex-template
+
+  Канал поставки: кандидат v0.42.2-rc.2 (снимок 13179b4e0824)
+[0] Проверка update.sh...
+  update.sh актуален.
+
+[1] Загрузка манифеста...
+  Установленная версия: 0.42.1
+  Версия upstream: 0.42.2
+
+[2] Сравнение файлов...
+  Скачиваю 47 файлов (до 8 параллельно)...
+  ⚠ пакетная загрузка: curl код 28; curl: (28) Operation timed out after 20005 milliseconds with 44458 out of 169069 bytes received
+  ⚠ пакетная загрузка: curl код 28; curl: (28) Operation timed out after 19862 milliseconds with 34394 out of 169069 bytes received
+  (1/47) .claude/hooks/memory-write-permission.sh
+  (2/47) .claude/hooks/secret-file-read-block.sh
+  (3/47) .claude/hooks/session-open-gate.sh
+  (4/47) .claude/hooks/tests/test-issue-1657-secret-file-read-block-kimi-envelope.sh
+  (5/47) .claude/hooks/tests/test-memory-write-permission.sh
+  (6/47) .claude/hooks/tests/test-session-open-gate.sh
+  (7/47) .claude/lib/locale/en.json
+  (8/47) .claude/lib/locale/ru.json
+  (9/47) .claude/settings.json
+  (10/47) .claude/skills-catalog.yaml
+  (11/47) .claude/skills/day-close/SKILL.md
+  (12/47) .claude/skills/kimi-peer-writer/SKILL.md
+  (13/47) .claude/skills/mentor-participant-brief/SKILL.md
+  (14/47) .claude/skills/peer-conversation/SKILL.md
+  (15/47) .claude/skills/verify/SKILL.md
+  (16/47) .github/workflows/notify-security.yml
+  (17/47) .github/workflows/validate-template.yml
+  (18/47) CHANGELOG.md
+  (19/47) docs/AGENT-VENDOR-SETUP.md
+  (20/47) docs/RELEASE-PROCESS.md
+  (21/47) docs/release-audit-log.md
+  (22/47) generate-manifest.sh
+  (23/47) roles/strategist/scripts/fetch-wakatime.sh
+  (24/47) roles/synchronizer/scripts/dt-collect.sh
+  (25/47) roles/verifier/prompts/verify-wp-acceptance.md
+  (26/47) scripts/canon-reconcile-published.sh
+  (27/47) scripts/concept-kind.py
+  (28/47) scripts/create-wp.sh
+  (29/47) scripts/day-open-llm-fill.py
+  (30/47) scripts/day-open-multiplier-backfill-patch.py
+  (31/47) scripts/day-open-priorities-patch.py
+  (32/47) scripts/iwe-notify
+  (33/47) scripts/kimi-standalone-preflight.sh
+  (34/47) scripts/lib/dayplan_sections.py
+  (35/47) scripts/lib/process-identity.sh
+  (36/47) scripts/security-notice-build.py
+  (37/47) scripts/session-guard.sh
+  (38/47) scripts/test-wp-inbox.sh
+  (39/47) scripts/tests/fixtures/python-resolver-baseline.txt
+  (40/47) scripts/tests/run-issue-tests.sh
+  (41/47) scripts/wakatime-day-total.py
+  (42/47) scripts/wp-inbox.sh
+  (43/47) seed/strategy/scripts/day-open-llm-fill.py
+  (44/47) seed/strategy/scripts/day-open-multiplier-backfill-patch.py
+  (45/47) seed/strategy/scripts/day-open-priorities-patch.py
+  (46/47) seed/strategy/scripts/lib/dayplan_sections.py
+  (47/47) translation-manifest.yaml
+  ○ Устаревшие по манифесту, но отслеживаются git этой копии шаблона — оставлены: scripts/tests/test_session_guard_unknown_flag.sh
+    Удалить из своей копии: git -C "<RT>/upg/ws/FMT-exocortex-template" rm -- scripts/tests/test_session_guard_unknown_flag.sh
+
+==========================================
+  Обновления экзокортекса (v0.42.2)
+==========================================
+
+Не удалось проверить (4):
+  ? .claude/skills/peer-conversation/SKILL.md — файл не скачался, состояние неизвестно
+  ? CHANGELOG.md — файл не скачался, состояние неизвестно
+  ? scripts/create-wp.sh — файл не скачался, состояние неизвестно
+  ? scripts/session-guard.sh — файл не скачался, состояние неизвестно
+  Эти файлы могут отличаться от upstream и быть перезаписаны при обычном запуске.
+
+✗ Обновление остановлено: 4 файл(ов) не скачались или не прошли проверку целостности (список выше).
+  Применение остальных 43 изменений отменено — иначе локальный манифест пометил бы обновление как завершённое, а эти файлы остались бы старыми.
+  Ничего не изменено. Повторите запуск, когда сеть будет доступна.
+### exit=2
+### after:  sha=175e65b41c6b kind=file mode=-r--r--r-- json=valid memory-hook=0 session-gate=1 secret-read-matcher=Read|Edit|MultiEdit|Grep secret-read-timeout=none own-key=0 (unchanged)
+### template now: v0.42.1 ; preview file left: 0 ; stray temp files: 0
+### backups:
