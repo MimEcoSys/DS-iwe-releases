@@ -1,0 +1,31 @@
+Testing scripts/day-open-llm-fill.py
+test_catalog_supplied_by_installation_controls_dispatch (__main__.FillTests.test_catalog_supplied_by_installation_controls_dispatch) ... ok
+test_empty_plan_does_not_borrow_a_neighboring_table (__main__.FillTests.test_empty_plan_does_not_borrow_a_neighboring_table) ... ok
+test_failed_fill_reports_preserved_scaffold (__main__.FillTests.test_failed_fill_reports_preserved_scaffold) ... ok
+test_final_placeholder_formats (__main__.FillTests.test_final_placeholder_formats) ... ok
+test_last_postprocessor_is_checked (__main__.FillTests.test_last_postprocessor_is_checked) ... ok
+test_no_pending_fast_path_reports_plain_placeholder (__main__.FillTests.test_no_pending_fast_path_reports_plain_placeholder) ... ok
+test_other_section_table_is_not_today_plan (__main__.FillTests.test_other_section_table_is_not_today_plan) ... ok
+test_priorities_update_only_the_matching_sections (__main__.FillTests.test_priorities_update_only_the_matching_sections) ... ok
+test_real_prompt_routing (__main__.FillTests.test_real_prompt_routing) ... ok
+
+<TOKEN>
+Ran 9 tests in 0.171s
+
+OK
+Testing seed/strategy/scripts/day-open-llm-fill.py
+test_catalog_supplied_by_installation_controls_dispatch (__main__.FillTests.test_catalog_supplied_by_installation_controls_dispatch) ... ok
+test_empty_plan_does_not_borrow_a_neighboring_table (__main__.FillTests.test_empty_plan_does_not_borrow_a_neighboring_table) ... ok
+test_failed_fill_reports_preserved_scaffold (__main__.FillTests.test_failed_fill_reports_preserved_scaffold) ... ok
+test_final_placeholder_formats (__main__.FillTests.test_final_placeholder_formats) ... ok
+test_last_postprocessor_is_checked (__main__.FillTests.test_last_postprocessor_is_checked) ... ok
+test_no_pending_fast_path_reports_plain_placeholder (__main__.FillTests.test_no_pending_fast_path_reports_plain_placeholder) ... ok
+test_other_section_table_is_not_today_plan (__main__.FillTests.test_other_section_table_is_not_today_plan) ... ok
+test_priorities_update_only_the_matching_sections (__main__.FillTests.test_priorities_update_only_the_matching_sections) ... ok
+test_real_prompt_routing (__main__.FillTests.test_real_prompt_routing) ... ok
+
+<TOKEN>
+Ran 9 tests in 0.149s
+
+OK
+exit=0
