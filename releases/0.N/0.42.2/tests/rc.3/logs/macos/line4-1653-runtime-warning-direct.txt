@@ -1,0 +1,9 @@
+== candidate rc.3 (live install, after day close)
+exit=1
+canon-reconcile-published: refused -- git fetch origin main failed (canon untouched, publish not rolled back; this reason 1 time(s) over 0 min; dirty tracked paths now: 1)
+RESULT: no 'IWE_RUNTIME used as a directory' warning
+== 0.42.1 script, same environment (for contrast)
+exit=1
+canon-reconcile-published: IWE_RUNTIME used as a directory (legacy caller); set IWE_RUNTIME_DIR instead
+canon-reconcile-published: the lock library is missing or unusable: <TMP>/tools/lib/dirty-guard-lock.sh (scripts/ and scripts/lib/ are updated together); nothing was done
+RESULT: warning present

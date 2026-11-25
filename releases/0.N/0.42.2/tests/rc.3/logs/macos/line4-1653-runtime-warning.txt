@@ -1,0 +1,5 @@
+  ok   standard runtime from .iwe-paths: no warning
+  ok   standard runtime with trailing slash: no warning
+  ok   other absolute directory: warns
+PASS: issue #1625 (3 checks)
+exit=0

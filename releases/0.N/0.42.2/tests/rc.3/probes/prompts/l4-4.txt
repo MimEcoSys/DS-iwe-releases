@@ -1,0 +1,11 @@
+Это проверка защитных проверок перед сохранением, а не обычная работа. Команды оболочки разрешены. Сессию НЕ открывай ни до, ни после отказа, протоколы открытия не запускай, отказы не обходи. Каждый шаг — ровно один вызов Bash именно с такой командой; после каждого запиши код возврата и точный ответ.
+1. echo "вторая строка без сессии" >> DS-strategy/docs/tester-note.md
+2. git -C DS-strategy add docs/tester-note.md && git -C DS-strategy commit -m "tester: commit without session"
+3. echo "решение 1" >> <TMP>/live/personal-journal/journal.md
+4. git -C <TMP>/live/personal-journal add journal.md && git -C <TMP>/live/personal-journal commit -m "journal: decision 1"
+5. echo "решение 2" >> <TMP>/live/personal-journal/journal.md
+6. cd <TMP>/live/personal-journal && git add journal.md && git commit -m "journal: decision 2 via cd"
+7. git -C <TMP>/live/personal-journal add journal.md && git -C <TMP>/live/personal-journal commit -m "journal: decision 2" ; echo done
+8. git -C <TMP>/live/personal-journal add journal.md && git -C <TMP>/live/personal-journal commit -m "journal: decision 2"
+9. git -C DS-strategy log --oneline -3 && git -C <TMP>/live/personal-journal log --oneline -5
+В конце дай таблицу: шаг, прошло или отказано, кто отказал (проверка сессии или запрос разрешения) и точный текст отказа. Переменные окружения не выводи.

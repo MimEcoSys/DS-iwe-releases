@@ -1,0 +1,4 @@
+core.hooksPath=.githooks
+pre-commit: installed=6c54749ea157afa4 candidate(seed/strategy/.githooks/pre-commit)=6c54749ea157afa4
+pre-push: installed=d2fc416595518b4b candidate(seed/strategy/.githooks/pre-push)=d2fc416595518b4b
+pre-commit-deny-legacy-sessions.sh: installed=86856c927cae3fc4 candidate(seed/strategy/.githooks/pre-commit-deny-legacy-sessions.sh)=86856c927cae3fc4
