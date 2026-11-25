@@ -12,7 +12,7 @@ ANSWER: b7847ff Add decision: chose plan B
 4e9082e init
 CALL Bash: {"command": "git -C <RT>/clean/journal show --stat HEAD"}
 ANSWER: commit b7847ff474d749770e580a689a1904d5460eb5ce
-Author: tester <tester@test.local>
+Author: tester <<EMAIL>>
 Date:   Wed Nov 25 19:52:07 2026 +0200
 
     Add decision: chose plan B

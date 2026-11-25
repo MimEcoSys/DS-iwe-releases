@@ -19,7 +19,7 @@ TOKEN = re.compile("sk-" + r"ant-[A-Za-z0-9_\-]+")
 LONG = re.compile(r"(?<![A-Za-z0-9_+=\-])(?![0-9a-f]{40,64}(?![A-Za-z0-9_+=\-]))[A-Za-z0-9_+=\-]{60,}(?![A-Za-z0-9_+=\-])")
 # test identities of the disposable installs, written in two halves so that this file holds no address
 TEST_DOMAIN = "@" + "test.local"
-ALLOWED_EMAILS = {"noreply@anthropic.com", "noreply@github.com", "tester" + TEST_DOMAIN, "t" + TEST_DOMAIN}
+ALLOWED_EMAILS = {"noreply@anthropic.com", "noreply@github.com"}
 
 
 def slug(path: str) -> str:
@@ -33,7 +33,7 @@ def clean(text: str) -> str:
     text = re.sub(r"-private-tmp-claude-\d+--Users-[A-Za-z0-9]+-IWE-[A-Za-z0-9\-]*", "<TMP-SLUG>", text)
     text = re.sub(r"/private/tmp/claude-\d+/-Users-[A-Za-z0-9]+-IWE/[^\s\"'`)]*", "<TMP-OTHER>", text)
     text = UUID.sub("<uuid>", text)
-    text = EMAIL.sub(lambda m: m.group(0) if m.group(0).lower() in ALLOWED_EMAILS else "<email>", text)
+    text = EMAIL.sub(lambda m: m.group(0) if m.group(0).lower() in ALLOWED_EMAILS else "<EMAIL>", text)
     text = re.sub(r"/Users/[A-Za-z0-9._-]+", "/Users/<user>", text)
     text = re.sub(r"/var/folders/[A-Za-z0-9_]+/[A-Za-z0-9_]+/", "/var/folders/<id>/", text)
     text = text.replace(user, "<user>")
