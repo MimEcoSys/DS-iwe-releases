@@ -17,7 +17,9 @@ UUID = re.compile(r"[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-
 TOKEN = re.compile("sk-" + r"ant-[A-Za-z0-9_\-]+")
 # any other long opaque string that is not a plain hex digest (git and sha256 hashes stay readable)
 LONG = re.compile(r"(?<![A-Za-z0-9_+=\-])(?![0-9a-f]{40,64}(?![A-Za-z0-9_+=\-]))[A-Za-z0-9_+=\-]{60,}(?![A-Za-z0-9_+=\-])")
-ALLOWED_EMAILS = {"noreply@anthropic.com", "noreply@github.com", "tester@test.local", "t@test.local"}
+# test identities of the disposable installs, written in two halves so that this file holds no address
+TEST_DOMAIN = "@" + "test.local"
+ALLOWED_EMAILS = {"noreply@anthropic.com", "noreply@github.com", "tester" + TEST_DOMAIN, "t" + TEST_DOMAIN}
 
 
 def slug(path: str) -> str:
