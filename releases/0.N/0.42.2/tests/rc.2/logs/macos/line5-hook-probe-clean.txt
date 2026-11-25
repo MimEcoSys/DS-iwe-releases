@@ -1,0 +1,8 @@
+new file in memory/ | mode=acceptEdits | exit=0 | allow
+new file in memory/ | mode=auto | exit=0 | allow
+new file in memory/ | mode=default | exit=0 | silent (prompt stays)
+via symlink to folder outside | mode=acceptEdits | exit=0 | silent (prompt stays)
+via symlink to folder outside | mode=auto | exit=0 | silent (prompt stays)
+memory/../ escape | mode=acceptEdits | exit=0 | silent (prompt stays)
+ordinary workspace file | mode=acceptEdits | exit=0 | silent (prompt stays)
+memory/ with opt-out | mode=acceptEdits | exit=0 | silent (prompt stays)

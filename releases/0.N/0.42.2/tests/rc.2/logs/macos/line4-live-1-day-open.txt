@@ -1,0 +1,369 @@
+# Claude Code 2.1.329 · модель claude-sonnet-5-5 · режим разрешений acceptEdits · MCP: iwe-knowledge=needs-auth
+ВЫЗОВ Bash: {"command": "bash .claude/scripts/light-onboarding-state.sh done", "description": "Mark light onboarding as done"}
+ВЫЗОВ Skill: {"skill": "day-open"}
+ОТВЕТ: light onboarding: marked as passed
+ОТВЕТ: Launching skill: day-open
+АГЕНТ: Пошаговый контроль без TodoWrite: веду явную нумерацию шагов.
+
+**Шаг 0: расширения (before) и дата**
+ВЫЗОВ Bash: {"command": "date; echo ---; bash .claude/scripts/load-extensions.sh day-open before; echo \"exit=$?\"; echo ---; ls; echo ---; echo \"IWE_WORKSPACE=$IWE_WORKSPACE IWE_ROOT=$IWE_ROOT IWE_SCRIPTS=$IWE_SCRIPTS\"; ls ~/IWE 2>&1 | head -30", "description": "Get date, load before-extensions, inspect workspace"}
+ОТВЕТ: Wed Nov 25 14:50:08 EET 2026
+---
+exit=1
+---
+AGENTS.md
+CLAUDE.md
+DS-strategy
+extensions
+FMT-exocortex-template
+FPF
+link-out
+logs
+memory
+params.yaml
+SPF
+ZP
+---
+IWE_WORKSPACE=<TMP>/live/ws IWE_ROOT=<TMP>/live/ws IWE_SCRIPTS=<TMP>/live/ws/FMT-exocortex-template/scripts
+ВЫЗОВ Bash: {"command": "cd \"$IWE_WORKSPACE\"; ls extensions DS-strategy DS-strategy/current DS-strategy/inbox 2>&1 | head -50; echo ---; cat params.yaml | head -30; echo ---; cat memory/day-rhythm-config.yaml 2>&1 | head -40; ls $IWE_SCRIPTS | head -30", "description": "Inspect strategy repo, config and scripts"}
+ОТКАЗ/ОШИБКА: PreToolUse:Bash hook error: [$CLAUDE_PROJECT_DIR/.claude/hooks/destructive-guard.sh]: BLOCKED: верхнеуровневый cd запрещён: используй git -C <path>, абсолютный путь или (cd <path> && ...).
+
+ВЫЗОВ Bash: {"command": "W=\"$IWE_WORKSPACE\"; ls $W/extensions $W/DS-strategy $W/DS-strategy/current $W/DS-strategy/inbox 2>&1 | head -50; echo ---; head -30 $W/params.yaml; echo ---; head -40 $W/memory/day-rhythm-config.yaml 2>&1; echo ---; ls $IWE_SCRIPTS 2>&1 | head -30", "description": "Inspect strategy repo, config and scripts"}
+ОТВЕТ: <TMP>/live/ws/DS-strategy:
+archive
+CLAUDE.md
+current
+decisions
+docs
+drafts
+exocortex
+inbox
+personal
+REPO-TYPE.md
+scripts
+
+<TMP>/live/ws/DS-strategy/current:
+WeekPlan W1.md
+
+<TMP>/live/ws/DS-strategy/inbox:
+fleeting-notes.md
+
+<TMP>/live/ws/extensions:
+---
+# Exocortex Parameters (пользовательские настройки)
+#
+# Этот файл содержит персистентные параметры, влияющие на поведение протоколов.
+# update.sh НЕ перезаписывает этот файл — ваши настройки в безопасности.
+#
+# Формат: YAML. Протоколы читают params.yaml и адаптируют поведение.
+
+# === Общее ===
+
+# Часовой пояс установки (issue #1410): IANA-имя, например Asia/Vladivostok,
+# Europe/Moscow. Пусто или ключ не задан — системный часовой пояс машины
+# (/etc/localtime). Задавать, если планировщик работает на сервере в другом поясе.
+# Им считают время протоколы (memory/protocol-work.md §2) и утренний сборщик.
+timezone:
+
+# Регион установки (WP-406, лёгкий онбординг v1.0.2): какой сайт называет
+# онбординг в ответ на вопрос об аккаунте и подписке.
+#   ru         — https://system-school.ru
+#   иное/пусто — https://aisystant.com
+region: ru
+
+# === Протоколы ===
+
+# Day Open: проверка видео за предыдущий день
+video_check: true
+
+# Day Open: источник календаря (issue #942)
+#   connector — календарный коннектор claude.ai, затем scripts/server-calendar.sh (по умолчанию, ключ не задан = connector)
+#   script    — только scripts/server-calendar.sh (нужен файл ключей Google)
+#   none      — календарь не используется: без проверки, без секции в DayPlan, коннектор не подключается
+---
+# Day Rhythm Configuration (L4 Personal)
+# Override defaults from IWE Template (L3).
+# Agent reads this file at Day Open and during Day Work.
+
+day_open:
+  week_close_day: sunday
+  strategy_day: sunday          # Day for strategizing session (monday..sunday)
+  # day_boundary: "04:30"        # issue #924 — work done after midnight but before this
+                                 # hour still belongs to the day that's ending, not a new
+                                 # one. Shifts day-open-scaffold.sh/day-open-pipeline.sh's
+                               …[обрезано, всего 4671 знаков]
+АГЕНТ: **Шаги 0а и 1: привязка сессии, WeekPlan, заметки, вчера**
+ВЫЗОВ Bash: {"command": "W=\"$IWE_WORKSPACE\"; HARNESS_ID=\"${CLAUDE_CODE_SESSION_ID:-}\"; AGENT=\"${IWE_AGENT:-claude-code}\"; bash \"$IWE_SCRIPTS/session-guard.sh\" open --housekeeping day-open --agent \"$AGENT\" 2>&1 | tail -5; echo ---WEEK; cat \"$W/DS-strategy/current/WeekPlan W1.md\"; echo ---NOTES; cat $W/DS-strategy/inbox/fleeting-notes.md; echo ---ARCH; ls $W/DS-strategy/archive $W/DS-strategy/archive/* 2>&1 | head; echo ---LOG; ls ~/logs/strategist/ 2>&1 | tail -3; cat ~/logs/strategist/2026-11-25.log 2>&1 | tail -20; echo ---GIT; for r in $W/*/; do [ -d \"$r/.git\" ] && echo \"$r: $(git -C $r log --since=yesterday --oneline 2>/dev/null | wc -l)\"; done", "description": "Open session guard, read week plan, notes, logs, commits"}
+ОТВЕТ: Housekeeping OPEN: <TMP>/live/ws/.iwe-runtime/sessions/claude-code-housekeeping-day-open.open (reason: day-open)
+---WEEK
+---
+type: week-plan
+week: W1
+status: draft
+agent: Стратег
+---
+
+# WeekPlan W1
+
+**Фокус:** [заполняется на первой стратегической сессии]
+
+| 🚦 | # | РП | h | Источник | P | Статус | Результат |
+|----|---|-----|---|----------|---|--------|-----------|
+| — | — | — | — | — | — | — | — |
+---NOTES
+# Fleeting Notes
+
+> Заметки из Telegram бота и ручного ввода. **Разбирает только пилот** — обычно в секции «Разбор заметок» Открытия дня; агенты лишь предлагают категорию и действие, автоматического ночного разбора нет.
+> Пометки: **жирные** = ждут решения пилота | **жирные** ✅предложено = агент предложил категорию и действие, решение за пилотом | ~~зачёркнутые~~ = пилот закрыл сам.
+> Уход в архив: только после решения пилота (запись в `archive/notes/Notes-Archive.md` содержит «Разбор: дата — Решение пилота: …»).
+
+---
+---ARCH
+<TMP>/live/ws/DS-strategy/archive:
+day-plans
+notes
+week-plans
+week-reports
+wp-contexts
+
+<TMP>/live/ws/DS-strategy/archive/day-plans:
+
+<TMP>/live/ws/DS-strategy/archive/notes:
+---LOG
+ls: <TMP>/live/home/logs/strategist/: No such file or directory
+cat: <TMP>/live/home/logs/strategist/2026-11-25.log: No such file or directory
+---GIT
+<TMP>/live/ws/DS-strategy/:        1
+<TMP>/live/ws/FMT-exocortex-template/:       18
+<TMP>/live/ws/FPF/:        1
+<TMP>/live/ws/SPF/:        0
+<TMP-OTHER> …[обрезано, всего 2568 знаков]
+ВЫЗОВ Bash: {"command": "W=\"$IWE_WORKSPACE\"; bash .claude/scripts/load-extensions.sh day-open after; echo \"after=$?\"; bash .claude/scripts/load-extensions.sh day-open checks; echo \"checks=$?\"; echo ---CAL; bash $IWE_SCRIPTS/server-calendar.sh 2026-11-25 2>&1 | head -5; echo ---UPD; (cd \"$IWE_TEMPLATE\" 2>/dev/null || cd $W/FMT-exocortex-template && timeout 60 bash update.sh --check --fast 2>&1 | tail -8); echo ---TPL; cat .claude/skills/day-open/templates.md | head -150", "description": "Run after/checks extensions, calendar fallback, update check, read templates"}
+ОТКАЗ/ОШИБКА: PreToolUse:Bash hook error: [$CLAUDE_PROJECT_DIR/.claude/hooks/destructive-guard.sh]: BLOCKED: верхнеуровневый cd запрещён: используй git -C <path>, абсолютный путь или (cd <path> && ...).
+
+ВЫЗОВ Bash: {"command": "W=\"$IWE_WORKSPACE\"; bash .claude/scripts/load-extensions.sh day-open after; echo \"after=$?\"; bash .claude/scripts/load-extensions.sh day-open checks; echo \"checks=$?\"; echo ---CAL; bash $IWE_SCRIPTS/server-calendar.sh 2026-11-25 2>&1 | head -5; echo ---UPD; (cd $W/FMT-exocortex-template && timeout 60 bash update.sh --check --fast 2>&1 | tail -8); echo ---TPL; head -150 .claude/skills/day-open/templates.md", "description": "Run after/checks extensions, calendar, update check, read templates"}
+ОТВЕТ: after=1
+checks=1
+---CAL
+📅 **Календарь (2026-11-25):** ⚠️ PENDING — Google credentials не настроены. Установить: ~/.secrets/google-calendar (GOOGLE_REFRESH_TOKEN, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET)
+
+⏱ Свободных блоков ≥1h: **не определено**
+---UPD
+(eval):1: command not found: timeout
+---TPL
+> Используется в: `.claude/skills/day-open/SKILL.md` (шаги 7a, 7d).
+
+## Шаблон DayPlan
+
+> **Стиль:** collapsible, без `---`, `<b>` в summary. Приоритет = светофор (🔴🟡🟢). Результат = краткое название из Strategy.md.
+
+```markdown
+---
+type: daily-plan
+date: YYYY-MM-DD
+week: W{N}
+status: active
+agent: Стратег
+---
+
+# Day Plan: DD месяца YYYY (День недели)
+
+<details open>
+<summary><b>План на сегодня</b></summary>
+
+| 🚦 | # | РП | h | Статус | Результат |
+|----|---|-----|---|--------|-----------|
+| ⚫ | N | **Саморазвитие** — [тема] | 1-2 | pending | — |
+| 🔴 | ... | **Название** | X | in_progress | Краткое название |
+
+**Бюджет дня:** ~Yh РП всего / ~Xh физ / Плановый мультипликатор ~N.Nx
+
+</details>
+<details>
+<summary><b>Календарь (DD месяца)</b></summary>
+
+| Время | Событие | Длит. | Связь с РП |
+|-------|---------|-------|------------|
+| HH:MM | Название | Xh | WP-N / — |
+
+⏱ Свободных блоков ≥1h: [слоты]
+
+</details>
+<details>
+<summary><b>IWE за ночь (светофор)</b></summary>
+
+| Подсистема | Статус | Детали |
+|------------|--------|--------|
+| template-sync | 🟢/🔴 | [статус] |
+| Scout | 🟢/🟡/🔴 | [N находок] |
+
+</details>
+<details>
+<summary><b>Наработки Scout (разбор)</b></summary>
+
+> Отчёт за DD мес — N находок, M capture-кандидатов
+> **Статус ревью:** ⬜ не проверен / ✅ проверен
+
+**Ожидают разбора:** N captures за последние DD дней (без ревью).
+
+</details>
+<details>
+<summary><b>Разбор заметок</b></summary>
+
+> Источник: `inbox/fleeting-notes.md` (мини-триаж, Day Open шаг 1c); пометки `✅предложено` остаются от ручного разбора заметок.
+> **Если нет заметок, ждущих решения пилота** (в ящике нет ни жирных заметок, ни помеченных `✅предложено`; отложенные `🔄` не считаются) → написать: «Нет заметок, ждущих решения. Carry-over: нет.»
+> **Если такие заметки есть** → таблица ниже. Заметки без решения переносятся в следующий DayPlan.
+
+| Заметка | Тип | Предложение | ✅ |
+|---------|-----|-------------|---|
+| «текст» | НЭП / Задача / Черновик / Знание / Шум | → куда | [ ] |
+
+</details>
+<details>
+<summary><b>Редактор контента</b></summary>
+
+> Топ-3 черновика из `drafts/` для работы сегодня.
+
+**Топ-3 к работе:**
+
+| D-ID | Название | R/S | Причина |
+|------|----------|-----|---------|
+| D-???  …[обрезано, всего 4495 знаков]
+ВЫЗОВ Bash: {"command": "W=\"$IWE_WORKSPACE\"; (cd $W/FMT-exocortex-template && bash update.sh --check --fast 2>&1 | tail -6); echo ---; DAYPLAN=\"$W/DS-strategy/current/DayPlan 2026-11-25.md\"; if [ -e \"$DAYPLAN\" ]; then echo exists; else T=$(mktemp); if bash $IWE_SCRIPTS/day-open-scaffold.sh 2026-11-25 > \"$T\" && test -s \"$T\"; then mv \"$T\" \"$DAYPLAN\"; echo written; else rm -f \"$T\"; echo FAIL; fi; fi; cat \"$DAYPLAN\"", "description": "Check updates and generate DayPlan scaffold"}
+ОТВЕТ: ℹ Сводка «Главное в этом обновлении» в режиме --fast недоступна: файлы релиза не скачиваются. Полная проверка со сводкой: bash update.sh --check
+
+⚠ Состав манифеста изменился (файлы добавлены/удалены/обновлены).
+  Для полного списка изменений: bash update.sh --check (без --fast).
+
+Вердикт о готовности не выдаётся: --fast сверяет только версию. Для вердикта: bash update.sh --check
+---
+written
+---
+type: daily-plan
+date: 2026-11-25
+week: W48
+status: active
+agent: Стратег
+generated_by: day-open-scaffold.sh (WP-264 Ф2)
+---
+
+# Day Plan: 25 ноября 2026 (Среда)
+
+<!-- СРОЧНОЕ (ТВС=С): вывести ТОЛЬКО при 🔴 (упавший smoke / сломанная интеграция / EMERGENCY в priorities.yaml / заблокированный конвейер). В зелёный день — «нет срочного». -->
+<details>
+<summary><b>🚨 Срочное</b></summary>
+
+<!-- PENDING: urgent — если в «Здоровье платформы» есть 🔴 ИЛИ в priorities.yaml пометка EMERGENCY: таблица | Что | Система | Действие | ETA |. Иначе одна строка: «— нет срочного (зелёный день)». -->
+
+</details>
+
+<details>
+<summary><b>Саморазвитие</b></summary>
+
+- **Изучи персональное руководство:** личное руководство (репозиторий `DS-personal-guide`, либо `personal-guide` у ранних немигрированных пользователей — см. `/personal-guide-start`)
+
+**Активный черновик:** нет активных черновиков (приоритетные пусты или все завершены)
+
+</details>
+
+<details open>
+<summary><b>План на сегодня</b></summary>
+
+<!-- PENDING: today_plan — синтез таблицы плана дня.
+
+АВТОРИТЕТНЫЙ ИСТОЧНИК ПОРЯДКА: «Утренние приоритеты (priorities.yaml)» ниже.
+ПРАВИЛО: КАЖДЫЙ РП из priorities.yaml ОБЯЗАН быть в таблице — в том же порядке (первый = самая верхняя строка).
+ИСКЛЮЧЕНИЕ: РП можно не включать только если его status в inbox/WP-NNN.md явно равен 'done' или 'closed' (или он помечен ✅ в WP-REGISTRY с зачёркиванием). Перед исключением — проверить.
+ЛОВУШКА: «Ф1-Ф3 ✅ закрыто вчера» НЕ означает, что весь РП закрыт. Фаза ≠ РП. Проверить status в inbox/WP-NNN.md.
+ЗАПРЕЩЕНО: включать в план РП, закрытые вчера (есть в «закрыто вчера» + ✅ в REGISTRY). Например, WP-362 закрыт — его нет в плане.
+
+После priorities.yaml — дополнить из carry-over и SWEEP_WP_LIST теми РП, которых нет в priorities.yaml и которые ещё open.
+Каждый РП из «Обязательные ежедневные РП» ниже (если секция не пуста) ОБЯЗАН быть в таблице — источник уже разрешён детерминированно, не текстом конфига.
+KE-строка: bash <TMP>/live/ws/FMT-exocortex-template/scripts …[обрезано, всего 9888 знаков]
+ВЫЗОВ Read: {"file_path": "<TMP>/live/ws/DS-strategy/current/DayPlan 2026-11-25.md", "limit": 5}
+ОТВЕТ: 1	---
+2	type: daily-plan
+3	date: 2026-11-25
+4	week: W48
+5	status: active
+ВЫЗОВ Bash: {"command": "F=\"$IWE_WORKSPACE/DS-strategy/current/DayPlan 2026-11-25.md\"; python3 - \"$F\" <<'EOF'\nimport sys,re\np=sys.argv[1]; s=open(p).read()\ns=s.replace(\"\"\"| 🔴 | С | NNN | **<!-- PENDING -->** | X | pending |\"\"\",\"\"\"| 🟡 | В | 1 | **Первая стратегическая сессия** — цели, неудовлетворённости, первый план недели | 1 | pending |\"\"\")\ns=s.replace(\"\"\"**Бюджет дня:** <!-- PENDING: budget — посчитать после плана, формат см. templates-dayplan.md (бюджет РП всего / физ / мультипликатор). -->\"\"\",\"\"\"**Бюджет дня:** ~2h РП всего (саморазвитие 1h + стратегическая сессия 1h) / мультипликатор не считается (нет истории)\"\"\")\ns=s.replace(\"\"\"**Mandatory check:** WP-7 (техдолг бота, ≥30 мин) + ≥1 контентный РП — <!-- PENDING: проверить наличие в плане -->\"\"\",\"\"\"**Mandatory check:** обязательные ежедневные РП не заданы в конфиге - проверка не применима\"\"\")\ns=re.sub(r\"<!-- PENDING: calendar.*?-->\\n\\n\",\"\",s,flags=re.S)\ns=s.replace(\"| <!-- PENDING --> | <!-- PENDING --> | — | — |\",\"| — | Календарь не подключён (нет ключей Google, коннектор недоступен) | — | — |\")\ns=s.replace(\"⏱ Свободных блоков ≥1h: <!-- PENDING -->\",\"⏱ Свободных блоков ≥1h: не определено\")\ns=s.replace(\"<!-- PENDING: 1 строка из Strategy.md (пример: club → Telegram → Дзен/Habr, N постов/нед) -->\",\"стратегии ещё нет (появится после первой сессии)\")\ns=s.replace(\"<!-- PENDING: D-NNN (истёк YYYY-MM-DD), ... или «нет просроченных» -->\",\"нет просроченных\")\ns=s.replac …[обрезано, всего 2250 знаков]
+ОТВЕТ: 1
+32:<!-- PENDING: today_plan — синтез таблицы плана дня.
+ВЫЗОВ Bash: {"command": "W=\"$IWE_WORKSPACE\"; F=\"$W/DS-strategy/current/DayPlan 2026-11-25.md\"; python3 - \"$F\" <<'EOF'\nimport sys,re\np=sys.argv[1]; s=open(p).read()\ns=re.sub(r\"<!-- PENDING: today_plan.*?-->\\n\\n\",\"\",s,flags=re.S)\nopen(p,\"w\").write(s)\nEOF\ngrep -c PENDING \"$F\"; mkdir -p $W/DS-strategy/sessions; [ -e $W/DS-strategy/sessions/2026-11-25.md ] || printf '# Session Log 2026-11-25\\n\\n- Day Open выполнен (14:50)\\n' > $W/DS-strategy/sessions/2026-11-25.md\ngit -C $W/DS-strategy add -A && git -C $W/DS-strategy commit -q -m \"Day Open 2026-11-25\n\nCo-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>\" 2>&1 | tail -5; git -C $W/DS-strategy push 2>&1 | tail -2\nAGENT=\"${IWE_AGENT:-claude-code}\"; HK_SEM=\"$W/.iwe-runtime/sessions/${AGENT}-housekeeping-day-open.open\"; [ ! -f \"$HK_SEM\" ] || bash \"$IWE_SCRIPTS/session-guard.sh\" close --housekeeping day-open --agent \"$AGENT\" --only-own-harness 2>&1 | tail -2", "description": "Finalize plan, commit, push, close housekeeping mark"}
+ОТКАЗ/ОШИБКА: PreToolUse:Bash hook error: [$CLAUDE_PROJECT_DIR/.claude/hooks/destructive-guard.sh]: BLOCKED: git add -A/--all/-u/--update запрещён — подхватывает файлы других агентов (CLAUDE.md §Git Staging). Стейдж конкретные пути: git add <path>.
+
+АГЕНТ: Заканчиваю открытие дня: сохраняю план в git. Добавляю только свои файлы, без `git add -A`, как требует защита.
+ВЫЗОВ Bash: {"command": "W=\"$IWE_WORKSPACE\"; F=\"$W/DS-strategy/current/DayPlan 2026-11-25.md\"; python3 - \"$F\" <<'EOF'\nimport sys,re\np=sys.argv[1]; s=open(p).read()\ns=re.sub(r\"<!-- PENDING: today_plan.*?-->\\n\\n\",\"\",s,flags=re.S)\nopen(p,\"w\").write(s)\nEOF\ngrep -c PENDING \"$F\"; mkdir -p $W/DS-strategy/sessions; [ -e $W/DS-strategy/sessions/2026-11-25.md ] || printf '# Session Log 2026-11-25\\n\\n- Day Open выполнен (14:50)\\n' > $W/DS-strategy/sessions/2026-11-25.md\ngit -C $W/DS-strategy add \"current/DayPlan 2026-11-25.md\" sessions/2026-11-25.md && git -C $W/DS-strategy commit -q -m \"Day Open 2026-11-25\n\nCo-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>\" 2>&1 | tail -5; git -C $W/DS-strategy push 2>&1 | tail -2\nAGENT=\"${IWE_AGENT:-claude-code}\"; HK_SEM=\"$W/.iwe-runtime/sessions/${AGENT}-housekeeping-day-open.open\"; [ ! -f \"$HK_SEM\" ] || bash \"$IWE_SCRIPTS/session-guard.sh\" close --housekeeping day-open --agent \"$AGENT\" --only-own-harness 2>&1 | tail -2", "description": "Finalize plan, commit specific files, push, close mark"}
+ОТКАЗ/ОШИБКА: PreToolUse:Bash hook error: [$CLAUDE_PROJECT_DIR/.claude/hooks/session-open-gate.sh]: [session-open-gate] session=<uuid> no semaphore with both harness_session_id: <uuid> and a wp: field or an allowed housekeeping reason (<TMP>/live/home/IWE/.iwe-runtime/sessions/claude-*.open) — blocking direct git commit/push
+🚫 Session Open Gate (WP-561/S-68): прямой git commit/push без привязки к РП заблокирован.
+
+Сессия без РП работает только на чтение: читать, исследовать и проверять
+локально можно, коммитить и пушить нельзя (WP-7 Ф274). Чтобы закоммитить,
+откройте сессию на РП, к которому относится работа:
+
+  bash "${IWE_SCRIPTS:-$HOME/IWE/scripts}/session-guard.sh" open --wp WP-N --task "..." --agent claude-code
+
+WP-N — РП, который уже обсуждался в этой сессии, или новый РП по фильтру
+входа (S-47). Зонтичный РП техдолга — только для работы, которая и есть
+техдолг, не как заглушка для работы без своего РП.
+
+Исключения без своего номера: закрытый список операционных протоколов
+(day-open, day-close, week-close, month-close, update-delivery) — их SKILL.md
+открывают open --housekeeping REASON сами — и плановые запуски не-Claude
+агентов (housekeeping sched-<id>, каждый пропуск пишется в журнал).
+
+Канонический чекаут может быть заморожен (WP-520/WP-484) — session-guard.sh в
+этом случае сам укажет, как перейти в изолированную копию (EnterWorktree /
+git worktree add); следовать этой инструкции, не обходить её другим путём.
+
+ВЫЗОВ Bash: {"command": "W=\"$IWE_WORKSPACE\"; F=\"$W/DS-strategy/current/DayPlan 2026-11-25.md\"; python3 - \"$F\" <<'EOF'\nimport sys,re\np=sys.argv[1]; s=open(p).read()\ns=re.sub(r\"<!-- PENDING: today_plan.*?-->\\n\\n\",\"\",s,flags=re.S)\nopen(p,\"w\").write(s)\nEOF\ngrep -c PENDING \"$F\"; mkdir -p $W/DS-strategy/sessions; [ -e $W/DS-strategy/sessions/2026-11-25.md ] || printf '# Session Log 2026-11-25\\n\\n- Day Open выполнен (14:50)\\n' > $W/DS-strategy/sessions/2026-11-25.md; ls $W/.iwe-runtime/sessions", "description": "Finish local DayPlan edits and session log"}
+ОТВЕТ: 0
+claude-code-housekeeping-day-open.open
+АГЕНТ: День открыт. План дня записан на диск, но в git не сохранён: защита заблокировала сохранение, и шаги 7c и 7e остались невыполненными.
+
+**План на сегодня**
+- Саморазвитие, 1 час. Тему выберем вместе: активных черновиков нет.
+- Первая стратегическая сессия, 1 час. Это главное: план недели пустой, стратегии ещё нет.
+
+**Что с платформой**
+- Срочного нет.
+- Календарь не подключён: нет ключей Google и нет подключённого календарного коннектора. Свободные окна я не определил.
+- Есть обновление платформы. Быстрая проверка видит только, что состав файлов изменился, и вердикта не даёт. Полная проверка: `bash update.sh --check`.
+- Фоновые задачи стратега не запущены (три задачи в статусе «не загружены»). Лог планировщика за сегодня не найден.
+- Вчера было 12 сохранений в одном хранилище. Итогов дня за вчера нет.
+- Заметок и обращений по задачам в GitHub нет: GitHub недоступен или нет входа, свежие задачи я не проверил.
+
+**Что заблокировалось**
+Защита ищет отметку сессии в `~/IWE/.iwe-runtime/sessions/`, а скрипт создал её в `.iwe-runtime/sessions/` рабочей папки. Из-за этого `git commit` и `git push` отклонены. Я не стал создавать отметку вручную и не стал обходить защиту.
+
+**Что лежит на диске**
+- План дня `DS-strategy/current/DayPlan 2026-11-25.md`, все заготовки заполнены.
+- Журнал сессии `DS-strategy/sessions/2026-11-25.md`.
+- Служебная отметка шага 0а так и осталась в рабочей папке.
+
+Как сохранить: поправьте `IWE_ROOT` или `HOME` так, чтобы они указывали на одну папку, и скажите мне. Тогда я повторю сохранение и закрою отметку. Либо сохраните сами.
+
+Предлагаю начать со стратегической сессии, она в плане первой.
+АГЕНТ: Вот явная нумерация шагов Day Open с фактическим статусом каждого. Заново я их не выполнял, всё сделано выше.
+
+**Шаг 1 из 14: расширения до начала (шаг 0).** Выполнен. Файлов расширений нет.
+**Шаг 2 из 14: привязка сессии (0а).** Выполнен частично. Отметка открыта, но защита git ищет её в другой папке.
+**Шаг 3 из 14: вчера и заметки (1, 1b, 1c).** Выполнен. Вчера было 12 сохранений в одном хранилище, заметок нет. Обращения по задачам в GitHub не проверены: GitHub недоступен или нет входа.
+**Шаг 4 из 14: план на сегодня (2).** Выполнен. План недели пуст, поэтому в плане саморазвитие и первая стратегическая сессия.
+**Шаг 5 из 14: саморазвитие (3).** Выполнен. Тема не задана, активных черновиков нет.
+**Шаг 6 из 14: стратегирование (4).** Выполнен. Сегодня среда, стратегический день воскресенье, поэтому план дня создаётся.
+**Шаг 7 из 14: помидорки (4b).** Выполнен. Режим 25 минут работы и 5 минут перерыва.
+**Шаг 8 из 14: календарь (4c).** Заблокирован. Нет ключей Google и нет календарного коннектора.
+**Шаг 9 из 14: светофор платформы (5).** Выполнен. Есть три жёлтых пункта: фоновые задачи не загружены, нет журнала проверок, обновление платформы ждёт полной проверки.
+**Шаг 10 из 14: видео, редактор контента, мир (5a2, 5c, 6).** Пропущены по конфигурации: эти секции выключены.
+**Шаг 11 из 14: требует внимания и разметка ТВС (6b, 6b2).** Выполнен. Срочного нет, пункт «Важное» один: стратегическая сессия.
+**Шаг 12 из 14: расширения после и проверки (6c, 7b).** Выполнен. Файлов расширений нет.
+**Шаг 13 из 14: запись (7a, 7a2).** Выполнен. План дня и журнал сессии лежат на диске.
+**Шаг 14 из 14: сохранение в git и снятие отметки (7c, 7e).** Заблокирован защитой сессии. Это те же шаги 7c и 7e, что остались невыполненными выше.
+
+Чтобы сохранить, поправьте `IWE_ROOT` или `HOME` так, чтобы они указывали на одну папку, и скажите мне. Тогда я повторю сохранение и закрою отметку.
+# ИТОГ: success · ходов 17 · условная стоимость $0.31 · отклонённых вызовов 4
+#   отклонено: Bash {"command": "cd \"$IWE_WORKSPACE\"; ls extensions DS-strategy DS-strategy/current DS-strategy/inbox 2>&1 | head -50; echo ---; cat params.yaml | head -30; echo ---; cat memory/day-rhythm-config.yaml 2>&1 | head -40; ls $IWE_SCRIPTS | head -30", "description": "Inspect strategy repo, config and scrip …[обрезано, всего 304 знаков]
+#   отклонено: Bash {"command": "W=\"$IWE_WORKSPACE\"; bash .claude/scripts/load-extensions.sh day-open after; echo \"after=$?\"; bash .claude/scripts/load-extensions.sh day-open checks; echo \"checks=$?\"; echo ---CAL; bash $IWE_SCRIPTS/server-calendar.sh 2026-11-25 2>&1 | head -5; echo ---UPD; (cd \"$IWE_TEMPLATE\" 2 …[обрезано, всего 566 знаков]
+#   отклонено: Bash {"command": "W=\"$IWE_WORKSPACE\"; F=\"$W/DS-strategy/current/DayPlan 2026-11-25.md\"; python3 - \"$F\" <<'EOF'\nimport sys,re\np=sys.argv[1]; s=open(p).read()\ns=re.sub(r\"<!-- PENDING: today_plan.*?-->\\n\\n\",\"\",s,flags=re.S)\nopen(p,\"w\").write(s)\nEOF\ngrep -c PENDING \"$F\"; mkdir -p $W/DS- …[обрезано, всего 1017 знаков]
+#   отклонено: Bash {"command": "W=\"$IWE_WORKSPACE\"; F=\"$W/DS-strategy/current/DayPlan 2026-11-25.md\"; python3 - \"$F\" <<'EOF'\nimport sys,re\np=sys.argv[1]; s=open(p).read()\ns=re.sub(r\"<!-- PENDING: today_plan.*?-->\\n\\n\",\"\",s,flags=re.S)\nopen(p,\"w\").write(s)\nEOF\ngrep -c PENDING \"$F\"; mkdir -p $W/DS- …[обрезано, всего 1073 знаков]

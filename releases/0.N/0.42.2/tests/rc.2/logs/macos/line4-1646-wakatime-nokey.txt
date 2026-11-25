@@ -1,0 +1,2 @@
+(WAKATIME_API_KEY not found — use Neon fallback: domain_event coding_time)
+exit=3

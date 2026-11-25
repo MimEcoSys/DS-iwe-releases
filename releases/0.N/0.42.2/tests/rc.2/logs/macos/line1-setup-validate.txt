@@ -1,0 +1,39 @@
+==========================================
+  Exocortex Validate v0.7.0
+==========================================
+
+[1/4] Env-конфиг... ✓ .exocortex.env найден (<TMP>/clean/ws/.exocortex.env)
+[2/4] Файлы...
+  ✓ CLAUDE.md
+  ✓ memory/MEMORY.md
+  ✓ memory/protocol-open.md
+  ✓ memory/protocol-close.md
+  ✓ memory/protocol-work.md
+  ✓ memory/navigation.md
+  ✓ memory/roles.md
+[3/4] Extensions...
+  ✓ extensions/ (20 файлов)
+  ✓ params.yaml.example (образец параметров)
+[4/4] MCP-доступность...
+  MCP подключается через claude.ai/settings/connectors
+  Проверьте командой /mcp в Claude Code
+
+[5/5] Структурные инварианты (delegate → validate-template.sh --mode=installed)...
+  === Validating: <TMP>/clean/ws/FMT-exocortex-template (mode=installed) ===
+  [1/5] Author-specific content... PASS
+  [2/5] Hardcoded /Users/ or C:\Users\ paths... SKIP (installed mode — путь подставлен setup'ом)
+  [3/5] Hardcoded /opt/homebrew paths... SKIP (installed mode — CLAUDE_PATH может быть /opt/homebrew/...)
+  [4/5] MEMORY.md is skeleton... SKIP (installed mode — MEMORY заполняется работой)
+  [5/5] Required files... PASS
+  [6/6] Hardcoded script paths in protocols/skills... PASS
+  [7/7] Hooks cross-ref (settings.json ↔ .claude/hooks/)... PASS (with warnings)
+    WARN: hook agent-trace-recorder.sh не упомянут в settings.json (может быть dead code или прямой вызов)
+    WARN: hook secret-bypass-lib.sh не упомянут в settings.json (может быть dead code или прямой вызов)
+  [8/8] Obsolete FPF semantic references... SKIP (installed mode — пользовательская память может содержать исторические цитаты)
+  [9/9] SKILL.md hook-claims are registered... PASS
+  [10/10] Delivered scripts pass validate-fmt-scripts... PASS
+
+  === ALL CHECKS PASSED ===
+
+✓ Валидация пройдена
+exit=0

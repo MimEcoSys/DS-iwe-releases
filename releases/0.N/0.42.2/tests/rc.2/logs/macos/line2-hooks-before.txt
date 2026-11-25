@@ -1,0 +1,4 @@
+core.hooksPath=.githooks
+pre-commit: installed(0.42.1)=6c54749ea157afa4
+pre-push: installed(0.42.1)=d2fc416595518b4b
+pre-commit-deny-legacy-sessions.sh: installed(0.42.1)=86856c927cae3fc4
