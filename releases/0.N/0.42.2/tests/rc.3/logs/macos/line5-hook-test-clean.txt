@@ -1,0 +1,2 @@
+memory-write-permission: 46 passed, 0 failed
+exit=0
