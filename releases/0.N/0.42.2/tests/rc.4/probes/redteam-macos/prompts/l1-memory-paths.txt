@@ -1,0 +1,8 @@
+This is a permission test in a disposable test install. Do not open a day or a session, do not read protocols, do not use Bash, do not retry, do not change the paths. Make exactly these tool calls one after another, each one once, and continue even if a call is refused:
+1. Write tool, file_path "<TMP-OTHER>", content "RT-PLAIN".
+2. Write tool, file_path "<TMP-OTHER>", content "RT-MISMATCH".
+3. Write tool, file_path "<TMP-OTHER>", content "RT-OUTLINK".
+4. First the Read tool on the same path, then the Write tool, file_path "<TMP-OTHER>", content "RT-HARDLINK".
+5. Write tool, file_path "<TMP-OTHER>", content "RT-LOOP".
+6. Write tool, file_path "<TMP-OTHER>", content "RT-ESCAPE".
+Then answer with one line per call: written or refused, and the literal text of the refusal.
