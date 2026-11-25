@@ -1,0 +1,14 @@
+### variant=y-readonly shape=readonly answer=y command: IWE_UPDATE_CHANNEL=rc bash update.sh
+### before: sha=175e65b41c6b kind=file mode=-r--r--r-- json=valid memory-hook=0 session-gate=1 secret-read-matcher=Read|Edit|MultiEdit|Grep secret-read-timeout=none own-key=0
+==========================================
+  Exocortex Update v2.4.1
+==========================================
+  Репо: <RT>/upg/ws/FMT-exocortex-template
+
+curl: (56) The requested URL returned error: 403
+ОШИБКА: не удалось получить список rc-тегов (API недоступен, страница 1).
+  Канал rc fail-closed: без списка кандидатов обновление не выполняется.
+### exit=2
+### after:  sha=175e65b41c6b kind=file mode=-r--r--r-- json=valid memory-hook=0 session-gate=1 secret-read-matcher=Read|Edit|MultiEdit|Grep secret-read-timeout=none own-key=0 (unchanged)
+### template now: v0.42.1 ; preview file left: 0 ; stray temp files: 0
+### backups:
