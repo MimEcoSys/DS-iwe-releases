@@ -1,0 +1,9 @@
+== session markers after day open and the work-product session
+marker: claude-code-1795628598-60112-1487.open.closed
+2:agent: claude-code
+4:wp: 1
+16:pid_start_id: <present>
+marker: claude-code-housekeeping-day-open.open.closed
+2:agent: claude-code
+4:housekeeping: day-open
+10:pid_start_id: <present>

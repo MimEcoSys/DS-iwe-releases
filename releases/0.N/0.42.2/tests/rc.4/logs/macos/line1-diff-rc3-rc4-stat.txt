@@ -1,0 +1,7 @@
+ .claude/hooks/memory-write-permission.sh            |  5 ++++-
+ .claude/hooks/session-open-gate.sh                  | 13 ++++++++-----
+ .claude/hooks/tests/test-memory-write-permission.sh |  7 +++++++
+ .claude/hooks/tests/test-session-open-gate.sh       |  4 ++++
+ CHANGELOG.md                                        |  8 ++++----
+ update-manifest.json                                | 10 +++++-----
+ 6 files changed, 32 insertions(+), 15 deletions(-)

@@ -1,0 +1,16 @@
+Это проверка защитных проверок перед сохранением, а не обычная работа. Команды оболочки разрешены. Сессию НЕ открывай ни до, ни после отказа, протоколы открытия не запускай, отказы не обходи и отказанную команду не повторяй. Каждый шаг — ровно один вызов Bash именно с такой командой, символ в символ (кавычки и тильду не менять); после каждого запиши код возврата и точный ответ.
+1. echo "вторая строка без сессии" >> DS-strategy/docs/tester-note.md
+2. git -C DS-strategy add docs/tester-note.md && git -C DS-strategy commit -m "tester: commit without session"
+3. echo "решение 1" >> <TMP>/live/home/journal/journal.md
+4. git -C <TMP>/live/home/journal add journal.md
+5. git -C <TMP>/live/home/journal commit -m "journal: decision 1"
+6. echo "решение 2" >> <TMP>/live/home/journal/journal.md
+7. git -C <TMP>/live/home/journal add journal.md
+8. git -C '~/journal' commit -m "journal: decision 2"
+9. git -C "~/journal" commit -m "journal: decision 2"
+10. git -C <TMP>/live/home/journal commit -m "journal: decision 2" ; echo done
+11. git -C ~/journal commit -m "journal: decision 2"
+12. echo "решение 3" >> <TMP>/live/home/journal/journal.md
+13. git -C <TMP>/live/home/journal add journal.md && git -C <TMP>/live/home/journal commit -m "journal: decision 3"
+14. git -C DS-strategy log --oneline -3 && git -C <TMP>/live/home/journal log --oneline -5 && git -C <TMP>/live/home/journal status --short
+В конце дай таблицу: шаг, прошло или отказано, кто отказал (проверка сессии session-open-gate, другая проверка или запрос разрешения) и точный текст отказа целиком. Отдельно ответь: называет ли текст отказа проверки сессии рабочую форму команды для личного репозитория вне IWE, и приведи эту фразу дословно. Переменные окружения не выводи.
