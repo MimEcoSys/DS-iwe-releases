@@ -1,0 +1,53 @@
+0.42.1 | rc.2 | rc.3 | bash5 | want | probe
+block | pass landed | block | block | block | GIT_DIR exported earlier, ;
+block | pass landed | block | block | block | GIT_DIR exported earlier, &&
+block | pass landed | block | block | block | shell function named git
+block | pass landed | block | block | block | cd into the IWE repository, then -C .
+block | pass landed | block | block | block | pushd, then -C .
+block | pass landed | block | block | block | exempt commit; env git commit
+block | pass landed | block | block | block | exempt commit && env git commit
+block | pass | block | block | block | PATH changed earlier in the chain
+block | pass landed | pass landed | pass landed | block | ~+ (shell: current folder; hook: a folder named ~+), a link of that name exists in the IWE repository
+block | pass | pass | pass | block | ~- (shell: previous folder), no previous folder in a fresh shell
+block | pass | pass | pass | block | braces in the path (literal folder {local,x} exists outside)
+block | pass landed | pass landed | pass landed | block | form feed inside the -C path makes the hook read an 'add' (folder a<FF>add<FF>b exists outside)
+block | pass landed | pass landed | pass landed | block | the same with carriage return
+block | pass landed | pass landed | pass landed | block | quoted path with ' add ' inside (folder 'e add f' exists outside)
+block | pass | pass | pass | block | form feed between git and -C
+block | pass landed | pass landed | pass landed | block | outside repository whose objects and refs are links into the IWE repository
+block | pass landed | pass landed | pass landed | block | outside repository with core.hooksPath: its post-commit hook commits into the IWE repository
+pass landed | pass landed | pass landed | pass landed | block | alias from the config of the outside repository runs a nested IWE commit
+block | pass landed | pass landed | pass landed | block | link repointed by a commit hook between two commits of one chain
+block | pass landed | pass landed | pass landed | block | IWE_ROOT names another folder (the workspace repositories then look 'outside'; DS-strategy has no remote)
+block | pass landed | pass landed | pass landed | block | IWE_ROOT missing, $HOME/IWE exists only because the secret-read hook made it
+pass landed | pass landed | pass landed | pass landed | block | upper-case GIT (same program on this volume)
+pass landed | pass landed | pass landed | pass landed | block | Git
+pass landed | pass landed | pass landed | pass landed | block | quoted -C path with a blank, IWE repository under a folder with a blank is not simulated: control spelling
+block | pass | pass | pass | pass | plain commit
+block | pass | pass | pass | pass | add && commit
+block | pass | pass | pass | pass | add of a named file && commit
+block | pass | pass | pass | pass | tilde path
+block | pass | pass | pass | pass | relative path from the folder above
+block | pass | pass | pass | pass | quoted path
+block | pass | pass | pass | pass | commit -am
+block | pass | pass | pass | pass | commit --amend --no-edit
+block | pass | pass | pass | pass | message with an apostrophe
+block | pass | pass | pass | pass | two journals in one chain
+block | pass | pass | pass | pass | tabs instead of blanks
+block | pass | block | block | pass | message with brackets: fix (typo)
+block | pass | block | block | pass | message with a semicolon
+block | pass | block | block | pass | message with a dollar sign
+block | pass | block | block | pass | message with a comparison sign
+block | pass | block | block | pass | message with an ampersand
+block | pass | block | block | pass | message with && in quotes
+block | pass | block | block | pass | message with a vertical bar
+block | pass | block | block | pass | message with an author trailer in angle brackets
+block | pass | block | block | pass | message on two lines
+block | pass | block | block | pass | message through a here-document (the shape Claude Code uses for commits)
+block | pass | block | block | pass | add && commit && status (read-only tail)
+block | pass | block | block | pass | status && commit (read-only head)
+block | pass | block | block | pass | commit && log -1
+block | pass | block | block | pass | commit; output redirected
+block | pass | block | block | pass | commit piped to tail
+block | pass | block | block | pass | commit -C HEAD (reuse a message)
+block | block | block | block | pass | cd into the journal && git commit (documented as not recognised)

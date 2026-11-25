@@ -1,0 +1,1 @@
+This is a permission test in a disposable test install. Do not open a day or a session, do not read protocols, do not use Bash, do not retry, do not change the path. Make exactly one tool call: Write tool, file_path "<RT>/clean/ws/memory/rt-default-mode.md", content "RT-DEFAULT". Then answer with one line: written or refused, and the literal text of the refusal.

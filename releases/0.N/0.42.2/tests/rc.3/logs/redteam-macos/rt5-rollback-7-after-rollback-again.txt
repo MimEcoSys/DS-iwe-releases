@@ -1,0 +1,100 @@
+### step=7-after-rollback-again input=none command:  bash update.sh
+### before: template=v0.42.1 memory-hook-registered=1 memory-hook-file=absent own-hook=1 own-permission=1 settings-json=valid ext=1 params=1 memory=1 conflict-markers=0
+⚠ Host-global ресурсы IWE (~/.zshenv, launchd) принадлежат другому или неопределённому workspace:
+  ~/.zshenv points to <RT>/upg-backup/ws; com.strategist.morning.plist points to <RT>/upg-backup/ws; com.strategist.weekreview.plist points to <RT>/upg-backup/ws; com.extractor.git-diff-feed.plist points to <RT>/upg-backup/ws
+  ~/.zshenv и планировщики задач НЕ будут изменены этим прогоном.
+  Если это осознанный перенос основной установки: IWE_ALLOW_FOREIGN_WORKSPACE=1 bash update.sh
+==========================================
+  Exocortex Update v2.4.1
+==========================================
+  Репо: <RT>/upg/ws/FMT-exocortex-template
+
+  Канал поставки: релиз v0.42.1 (снимок 492aeaee710b)
+[0] Проверка update.sh...
+  update.sh актуален.
+
+[1] Загрузка манифеста...
+  Установленная версия: 0.42.1
+  Версия upstream: 0.42.1
+
+[2] Сравнение файлов...
+
+  ○ Устаревшие по манифесту, но отслеживаются git этой копии шаблона — оставлены: scripts/tests/test_session_guard_unknown_flag.sh
+    Удалить из своей копии: git -C "<RT>/upg/ws/FMT-exocortex-template" rm -- scripts/tests/test_session_guard_unknown_flag.sh
+
+==========================================
+  Обновления экзокортекса (v0.42.1)
+==========================================
+
+Кроме перечисленного, обычный запуск (без --check) также пишет — это зоны возможной перезаписи, пофайлового прогноза для них превью не строит (issue #350):
+  • <RT>/upg/ws/.claude/ — рабочие копии скиллов, хуков, правил
+  • <RT>/upg-backup/home/.claude/projects/<RT>-SLUG-upg-backup-ws/memory — рабочие копии memory-файлов
+  • <RT>/upg/ws/.iwe-runtime/ — пересобирается целиком из шаблона
+  • <RT>/upg/ws/.exocortex.env, <RT>/upg/ws/FMT-exocortex-template/.claude.md.base, <RT>/upg/ws/FMT-exocortex-template/update-manifest.json
+  • <RT>/upg/ws/.claude.md.base и <RT>/upg/ws/.claude.md.delivered — база слияния CLAUDE.md и запись хешей доставленной копии
+  • <RT>/upg/ws/.memory-deployed.tsv — запись версий памяти, которые установлены и не менялись (по ней update.sh отличает нетронутую копию от изменённой)
+  • <RT>/upg/ws/.iwe-paths и <RT>/upg/home/.zshenv — пересоздаваемое окружение путей
+  • local core.hooksPath в git-репозиториях с .githooks под <RT>/upg/ws
+  • <RT>/upg/ws/DS-strategy/scripts/install-hooks.sh — установщик platform hooks
+  • <RT>/upg/ws/DS-strategy/.githooks/pre-commit и pre-push — platform hooks
+  • <RT>/upg/ws/DS-strategy/scripts/update-derived-snapshot.py — обновлятор derived snapshot
+  • <RT>/upg/ws/DS-strategy/scripts/generate-executor-catalog.py — генератор каталога исполнителей
+  • <RT>/upg/ws/DS-strategy/scripts/executor-catalog.yaml — каталог исполнителей
+  • <RT>/upg/ws/DS-strategy/scripts/ds-publish.sh — публикатор коммитов ночных ролей (кладётся только если файла нет, существующий не трогается)
+  • <RT>/upg/ws/DS-strategy/exocortex/agent-fault-profile/ — только миграция/права существующей приватной БД; отсутствующий профиль не создаётся
+    scripts/day-open-llm-fill.py больше не доставляется сюда (WP-485 Ф17) — Day Open исполняет копию шаблона через $IWE_SCRIPTS.
+    Symlink-пути блокируют backfill. Отличающиеся installer/hooks сохраняются в .git/hook-backups/ и заменяются.
+    Snapshot updater/executor-catalog generator: решение по содержимому (как memory/*), не по git-статусу — локальная правка не блокирует остальное обновление, только эти файлы; executor-catalog.yaml — генерируемый файл и заменяется при смысловом расхождении.
+  Расхождение рабочей копии с шаблоном чинится независимо от списков выше.
+
+
+Generated runtime (.iwe-runtime/)...
+
+Agent fault profile (safe update hardening)...
+
+Agent fault legacy entrypoints (all-or-none upgrade)...
+  ✓ legacy agent-fault shims already match the release payload.
+
+Platform hooks (upgrade backfill)...
+✅ Hooks wired: <RT>/upg/ws/DS-strategy/.githooks
+   core.hooksPath = .githooks
+
+Governance-скрипты (upgrade backfill)...
+
+Публикатор коммитов ds-publish.sh (upgrade backfill)...
+  ✓ scripts/ds-publish.sh уже совпадает с поставкой (версия 1).
+
+Гейт публикации publish-gate.sh (upgrade backfill)...
+  ✓ scripts/lib/publish-gate.sh уже совпадает с release payload.
+
+Executor catalog (upgrade backfill)...
+  OK: executor-catalog generated
+      total entries : 52
+      skipped       : 2 (not auto-routable)
+        - _template: template
+        - residency-gate: no-SKILL.md
+      by executor:
+        agent       : 1
+        haiku       : 6
+        opus        : 5
+        script      : 5
+        script+judgment: 2
+        sonnet      : 33
+      optimization candidates (5):
+        [1] consent → script
+        [1] w-reflection → script
+        [2] check-secret → script
+        [2] local-llm → script+judgment
+        [2] transcribe → script
+      output        : <RT>/upg/ws/DS-strategy/scripts/executor-catalog.yaml (unchanged)
+
+Knowledge Extractor feeders (upgrade backfill)...
+  ○ Экстрактор: host-global расписание не изменено — ~/.zshenv points to <RT>/upg-backup/ws; com.strategist.morning.plist points to <RT>/upg-backup/ws; com.strategist.weekreview.plist points to <RT>/upg-backup/ws; com.extractor.git-diff-feed.plist points to <RT>/upg-backup/ws
+
+FPF base copy (upgrade refresh)...
+  ✓ FPF: копия уже актуальна (423f9d3).
+  ✓ Маркер незавершённого обновления снят.
+✓ Всё актуально. Обновлений нет. (887 файлов проверено)
+### exit=0
+### after:  template=v0.42.1 memory-hook-registered=1 memory-hook-file=absent own-hook=1 own-permission=1 settings-json=valid ext=1 params=1 memory=1 conflict-markers=0
+### workspace files changed by this step: 0

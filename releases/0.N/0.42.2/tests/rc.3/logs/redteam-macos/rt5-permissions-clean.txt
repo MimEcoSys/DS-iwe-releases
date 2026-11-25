@@ -1,0 +1,27 @@
+## group- or world-writable files and folders (outside .git):
+count: 0
+## modes of sensitive files:
+-rw------- <RT>/clean/ws/.exocortex.env
+-rw------- <RT>/clean/ws/.mcp.json
+-rw-r--r-- <RT>/clean/ws/.claude/settings.json
+-rw-r--r-- <RT>/clean/ws/.claude/settings.local.json
+-rw-r--r-- <RT>/clean/ws/params.yaml
+-rw-r--r-- <RT>/clean/ws/.iwe-paths
+-rw-r--r-- <RT>/clean/home/.zshenv
+-rw-r--r-- <RT>/clean/home/.claude.json
+## modes of folders:
+drwxr-xr-x <RT>/clean/ws/.claude
+drwxr-xr-x <RT>/clean/ws/.iwe-runtime
+drwxr-xr-x <RT>/clean/ws/.claude/hooks
+drwxr-xr-x <RT>/clean/home/.claude
+drwx------ <RT>/clean/home/.claude/projects
+drwxr-xr-x <RT>/clean/home/.claude/projects/<RT>-SLUG-clean-ws/memory
+## hook scripts without the execute bit: 0
+## setuid/setgid files: 0
+## absolute symlinks that leave the disposable install:
+## plist files written into the disposable HOME: 3
+-rw-r--r-- <RT>/clean/home/Library/LaunchAgents/com.extractor.git-diff-feed.plist
+-rw-r--r-- <RT>/clean/home/Library/LaunchAgents/com.strategist.weekreview.plist
+-rw-r--r-- <RT>/clean/home/Library/LaunchAgents/com.strategist.morning.plist
+## backups folder modes:
+## service manager calls recorded by the stubs:
