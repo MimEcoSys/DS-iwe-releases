@@ -1,0 +1,79 @@
+# hook under test: rc.2 (hook file of the previous candidate, same fixtures)
+# fixtures (all inside the disposable memory folder)
+# 1. baseline: ordinary files still get the answer
+ok         | expect=allow  got=allow  exit=0 | ordinary file | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/rt-note.md
+ok         | expect=allow  got=allow  exit=0 | ordinary file, nested | mode=auto tool=Edit | <RT>/clean/ws/memory/sub/deep/a.md
+ok         | expect=allow  got=allow  exit=0 | name that only CONTAINS a dot-word (my.git.md) | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/my.git.md
+ok         | expect=allow  got=allow  exit=0 | folder named git (no dot) | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/plain/hooks/x.md
+# 2. the names of the fix, both modes, all four tools
+UNEXPECTED | expect=silent got=allow  exit=0 | .git/hooks/pre-commit | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/.git/hooks/pre-commit
+UNEXPECTED | expect=silent got=allow  exit=0 | .git/config | mode=acceptEdits tool=Edit | <RT>/clean/ws/memory/.git/config
+UNEXPECTED | expect=silent got=allow  exit=0 | .claude/settings.json | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/.claude/settings.json
+UNEXPECTED | expect=silent got=allow  exit=0 | .github/workflows/x.yml | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/.github/workflows/x.yml
+UNEXPECTED | expect=silent got=allow  exit=0 | .ssh/authorized_keys | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/.ssh/authorized_keys
+UNEXPECTED | expect=silent got=allow  exit=0 | .gnupg/gpg.conf | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/.gnupg/gpg.conf
+UNEXPECTED | expect=silent got=allow  exit=0 | .git/hooks/pre-commit | mode=auto tool=Write | <RT>/clean/ws/memory/.git/hooks/pre-commit
+UNEXPECTED | expect=silent got=allow  exit=0 | .git/config | mode=auto tool=Edit | <RT>/clean/ws/memory/.git/config
+UNEXPECTED | expect=silent got=allow  exit=0 | .claude/settings.json | mode=auto tool=Write | <RT>/clean/ws/memory/.claude/settings.json
+UNEXPECTED | expect=silent got=allow  exit=0 | .github/workflows/x.yml | mode=auto tool=Write | <RT>/clean/ws/memory/.github/workflows/x.yml
+UNEXPECTED | expect=silent got=allow  exit=0 | .ssh/authorized_keys | mode=auto tool=Write | <RT>/clean/ws/memory/.ssh/authorized_keys
+UNEXPECTED | expect=silent got=allow  exit=0 | .gnupg/gpg.conf | mode=auto tool=Write | <RT>/clean/ws/memory/.gnupg/gpg.conf
+UNEXPECTED | expect=silent got=allow  exit=0 | MultiEdit .git/config | mode=acceptEdits tool=MultiEdit | <RT>/clean/ws/memory/.git/config
+UNEXPECTED | expect=silent got=allow  exit=0 | NotebookEdit under .claude | mode=acceptEdits tool=NotebookEdit | <RT>/clean/ws/memory/.claude/x.ipynb
+# 3. hidden files and folders
+UNEXPECTED | expect=silent got=allow  exit=0 | hidden name .zshrc | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/.zshrc
+UNEXPECTED | expect=silent got=allow  exit=0 | hidden name .bashrc | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/.bashrc
+UNEXPECTED | expect=silent got=allow  exit=0 | hidden name .profile | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/.profile
+UNEXPECTED | expect=silent got=allow  exit=0 | hidden name .gitconfig | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/.gitconfig
+UNEXPECTED | expect=silent got=allow  exit=0 | hidden name .gitmodules | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/.gitmodules
+UNEXPECTED | expect=silent got=allow  exit=0 | hidden name .gitattributes | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/.gitattributes
+UNEXPECTED | expect=silent got=allow  exit=0 | hidden name .gitignore | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/.gitignore
+UNEXPECTED | expect=silent got=allow  exit=0 | hidden name .mcp.json | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/.mcp.json
+UNEXPECTED | expect=silent got=allow  exit=0 | hidden name .claude.json | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/.claude.json
+UNEXPECTED | expect=silent got=allow  exit=0 | hidden name .env | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/.env
+UNEXPECTED | expect=silent got=allow  exit=0 | hidden name .npmrc | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/.npmrc
+UNEXPECTED | expect=silent got=allow  exit=0 | hidden name .hidden/x.md | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/.hidden/x.md
+UNEXPECTED | expect=silent got=allow  exit=0 | hidden name .hidden/deep/x.md | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/.hidden/deep/x.md
+UNEXPECTED | expect=silent got=allow  exit=0 | hidden folder below an ordinary one | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/sub/.git/hooks/pre-commit
+# 4. other spellings of the same place
+UNEXPECTED | expect=silent got=allow  exit=0 | upper case .GIT (same folder on this volume) | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/.GIT/hooks/pre-commit
+UNEXPECTED | expect=silent got=allow  exit=0 | mixed case .Git/Hooks | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/.Git/Hooks/pre-commit
+UNEXPECTED | expect=silent got=allow  exit=0 | upper case .CLAUDE | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/.CLAUDE/settings.json
+UNEXPECTED | expect=silent got=allow  exit=0 | double slash | mode=acceptEdits tool=Write | <RT>/clean/ws/memory//.git//hooks/pre-commit
+UNEXPECTED | expect=silent got=allow  exit=0 | dot segment | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/./.git/./hooks/pre-commit
+UNEXPECTED | expect=silent got=allow  exit=0 | dot-dot detour sub/../.git | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/sub/../.git/hooks/pre-commit
+UNEXPECTED | expect=silent got=allow  exit=0 | dot-dot detour .git/../.git | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/.git/../.git/config
+UNEXPECTED | expect=silent got=allow  exit=0 | detour through a hidden folder to an ordinary file: .hidden/../rt-note.md (real path is ordinary) | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/.hidden/../rt-note.md
+UNEXPECTED | expect=silent got=allow  exit=0 | trailing slash on the hidden folder | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/.git/
+UNEXPECTED | expect=silent got=allow  exit=0 | .git itself | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/.git
+ok         | expect=silent got=silent exit=0 | macOS data fork of a hidden file | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/.git/config/..namedfork/data
+ok         | expect=silent got=silent exit=0 | name with a trailing dot: .git. | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/.git./x
+ok         | expect=silent got=silent exit=0 | name with a trailing blank | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/.git /x
+ok         | expect=silent got=silent exit=0 | zero-width character before the dot | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/‌.git/hooks/pre-commit
+ok         | expect=silent got=silent exit=0 | zero-width character inside: .g<ZWNJ>it | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/.g‌it/hooks/pre-commit
+ok         | expect=silent got=silent exit=0 | full-width dot | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/．git/hooks/pre-commit
+# 5. links inside memory
+UNEXPECTED | expect=silent got=allow  exit=0 | plain link name -> .git/hooks | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/githooks-link/pre-commit
+UNEXPECTED | expect=silent got=allow  exit=0 | plain link name -> .git | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/gitdir-link/config
+UNEXPECTED | expect=silent got=allow  exit=0 | plain link name -> .claude | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/claude-link/settings.json
+UNEXPECTED | expect=silent got=allow  exit=0 | plain file link -> .git/config | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/config-link.md
+UNEXPECTED | expect=silent got=allow  exit=0 | hard link with a plain name to .git/config (same inode; the hook cannot see it) | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/hardlink-to-git-config.md
+# 5a. the reverse: the WRITTEN path names .git/.claude/.zshrc, the name is a link to an ordinary place
+UNEXPECTED | expect=silent got=allow  exit=0 | written .git/hooks/pre-commit, .git is a link to an ordinary folder | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/alias-parent/.git/hooks/pre-commit
+UNEXPECTED | expect=silent got=allow  exit=0 | written .claude/settings.json, .claude is a link to an ordinary folder | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/alias-parent/.claude/settings.json
+UNEXPECTED | expect=silent got=allow  exit=0 | written .zshrc, the file is a link to an ordinary file | mode=acceptEdits tool=Write | <RT>/clean/ws/memory/alias-parent/.zshrc
+# 6. modes outside the approve list keep silent for ordinary and hidden names alike
+ok         | expect=silent got=silent exit=0 | mode 'default', ordinary file | mode=default tool=Write | <RT>/clean/ws/memory/rt-note.md
+ok         | expect=silent got=silent exit=0 | mode 'plan', ordinary file | mode=plan tool=Write | <RT>/clean/ws/memory/rt-note.md
+ok         | expect=silent got=silent exit=0 | mode 'bypassPermissions', ordinary file | mode=bypassPermissions tool=Write | <RT>/clean/ws/memory/rt-note.md
+ok         | expect=silent got=silent exit=0 | mode 'dontAsk', ordinary file | mode=dontAsk tool=Write | <RT>/clean/ws/memory/rt-note.md
+ok         | expect=silent got=silent exit=0 | mode '', ordinary file | mode= tool=Write | <RT>/clean/ws/memory/rt-note.md
+# what the file system says about the odd spellings (does the name reach the real .git?)
+fs         | .GIT                         -> reaches .git
+fs         | .Git                         -> reaches .git
+fs         | ???.git                      -> another name (no such folder)
+fs         | .g???it                      -> another name (no such folder)
+fs         | ???git                       -> another name (no such folder)
+fs         | .git.                        -> another name (no such folder)
+fs         | .git                         -> another name (no such folder)
+# total requests: 61, answers different from the expected one: 46

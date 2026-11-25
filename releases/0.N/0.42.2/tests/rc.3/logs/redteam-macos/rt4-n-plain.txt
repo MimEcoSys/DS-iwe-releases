@@ -1,0 +1,178 @@
+### variant=n-plain shape=plain answer=n command: IWE_UPDATE_CHANNEL=rc bash update.sh
+### before: sha=175e65b41c6b kind=file mode=-rw-r--r-- json=valid memory-hook=0 session-gate=1 secret-read-matcher=Read|Edit|MultiEdit|Grep secret-read-timeout=none own-key=0
+⚠ Host-global ресурсы IWE (~/.zshenv, launchd) принадлежат другому или неопределённому workspace:
+  ~/.zshenv points to <RT>/upg-backup/ws; com.strategist.morning.plist points to <RT>/upg-backup/ws; com.strategist.weekreview.plist points to <RT>/upg-backup/ws; com.extractor.git-diff-feed.plist points to <RT>/upg-backup/ws
+  ~/.zshenv и планировщики задач НЕ будут изменены этим прогоном.
+  Если это осознанный перенос основной установки: IWE_ALLOW_FOREIGN_WORKSPACE=1 bash update.sh
+==========================================
+  Exocortex Update v2.4.1
+==========================================
+  Репо: <RT>/upg/ws/FMT-exocortex-template
+
+  Канал поставки: кандидат v0.42.2-rc.3 (снимок 1c4a0720c51c)
+[0] Проверка update.sh...
+  Найдена новая версия update.sh — обновляю...
+  Перезапуск...
+⚠ Host-global ресурсы IWE (~/.zshenv, launchd) принадлежат другому или неопределённому workspace:
+  ~/.zshenv points to <RT>/upg-backup/ws; com.strategist.morning.plist points to <RT>/upg-backup/ws; com.strategist.weekreview.plist points to <RT>/upg-backup/ws; com.extractor.git-diff-feed.plist points to <RT>/upg-backup/ws
+  ~/.zshenv и планировщики задач НЕ будут изменены этим прогоном.
+  Если это осознанный перенос основной установки: IWE_ALLOW_FOREIGN_WORKSPACE=1 bash update.sh
+==========================================
+  Exocortex Update v2.4.1
+==========================================
+  Репо: <RT>/upg/ws/FMT-exocortex-template
+
+  Канал поставки: кандидат v0.42.2-rc.3 (снимок 1c4a0720c51c)
+[0] Проверка update.sh...
+  update.sh актуален.
+
+[1] Загрузка манифеста...
+  Установленная версия: 0.42.1
+  Версия upstream: 0.42.2
+
+[2] Сравнение файлов...
+  Скачиваю 47 файлов (до 8 параллельно)...
+  (1/47) .claude/hooks/memory-write-permission.sh
+  (2/47) .claude/hooks/secret-file-read-block.sh
+  (3/47) .claude/hooks/session-open-gate.sh
+  (4/47) .claude/hooks/tests/test-issue-1657-secret-file-read-block-kimi-envelope.sh
+  (5/47) .claude/hooks/tests/test-memory-write-permission.sh
+  (6/47) .claude/hooks/tests/test-session-open-gate.sh
+  (7/47) .claude/lib/locale/en.json
+  (8/47) .claude/lib/locale/ru.json
+  (9/47) .claude/settings.json
+  (10/47) .claude/skills-catalog.yaml
+  (11/47) .claude/skills/day-close/SKILL.md
+  (12/47) .claude/skills/kimi-peer-writer/SKILL.md
+  (13/47) .claude/skills/mentor-participant-brief/SKILL.md
+  (14/47) .claude/skills/peer-conversation/SKILL.md
+  (15/47) .claude/skills/verify/SKILL.md
+  (16/47) .github/workflows/notify-security.yml
+  (17/47) .github/workflows/validate-template.yml
+  (18/47) CHANGELOG.md
+  (19/47) docs/AGENT-VENDOR-SETUP.md
+  (20/47) docs/RELEASE-PROCESS.md
+  (21/47) docs/release-audit-log.md
+  (22/47) generate-manifest.sh
+  (23/47) roles/strategist/scripts/fetch-wakatime.sh
+  (24/47) roles/synchronizer/scripts/dt-collect.sh
+  (25/47) roles/verifier/prompts/verify-wp-acceptance.md
+  (26/47) scripts/canon-reconcile-published.sh
+  (27/47) scripts/concept-kind.py
+  (28/47) scripts/create-wp.sh
+  (29/47) scripts/day-open-llm-fill.py
+  (30/47) scripts/day-open-multiplier-backfill-patch.py
+  (31/47) scripts/day-open-priorities-patch.py
+  (32/47) scripts/iwe-notify
+  (33/47) scripts/kimi-standalone-preflight.sh
+  (34/47) scripts/lib/dayplan_sections.py
+  (35/47) scripts/lib/process-identity.sh
+  (36/47) scripts/security-notice-build.py
+  (37/47) scripts/session-guard.sh
+  (38/47) scripts/test-wp-inbox.sh
+  (39/47) scripts/tests/fixtures/python-resolver-baseline.txt
+  (40/47) scripts/tests/run-issue-tests.sh
+  (41/47) scripts/wakatime-day-total.py
+  (42/47) scripts/wp-inbox.sh
+  (43/47) seed/strategy/scripts/day-open-llm-fill.py
+  (44/47) seed/strategy/scripts/day-open-multiplier-backfill-patch.py
+  (45/47) seed/strategy/scripts/day-open-priorities-patch.py
+  (46/47) seed/strategy/scripts/lib/dayplan_sections.py
+  (47/47) translation-manifest.yaml
+  ○ Устаревшие по манифесту, но отслеживаются git этой копии шаблона — оставлены: scripts/tests/test_session_guard_unknown_flag.sh
+    Удалить из своей копии: git -C "<RT>/upg/ws/FMT-exocortex-template" rm -- scripts/tests/test_session_guard_unknown_flag.sh
+
+==========================================
+  Обновления экзокортекса (v0.42.2)
+==========================================
+
+Новые файлы (8):
+  + .claude/hooks/memory-write-permission.sh
+  + .claude/hooks/tests/test-issue-1657-secret-file-read-block-kimi-envelope.sh
+  + .claude/hooks/tests/test-memory-write-permission.sh
+  + scripts/concept-kind.py
+  + scripts/lib/dayplan_sections.py
+  + scripts/lib/process-identity.sh
+  + scripts/security-notice-build.py
+  + seed/strategy/scripts/lib/dayplan_sections.py
+
+Обновлённые файлы (39):
+  ~ .claude/hooks/secret-file-read-block.sh       — 91 строк изменено
+  ~ .claude/hooks/session-open-gate.sh            — 69 строк изменено
+  ~ .claude/hooks/tests/test-session-open-gate.sh — 62 строк изменено
+  ~ .claude/lib/locale/en.json                    — 3 строк изменено
+  ~ .claude/lib/locale/ru.json                    — 1 строк изменено
+  ~ .claude/settings.json                         — 11 строк изменено
+  ~ .claude/skills-catalog.yaml                   — 104 строк изменено
+  ~ .claude/skills/day-close/SKILL.md             — 2 строк изменено
+  ~ .claude/skills/kimi-peer-writer/SKILL.md      — 793 строк изменено
+  ~ .claude/skills/mentor-participant-brief/SKILL.md — 6 строк изменено
+  ~ .claude/skills/peer-conversation/SKILL.md     — 842 строк изменено
+  ~ .claude/skills/verify/SKILL.md                — 2 строк изменено
+  ~ .github/workflows/notify-security.yml         — 8 строк изменено
+  ~ .github/workflows/validate-template.yml       — 6 строк изменено
+  ~ CHANGELOG.md                                  — 168 строк изменено
+  ~ docs/AGENT-VENDOR-SETUP.md                    — 30 строк изменено
+  ~ docs/RELEASE-PROCESS.md                       — 8 строк изменено
+  ~ docs/release-audit-log.md                     — 1 строк изменено
+  ~ generate-manifest.sh                          — 2 строк изменено
+  ~ roles/strategist/scripts/fetch-wakatime.sh    — 2 строк изменено
+  ~ roles/synchronizer/scripts/dt-collect.sh      — 2 строк изменено
+  ~ roles/verifier/prompts/verify-wp-acceptance.md — 4 строк изменено
+  ~ scripts/canon-reconcile-published.sh          — 14 строк изменено
+  ~ scripts/create-wp.sh                          — 103 строк изменено
+  ~ scripts/day-open-llm-fill.py                  — 124 строк изменено
+  ~ scripts/day-open-multiplier-backfill-patch.py — 2 строк изменено
+  ~ scripts/day-open-priorities-patch.py          — 29 строк изменено
+  ~ scripts/iwe-notify                            — 26 строк изменено
+  ~ scripts/kimi-standalone-preflight.sh          — 81 строк изменено
+  ~ scripts/session-guard.sh                      — 35 строк изменено
+  ~ scripts/test-wp-inbox.sh                      — 50 строк изменено
+  ~ scripts/tests/fixtures/python-resolver-baseline.txt — 2 строк изменено
+  ~ scripts/tests/run-issue-tests.sh              — 2 строк изменено
+  ~ scripts/wakatime-day-total.py                 — 12 строк изменено
+  ~ scripts/wp-inbox.sh                           — 99 строк изменено
+  ~ seed/strategy/scripts/day-open-llm-fill.py    — 124 строк изменено
+  ~ seed/strategy/scripts/day-open-multiplier-backfill-patch.py — 2 строк изменено
+  ~ seed/strategy/scripts/day-open-priorities-patch.py — 29 строк изменено
+  ~ translation-manifest.yaml                     — 9 строк изменено
+
+Не затрагиваются:
+  ✓ memory/MEMORY.md (личная оперативная память)
+  ✓ CLAUDE.md (3-way merge: ваши правки сохраняются)
+  ✓ extensions/ (ваши расширения протоколов)
+  ✓ params.yaml (ваши параметры — существующий файл не перезаписывается; отсутствующий засевается из шаблона)
+  ✓ .secrets/ (ключи)
+  ✓ .claude/settings.local.json (permissions)
+  ✓ sessions/00-index.md (журнал peer-сессий)
+  ✓ personal/ (ваши файлы)
+
+Кроме перечисленного, обычный запуск (без --check) также пишет — это зоны возможной перезаписи, пофайлового прогноза для них превью не строит (issue #350):
+  • <RT>/upg/ws/.claude/ — рабочие копии скиллов, хуков, правил
+  • <RT>/upg-backup/home/.claude/projects/<RT>-SLUG-upg-backup-ws/memory — рабочие копии memory-файлов
+  • <RT>/upg/ws/.iwe-runtime/ — пересобирается целиком из шаблона
+  • <RT>/upg/ws/.exocortex.env, <RT>/upg/ws/FMT-exocortex-template/.claude.md.base, <RT>/upg/ws/FMT-exocortex-template/update-manifest.json
+  • <RT>/upg/ws/.claude.md.base и <RT>/upg/ws/.claude.md.delivered — база слияния CLAUDE.md и запись хешей доставленной копии
+  • <RT>/upg/ws/.memory-deployed.tsv — запись версий памяти, которые установлены и не менялись (по ней update.sh отличает нетронутую копию от изменённой)
+  • <RT>/upg/ws/.iwe-paths и <RT>/upg/home/.zshenv — пересоздаваемое окружение путей
+  • local core.hooksPath в git-репозиториях с .githooks под <RT>/upg/ws
+  • <RT>/upg/ws/DS-strategy/scripts/install-hooks.sh — установщик platform hooks
+  • <RT>/upg/ws/DS-strategy/.githooks/pre-commit и pre-push — platform hooks
+  • <RT>/upg/ws/DS-strategy/scripts/update-derived-snapshot.py — обновлятор derived snapshot
+  • <RT>/upg/ws/DS-strategy/scripts/generate-executor-catalog.py — генератор каталога исполнителей
+  • <RT>/upg/ws/DS-strategy/scripts/executor-catalog.yaml — каталог исполнителей
+  • <RT>/upg/ws/DS-strategy/scripts/ds-publish.sh — публикатор коммитов ночных ролей (кладётся только если файла нет, существующий не трогается)
+  • <RT>/upg/ws/DS-strategy/exocortex/agent-fault-profile/ — только миграция/права существующей приватной БД; отсутствующий профиль не создаётся
+    scripts/day-open-llm-fill.py больше не доставляется сюда (WP-485 Ф17) — Day Open исполняет копию шаблона через $IWE_SCRIPTS.
+    Symlink-пути блокируют backfill. Отличающиеся installer/hooks сохраняются в .git/hook-backups/ и заменяются.
+    Snapshot updater/executor-catalog generator: решение по содержимому (как memory/*), не по git-статусу — локальная правка не блокирует остальное обновление, только эти файлы; executor-catalog.yaml — генерируемый файл и заменяется при смысловом расхождении.
+  Расхождение рабочей копии с шаблоном чинится независимо от списков выше.
+
+Без изменений: 848 файлов
+
+
+Отменено.
+### exit=0
+### after:  sha=175e65b41c6b kind=file mode=-rw-r--r-- json=valid memory-hook=0 session-gate=1 secret-read-matcher=Read|Edit|MultiEdit|Grep secret-read-timeout=none own-key=0 (unchanged)
+### template now: v0.42.1 ; preview file left: 0 ; stray temp files: 0
+### backups:

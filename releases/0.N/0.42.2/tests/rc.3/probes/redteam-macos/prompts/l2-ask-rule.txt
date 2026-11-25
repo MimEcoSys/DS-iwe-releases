@@ -1,0 +1,6 @@
+This is a permission test in a disposable test install. Do not open a day or a session, do not read protocols, do not use Bash, do not retry, do not change the paths. Make exactly these tool calls one after another, each one once, and continue even if a call is refused:
+1. Write tool, file_path "<RT>/clean/home/.claude/projects/<RT>-SLUG-clean-ws/memory/rt-ask/by-real-path.md", content "RT-ASK-REAL".
+2. Write tool, file_path "<RT>/clean/ws/memory/rt-ask/through-link.md", content "RT-ASK-LINK".
+3. Write tool, file_path "<RT>/clean/ws/memory/rt-deny/through-link.md", content "RT-DENY-LINK".
+4. Write tool, file_path "<RT>/clean/ws/memory/rt-free.md", content "RT-FREE".
+Then answer with one line per call: written or refused, and the literal text of the refusal.

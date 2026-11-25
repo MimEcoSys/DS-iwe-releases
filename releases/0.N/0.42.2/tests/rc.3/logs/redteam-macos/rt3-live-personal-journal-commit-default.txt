@@ -1,0 +1,31 @@
+# Claude Code 2.1.329 · model claude-sonnet-5-5 · permission mode default
+CALL Bash: {"command": "cd <RT>/clean/journal && echo \"2026-11-25: chose plan B (cheaper & faster)\" >> decisions.md && git add decisions.md && git commit -m \"Add decision: chose plan B\n\nCo-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>\" && git log --oneline -1", "description": "Append decision line and commit"}
+REFUSED/ERROR: PreToolUse:Bash hook error: [$CLAUDE_PROJECT_DIR/.claude/hooks/session-open-gate.sh]: [session-open-gate] session=<uuid> no semaphore with both harness_session_id: <uuid> and a wp: field or an allowed housekeeping reason (<RT>/clean/ws/.iwe-runtime/sessions/claude-*.open) — blocking direct git commit/push
+🚫 Session Open Gate (WP-561/S-68): прямой git commit/push без привязки к РП заблокирован.
+
+Сессия без РП работает только на чтение: читать, исследовать и проверять
+локально можно, коммитить и пушить нельзя (WP-7 Ф274). Чтобы закоммитить,
+откройте сессию на РП, к которому относится работа:
+
+  bash "${IWE_SCRIPTS:-$HOME/IWE/scripts}/session-guard.sh" open --wp WP-N --task "..." --agent claude-code
+
+WP-N — РП, который уже обсуждался в этой сессии, или новый РП по фильтру
+входа (S-47). Зонтичный РП техдолга — только для работы, которая и есть
+техдолг, не как заглушка для работы без своего РП.
+
+Исключения без своего номера: закрытый список операционных протоколов
+(day-open, day-close, week-close, month-close, update-d …[cut, 1593 characters in all]
+AGENT: Nothing was committed. A hook refused the command, and it ran no part of it, so decisions.md is unchanged.
+
+The command was `cd <journal> && echo "2026-11-25: chose plan B (cheaper & faster)" >> decisions.md && git add decisions.md && git commit -m "Add decision: chose plan B…" && git log --oneline -1`. The refusal reads:
+
+> `PreToolUse:Bash hook error: [$CLAUDE_PROJECT_DIR/.claude/hooks/session-open-gate.sh]: [session-open-gate] session=<uuid> no semaphore with both harness_session_id: <uuid> and a wp: field or an allowed housekeeping reason (…/ws/.iwe-runtime/sessions/claude-*.open) — blocking direct git commit/push`
+> `🚫 Session Open Gate (WP-561/S-68): прямой git commit/push без привязки к РП заблокирован.`
+
+The hook blocks any git commit unless a work-product session is open. It also says not to get around it by another route. The only sanctioned fix is opening a session, which you told me not to do. I haven't tried a workaround, such as skipping hooks or using a different git invocation, because that would bypass a guard you haven't authorized me to bypass.
+
+If you want the commit made, you could tell me to open a housekeeping session or to bypass the hook for this repo. You could also run the commit yourself.
+
+**Result:** no commit exists, and no command produced one.
+# RESULT: success · turns 2 · declined calls 1
+#   declined: Bash {"command": "cd <RT>/clean/journal && echo \"2026-11-25: chose plan B (cheaper & faster)\" >> decisions.md && git add decisions.md && git commit -m \"Add decision: chose plan B\n\nCo-Author …[cut, 426 characters in all]

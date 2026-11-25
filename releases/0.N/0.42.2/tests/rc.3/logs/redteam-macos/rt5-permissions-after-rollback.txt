@@ -1,0 +1,34 @@
+## group- or world-writable files and folders (outside .git):
+count: 0
+## modes of sensitive files:
+-rw------- <RT>/upg/ws/.exocortex.env
+-rw------- <RT>/upg/ws/.mcp.json
+-rw-r--r-- <RT>/upg/ws/.claude/settings.json
+-rw-r--r-- <RT>/upg/ws/params.yaml
+-rw-r--r-- <RT>/upg/ws/.iwe-paths
+-rw-r--r-- <RT>/upg/home/.zshenv
+## modes of folders:
+drwxr-xr-x <RT>/upg/ws/.claude
+drwxr-xr-x <RT>/upg/ws/.iwe-runtime
+drwxr-xr-x <RT>/upg/ws/.claude/hooks
+drwxr-xr-x <RT>/upg/home/.claude
+drwxr-xr-x <RT>/upg/home/.claude/projects
+drwxr-xr-x <RT>/upg-backup/home/.claude/projects/<RT>-SLUG-upg-backup-ws/memory
+## hook scripts without the execute bit: 0
+## setuid/setgid files: 0
+## absolute symlinks that leave the disposable install:
+<RT>/upg/ws/memory -> <RT>/upg-backup/home/.claude/projects/<RT>-SLUG-upg-backup-ws/memory
+## plist files written into the disposable HOME: 3
+-rw-r--r-- <RT>/upg/home/Library/LaunchAgents/com.extractor.git-diff-feed.plist
+-rw-r--r-- <RT>/upg/home/Library/LaunchAgents/com.strategist.weekreview.plist
+-rw-r--r-- <RT>/upg/home/Library/LaunchAgents/com.strategist.morning.plist
+## backups folder modes:
+drwxr-xr-x <RT>/upg/ws/.backups
+drwxr-xr-x <RT>/upg/ws/.backups/settings-merge
+-rw-r--r-- <RT>/upg/ws/.backups/settings-merge/settings.json.20261125T162621Z
+-rw-r--r-- <RT>/upg/ws/.backups/settings-merge/settings.json.20261125T162830Z
+drwxr-xr-x <RT>/upg/ws/.backups/deprecated
+drwxr-xr-x <RT>/upg/ws/.backups/deprecated/20261125T162829Z-12253
+drwxr-xr-x <RT>/upg/ws/.backups/deprecated/20261125T162829Z-12253/workspace
+drwxr-xr-x <RT>/upg/ws/.backups/deprecated/20261125T162829Z-12253/template
+## service manager calls recorded by the stubs:

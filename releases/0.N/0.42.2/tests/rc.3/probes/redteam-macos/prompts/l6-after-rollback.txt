@@ -1,0 +1,4 @@
+This is a permission test in a disposable test install. Do not open a day or a session, do not read protocols, do not use Bash, do not retry, do not change the paths. Make exactly these tool calls one after another, each one once, and continue even if a call is refused:
+1. Write tool, file_path "<RT>/upg/ws/memory/rt-after-rollback.md", content "RT-AFTER-ROLLBACK".
+2. Write tool, file_path "<RT>/upg/ws/extensions/rt-after-rollback.md", content "RT-AFTER-ROLLBACK".
+Then answer with one line per call: written or refused, and the literal text of the refusal or of any hook error you saw.

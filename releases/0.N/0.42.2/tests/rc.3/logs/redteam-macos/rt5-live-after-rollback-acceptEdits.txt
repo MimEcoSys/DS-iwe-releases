@@ -1,0 +1,12 @@
+# Claude Code 2.1.329 · model claude-sonnet-5-5 · permission mode acceptEdits
+CALL Write: {"file_path": "<RT>/upg/ws/memory/rt-after-rollback.md", "content": "RT-AFTER-ROLLBACK"}
+CALL Write: {"file_path": "<RT>/upg/ws/extensions/rt-after-rollback.md", "content": "RT-AFTER-ROLLBACK"}
+[system] permission request declined: nobody can answer it in a non-interactive run
+REFUSED/ERROR: Claude requested permissions to edit <RT>/upg/ws/memory/rt-after-rollback.md which is a sensitive file. <RT>/upg/ws/memory/rt-after-rollback.md resolves through a symlink to <RT>/upg-backup/home/.claude/projects/-private-tm… [+146 chars], which is outside the allowed working directories.
+ANSWER: File created successfully at: <RT>/upg/ws/extensions/rt-after-rollback.md (file state is current in your context — no need to Read it back)
+AGENT: 1. Refused. The error said: "Claude requested permissions to edit <RT>/upg/ws/memory/rt-after-rollback.md which is a sensitive file. <RT>/upg/ws/memory/rt-after-rollback.md resolves through a symlink to <RT>/upg-backup/home/.claude/projects/-private-tm… [+146 chars], which is outside the allowed working directories." The tool output cut the path, so the last 146 characters are missing.
+2. Written. The tool said "File created successfully at: …/upg/ws/extensions/rt-after-rollback.md".
+
+I saw no hook errors on either call.
+# RESULT: success · turns 3 · declined calls 1
+#   declined: Write {"file_path": "<RT>/upg/ws/memory/rt-after-rollback.md", "content": "RT-AFTER-ROLLBACK"}
