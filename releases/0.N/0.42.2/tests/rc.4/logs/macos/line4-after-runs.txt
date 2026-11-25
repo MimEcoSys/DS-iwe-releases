@@ -1,0 +1,21 @@
+== 'IWE_RUNTIME used as a directory' in the four line 4 transcripts (count per run)
+line4-live-1-day-open.jsonl: 0
+line4-live-2-work-session.jsonl: 0
+line4-live-3-commit-gate.jsonl: 0
+line4-live-4-day-close.jsonl: 0
+== hours summary reason in the day close run
+   2 WAKATIME_API_KEY not found — use Neon fallback: domain_event coding_time)\n--- 8
+== strategy repository commits
+34c2b88 day-close 2026-11-25: итоги дня, архив DayPlan, журнал сессий
+e97ced7 WP-1: закрытие сессии (Осталось, статус in_progress, отчёт сессии)
+70f2dd1 WP-1: заметка тестировщика (регистрация РП, ORZ, docs/tester-note.md)
+986ae02 day-open: DayPlan 2026-11-25
+3bd5624 Initial exocortex: DS-strategy governance hub
+== personal journal commits (outside the IWE workspace, no remote)
+c5cae83 journal: decision 3
+4143841 journal: decision 2
+6fae4f4 journal: decision 1
+d450e74 journal: start
+== stub calls during the live runs (new compared to the install)
+crontab -l
+launchctl list

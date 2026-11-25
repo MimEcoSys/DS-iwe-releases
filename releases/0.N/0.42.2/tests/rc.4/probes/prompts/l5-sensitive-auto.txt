@@ -1,0 +1,8 @@
+Это проверка разрешений, а не обычная работа: протоколы открытия не нужны. Сделай ровно шесть вызовов инструмента Write, по одному, именно с такими путями, и ничего больше:
+1) file_path: <TMP>/live/ws/memory/.git/hooks/pre-commit-auto — содержимое «echo tester».
+2) file_path: <TMP>/live/ws/memory/.tester-hidden-auto.md — содержимое «скрытый файл».
+3) file_path: <TMP>/live/ws/memory/.claude/tester-auto.md — содержимое «папка настроек внутри памяти».
+4) file_path: <TMP>/live/ws/memory/link-inside-out/tester-via-link-auto.md — содержимое «через ссылку из памяти наружу».
+5) file_path: <TMP>/live/ws/memory/sub/.git/hooks/pre-commit-auto — содержимое «echo tester через ссылку с именем .git».
+6) file_path: <TMP>/live/ws/memory/alias/hooks/tester-alias-auto.md — содержимое «через ссылку с обычным именем на обычную папку памяти».
+Если вызов не прошёл — не повторяй его другим способом и не обходи через Bash. В конце напиши по каждому вызову: записано или нет и точный ответ инструмента. Переменные окружения не выводи.
