@@ -1,8 +1,8 @@
 # Снимок источников: результаты и их заявленные статусы из карточек работ.
 # Собирает tools/build_board.py при каждом запуске; руками не править.
 snapshot:
-  collected_at: '2026-11-24'
-  template_commit: 75cb2ff9e7c924847b83769f413df08923e10ba7
+  collected_at: '2026-11-26'
+  template_commit: a254425bbc2345672a1285db3842bc9e56780230
   rule: результаты целей с размещением «шаблон IWE», «Staging» или Open, все цели блока «И. Своя IWE» и цели функции «Библиотека методов»
   goals:
   - 1
@@ -674,6 +674,28 @@ results:
   works:
   - РП-623
   in_week_plan: true
+- code: Ц34-22
+  goal: 34
+  contours: *id005
+  who: пользователь IWE
+  what: у каждого ритмического процесса (открытие и закрытие дня, ночная цепочка, резервные копии) одна запись в реестре часов с поясом и порядком «после чего»…
+  where: по расписанию
+  system: IWE по шаблону
+  status: план
+  works:
+  - РП-627
+  in_week_plan: false
+- code: Ц34-23
+  goal: 34
+  contours: *id005
+  who: пользователь IWE
+  what: 'табло дня не отстаёт на день летом: дата снимка считается по поясу Никосии, а процессы окна 03:00–03:59 переживают перевод часов 28.03.2027 без пропуска и…'
+  where: по расписанию
+  system: IWE по шаблону
+  status: план
+  works:
+  - РП-627
+  in_week_plan: false
 - code: Ц35-01
   goal: 35
   contours: &id006
@@ -1026,6 +1048,28 @@ results:
   contours: *id008
   who: пользователь IWE
   what: 'единый шаблон карточки РП: шапка и тело с полями «для кого», «что за предмет в физическом мире», «где лежит результат», адрес входящих, израсходованный бюджет…'
+  where: любой клиент
+  system: IWE по шаблону
+  status: план
+  works:
+  - РП-503
+  in_week_plan: true
+- code: Ц38-21
+  goal: 38
+  contours: *id008
+  who: пользователь IWE
+  what: раздел «описание готово» в шаблоне карточки РП (цель и надсистема, приёмка целого, реестр допущений, фазы-контракты с классом И/Ф/Ц, таблица прав…
+  where: любой клиент
+  system: IWE по шаблону
+  status: план
+  works:
+  - РП-503
+  in_week_plan: true
+- code: Ц38-22
+  goal: 38
+  contours: *id008
+  who: пользователь IWE
+  what: 'конвейер подготовки РП к Менеджеру РП: замысел пилота, разложение на фазы-контракты, приоритеты с согласия пилота, два независимых проверяющих, «да» пилота как…'
   where: любой клиент
   system: IWE по шаблону
   status: план
@@ -2423,7 +2467,8 @@ results:
   works:
   - РП-524
   in_week_plan: true
-  merged_unreleased: true
+  released_042: true
+  released_0422: true
   on_staging: true
 - code: Ц82-03
   goal: 82
@@ -2553,8 +2598,8 @@ results:
   works:
   - РП-620
   in_week_plan: true
-  merged_unreleased: true
   released_042: true
+  released_0422: true
 - code: Ц93-02
   goal: 93
   contours: *id024
@@ -2566,8 +2611,8 @@ results:
   works:
   - РП-617
   in_week_plan: true
-  merged_unreleased: true
   released_042: true
+  released_0422: true
   released_041_records:
   - U-1d20b2
 - code: Ц93-03
@@ -2603,8 +2648,8 @@ results:
   works:
   - РП-620
   in_week_plan: true
-  merged_unreleased: true
   released_042: true
+  released_0422: true
   mismatch: 'расходится: в карточке «план», но часть уже на обкатке, влита в шаблон или вышла'
 - code: Ц93-06
   goal: 93
@@ -2617,8 +2662,8 @@ results:
   works:
   - РП-610
   in_week_plan: true
-  merged_unreleased: true
   released_042: true
+  released_0422: true
 - code: Ц93-07
   goal: 93
   contours: *id024
@@ -2862,6 +2907,28 @@ results:
   - РП-503
   in_week_plan: true
   merged_unreleased: true
+- code: Ц96-14
+  goal: 96
+  contours: *id027
+  who: пользователь IWE
+  what: 'Менеджер РП: ИИ-агент по готовому описанию РП собирает команду агентов, ведёт фазы по порядку и приоритетам, принимает решения в границах таблицы прав, главные…'
+  where: среда на компьютере
+  system: IWE по шаблону
+  status: план
+  works:
+  - РП-626
+  in_week_plan: false
+- code: Ц96-15
+  goal: 96
+  contours: *id027
+  who: пользователь IWE
+  what: 'параллельные сессии одного РП не сталкиваются на общих файлах: журнал дня публикуется со своим разрешением на отправку и своим замком, карточка РП без горячих…'
+  where: среда на компьютере
+  system: IWE по шаблону
+  status: план
+  works:
+  - РП-503
+  in_week_plan: true
 - code: Ц98-01
   goal: 98
   contours: &id028
@@ -3737,138 +3804,55 @@ author_ahead:
   present: false
   files: []
 unreleased_links:
+- key: U-99df23
+  tag: behavior
+  first_words: (#1678) Защитная проверка опасных команд (`destructive-guard`) перестала…
+  service: (#1678) защитная проверка опасных команд не спрашивает в типичных безопасных случаях
 - key: U-802d20
   tag: optional
   first_words: Пояснение в начале `scripts/postman-address-book.py` снова совпадает с тем, что…
   result:
   - Ц96-11
-- key: U-f4ec1d
+- key: U-ce1a61
   tag: behavior
-  first_words: '`scripts/wp-inbox.sh` и `scripts/test-wp-inbox.sh` снова совпадают с авторской…'
-  service: (#1661) wp-inbox.sh и test-wp-inbox.sh снова совпадают с авторской версией (WP-418 Ф14)
-- key: U-f3dd00
+  first_words: (#1684) The close-check fallback now tells the caller to state in the summary…
+  service: (#1684) запасная сверка закрытия без субагента просит факты о применимости пунктов
+- key: U-b97273
   tag: behavior
-  first_words: '`scripts/iwe-notify` is again a byte-for-byte copy of the author''s canon…'
-  service: (#1660) scripts/iwe-notify снова совпадает с каноном автора байт в байт
-- key: U-25803a
+  first_words: (#1683) Agents that cannot start a sub-agent (Codex, Kimi Code) now have a…
+  service: (#1683) запасная сверка закрытия для Codex и Kimi Code отдельным процессом
+- key: U-22babf
   tag: behavior
-  first_words: The glossary supplier now opens a GitHub issue on failure and comments on it…
-  result:
-  - Ц93-02
-- key: U-2736b6
+  first_words: '(#1680) Codex now sees the template skills: install and update put one relative…'
+  service: (#1680) Codex видит навыки шаблона через ссылки в .agents/skills
+- key: U-c319aa
   tag: behavior
-  first_words: Translation reports match local glossary entries as whole terms in Markdown.…
-  result:
-  - Ц93-01
-  - Ц93-05
-- key: U-df4851
-  tag: behavior
-  first_words: (#1652) Хост API WakaTime (`api.wakatime.com` вместо `wakatime.com`) теперь во…
-  service: (#1652) адрес API WakaTime api.wakatime.com во всех программах шаблона (WP-7 Ф317)
-- key: U-9e9af6
-  tag: behavior
-  first_words: (#1646) Сводка WakaTime для закрытия дня (`scripts/wakatime-day-total.py`)…
-  service: (#1646) сводка WakaTime закрытия дня через api.wakatime.com, верная причина пустого дня
-- key: U-2417cb
-  tag: behavior
-  first_words: (#1653) Сверка главной копии с опубликованной…
-  service: '(#1653) нет ложного предупреждения IWE_RUNTIME при публикации (обращение #1625)'
-- key: U-77d368
-  tag: behavior
-  first_words: (#1634) Проверка запуска Кими (`scripts/kimi-standalone-preflight.sh`) теперь…
-  result:
-  - Ц82-02
-- key: U-e0430e
-  tag: behavior
-  first_words: (#1627) Срочное уведомление подписчикам о защитных изменениях…
-  service: (#1627) короткое срочное уведомление о безопасности (WP-529 Ф275)
-- key: U-f7aadd
-  tag: behavior
-  first_words: (#1629) Создание РП (`scripts/create-wp.sh`) снова держит замок, который…
-  service: '(#1629) сверка названия РП с реестром понятий при создании РП (обращение #1606)'
-- key: U-815c6b
-  tag: behavior
-  first_words: (#1626) Запись в авто-память агента через ссылку `memory/` в рабочей папке…
-  service: '(#1626) запись памяти агента без ручного подтверждения (обращение #1487)'
+  first_words: (#1679) Every skill header now declares who the skill is for (`audience…
+  service: (#1679) в заголовке навыка указано, для кого он и какие агенты его выполняют
 - key: U-a8d101
   tag: optional
   first_words: 'Почтальон: `scripts/postman.py deliver --to WP-N --from "..." --pointer "..."…'
   result:
   - Ц96-11
-- key: U-99e11d
-  tag: optional
-  first_words: The glossary supplier can explain the outcome for each requested concept code.…
-  result:
-  - Ц93-02
-- key: U-9af040
-  tag: optional
-  first_words: '`scripts/fetch-glossary-concepts.py`: the glossary exporter reaches the…'
-  service: (#1639) выгрузка терминов перевода через шлюз платформы машинным ключом
-- key: U-c8c8fb
-  tag: optional
-  first_words: '`scripts/iwe-notify --direct`: one direct send to Telegram without looking up…'
-  service: '(#1630) iwe-notify --direct: прямая отправка без шлюза уведомлений'
-- key: U-ed137c
-  tag: behavior
-  first_words: Day Open recognizes the plan table and attention section from the installed…
-  result:
-  - Ц93-06
 - key: U-9d0abc
   tag: behavior
   first_words: (#1633) Рабочий продукт (РП) нельзя перенести в архив, пока в его ящике…
   result:
   - Ц96-13
-- key: U-d4adfc
-  tag: docs
-  first_words: 'Разметка изменений перед выпуском 0.42.2: записи «Ещё не выпущено» разнесены по…'
-  service: '(#1669) разметка изменений перед выпуском 0.42.2: записи разнесены по разделам (WP-529 Ф282)'
-- key: U-653331
-  tag: optional
-  first_words: (#1664) В разделе «Переезд с Claude на другого агента»…
-  service: (#1664) уточнены шаги переезда с Claude на другого агента в AGENT-VENDOR-SETUP.md
-- key: U-f6fa57
-  tag: optional
-  first_words: (#1663) Инструкция по подключению агента (`docs/AGENT-VENDOR-SETUP.md`)…
-  service: (#1663) раздел «Переезд с Claude на другого агента» в AGENT-VENDOR-SETUP.md
-- key: U-fa5819
+- key: U-96c6b9
   tag: behavior
-  first_words: 'Автоматическая доставка из авторского источника (template-sync.sh): обновлены…'
-  service: (#1650) доставка навыка mentor-participant-brief из авторской установки
-- key: U-4ddcaf
-  tag: behavior
-  first_words: English installation scripts keep their executable bits when the translated…
+  first_words: Проверка закрытия РП с ящиком входящих (`scripts/wp-inbox-close-gate.sh`…
   result:
-  - Ц93-06
-- key: U-4aeab6
-  tag: behavior
-  first_words: 'Автоматическая доставка из авторского источника (template-sync.sh): обновлены…'
-  service: (#1638) доставка scripts/lib/process-identity.sh из авторской установки
-- key: U-5a95c2
-  tag: optional
-  first_words: '`scripts/session-guard.sh`: при наличии `scripts/lib/process-identity.sh`…'
-  service: (#1640) строка pid_start_id в отметке сессии охранника (WP-530 Ф160)
-- key: U-eeb1d6
+  - Ц96-13
+- key: U-a11f3f
   tag: optional
   first_words: Снимок терминов графа понятий для перевода шаблона на английский обновлён…
-  service: (#1616) обновлён снимок терминов перевода из графа понятий (WP-617)
-- key: U-56d7a2
-  tag: docs
-  first_words: (#1636) Каталог навыков (`.claude/skills-catalog.yaml`) пересобран программой…
-  service: (#1636) каталог навыков пересобран, добавлены три выпущенных навыка
-- key: U-dccdb3
-  tag: docs
-  first_words: (#1601) Описание процесса выпуска (`docs/RELEASE-PROCESS.md`) называет…
-  service: (#1601) настоящие пути репозитория выпусков в docs/RELEASE-PROCESS.md
-- key: U-c7bbce
+  service: снимок терминов графа понятий для перевода обновлён (#1651, WP-617)
+- key: U-cf2fe7
+  tag: optional
+  first_words: (#1682) Анонс нового выпуска для подписчиков в Telegram стал короче и понятнее…
+  service: (#1682) анонс выпуска подписчикам в Telegram стал короче
+- key: U-310113
   tag: behavior
-  first_words: (#1628) Скиллы пир-сессий `peer-conversation` (1.5.7 → 1.8.0) и…
-  result:
-  - Ц82-02
-- key: U-5c024f
-  tag: docs
-  first_words: (#1624) В журнал пострелизных аудитов (`docs/release-audit-log.md`) записан…
-  service: (#1624) В журнал пострелизных аудитов записан итог проверки выпуска 0.42.1 (WP-529 Ф275)
-- key: U-ad2f4e
-  tag: behavior
-  first_words: (#1622) В ручной словарь перевода записана роль «Верификатор» → Verifier (пилот…
-  service: (#1622) В ручной словарь перевода записана роль «Верификатор» → Verifier (пилот утвердил 20.11, WP-…
+  first_words: (#1654) Мост навыков к DeepSeek Harness (`setup/install-dsh-skills.sh`) стал…
+  service: '(#1654) мост навыков к DeepSeek Harness стал надёжнее (обращение #1623)'

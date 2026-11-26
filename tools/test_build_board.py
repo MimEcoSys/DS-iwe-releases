@@ -528,6 +528,7 @@ def test_stage_pages_cover_every_result_and_detect_equal_count_substitution(tmp_
         "ready.md": {"Ц1-05"}, "taken.md": {"Ц1-06"}, "done.md": {"Ц1-04", "Ц1-07", "Ц1-08", "Ц1-09"},
         "deferred.md": {"Ц1-10"}, "outside-template.md": {"Ц1-08"},
         "released-0.37-0.41.11.md": {"Ц1-04"}, "released-0.42.md": set(), "released-0.42.1.md": set(),
+        "released-0.42.2.md": set(),
     }
     assert board.stage_page_codes(states) == expected
     (tmp_path / "board").mkdir()
@@ -577,10 +578,11 @@ def test_completeness_explains_separate_units_and_code_partition():
         {"proposed": {"goal": 2, "what": "B"}},
     ]
     released = {"0.36": {"0.36": [{}]}, "0.41.11": {"0.41.11": [{}, {}]}, "0.42": {"0.42.0": [{}, {}, {}]},
-                "0.42.1": {"0.42.1": [{}]}}
+                "0.42.1": {"0.42.1": [{}]}, "0.42.2": {"0.42.2": [{}, {}]}}
     record_text = "\n".join(board.record_inventory_lines(staging, unreleased, released, [{"status": "взято в 0.42"}], 2))
-    assert "9 = 1 + 2 + 3 + 1 + 2" in record_text
+    assert "11 = 1 + 2 + 3 + 1 + 2 + 2" in record_text
     assert "[0.42.1](../releases/0.N/0.42.1/shipped.md)" in record_text
+    assert "[0.42.2](../releases/0.N/0.42.2/shipped.md)" in record_text
     assert "3 = 1 + 1 + 1" in record_text
     assert "Предложений новых результатов: 2" in record_text
     assert "1 из обкатки + 2 из невыпущенных правок − 1" in record_text
@@ -719,9 +721,10 @@ def test_released_042_links_must_cover_exactly_the_042_records(tmp_path):
 def test_newer_release_than_the_last_range_stops_the_build():
     assert board.released_range("0.42.0") == "0.42"
     assert board.released_range("0.42.1") == "0.42.1"
+    assert board.released_range("0.42.2") == "0.42.2"
     assert board.released_range("0.41.11") == "0.41.11"
-    for newer in ("0.42.2", "0.43.0"):
-        with pytest.raises(SystemExit, match=f"{newer} is newer than 0.42.1; extend the board ranges"):
+    for newer in ("0.42.3", "0.43.0"):
+        with pytest.raises(SystemExit, match=f"{newer} is newer than 0.42.2; extend the board ranges"):
             board.released_range(newer)
 
 
@@ -739,6 +742,23 @@ def test_record_in_0421_wins(tmp_path):
     assert [r["status"] for r in results] == ["выпущено в 0.42", "выпущено в 0.42.1"]
     assert board.public_release("Ц1-01", results[0], {}) == "0.42.0"
     assert board.public_release("Ц1-02", results[1], {}) == "0.42.1"
+
+
+def test_record_in_0422_wins(tmp_path):
+    # WP-529: the latest release of a record wins; a 0.42.2 record makes the result «выпущено в 0.42.2».
+    results = [
+        {"code": "Ц1-01", "status": "сделано, не сверено"},
+        {"code": "Ц1-02", "status": "сделано, не сверено"},
+        {"code": "Ц1-03", "status": "сделано, не сверено"},
+    ]
+    path = links_file(
+        tmp_path,
+        released_042={"U-a1": {"result": ["Ц1-01", "Ц1-02", "Ц1-03"]}, "U-f1": {"result": ["Ц1-02", "Ц1-03"]},
+                      "U-g1": {"result": ["Ц1-03"]}},
+    )
+    board.apply_links(results, [], {"U-a1", "U-f1", "U-g1"}, [], path, frozenset({"U-f1"}), frozenset({"U-g1"}))
+    assert [r["status"] for r in results] == ["выпущено в 0.42", "выпущено в 0.42.1", "выпущено в 0.42.2"]
+    assert board.public_release("Ц1-03", results[2], {}) == "0.42.2"
 
 
 def test_0421_page_caption():

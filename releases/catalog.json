@@ -3,15 +3,6 @@
   "generated_from": "releases/index.yaml",
   "versions": [
     {
-      "version": "0.42.2",
-      "state": "planned",
-      "as_of": "2026-11-24",
-      "summary": "исправительный выпуск после 0.42.1; состав решён 24.11 после разметки — исправления и незначительные изменения, три новые правки (#1633,",
-      "links": {
-        "release": "releases/0.N/0.42.2/README.md"
-      }
-    },
-    {
       "version": "0.43",
       "state": "planned",
       "as_of": "2026-11-21",
@@ -19,6 +10,20 @@
       "links": {
         "release": "releases/0.N/0.43/plan.md"
       }
+    },
+    {
+      "version": "0.42.2",
+      "state": "released",
+      "as_of": "2026-11-26",
+      "summary": "исправительный выпуск после 0.42.1, исправления и мелкие изменения, новое отложено в 0.43",
+      "published_tag": "v0.42.2",
+      "links": {
+        "release": "releases/0.N/0.42.2/README.md",
+        "decisions": "releases/0.N/0.42.2/decisions.md",
+        "shipped": "releases/0.N/0.42.2/shipped.md"
+      },
+      "composition_page": "board/released-0.42.2.md",
+      "result_codes": []
     },
     {
       "version": "0.42.1",

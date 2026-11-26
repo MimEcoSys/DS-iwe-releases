@@ -4,18 +4,23 @@
 # state: released | testing | planned. as_of — когда состояние проверено, а не когда правили текст.
 schema_version: 1
 versions:
-  - version: "0.42.2"
-    state: planned
-    as_of: 2026-11-24
-    summary: исправительный выпуск после 0.42.1; состав решён 24.11 после разметки — исправления и незначительные изменения, три новые правки (#1633, #1662, #1665) отложены в 0.43; срок не объявлен
-    links:
-      release: releases/0.N/0.42.2/README.md
   - version: "0.43"
     state: planned
     as_of: 2026-11-21
     summary: новые возможности по итогам голосования; состав утверждён 21.11, срок не объявлен (после выхода 0.42.2)
     links:
       release: releases/0.N/0.43/plan.md
+  - version: "0.42.2"
+    state: released
+    as_of: 2026-11-26
+    summary: исправительный выпуск после 0.42.1, исправления и мелкие изменения, новое отложено в 0.43
+    published_tag: v0.42.2
+    decision_ref: releases/0.N/0.42.2/decisions.md
+    composition_page: board/released-0.42.2.md
+    links:
+      release: releases/0.N/0.42.2/README.md
+      decisions: releases/0.N/0.42.2/decisions.md
+      shipped: releases/0.N/0.42.2/shipped.md
   - version: "0.42.1"
     state: released
     as_of: 2026-11-21
