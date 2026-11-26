@@ -75,4 +75,5 @@ tools/                  программы: сборщик табло, стат�
 | Проверить ссылки всех страниц | `python3 tools/build_board.py --repo . --check-links` |
 | Проверить решения выпуска | `python3 tools/check_decisions.py` |
 | После слияния выпуска: отложенное вернулось в основную ветку | `python3 tools/check_decisions.py --release <N> --after-release --template-changelog <CHANGELOG.md основной ветки шаблона>` |
+| Закрыт ли выпуск: открытые строки 17а–28 чек-листа выпуска (перед действием 28) | `python3 tools/release-checklist.py --release <N> --closure` |
 | Тесты программ | `python -m pytest -q tools` |
