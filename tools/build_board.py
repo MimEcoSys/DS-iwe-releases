@@ -267,25 +267,31 @@ def attach_works(results: list[dict], result_codes: str, week_plan: str) -> None
 
 # Released ranges of the board: name -> highest version in it. A changelog section newer than the
 # last range stops the build until the range is added (WP-529 F274: 0.42 released 16.11.2026;
-# F276: 0.42.1 released 20.11.2026 gets its own range, so 0.42.0 and 0.42.1 records are not mixed).
-RELEASED_RANGES = {"0.36": (0, 36, 99), "0.41.11": (0, 41, 11), "0.42": (0, 42, 0), "0.42.1": (0, 42, 1)}
+# F276: 0.42.1 released 20.11.2026 gets its own range, so 0.42.0 and 0.42.1 records are not mixed;
+# 0.42.2 released 25.11.2026 gets its own range the same way).
+RELEASED_RANGES = {"0.36": (0, 36, 99), "0.41.11": (0, 41, 11), "0.42": (0, 42, 0), "0.42.1": (0, 42, 1),
+                   "0.42.2": (0, 42, 2)}
 RELEASED_TITLES = {
     "0.36": "Выпуски до 0.36 включительно",
     "0.41.11": "Выпуски 0.37–0.41.11: что добавилось к 0.36",
     "0.42": "Выпуск 0.42: что добавилось к 0.41.11",
     "0.42.1": "Выпуск 0.42.1: что добавилось к 0.42",
+    "0.42.2": "Выпуск 0.42.2: что добавилось к 0.42.1",
 }
 RANGE_PLACES = {
     "0.36": "released-0.36", "0.41.11": "released-0.37-0.41.11", "0.42": "released-0.42", "0.42.1": "released-0.42.1",
+    "0.42.2": "released-0.42.2",
 }
 RELEASED_041 = "выпущено в 0.37–0.41.11"
 RELEASED_042 = "выпущено в 0.42"
 RELEASED_0421 = "выпущено в 0.42.1"
+RELEASED_0422 = "выпущено в 0.42.2"
 PLACE_TO_STATUS = {
     "released-0.36": "выпущено в 0.36",
     "released-0.37-0.41.11": RELEASED_041,
     "released-0.42": RELEASED_042,
     "released-0.42.1": RELEASED_0421,
+    "released-0.42.2": RELEASED_0422,
     "author-only": "у автора",
     "not-template": "работает вне выпуска шаблона",
 }
@@ -326,13 +332,14 @@ def check_codes(name: str, link: dict, by_code: dict) -> None:
 
 def apply_links(
     results: list[dict], unreleased_links: list[dict], released_042_keys: set, staging: list[dict], links_file: Path,
-    released_0421_keys: frozenset = frozenset(),
+    released_0421_keys: frozenset = frozenset(), released_0422_keys: frozenset = frozenset(),
 ) -> None:
     """Apply the Developer's links: records and staging entries -> results, done results -> where they are.
 
-    The section released_0_42 links the records of 0.42.0 and 0.42.1 (released_042_keys); the 0.42.1
-    ones are released_0421_keys. A done result whose every linked record is out becomes «выпущено в 0.42.1»
-    when one of them came out in 0.42.1, «выпущено в 0.42» otherwise; one with a record merged after
+    The section released_0_42 links the records of 0.42.0, 0.42.1 and 0.42.2 (released_042_keys); the 0.42.1
+    ones are released_0421_keys, the 0.42.2 ones released_0422_keys. A done result whose every linked record
+    is out becomes «выпущено в 0.42.2» when one of them came out in 0.42.2, «выпущено в 0.42.1» when the
+    latest is in 0.42.1, «выпущено в 0.42» otherwise; one with a record merged after
     the release is «готово для передачи». Records only reach a result through these links.
     """
     declared = yaml.safe_load(links_file.read_text())
@@ -353,6 +360,8 @@ def apply_links(
             by_code[code]["released_042"] = True
             if key in released_0421_keys:
                 by_code[code]["released_0421"] = True
+            if key in released_0422_keys:
+                by_code[code]["released_0422"] = True
     linked = ("merged_unreleased", "released_042")
     done_unmerged = {
         r["code"] for r in results if r["status"] == "сделано, не сверено" and not any(r.get(k) for k in linked)
@@ -373,7 +382,9 @@ def apply_links(
         if r.get("merged_unreleased"):
             r["status"] = "готово для передачи"
         elif r.get("released_042"):
-            r["status"] = RELEASED_0421 if r.get("released_0421") else RELEASED_042
+            r["status"] = (
+                RELEASED_0422 if r.get("released_0422") else RELEASED_0421 if r.get("released_0421") else RELEASED_042
+            )
     for r in results:
         if r["status"] == "план" and any(r.get(k) for k in ("on_staging", *linked)):
             r["mismatch"] = "расходится: в карточке «план», но часть уже на обкатке, влита в шаблон или вышла"
@@ -499,7 +510,7 @@ STAGES = (
     ("2.2 Проверяется Разработчиком", "at-developer.md", ("у автора",)),
     ("2.3 Готово для передачи Выпускающему", "ready.md", ("готово для передачи",)),
     ("2.4 Взято Выпускающим", "taken.md", ("взято в 0.42",)),
-    ("**3. Сделано**", "done.md", ("выпущено в 0.36", RELEASED_041, RELEASED_042, RELEASED_0421)),
+    ("**3. Сделано**", "done.md", ("выпущено в 0.36", RELEASED_041, RELEASED_042, RELEASED_0421, RELEASED_0422)),
     ("**4. Отложено**", "deferred.md", ("отложено",)),
 )
 OUTSIDE = ("Вне выпуска шаблона", "outside-template.md", ("работает вне выпуска шаблона",))
@@ -509,6 +520,7 @@ RELEASED_PAGES = (
     ("Вышло в 0.37–0.41.11", "released-0.37-0.41.11.md", (RELEASED_041,)),
     ("Вышло в 0.42", "released-0.42.md", (RELEASED_042,)),
     ("Вышло в 0.42.1", "released-0.42.1.md", (RELEASED_0421,)),
+    ("Вышло в 0.42.2", "released-0.42.2.md", (RELEASED_0422,)),
 )
 DONE_SUBSETS = (OUTSIDE, *RELEASED_PAGES)
 WORK_STAGES = tuple(row for row in STAGES if row[0].startswith(("2.1 ", "2.2 ", "2.3 ", "2.4 ")))
@@ -546,11 +558,14 @@ def stage_notes(results, released, released_counts, taken_records=0, released_04
     links_0421 = [(released_042_links or {}).get(e["key"], {}) for entries in released["0.42.1"].values() for e in entries]
     rec_0421 = len(links_0421)
     kinds_0421 = {kind: sum(1 for link in links_0421 if link.get(kind)) for kind in LINK_KINDS}
+    links_0422 = [(released_042_links or {}).get(e["key"], {}) for entries in released["0.42.2"].values() for e in entries]
+    rec_0422 = len(links_0422)
+    kinds_0422 = {kind: sum(1 for link in links_0422 if link.get(kind)) for kind in LINK_KINDS}
     c = released_counts
     linked_041 = {r["code"] for r in results if r.get("released_041_records")}
     plan = "работа не начата" + (f"; у {plan_mismatch} — расходится" if plan_mismatch else "")
     in_work_note = (
-        f"у {released_part} часть правок уже вышла (0.37–0.42.1), у {merged_part} — влита после 0.42, "
+        f"у {released_part} часть правок уже вышла (0.37–0.42.2), у {merged_part} — влита после 0.42, "
         f"у {staging_part} — на обкатке; остальное ещё в разработке"
     )
     return {
@@ -610,7 +625,7 @@ def stage_notes(results, released, released_counts, taken_records=0, released_04
             f"отнёс к 0.42 вручную. На общем табло они учитываются в [пункте 3 «Сделано»](done.md). "
             f"Журнал выпуска 0.42.0 — {rec_042} записей ([состав](../releases/0.N/0.42/shipped.md)); "
             "запись служит результату только по связи из файла Разработчика. "
-            "Записи исправительного выпуска 0.42.1 сюда не входят: они на странице [Вышло в 0.42.1](released-0.42.1.md).",
+            "Записи исправительных выпусков 0.42.1 и 0.42.2 сюда не входят: они на страницах [Вышло в 0.42.1](released-0.42.1.md) и [Вышло в 0.42.2](released-0.42.2.md).",
         ),
         "Вышло в 0.42.1": (
             "вышло пользователям в 0.42.1",
@@ -619,6 +634,15 @@ def stage_notes(results, released, released_counts, taken_records=0, released_04
             f"Журнал выпуска 0.42.1 — {rec_0421} записей ([состав](../releases/0.N/0.42.1/shipped.md)): "
             f"служат записанным результатам — {kinds_0421['result']}, новым предложенным результатам — "
             f"{kinds_0421['proposed']}, служебные правки без видимого результата — {kinds_0421['service']}. "
+            "Запись служит результату только по связи из файла Разработчика.",
+        ),
+        "Вышло в 0.42.2": (
+            "вышло пользователям в 0.42.2",
+            f"Сделанные результаты, все правки которых вышли, и хотя бы одна из них — в исправительном выпуске 0.42.2. "
+            f"На общем табло они учитываются в [пункте 3 «Сделано»](done.md). "
+            f"Журнал выпуска 0.42.2 — {rec_0422} записей ([состав](../releases/0.N/0.42.2/shipped.md)): "
+            f"служат записанным результатам — {kinds_0422['result']}, новым предложенным результатам — "
+            f"{kinds_0422['proposed']}, служебные правки без видимого результата — {kinds_0422['service']}. "
             "Запись служит результату только по связи из файла Разработчика.",
         ),
         "**3. Сделано**": (
@@ -814,8 +838,9 @@ def record_inventory_lines(staging: list[dict], unreleased_links: list[dict], re
     recent = sum(map(len, released["0.41.11"].values()))
     last = sum(map(len, released["0.42"].values()))
     fix = sum(map(len, released["0.42.1"].values()))
+    fix2 = sum(map(len, released["0.42.2"].values()))
     unreleased = len(unreleased_links)
-    total = old + recent + last + fix + unreleased
+    total = old + recent + last + fix + fix2 + unreleased
     staging_counts = {status: sum(s["staging_status"] == status for s in staging) for status in STAGING_TO_STATUS}
     testing = [s for s in staging if s["staging_status"] == "testing"]
     proposed_testing = {
@@ -833,9 +858,10 @@ def record_inventory_lines(staging: list[dict], unreleased_links: list[dict], re
         "<details>",
         f"<summary>2. Записи правок и обкатки — {total} и {len(staging)}</summary>",
         "",
-        f"**{total} = {old} + {recent} + {last} + {fix} + {unreleased}** записей журнала изменений шаблона: "
+        f"**{total} = {old} + {recent} + {last} + {fix} + {fix2} + {unreleased}** записей журнала изменений шаблона: "
         f"[до 0.36](../releases/0.N/0.36/shipped.md), [0.37–0.41.11](../releases/0.N/0.41.11/shipped.md), "
-        "[0.42](../releases/0.N/0.42/shipped.md), [0.42.1](../releases/0.N/0.42.1/shipped.md) "
+        "[0.42](../releases/0.N/0.42/shipped.md), [0.42.1](../releases/0.N/0.42.1/shipped.md), "
+        "[0.42.2](../releases/0.N/0.42.2/shipped.md) "
         "и [ещё не выпущенные](ready.md). "
         "Одна запись описывает правку, а не целый результат; несколько записей могут служить одному результату.",
         f"Невыпущенных записей: {unreleased}; Выпускающий взял: {taken_records}; "
@@ -957,7 +983,7 @@ def board_lines(source_date: str, source_text: str, results: list[dict], source_
             f"**{len(work_lines)} = " + " + ".join(str(len(group["codes"])) for group in groups) + "**.", "",
             "Этап 2.3 — результаты, все правки которых [влиты в шаблон после выхода 0.42](ready.md). "
             "Вышедшее учитывается в пункте 3 «Сделано»: [в 0.37–0.41.11](released-0.37-0.41.11.md)"
-            ", [в 0.42](released-0.42.md) и [в 0.42.1](released-0.42.1.md).",
+            ", [в 0.42](released-0.42.md), [в 0.42.1](released-0.42.1.md) и [в 0.42.2](released-0.42.2.md).",
             "", "</details>", ""]
     out += ["[Сверка полноты](completeness.md) · [результаты и статистика IWE](stats.md).", ""]
     return out
@@ -1180,6 +1206,7 @@ def write_views(
         "0.41.11": {key: released_label(link) for key, link in released_links.items()},
         "0.42": {key: link_label(link) for key, link in released_042_links.items()},
         "0.42.1": {key: link_label(link) for key, link in released_042_links.items()},
+        "0.42.2": {key: link_label(link) for key, link in released_042_links.items()},
     })
 
 
@@ -1448,6 +1475,8 @@ def public_release(code: str, result: dict, declared: dict) -> str:
         return "0.42.0"  # derived from the 0.42 changelog records, not from a manual placement
     if result.get("status") == RELEASED_0421 and result.get("released_0421"):
         return "0.42.1"
+    if result.get("status") == RELEASED_0422 and result.get("released_0422"):
+        return "0.42.2"
     placements = declared.get("placement")
     if not isinstance(placements, dict) or not isinstance(placements.get(code), dict):
         public_error(f"{code}: released result needs a placement mapping")
@@ -1713,7 +1742,8 @@ def main() -> int:
         released[released_range(ver)][ver] = entries
     # released_0_42 of the links file covers both 0.42.0 and 0.42.1 records.
     released_0421_keys = frozenset(e["key"] for entries in released["0.42.1"].values() for e in entries)
-    released_042_keys = {e["key"] for entries in released["0.42"].values() for e in entries} | released_0421_keys
+    released_0422_keys = frozenset(e["key"] for entries in released["0.42.2"].values() for e in entries)
+    released_042_keys = {e["key"] for entries in released["0.42"].values() for e in entries} | released_0421_keys | released_0422_keys
     author_ahead = load_author_ahead(src / "author-ahead.yaml")
 
     if args.source_date:
@@ -1742,7 +1772,7 @@ def main() -> int:
         ],
     }
     links_file = args.repo / layout.DEVELOPER_LINKS
-    apply_links(results, developer["unreleased_links"], released_042_keys, staging, links_file, released_0421_keys)
+    apply_links(results, developer["unreleased_links"], released_042_keys, staging, links_file, released_0421_keys, released_0422_keys)
     declared = yaml.safe_load(links_file.read_text())
     stale_file_links = apply_file_links(
         author_ahead, declared.get("files", {}), {r["code"]: r for r in results}
