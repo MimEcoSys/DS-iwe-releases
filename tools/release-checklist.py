@@ -5,8 +5,15 @@ opening every tests/rc.<K>/*.yaml file and decisions.md by hand (WP-529, found 1
 the pilot asked who confirmed each checklist item and when, and there was no single place
 that answered it).
 
-Usage: python3 tools/release-checklist.py [--repo PATH] [--release N]
-Exit: 0 always — this is a report, not a gate (the gate is check_decisions.py).
+With --closure it is a gate for the "After release" actions 17а-28 of the general checklist
+(WP-529: on 0.42.2 and 0.42.1 the lines 25-28 stayed "нет" after the release was announced, and
+nothing said the release was not closed). It reads releases/<X>.N/<N>/checklist.md and lists
+every such row whose state is not "да" or "не нужно" (so "нет", "частично", "идёт", empty and a
+missing row all count as open).
+
+Usage: python3 tools/release-checklist.py [--repo PATH] [--release N] [--closure]
+Exit: report mode — 0 always (this is a report, the gate is check_decisions.py);
+      --closure — 0 when every row 17а-28 is closed, 1 while some are open, 2 when the checklist is unreadable.
 """
 
 from __future__ import annotations
@@ -66,13 +73,54 @@ def post_release_lines(decisions_md: str) -> list[str]:
     return lines
 
 
+# Actions after the release (step 8 of the general checklist). Action 17 (merge and tag) is
+# the release itself, so it is not part of "closing"; numbers keep the Cyrillic letters of the checklist.
+AFTER_RELEASE_ACTIONS = ("17а", "17б") + tuple(str(n) for n in range(18, 29))
+CLOSED_STATE = re.compile(r"^(да|не нужно)(?![\w])", re.IGNORECASE)
+CHECKLIST_ROW = re.compile(r"^\|\s*(\d+[а-я]?)\s*\|")
+
+
+def closure_open_rows(checklist_md: str) -> list[tuple[str, str]]:
+    """Rows 17а-28 whose state is not "да" / "не нужно": (number, state as written; empty when missing)."""
+    states: dict[str, str] = {}
+    for row in checklist_md.splitlines():
+        row = row.strip()
+        if not CHECKLIST_ROW.match(row):
+            continue
+        cells = [c.strip() for c in row.strip("|").split("|")]
+        if len(cells) >= 3:
+            states.setdefault(cells[0], cells[2])
+    return [(n, states.get(n, "")) for n in AFTER_RELEASE_ACTIONS if not CLOSED_STATE.match(states.get(n, ""))]
+
+
+def closure_report(release: str, open_rows: list[tuple[str, str]]) -> str:
+    if not open_rows:
+        return f"Выпуск {release} закрыт: все строки 17а–28 чек-листа отмечены «да» или «не нужно»."
+    lines = [f"Выпуск {release} не закрыт: открыты строки {', '.join(n for n, _ in open_rows)}"]
+    for number, state in open_rows:
+        shown = (state[:90] + "…") if len(state) > 90 else state
+        lines.append(f"  {number}: {shown or 'нет строки или пусто'}")
+    return "\n".join(lines)
+
+
 def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--repo", type=Path, default=Path("."))
     parser.add_argument("--release", default="0.42")
+    parser.add_argument("--closure", action="store_true",
+                        help="list rows 17а-28 of the release checklist that are not closed; exit 1 while any is open")
     args = parser.parse_args(argv)
 
     release_dir = args.repo / layout.release_dir(args.release)
+    if args.closure:
+        try:
+            checklist_md = (release_dir / "checklist.md").read_text(encoding="utf-8")
+        except OSError as error:
+            print(f"Не удалось прочитать чек-лист выпуска {args.release}: {error}", file=sys.stderr)
+            return 2
+        open_rows = closure_open_rows(checklist_md)
+        print(closure_report(args.release, open_rows))
+        return 1 if open_rows else 0
     protocol_md = (release_dir / "protocol.md").read_text(encoding="utf-8")
     decisions_md = (release_dir / "decisions.md").read_text(encoding="utf-8")
     tests_dir = release_dir / "tests"

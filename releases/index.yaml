@@ -9,7 +9,8 @@ versions:
     as_of: 2026-11-21
     summary: новые возможности по итогам голосования; состав утверждён 21.11, срок не объявлен (после выхода 0.42.2)
     links:
-      release: releases/0.N/0.43/plan.md
+      release: releases/0.N/0.43/README.md
+      decisions: releases/0.N/0.43/decisions.md
   - version: "0.42.2"
     state: released
     as_of: 2026-11-26
