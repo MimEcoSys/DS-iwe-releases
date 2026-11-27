@@ -1,0 +1,14 @@
+build: pre-cut (draft branches, not a release candidate)
+marks:
+  - line: 10                # releases/0.N/0.43/protocol.md, #1644 fan-out
+    result: пройдено
+    tester: hermes-agent      # AI agent Hermes v0.16.0, not a code author; run 27.11.2026 11:00 UTC
+    branch: wp529-043-peer-fanout
+    commit: 2cb5a72c4c6a7be3e31184d50702f78717055dfe
+    note: "ok=3 total=3, exit=0, wall_s=9 < 21; three Claude calls (one vendor); log logs/macos/line10-peer-fanout-tool-log.txt"
+  - line: 9                 # #1642 pack-subscribe
+    result: пройдено
+    tester: hermes-agent      # run 27.11.2026 11:07 UTC
+    branch: wp529-043-pack-subscribe
+    commit: 3a805f7cdc51251da77c3cff14b748c1dadacc85
+    note: "4 packs, subscribed in 37 s, commit refused exit=1, answer names RHE.D.002 and RHE.ILL.497, both files exist; log logs/macos/line9-pack-subscribe-tool-log.txt"

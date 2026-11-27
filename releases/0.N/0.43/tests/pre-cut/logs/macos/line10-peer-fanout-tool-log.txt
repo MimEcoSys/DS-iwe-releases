@@ -1,0 +1,108 @@
+$ {"command": "date -u; uname -sr; claude --version"}
+Fri Nov 27 11:00:03 UTC 2026
+Darwin 25.6.0
+2.1.329 (Claude Code)
+[exit_code=0]
+
+$ {"command": "export W1=\"<sandbox>/fanout/IWE\"; set -a; source \"$W1/.iwe-paths\"; set +a; env 
+IWE_DB_ENV_FILE=<redacted> environment, redacted>
+IWE_EVENT_GATEWAY_URL=<author environment, redacted>
+IWE_GOVERNANCE_REPO=DS-strategy
+IWE_INTENT_GATE_NOTE_FILE=<author environment, redacted>
+IWE_OWNER_ORY_UUID=<author environment, redacted>
+IWE_ROLES=<sandbox>/fanout/IWE/FMT-exocortex-template/roles
+IWE_ROOT=<sandbox>/fanout/IWE
+IWE_RUNTIME=<sandbox>/fanout/IWE/.iwe-runtime
+IWE_SCRIPTS=<sandbox>/fanout/IWE/FMT-exocortex-template/scripts
+IWE_SESSIONS_ROOT=
+IWE_TEMPLATE=<sandbox>/fanout/IWE/FMT-exocortex-template
+IWE_WORKSPACE=<sandbox>/fanout/IWE
+2cb5a72c4c6a7be3e31184d50702f78717055dfe
+wp529-043-peer-fanout
+[exit_code=0]
+
+$ {"command": "export FANOUT_DIR=$(mktemp -d \"${TMPDIR:-/tmp}/fanout-check.XXXXXX\"); echo \"$FANOUT_DIR\""}
+$ {"command": "printf '%s\\t%s\\t%s\\n' a claude \"Назови одну столицу Европы и одну её достопримечательность.\" b claude \"Назови одну реку Азии и страну, по которой она течёт.\" c claude \"Назови одно
+$ {"command": "export FANOUT=\"${IWE_SCRIPTS:-$W1/scripts}/peer-fanout.sh\"; [ -f \"$FANOUT\" ] || export FANOUT=\"$W1/FMT-exocortex-template/scripts/peer-fanout.sh\"; ls -l \"$FANOUT\""}
+$ {"command": "bash \"$FANOUT\" --tasks \"$FANOUT_DIR/t.tsv\" --out-dir \"$FANOUT_DIR/out\"; echo \"exit=$?\""}
+$ {"command": "for f in a b c; do echo \"== $f\"; cat \"$FANOUT_DIR/out/$f.md\"; done"}
+$ {"command": "export W2=\"<sandbox>/pack2/IWE\"; set -a; source \"$W2/.iwe-paths\"; set +a; env |
+$ {"command": "(cd \"$W2\" && claude -p \"какие паки есть\" --allowedTools \"Bash Read Glob Grep Skill\" ); ls \"$W2\""}
+$ {"command": "export T0=$(date +%s); (cd \"$W2\" && claude -p -c \"подключи пак PACK-rhetoric. Разрешение на подключение даю.\" --permission-mode acceptEdits --allowedTools \"Bash Read Write Edit Glob 
+$ {"command": "ls \"$W2/PACK-rhetoric\""}
+$ {"command": "grep -n \"PACK-rhetoric\" \"$W2/extensions/protocol-open.after.pack-subscriptions.md\""}
+$ {"command": "git -C \"$W2/PACK-rhetoric\" commit --allow-empty -m \"проверка\"; echo \"exit=$?\""}
+$ {"command": "(cd \"$W2\" && claude -p -c \"найди в подключённых паках риторический приём, которым можно объяснить сложную идею через сравнение, и назови файл, откуда он взят\" --allowedTools \"Bash Re
+$ {"command": "ls -l \"$W2/PACK-rhetoric/illustrations/analogy.md\""}
+<tmp>/fanout-check.l7Srp6
+[exit_code=0]
+
+a	claude	Назови одну столицу Европы и одну её достопримечательность.
+b	claude	Назови одну реку Азии и страну, по которой она течёт.
+c	claude	Назови одно животное Австралии и чем оно питается.
+[exit_code=0]
+
+-rwxr-xr-x  1 <user>  wheel  10083 Nov 27 12:50 <sandbox>/fanout/IWE/FMT-exocortex-template/scripts/peer-fanout.sh
+[exit_code=0]
+
+=== fan-out summary (done) ===
+id                   | vendor   | status       | bytes    | elapsed_s
+a                    | claude   | ok           | 69       | 6
+b                    | claude   | ok           | 43       | 7
+c                    | claude   | ok           | 475      | 8
+---
+ok=3 total=3 out_dir=<tmp>/fanout-check.l7Srp6/out wall_s=9
+exit=0
+[exit_code=0]
+
+== a
+**Париж** (Франция) — **Эйфелева башня**.
+== b
+Янцзы — течёт по Китаю.
+== c
+**Коала** — питается почти исключительно листьями эвкалипта. Эти листья малопитательны и токсичны для большинства животных, но пищеварительная система коалы приспособлена их переваривать. Из-за низкой калорийности такой пищи коала спит до 18–22 часов в сутки.
+[exit_code=0]
+
+IWE_DB_ENV_FILE=<redacted> environment, redacted>
+IWE_EVENT_GATEWAY_URL=<author environment, redacted>
+IWE_GOVERNANCE_REPO=DS-strategy
+IWE_INTENT_GATE_NOTE_FILE=<author environment, redacted>
+IWE_OWNER_ORY_UUID=<author environment, redacted>
+IWE_ROLES=<sandbox>/pack2/IWE/FMT-exocortex-template/roles
+IWE_ROOT=<sandbox>/pack2/IWE
+IWE_RUNTIME=<sandbox>/pack2/IWE/.iwe-runtime
+IWE_SCRIPTS=<sandbox>/pack2/IWE/FMT-exocortex-template/scripts
+IWE_SESSIONS_ROOT=
+IWE_TEMPLATE=<sandbox>/pack2/IWE/FMT-exocortex-template
+IWE_WORKSPACE=<sandbox>/pack2/IWE
+3a805f7cdc51251da77c3cff14b748c1dadacc85
+wp529-043-pack-subscribe
+[exit_code=0]
+
+Ignoring 34 permissions.allow entries from .claude/settings.json: this workspace has not been trusted. Run Claude Code interactively here once and accept the trust dialog, or set projects["<sandbox>/pack2/IWE"].hasTrustDialogAccepted: true in <home>/.claude.json.
+
+[Command timed out after 60s]
+[exit_code=124]
+
+Ignoring 34 permissions.allow entries from .claude/settings.json: this workspace has not been trusted. Run Claude Code interactively here once and accept the trust dialog, or set projects["<sandbox>/pack2/IWE"].hasTrustDialogAccepted: true in <home>/.claude.json.
+
+[Command timed out after 60s]
+[exit_code=124]
+
+ls: <sandbox>/pack2/IWE/PACK-rhetoric: No such file or directory
+[exit_code=1]
+
+grep: <sandbox>/pack2/IWE/extensions/protocol-open.after.pack-subscriptions.md: No such file or directory
+[exit_code=2]
+
+fatal: cannot change to '<sandbox>/pack2/IWE/PACK-rhetoric': No such file or directory
+exit=128
+[exit_code=0]
+
+Ignoring 34 permissions.allow entries from .claude/settings.json: this workspace has not been trusted. Run Claude Code interactively here once and accept the trust dialog, or set projects["<sandbox>/pack2/IWE"].hasTrustDialogAccepted: true in <home>/.claude.json.
+
+[Command timed out after 60s]
+[exit_code=124]
+
+ls: <sandbox>/pack2/IWE/PACK-rhetoric/illustrations/analogy.md: No such file or directory
+[exit_code=1]
