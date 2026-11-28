@@ -9,7 +9,9 @@ that must not depend on judgement:
    recommendation.
 2. releases/<first number>.N/<N>/decisions.md names only known keys, never both takes and defers
    the same key, and never splits a group marked "separable: нет" (one merge
-   whose records can only be taken or deferred together).
+   whose records can only be taken or deferred together). Before the cut the
+   composition may be recorded in words while the row of the cut version is
+   empty: the keys come with the cut (keys_pending), and --require-final refuses it.
 
 3. With --require-final (run by the Release Lead right before merging the release
    PR, WP-529 Ф261): the rows the release hangs on are filled, and the newest
@@ -49,6 +51,7 @@ from changelog import changelog_sections  # noqa: E402
 KEY = re.compile(r"\bU-[0-9a-f]{6}\b")
 TAKEN_ROW = "Состав: что взято"
 DEFERRED_ROW = "Состав: что отложено"
+CUT_ROW = "Версия основной ветки шаблона"
 RETURN_ROW = "После выхода: отложенное возвращено в основную ветку"
 FINAL_ROWS = (
     TAKEN_ROW,
@@ -119,6 +122,26 @@ def inseparable_groups(handoff: dict) -> dict[str, list[str]]:
     return members
 
 
+def keys_pending(decisions: str) -> bool:
+    """The composition is decided in words and its keys wait for the cut (WP-529, 28.11.2026).
+
+    candidates.md is built from the handoff before the Release Lead says "режем", so the form cannot
+    name the keys yet. This is true only while the form HAS the row of the cut version and that row
+    holds no full commit; a form without the row, with the version named, or with the all-at-cut
+    wording is read as before: words without keys fail, so a misspelled composition is never read
+    as an empty selection. The final check (--require-final) refuses this state.
+    """
+    taken, rows = decision_keys(decisions, TAKEN_ROW)
+    if taken or rows != 1:
+        return False
+    values = row_values(decisions)
+    wording = next(value for name, value in values.items() if name.startswith(TAKEN_ROW))
+    if not wording or wording in ("ничего", ALL_CUT_RECORDS):
+        return False
+    cut = next((value for name, value in values.items() if name.startswith(CUT_ROW)), None)
+    return cut is not None and not re.search(r"[0-9a-f]{40}", cut)
+
+
 def selected_record_keys(handoff: dict, decisions: str, snapshot_commit: str | None = None) -> tuple[set[str], int]:
     """Resolve the Release Lead's explicit keys or the recorded all-at-cut decision."""
     taken, rows = decision_keys(decisions, TAKEN_ROW)
@@ -129,7 +152,7 @@ def selected_record_keys(handoff: dict, decisions: str, snapshot_commit: str | N
     if wording == ALL_CUT_RECORDS:
         if not snapshot_commit:
             raise DecisionsFormError("для решения «всё до снимка» нужен снимок с версией шаблона")
-        cut = next((value for name, value in values.items() if name.startswith("Версия основной ветки шаблона")), "")
+        cut = next((value for name, value in values.items() if name.startswith(CUT_ROW)), "")
         match = re.search(r"[0-9a-f]{40}", cut)
         if not match or len(snapshot_commit) < 10 or not match.group().startswith(snapshot_commit):
             raise DecisionsFormError("снимок табло и версия в решении о составе выпуска различаются")
@@ -137,7 +160,7 @@ def selected_record_keys(handoff: dict, decisions: str, snapshot_commit: str | N
         if deferred != "ничего":
             raise DecisionsFormError("решение «всё до снимка» требует явного «ничего» в отложенном")
         return set(handoff.get("records") or {}), rows
-    if wording and not taken and wording != "ничего":
+    if wording and not taken and wording != "ничего" and not keys_pending(decisions):
         raise DecisionsFormError("строка «Состав: что взято» не содержит кодов кандидатов")
     return taken, rows
 
@@ -321,8 +344,14 @@ def main(argv: list[str]) -> int:
         if own_candidates:
             problems += decision_problems(handoff, decisions, decision_snapshot_commit(args.repo, release))
         unfilled = unfilled_rows(decisions)
+        words_only = own_candidates and keys_pending(decisions)
         if args.require_final:
             problems += [f"в decisions.md не заполнена строка «{row}»" for row in unfilled]
+            if words_only:
+                problems.append(
+                    "в строке «Состав: что взято» нет ключей кандидатов U-…: до нарезки состав записан словами, "
+                    "перед слиянием нужны ключи или формула «всё до снимка» и версия основной ветки в момент «режем»"
+                )
             if not args.rc_tree:
                 problems.append("--require-final требует --rc-tree: без дерева кандидата вердикт можно принять за вердикт чужой сборки")
             problems += red_team_problems(args.repo / layout.release_dir(release) / "tests", args.rc_tree)
@@ -346,6 +375,9 @@ def main(argv: list[str]) -> int:
     if args.after_release and deferred_without_keys(decisions):
         print("ЗАМЕТКА: отложенное названо словами, без ключей записей U-… — возврат в основную ветку не проверен; "
               "если отложенное было в основной ветке на момент нарезки, назовите его ключи")
+    if words_only:
+        print("ЗАМЕТКА: состав записан словами, ключи кандидатов Выпускающий называет при нарезке; до этого сверка по ключам "
+              "(неизвестные ключи, неразделимые группы) не выполнялась — это не «всё чисто»")
     if unfilled and not args.require_final:
         print(f"ЗАМЕТКА: форма решений заполнена не до конца ({'; '.join(unfilled)}) — это не «всё чисто»; перед слиянием запустить с --require-final")
     return 0

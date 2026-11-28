@@ -48,20 +48,32 @@
 # нового «Состояния по целям»). Форма решений 0.42.2 — как после этапа «После выхода» (дерево v0.42.2 = дерево rc.4).
 # Повторная сборка из тех же входов в другой копии дерева совпала байт в байт (кроме кэша Python).
 
-built_at_local_date: '2026-11-26'   # день сборки
-source_collected_at: '2026-11-26'  # дата закреплённых входов и шапок табло
+# Пересборка 28.11 (РП-529, подготовка 0.43): входы шаблона (CHANGELOG.md, версия, список файлов, метки, история) собраны заново на
+# вершине ca0d6af7 — после слияния пяти возможностей и пяти исправлений 0.43: 32 записи «Ещё не выпущено», 29 слияний. Закрытые
+# входы (map005.md, sbg.md, result-codes.md, weekplan.md, staging.md) оставлены на закреплениях 26.11, их SHA-256 совпали с прошлой
+# сборкой. У трёх из них с 26.11 есть новые правки: в «Состоянии по целям» Ц37-07 стал «сделано» (ему нужно размещение, решает
+# Разработчик) и исчезла строка Ц82-05; их разбор — при ближайшей полной пересборке. Поэтому подпись «по данным на 2026-11-28»
+# в NOW.md верна для шаблона, а состояния результатов взяты на 26.11.
+# Передача Разработчика переключена на 0.43: 32 записи — 30 «взять», 2 «решить Выпускающему» (U-96a651, U-eac956). 20 новых записей
+# связаны по полю «Цель · Результат»; у четырёх результатов (Ц34-02, Ц37-02, Ц78-01, Ц82-07) сняты размещения: их теперь несут записи 0.43
+# (#1641, #1693, #1643, #1644). Табло 631 результат: план 264, в работе 218, сделано 114, отложено 35. Замер Разработчика не приложен (как 16.11).
+# decision_* — форма решений 0.43: состав записан словами, ключи называются при нарезке; проверка решений принимает это до «режем»
+# (правка tools/check_decisions.py в этом же запросе).
+
+built_at_local_date: '2026-11-28'   # день сборки
+source_collected_at: '2026-11-28'  # дата закреплённых входов и шапок табло
 host_timezone: EET                  # локальная дата зависит от таймзоны хоста
-recorded_at: '2026-11-26T12:00:00Z' # когда записан этот файл (после сборки)
-decision_revision: 3bf23dd20f544d9a072ec5f1177bf8750b1113e4
-decision_sha256: ad349563c10674e6c342618e14a73259d64338a0697049505ed18d06bcddb202
+recorded_at: '2026-11-28T08:00:00Z' # когда записан этот файл (после сборки)
+decision_revision: fe51e957f9998de0301012e77d4d7d74d7f0643f
+decision_sha256: ddacd9cf16848ede2fe95d414a09b1c1bbea3a884df0a0206c8d1f6715fbc79f
 
 builder:
   program: tools/build_board.py   # вместе с tools/iwe_stats.py и соседними
-  program_commit: 7fee66b28b52b223027b8121af5ba5ee5478c52b   # main до этого запроса; диапазон 0.42.2 в build_board.py — правка этого запроса, точный текст — по program_sha256
+  program_commit: fe51e957f9998de0301012e77d4d7d74d7f0643f   # main до этого запроса; build_board.py без правок (хэш прежний), правится tools/check_decisions.py этого запроса
   program_sha256: e20d17526a11d458dd58c91962a5b919fa509848af919dfc0bc4ec018f913dd8
-  python: 3.15.0
+  python: 3.14.6
   dependencies: {pyyaml: 6.0.3}       # других сторонних модулей программа не импортирует
-  command: python3 tools/build_board.py --src <папка входов> --source-date 2026-11-26 --repo <копия DS-iwe-releases>
+  command: python3 tools/build_board.py --src <папка входов> --source-date 2026-11-28 --repo <копия DS-iwe-releases>
 
 # Все входы, кроме замера, читаются из закреплённой ревизии origin/main: git show <revision>:<path>.
 inputs:
@@ -87,32 +99,32 @@ inputs:
     repo: https://github.com/TserenTserenov/FMT-exocortex-template.git
     public: true
     path: CHANGELOG.md
-    revision: a254425bbc2345672a1285db3842bc9e56780230
-    sha256: 914a3d503c54203188af5c4d349012aed9b5560f339035ec50ee0b3a286054ef
+    revision: ca0d6af7f6c4e0bb18ac686177a45cde54fb3c9e
+    sha256: ebf62773242987d68fc4d66ad8bdf679c4d4368b9a4faec813fea8cf5be964e0
   - name: fmt-sha
     repo: https://github.com/TserenTserenov/FMT-exocortex-template.git
     public: true
-    derived_by: git rev-parse 75cb2ff9   # та же ревизия, что у changelog.md
-    revision: a254425bbc2345672a1285db3842bc9e56780230
-    sha256: 04118676387e0a84989be0411f84638aef71a29af52540aebb2dffc6f2e992da
+    derived_by: git rev-parse ca0d6af7   # та же ревизия, что у changelog.md
+    revision: ca0d6af7f6c4e0bb18ac686177a45cde54fb3c9e
+    sha256: 7380a6f6a9148c38b9175af9aa9f9fece23fb26ad2053f610121deac3f550b68
   - name: fmt-files.txt
     repo: https://github.com/TserenTserenov/FMT-exocortex-template.git
     public: true
     derived_by: git ls-tree -r --name-only <revision>
-    revision: a254425bbc2345672a1285db3842bc9e56780230
-    sha256: a99de8c2363daa7cfc552d7aa4b6ef9d0be8b7cbeba624f1dd66625045842a8f
+    revision: ca0d6af7f6c4e0bb18ac686177a45cde54fb3c9e
+    sha256: 7358b71641f50cc6932f6ec8eabb716ffabd46fff6c5138398238e260b8046ae
   - name: fmt-tags.txt   # для страницы статистики board/stats.md (РП-529 Ф278)
     repo: https://github.com/TserenTserenov/FMT-exocortex-template.git
     public: true
     derived_by: git for-each-ref refs/tags --merged <revision> --sort=refname --format='%(refname:short) %(creatordate:short)'
-    revision: a254425bbc2345672a1285db3842bc9e56780230
+    revision: ca0d6af7f6c4e0bb18ac686177a45cde54fb3c9e
     sha256: db334d30292f16ac70f13431c2e50406ba09a259125d58d9cfdfc0bb2ac7a284
   - name: fmt-history.txt   # для страницы статистики board/stats.md (РП-529 Ф278)
     repo: https://github.com/TserenTserenov/FMT-exocortex-template.git
     public: true
     derived_by: git log --first-parent --format='%cs %s' <revision>
-    revision: a254425bbc2345672a1285db3842bc9e56780230
-    sha256: a49495198cdb4e4bb0226bbed781c8da904cb7bf23490cdfe2f3a57f0957f6df
+    revision: ca0d6af7f6c4e0bb18ac686177a45cde54fb3c9e
+    sha256: 0ce8ca6e87121337550a29a2f6f78167e5103b6116673da9d5f1e8f2e0913184
   - name: staging.md
     repo: https://github.com/TserenTserenov/iwe-local-config.git   # закрытый, корень IWE Разработчика
     public: false   # закрытый: на публичных страницах без ссылки

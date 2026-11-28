@@ -25,6 +25,29 @@ links:
   U-a11f3f: {service: 'снимок терминов графа понятий для перевода обновлён (#1651, WP-617)'}
   U-cf2fe7: {service: '(#1682) анонс выпуска подписчикам в Telegram стал короче'}
   U-310113: {service: '(#1654) мост навыков к DeepSeek Harness стал надёжнее (обращение #1623)'}
+  # 28.11.2026, РП-529, подготовка 0.43: 20 записей, влитых в основную ветку после выхода 0.42.2 и не вошедших в блок выше
+  # (пять возможностей голосования, пять исправлений по обращениям, защитные и служебные правки). Код результата взят из поля
+  # «Цель · Результат» записи; где там «служебное» — запись служебная. Черновик ИИ-агента Разработчика.
+  U-ddb0ee: {service: '(#1699) правки скилла вне блока USER-SPACE при обновлении сохраняются в резервной копии (обращение #1689)'}
+  U-9de32d: {service: '(#1698) подготовка к сессии стратегирования переносит файлы целиком, неполный перенос виден сразу (обращение #1674)'}
+  U-ae980d: {service: '(#1696) проверка секретов не пропускает ключ из-за файла не в UTF-8 (обращение #1670)'}
+  U-2c074e: {result: [Ц77-07]}
+  U-85fcab: {service: '(#1700) сессия стратегирования сохраняется без номера рабочего продукта (обращение #1659)'}
+  U-13a28a: {service: '(#1685) срочное сообщение о проблемах шаблона называет действие'}
+  U-d63b07: {result: [Ц82-07]}
+  U-a38050: {result: [Ц72-01, Ц72-04]}
+  U-a1970e: {result: [Ц78-01]}
+  U-61ed7a: {result: [Ц34-02]}
+  U-4f22b0: {result: [Ц54-01]}
+  U-96a651: {service: '(#1703) проверка готовности защитных проверок для любого агента и десять проверок для Codex'}
+  U-a573de: {service: '(#1695) find-method показывает шаги метода заголовками и останавливается на вопросе человеку'}
+  U-c15639: {service: '(#1694) vdv и integration-gate показывают шаги метода заголовками и останавливаются на вопросе человеку'}
+  U-bec175: {service: '(#1687) инструкция переноса навыков IWE в Codex и run-protocol для Codex'}
+  U-0ca04b: {service: '(#1686) think, archgate и decompose показывают этапы метода заголовками'}
+  U-a00bce: {service: '(#1704) описание стартового набора хранилищ в карте домов приведено к принятому решению'}
+  U-2fc387: {service: '(#1701) карта домов данных приведена к пересмотру решения о структуре 27.11'}
+  U-eac956: {result: [Ц37-02, Ц37-03]}
+  U-559801: {service: '(#1690) в журнал пострелизных аудитов записан итог проверки 0.42.2'}
 
 # Записи, вышедшие в 0.42 (раздел [0.42.0] списка изменений) -> результат; те же три вида: result / proposed / service.
 # Сделанный результат, все связи которого здесь, получает статус «выпущено в 0.42».
@@ -359,6 +382,8 @@ staging:
 # Где сделанный по карточке результат на самом деле, с доказательством (05.11.2026, проверка по шаблону и карточкам):
 #   released-0.36 | released-0.37-0.41.11 | merged-after-0.41.11 | author-only | not-template
 placement:
+  # 28.11.2026, РП-529: сняты размещения Ц34-02, Ц37-02, Ц78-01 и Ц82-07 — эти результаты теперь несут записи 0.43
+  # (#1641, #1693, #1643, #1644), статус «готово для передачи» им ставит программа по связям выше.
   # 11.11.2026 (ИИ-агент Разработчика, предварительно): места семи сделанных результатов, которые после приведения связей к кодам РП-611 (FMT #1525) не несёт ни одна запись 0.42; Ц77-02 остаётся выпущенным в 0.41.11, записи #1519 и #1515 связаны с целью 77 как дополнение.
   Ц34-03: {place: released-0.42, version: 0.42.0, evidence: 'запись U-ba3ac8 (WakaTime за день, #1467, в 0.42): 08.11 Разработчик связал её с Ц34-03, РП-611 дал записи код Ц31-13; требует сверки владельцем документа 4'}
   Ц34-17: {place: released-0.42, version: 0.42.0, evidence: 'запись U-925871 (#1480, в 0.42): агенты com.strategist.* переименовываются в .plist.disabled, поэтому план дня не видит их «не загруженными»; РП-611 дал записи код Ц78-03'}
@@ -366,19 +391,16 @@ placement:
   Ц38-11: {place: released-0.37-0.41.11, version: 0.41.0, evidence: 'CHANGELOG 0.41.0: Sync Gate — wp-sync-bundle.sh читает карточку со снимка origin (origin-pinned), если рабочая копия отстала; автоархивация — не сверена'}
   Ц38-13: {place: released-0.37-0.41.11, version: 0.40.2, evidence: 'CHANGELOG 0.40.2: «WP-575: тип результата определяется до имени нового РП» (запись U-aabfc6); основа — дискриминатор result_type в 0.40.1 (#793)'}
   Ц38-14: {place: author-only, evidence: 'документ 4: «у разработчика»; в шаблоне создание РП реестр понятий не сверяет — #1497 добавил только artifactor.py --check-registry (Ц38-15), «создание РП не меняется»'}
-  Ц78-01: {place: released-0.37-0.41.11, version: 0.41.10, evidence: 'CHANGELOG 0.41.10: check-dirty-repos.sh — дедупликация по git rev-parse --show-toplevel (PR #1269)'}
   # 08.11: сняты Ц1-15, Ц4-01, Ц49-03…05, Ц71-03 (убраны из документа 4, DS-ecosystem-development fe9b0774) и Ц38-01 (теперь связан с записью U-296fca шаблона)
   Ц1-09: {place: not-template, evidence: 'РП-589: Aisystant Open опубликован в каталоге ChatGPT (карточка, стр.105) — плагин/MCP вендора, в CHANGELOG шаблона РП-589 не встречается'}
   Ц23-06: {place: released-0.37-0.41.11, version: 0.39.2, evidence: 'шаблонная часть — хук .claude/hooks/session-start-hooks-bootstrap.sh (be4a486, PR #578, merge bea5f51 после v0.39.1), git tag --contains → v0.39.2; создание форка — платформенный fork_platform_template (github-integration-service), вне шаблона'}
   Ц23-07: {place: not-template, evidence: 'РП-559 стр.208: страница «Сначала установите приложение», state-тип space-install — github-integration-service/gateway (DS-MCP)'}
   Ц23-08: {place: not-template, evidence: 'РП-559: страница результата space-флоу в github-integration-service (DS-MCP); в CHANGELOG шаблона нет'}
-  Ц34-02: {place: author-only, evidence: 'РП-484 Ф259: шаг 4.45 scripts/day-open-week-sync-patch.py в DS-my-strategy (8dd4ea67ff, a807cc5fc3); файла нет в шаблоне, в CHANGELOG нет'}
   Ц34-15: {place: author-only, evidence: 'РП-577 Ф4: правки в iwe-local-config/scripts/day-open-scaffold.sh (launchctl на systemd) и week-open-orchestrator.sh (DAY_OPEN_FORCE_STRATEGY_DAY); оркестратора в шаблоне нет'}
   Ц35-03: {place: author-only, evidence: 'РП-561 Ф14: day-close-weekstate-fill.py / day-open-weekstate-render.py — нет в шаблоне; карточка: «Ф7 (промоция в шаблон) — WeekState войдёт туда вместе с остальным» (не сделано); STAGING S-25 связан с Ц35-03'}
   Ц35-04: {place: author-only, evidence: 'РП-561 Ф15: цитирование ⚠️/🗓️ в day-close шаг 5g и cells_with_dates() в day-close-weekstate-fill.py — в шаблоне WeekState нет (только упоминание в protocol-open.md)'}
   Ц35-05: {place: author-only, evidence: 'РП-577 Ф3: фикс strategist.sh/scheduler.sh в DS-ai-systems (5cbb0d7); карточка: у шаблона свой механизм, «переносить нечего»'}
   Ц37-01: {place: author-only, evidence: 'РП-484 §23 Lifework-мост: раздел 6 «Кандидаты в Lifework» в weekly-digest.sh, DS-my-strategy 0cf3f274af; weekly-digest.sh в шаблоне отсутствует'}
-  Ц37-02: {place: released-0.37-0.41.11, version: 0.41.10, evidence: 'CHANGELOG 0.41.10: «этапы описаны одной таблицей «Этапы сессии» в strategy-session-monthly.md (10 этапов…)», рядом записи про пул недели и шаги 04/06a'}
   Ц38-02: {place: author-only, evidence: 'РП-482: карточки RUN-*.md и борд генерирует process-runner.py — в шаблоне не поставляется (WP-561 стр.198: раннер закрытия author-only)'}
   Ц38-07: {place: author-only, evidence: 'РП-503 Ф23 (06.09): четвёртый фильтр hypothesis_falsified_review_needed в scripts/wp-pool-cascade.sh; шаблонный wp-pool-cascade.sh (с 0.38.6) этого фильтра не содержит (git grep пусто)'}
   Ц38-10: {place: released-0.37-0.41.11, version: 0.41.10, evidence: 'CHANGELOG 0.41.10: «session-guard.sh, canon-reconcile-published.sh: дефолт IWE_SESSION_LEASE_SEC поднят с 4ч до 24ч» (РП-561 Ф47, 21.10)'}
@@ -406,7 +428,6 @@ placement:
   Ц79-01: {place: released-0.37-0.41.11, version: 0.41.9, evidence: 'scripts/iwe-backup-run.sh (51f63448, Ф237в регулярный зашифрованный бэкап) и iwe-backup-protect.sh (be7807cc, Ф237б) первыми в v0.41.9; единый договор и тревога по регрессу — CHANGELOG 0.41.10 (iwe-backup.sh, PR #1368)'}
   Ц81-02: {place: released-0.37-0.41.11, version: 0.40.0, evidence: 'CHANGELOG 0.40.0: «c40d2db feat(hooks): universal security hooks package — Д28 (WP-544)»; secret-leak-block.sh в этом коммите блокирует env/printenv/railway variables; анализатор доработан в 0.40.1 (ffceb51b)'}
   Ц82-05: {place: not-template, evidence: 'РП-530 Ф3: стадии в панели DS-iwe-wp-panel (VS Code-расширение, .vsix 0.1.15) — отдельный репозиторий, в шаблоне файлов панели нет'}
-  Ц82-07: {place: author-only, evidence: 'РП-533: скрипты peer-fanout.sh, peer-pipeline.sh, peer-supervisor.sh, peer-swarm.sh лежат в DS-my-strategy/scripts; в шаблоне их нет, в CHANGELOG нет'}
   Ц83-02: {place: released-0.37-0.41.11, version: 0.41.9, evidence: 'CHANGELOG 0.41.9: «CLAUDE.md (Pre-action Gates): … указать область их уникальности и ответственного за схему» (PR #1270, РП-606)'}
   Ц84-01: {place: released-0.36, version: 0.36.0, evidence: 'РП-415: шаг «Cyrillic gate» в translate-sync.yml (63c2ec5) и публикация без следов происхождения (8c9c305), оба 16.07, git tag --contains → v0.36.0; сам iwesys/IWE — внешнее зеркало'}
 
