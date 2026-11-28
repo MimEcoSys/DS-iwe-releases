@@ -288,6 +288,56 @@ def test_unrecognized_take_all_wording_is_not_read_as_zero():
         cd.selected_record_keys(HANDOFF, form, CUT_SHA)
 
 
+# 28.11.2026: 0.43's composition was decided in words before the cut; its keys are named at the cut,
+# after candidates.md has been built from the handoff.
+
+BEFORE_CUT = (
+    "| Версия основной ветки шаблона в момент «режем» | | предложение Разработчика |\n"
+    "| Состав: что взято | решение 27.11: пять возможностей и всё влитое после прошлого выпуска | |\n"
+    "| Состав: что отложено | часы по направлениям — в 0.44 | |\n"
+)
+
+
+def test_composition_in_words_before_the_cut_waits_for_keys():
+    assert cd.keys_pending(BEFORE_CUT)
+    assert cd.selected_record_keys(HANDOFF, BEFORE_CUT, CUT_SHA) == (set(), 1)
+    assert cd.decision_problems(HANDOFF, BEFORE_CUT, CUT_SHA) == []
+
+
+def test_composition_in_words_is_refused_once_the_cut_is_named():
+    named = BEFORE_CUT.replace("| | предложение Разработчика |", f"| `{CUT_SHA}` | |")
+    assert not cd.keys_pending(named)
+    with pytest.raises(cd.DecisionsFormError, match="не содержит кодов"):
+        cd.selected_record_keys(HANDOFF, named, CUT_SHA)
+
+
+def test_composition_in_words_without_the_cut_row_is_refused():
+    form = BEFORE_CUT.split("\n", 1)[1]
+    assert not cd.keys_pending(form)
+    with pytest.raises(cd.DecisionsFormError, match="не содержит кодов"):
+        cd.selected_record_keys(HANDOFF, form, CUT_SHA)
+
+
+def test_keys_or_the_all_at_cut_wording_are_not_pending():
+    assert not cd.keys_pending(BEFORE_CUT.replace("решение 27.11: пять возможностей и всё влитое после прошлого выпуска", "U-000001 U-000002"))
+    assert not cd.keys_pending(BEFORE_CUT.replace("решение 27.11: пять возможностей и всё влитое после прошлого выпуска", cd.ALL_CUT_RECORDS))
+    assert not cd.keys_pending(BEFORE_CUT.replace("решение 27.11: пять возможностей и всё влитое после прошлого выпуска", "ничего"))
+
+
+def test_words_before_the_cut_pass_by_default_with_a_note(tmp_path, capsys):
+    repo = repo_with(tmp_path, BEFORE_CUT)
+    assert cd.main(["--repo", str(repo)]) == 0
+    out = capsys.readouterr().out
+    assert "замечаний нет" in out and "ключи кандидатов Выпускающий называет при нарезке" in out
+
+
+def test_words_before_the_cut_do_not_pass_final(tmp_path, capsys):
+    text = FILLED.replace("U-000001 U-000002", "решение 27.11: всё влитое") + "| Версия основной ветки шаблона в момент «режем» | |\n"
+    repo = repo_with(tmp_path, text, {"rc.1/linux-tester.yaml": verdict()})
+    assert cd.main(["--repo", str(repo), "--require-final", "--rc-tree", TREE]) == 1
+    assert "нет ключей кандидатов" in capsys.readouterr().out
+
+
 # 20.11.2026: a release without its own candidate list (0.42.1 while the handoff lists 0.42).
 
 def repo_for_release(tmp_path, release, decisions_text, rc_files=None):
